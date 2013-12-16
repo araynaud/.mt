@@ -1,0 +1,55 @@
+Unit 	Description
+% 	percentage
+in 	inch
+cm 	centimeter
+mm 	millimeter
+em 	1em is equal to the current font size. 2em means 2 times the size of the current font. E.g., if an element is displayed with a font of 12 pt, then '2em' is 24 pt. The 'em' is a very useful unit in CSS, since it can adapt automatically to the font that the reader uses
+ex 	one ex is the x-height of a font (x-height is usually about half the font-size)
+pt 	point (1 pt is the same as 1/72 inch)
+pc 	pica (1 pc is the same as 12 points)
+px 	pixels (a dot on the computer screen)
+
+
+CSS3 Opacity gradients:
+
+Vertical:
+background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+
+background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
+
+Radial center:
+background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* IE10+ */
+background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+Android / Mobile disable zoom
+
+Unfortunately each browser has it's own implementation of the viewport meta tag. Different combinations will work on different browsers.
+
+Android 2.3.x/3.x: By setting user-scalable=no you disable the scaling of the viewport meta tag yourself as well. This is probably why your width option is having no effect. To allow the browser to scale your content, you need to set user-scalable=yes, then to disable zoom you can set the min and max scale to the same value so it cannot shrink or grow. Toy with the initial scale until your site fits snugly.
+
+<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />
+
+Android 4.x: Same rule apply as 2.3.x except the min and max scales are not honored anymore and if you use user-scalable=yes the user can always zoom, setting it to 'no' means your own scale is ignored, this is the issue I'm facing now that drew me to this question... You cannot seem to disable zoom and scale at the same time in 4.x.
+
+iOS/Safari (4.x/5.x tested): Scales work as expected, you can disable scaling with user-scalable=0 (keywords yes/no don't work in 4.x). iOS/Safari also has no concept of target-densitydpi so you should leave that out to avoid errors. You don't need min and max since you can switch off zooming in the expected manner. Only use width or you'll run into the iOS orientation bug
+
+<meta name="viewport" content="initial-scale=1.0,width=device-width,user-scalable=0" />
+
+Chrome: Scales work as expected like they do in iOS, min and max are honored and you can switch off zooming by using user-scalable=no.
+
+<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=no" />
+
+Conclusion: You can use some fairly simple JS to set the content accordingly after some basic browser/device detection. I know this type of detection is frowned upon but in this case it's almost unavoidable because each vendor has gone and done their own thing! Hope this helps people fighting the viewport, and if anyone has a solution for disabling zooming in Android 4.x WITHOUT the use of the viewport, please let me know.

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Image fit test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<link type="text/css" rel="stylesheet" href="MediaThingy.css"/>
+<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="js/lib/jsrender.js"></script>
+<script type="text/javascript" src="js/lib/jquery.views.js"></script>
+<script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+<script type="text/javascript" src="js/lib/querystring.js"></script>
+
+<script type="text/javascript" src="js/mt.extensions.js"></script>
+<script type="text/javascript" src="js/mt.user.js"></script>
+<script type="text/javascript" src="js/mt.mediafile.js"></script>
+<script type="text/javascript" src="js/mt.album.js"></script>
+<script type="text/javascript" src="js/mt.transition.js"></script>
+<script type="text/javascript" src="js/mt.slideshow.js"></script>
+<script type="text/javascript" src="js/mt.ui.js"></script>
+<script type="text/javascript" src="js/mt.keys.js"></script>
+
+<script type="text/javascript">
+var search = new Querystring().params;
+var	slideshow=new Slideshow(search);
+$(document).ready(function()
+{
+	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
+
+	//ui callbacks
+	$("img.slide, #cbZoom").click(function () { slideshow.toggleZoom(); });
+	if(window.UI)
+	{
+		UI.slideshow=slideshow;
+		if(UI.setupKeyboard) UI.setupKeyboard();
+	}
+});
+
+Album.onLoad = function (albumInstance) 
+{
+	albumInstance.border=false;
+	albumInstance.margin=false;
+	var options={
+		//play: true,
+		//interval: 3000,
+		pics: albumInstance.selectFiles("IMAGE"),
+		container: "#slideshowContainer",
+		statusBar: "#title",
+		alignX:"center",
+		alignY:"bottom",
+	};
+//	slideshow.setOptions(search);
+	slideshow.setOptions(options);
+	//resize();
+	slideshow.display();
+};
+
+function resize()
+{
+	if(isEmpty(slideshow.container) || slideshow.container[0] == window) return;
+	var off=slideshow.container.offset();
+	if(!off) return;
+
+	var w = $(window).width() - 2* slideshow.container.borderMarginWidth();
+	var h = $(window).height() - 2* slideshow.container.borderMarginWidth() - 2 * off.top;
+	slideshow.container.width(w); 
+	slideshow.container.height(h); 
+	slideshow.setStatus("{0} / {1}".format(slideshow.container.width(), slideshow.container.height()));
+ 	slideshow.fitImage();
+};
+
+$(window).resize(function()
+{
+	//resize(); 
+});
+</script>
+</head>
+<body class="centered">
+	<div id="options">
+		<span class="status"></span>
+		<input id="cbZoom" type="checkbox" title="Reverse"/>Zoom
+		<img class="icontr" id="playButton" src="icons/play.png" alt="play" title="play (space)" onclick="slideshow.togglePlay()"/>
+	</div>
+	<div id="slideshowContainer" class="floater container noscroll margin" style="width: 500px; height: 300px;">
+		<img id="slide0" class="slide hidden bottom right" alt="" src="icons/blank1px.png"/>
+		<img id="slide1" class="slide hidden top left" alt="" src="icons/blank1px.png"/>
+
+		<div class="caption">
+			<img class="icontr floatL" src="icons/arrow-back.png" alt="previous" title="previous (LEFT)" onclick="slideshow.showNextImage(-1)"/>
+			<img class="icontr floatR" src="icons/arrow-forward.png" alt="next" title="next (RIGHT)" onclick="slideshow.showNextImage(+1)"/>
+			<div class="floatR">
+				<a class="icon" id="ImageLink" target="fileDownload">D</a><br/>
+				<span class="spaceLeft" id="ImageText"></span>
+			</div>
+			<div id="title" class="noprint">title</div>
+			<div id="comments" id="description"></div>
+			<div class="noprint">takenDate</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<script id="fileTemplate" type="text/x-jsrender"> 
+	<div class="file floater" id="{{:id}}">
+		<a href="{{:~fileUrl(#data)}}">{{>name}}</a> is {{>type}}.
+		{{if exts}}
+			({{>exts.join(", ")}}).
+		{{/if}}
+	</div>
+</script>
+
+<script id="downloadFileTemplate" type="text/x-jsrender"> 
+<div class="small">
+	<div class="floatR">
+		{{if exts}}
+			{{:exts.join(", ")}}
+		{{/if}}
+		{{:takenDate}}
+	</div>
+	<a href="{{:~fileUrl(#data)}}">{{:title}}</a>
+</div>
+</script>
+
+<script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
+	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles(#data)}}" page="{{:~albumVar('pageNum')}}">
+		{{if type=="DIR" && thumbnails}}
+			<a href="?path={{:~filePath(#data)}}" title="{{>title}}">
+				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
+					{{for thumbnails.getHalfElements(0) tmpl="tnTemplate"/}}
+				</div>
+				<div class="{{if ~albumVar('columns')!=-1}}smallThumbRight floatR{{else}}smallThumbBottom{{/if}}">
+					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
+				</div>
+			</a>
+		{{else type=="VIDEO" && tnsizes && ~isVideoStream(#data)}}
+				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:~isVideoStream(#data)}}"/>
+		{{else type=="VIDEO" && tnsizes}}
+			<a href="{{:~fileUrl(#data)}}" target="fileDownload">
+				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{>filename}}"/>
+			</a>
+		{{else type=="IMAGE"}}
+			<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}"/>
+		{{/if}}
+			
+		{{if ~albumVar('caption') && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
+		{{else ~albumVar('caption') && type=="DIR" tmpl='#dirCaptionTemplate'}}
+		{{else ~albumVar('caption') tmpl='#imageCaptionTemplate'}}
+		{{/if}}
+</div>{{if ~albumVar('columns')==1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
+
+<!--directory thumbnails-->
+<script id="tnTemplate" type="text/x-jsrender"><img class="thumbnail {{:~dirImgClasses(#data) link=false}}" src="{{:~combine(~fileUrl(#parent.parent.data), #data)}}" alt="{{:#data}}" /></script>
+
+<!-- template for separator -->
+<script id="separatorTemplate" type="text/x-jsrender"> 
+	<div class="{{:~subtitleClasses()}}"><span class="bold translucent shadow">{{:~getGroup(#data)}}</span></div>
+</script>
+
+<script id="dirCaptionTemplate" type="text/x-jsrender"> 
+	<div class="{{:~captionClasses(#data) link=false}}">
+		<a href="?path={{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a>
+		<div class="small">{{:description}}</div>
+		<div class="small">{{:~dateRange(oldestDate,newestDate,false)}}</div>
+	</div>
+</script>
+
+<!-- template for photo caption -->
+<script id="imageCaptionTemplate" type="text/x-jsrender"> 
+	<div class="{{:~captionClasses(#data) link=false}}">
+		<div class="floatR">
+			<a {{if versions && versions[0]}} title="{{:width}}x{{:height}} {{:~formatSize(versions[0].size)}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
+				<img class="icon" src="icons/download.gif" alt="download {{>filename}}"/>
+			</a>
+		</div>
+		<div class="nowrap noscroll">{{>title}}</div>
+		{{if description}}
+			<div>{{:description}}</div>
+		{{/if}}
+		<div>{{:~dateFormat(takenDate,"monthDayTime")}}			
+			{{if transparent}}Tr{{/if}}
+			{{if alpha}}RGBA{{/if}}
+			{{if animated}}Anim{{/if}}
+		</div>
+	</div>
+</script>
+
+<!-- template for video caption -->
+<script id="videoCaptionTemplate" type="text/x-jsrender"> 
+	<div class="{{:~captionClasses(#data) link=false}}">
+		<div class="nowrap noscroll">{{>title}}</div>
+		<div class="floatR" style="margin-right:10px; width: 22%;">
+			{{for versions tmpl="versionLinkTemplate"/}}
+			{{if !versions}}{{for exts tmpl="extLinkTemplate"/}}{{/if}}
+		</div>
+		{{if description}}
+			<div>{{:description}}</div>
+		{{/if}}
+		<div class="floatR" style="margin-right:10px">
+			{{if ~isVideoStream(#data)}}
+				<img class="icon playLink" src="icons/play.png" title="play {{:~isVideoStream(#data)}}" />
+			{{/if}}
+		</div>
+		<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
+	</div>
+</script>
+
+<!-- template for video download links by extension -->
+<script id="extLinkTemplate" type="text/x-jsrender"> 
+	<a class="download" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
+</script>
+
+<script id="versionLinkTemplate" type="text/x-jsrender"> 
+	<a class="download" title="{{:~formatSize(size)}}" href="{{:~fileUrl(#parent.parent.data, ext)}}">{{:ext.toUpperCase()}}</a>
+</script>
+
+<!-- template for playlist items -->
+<script id="playlistItemTemplate" type="text/x-jsrender">
+	<li id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
+		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
+			<img class="floatR icon" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
+		</a>
+		{{if ~config("ENABLE_FFMPEG") }}
+			<a href="{{:~scriptUrl(#data, 'data.php', 'data=metadata')}}" target="metadata">
+				<img class="floatR" src="icons/info.png" height="12px" style="margin: 2px;" title="info {{>filename}}"/>
+			</a>
+		{{/if}}
+		<div class="duration small floatR">{{if metadata}}{{:~formatTime(metadata.duration)}}{{/if}}</div> 
+		<div class="number small floatL">{{:(#index+1)}}</div>
+		{{if tnsizes }}
+			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:~isVideoStream(#data)}}" 
+			onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
+		{{/if}}
+		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>
+		{{if description}}
+			<div>{{:description}}</div>
+		{{/if}}
+		<br/>
+	</li>
+</script>
+
+<!-- template for background -->
+<script id="backgroundTemplate" type="text/x-jsrender">
+	<div id="divbg" class="bg noprint">
+		<img id="imgbg" src="{{:url}}" alt="" class="stretch{{:hidden}}"/>
+	</div>
+</script>

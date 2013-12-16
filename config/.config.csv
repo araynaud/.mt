@@ -1,0 +1,142 @@
+;app global default config
+TITLE;Media Thingy
+DEBUG.OUTPUT;false
+
+USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;playstation;opera
+;USER_AGENT.FORCE;mobile
+
+;relative path from app root dir to data files root
+DATA_ROOT;..
+TEMP_DIR;.temp
+SPECIAL_FILES;config/special.txt
+EXIF_SUPPORTED_TYPES;IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
+DEFAULT_TIMEZONE;America/Los_Angeles
+JQUERYFX;true
+
+downloads.enabled;true
+downloads.interval;5000
+
+encoding;UTF-8
+language;EN
+keyboard;true
+
+;thumbnail display
+DISPLAY.size;0
+.reverse;false
+.dirsFirst;true
+.group;false
+.border;true
+.rotate;false
+.shadow;true
+.fadeIn;true
+.margin;true
+.caption;true
+.columns;0
+.fit;width
+.percent;true
+.transpose;false
+.maxTnIndex;2
+.displayOptions;true
+.searchOptions;false
+.titleContainer;true
+.downloadFileList;true
+
+;slideshow
+;slideshow.interval;5000
+;slideshow.zoom;false
+;slideshow.alignX;right
+;slideshow.alignY;bottom
+slideshow.changeMode;true
+slideshow.tnIndex;1
+
+;UI transition
+transition.type;1
+transition.duration;1000
+transition.increment;1
+transition.clear;true
+transition.changeMode;queue
+
+;index options
+DEPTH;0
+DISPLAY_TYPES;IMAGE;VIDEO;AUDIO
+DATE_INDEX_TYPES;IMAGE;VIDEO
+
+;file sorting
+SORT.OPTIONS;name;type;random;width;height;ratio;title;filename;description;subdir
+..takenDate;date taken
+.DEFAULT;date taken
+
+;paginate / count per page
+PAGINATE.OPTIONS;1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all
+.DEFAULT;10
+.MIN_PAGES;3
+.MIN_LAST_PAGE;.5
+
+;image thumbnail generation
+thumbnails.sizes.tn;225
+thumbnails.sizes.ss;1000
+thumbnails.sizes.hd;1920
+thumbnails.IMAGE.script;image.php
+thumbnails.background;1000
+thumbnails.VIDEO.ext;jpg
+thumbnails.VIDEO.max_size;1000
+thumbnails.VIDEO.script;video_thumbnail.php
+
+;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
+TYPES.IMAGE;jpg;jpeg;png;gif
+TYPES.AUDIO;mp3;wav;m4a;aac;ogg
+TYPES.VIDEO;avi;wmv;mov;mpg;mkv;m2t;m4v;mts;mp4;ogv;ogm
+TYPES.VIDEO.STREAM;mp4;m4v;flv;3gp;ogv
+TYPES.VIDEO.HTML5;mp4;m4v;webm;ogm;ogv
+TYPES.SPECIAL;txt;csv;xml;php;chunk
+
+;JW Player options
+JWPLAYER.allowHtml5;true
+JWPLAYER.allowFlash;true
+JWPLAYER.MODES.0.type;flash
+JWPLAYER.MODES.0.src;jwplayer/player.swf
+JWPLAYER.MODES.1.type;html5
+JWPLAYER.MODES.2.type;download
+
+MediaPlayer.video.enabled;true
+MediaPlayer.audio.enabled;true
+
+;FFMPEG scripts
+_FFMPEG.PATH;C:\Program Files\ffmpeg\bin
+_FFMPEG.FFMPEG;ffmpeg.exe
+_FFMPEG.PROBE;ffprobe.exe
+_FFMPEG.QTFS;qt-faststart.exe
+_FFMPEG.MP4BOX;MP4Box.exe
+;put bat files in same directory
+
+;Irfan View
+_IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
+_IRFANVIEW.EXE;i_view32.exe
+_IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
+
+;Publish, Upload
+_publish.default;free
+_publish.script;.upload/upload.php
+
+_publish.free.url;http://minorart.free.fr/.mp
+_publish.free.name;minorart.free.fr
+_publish.free.username;arthur
+_publish.free.password;4nawak
+;_publish.free.path;uploads
+..upload_max_filesize;500000
+..image.size;1920
+..video.format;mp4
+
+_publish.local.url;http://localhost/pictures/.mt
+_publish.local.name;Local
+_publish.local.path;uploads
+..upload_max_filesize;2000000
+..image.size;1920
+..video.format;mp4
+
+_publish.home.url;http://192.168.1.102/pictures/.mt
+_publish.home.name;Home Desktop Computer
+_publish.home.path;uploads
+..upload_max_filesize;2000000
+;..image.size;1920
+..video.format;mp4

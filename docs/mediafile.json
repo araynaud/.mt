@@ -1,0 +1,52 @@
+{
+	"name": "DSC_0017",
+	"filename": "DSC_0017.JPG",
+	"type": "IMAGE",
+	"format": "jpeg",
+	"width": 4000,
+	"height": 6016,
+	"ratio": 0.66489361702128,
+	"title": "DSC 0017",
+	"takenDate": "2013-10-04 22:51:52",
+	"exts": 
+	[
+		"JPG"
+	],
+	"versions": 
+	[
+		{
+			"ext": "JPG",
+			"exists": true,
+			"cDate": "2013-10-31 15:28:48",
+			"mDate": "2013-10-04 22:51:54",
+			"size": 5890950
+		}
+	],
+	"thumbnails": 
+	[
+		{
+			"subdir": "tn",
+			"exists": true,
+			"cDate": "2013-10-31 20:12:36",
+			"mDate": "2013-12-04 09:21:46",
+			"size": 7304
+		},
+		{
+			"subdir": "ss",
+			"exists": true,
+			"cDate": "2013-10-31 15:26:12",
+			"mDate": "2013-10-08 11:43:44",
+			"size": 75224
+		},
+		{
+			"subdir": "hd",
+			"exists": false
+		}
+	],
+	"sizes": 
+	{
+		"tn": 7304
+		"ss": 75224
+		"hd": -1
+	}	
+}

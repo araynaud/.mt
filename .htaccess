@@ -1,0 +1,4 @@
+php 5
+order allow,deny
+allow from all
+ErrorDocument 404 "Ooops, that page was <b>not found</b>. <a href="./">home</a>

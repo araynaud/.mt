@@ -1,0 +1,51 @@
+Image editor:
+1 load image from png/jpg
+2 click
+Tools
+
+select x1,y1,x2,y2
+1st click, store x1,y1
+on mouse move: transparent div on selection
+2nd click, store x2,y2
+stop selecting
+
+immediate tools:
+Crop
+Rotate
+resize (for view or for model)
+
+fill from pixel / replace color at pixel
+
+TODO: intersect with selection 
+while(isInSelection(x,y)
+
+choose color or transparent
+
+cleanup edges, small zones (size threshold)
+if N<Th non transparent pixels surrounded by transparent: clear
+
+Clear Selection rectangle
+
+filters
+undo
+save on server
+download
+
+Order
+1 resize
+2 clear
+3 rotate
+4 cleanup edges
+
+------------
+HTML5 Canvas editor
+Load an image in a canvas tag
+http://www.phpied.com/photo-canvas-tag-flip/
+ctx.drawImage(img,90,130,50,60,10,10,50,60);
+
+Save:         // set canvasImg image src to dataURL so it can be saved as an image
+
+http://www.html5canvastutorials.com/advanced/html5-canvas-save-drawing-as-an-image/
+var dataURL = canvas.toDataURL();
+document.getElementById("canvasImg").src = dataURL;
+

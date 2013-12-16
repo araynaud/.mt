@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Image fit test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<link type="text/css" rel="stylesheet" href="MediaThingy.css"/>
+<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="js/lib/jsrender.js"></script>
+<script type="text/javascript" src="js/lib/jquery.views.js"></script>
+<script type="text/javascript" src="js/lib/querystring.js"></script>
+<script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+
+<script type="text/javascript" src="js/mt.extensions.js"></script>
+<script type="text/javascript" src="js/mt.user.js"></script>
+<script type="text/javascript" src="js/mt.mediafile.js"></script>
+<script type="text/javascript" src="js/mt.album.js"></script>
+<script type="text/javascript" src="js/mt.transition.js"></script>
+<script type="text/javascript" src="js/mt.slideshow.js"></script>
+<script type="text/javascript" src="js/mt.ui.js"></script>
+<script type="text/javascript" src="js/mt.keys.js"></script>
+
+<script type="text/javascript">
+UI.slideshow=new Slideshow({id:"left", elementSelector: "#slideshowContainer .slide"});
+UI.slideshow2=new Slideshow({id:"right",  elementSelector: "#slideshowContainer2 .slide"});
+
+$(document).ready(function()
+{
+	$("#cbZoom").click(function () { UI.slideshow.toggleZoom(); } );	
+	$("img.slide").click(function () { UI.slideshow.toggleZoom(); });
+
+	var search = new Querystring().params;
+	Album.getAlbumAjax("album", search, true, albumOnLoad);
+	UI.setupKeyboard();
+});
+
+function albumOnLoad()
+{
+	var images=album.selectFiles("IMAGE");
+	images=images.divideInto(2);
+
+	UI.slideshow.setContainer("#slideshowContainer");	
+	UI.slideshow.pics=images[0];
+	UI.slideshow.display();
+
+	UI.slideshow2.setContainer("#slideshowContainer2");	
+	UI.slideshow2.pics=images[1];
+	UI.slideshow2.display();
+}
+
+//$(window).load(function() { });
+
+$(window).resize(function()
+{
+	UI.slideshow.fitImage();
+	UI.slideshow2.fitImage();
+});
+
+</script>
+
+<script id="playlistItemTemplate" type="text/x-jsrender">
+	<li id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
+		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
+			<img class="floatR" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
+		</a>
+		<a href="{{:~scriptUrl('ffprobe.php',#data)}}" target="fileDownload">
+			<img class="floatR" src="icons/info.png" height="12px" style="margin: 2px;" title="info {{>filename}}"/>
+		</a>
+		<div class="duration small floatR">{{if metadata}}{{:~formatTime(metadata.duration)}}{{/if}}</div> 
+		<div class="number small floatL">{{:(#index+1)}}</div>
+		{{if ~thumbnailUrl(#data) }}
+			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:~isVideoStream(#data)}}" 
+			onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
+		{{/if}}
+		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>
+		<br/>
+	</li>
+</script>
+
+</head>
+<body class="centered">
+	<div id="options">
+		<span class="status"></span>
+		<input id="cbZoom" type="checkbox" title="Reverse"/>Zoom
+		<img class="icontr" id="playButton" src="icons/play.png" alt="play" title="play (space)" onclick="UI.slideshow.togglePlay()"/>
+	</div>
+	<div class="floater container noscroll" style="width: 40%; height: 500px;" id="slideshowContainer">
+		<img id="slide0" class="slide hidden right" alt="" src="icons/blank1px.png"/>
+		<img id="slide1" class="slide hidden left" alt="" src="icons/blank1px.png"/>
+		<div class="caption">
+			<img class="icontr floatL" src="icons/arrow-back.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow.showNextImage(-1)"/>
+			<img class="icontr floatR" src="icons/arrow-forward.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
+			<div class="floatR">
+				<a class="icon" id="ImageLink" target="fileDownload">D</a><br/>
+				<span class="spaceLeft" id="ImageText"></span>
+			</div>
+			<div id="title" class="noprint">title</div>
+			<div id="comments" id="description"></div>
+			<div class="noprint">takenDate</div>
+		</div>
+	</div>	
+	
+	<div class="floater centered container noscroll" style="width: 40%; height: 500px;" id="slideshowContainer2">
+		<img id="slide2" class="slide hidden left" alt="" src="icons/blank1px.png"/>
+		<img id="slide3" class="slide hidden right" alt="" src="icons/blank1px.png"/>
+		<div class="caption">
+			<img class="icontr floatL" src="icons/arrow-back.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow2.showNextImage(-1)"/>
+			<img class="icontr floatR" src="icons/arrow-forward.png" onclick="UI.slideshow2.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
+			<div class="floatR">
+				<a class="icon" id="ImageLink" target="fileDownload">D</a><br/>
+				<span class="spaceLeft" id="ImageText"></span>
+			</div>
+			<div id="title" class="noprint">title</div>
+			<div id="comments" id="description"></div>
+			<div class="noprint">takenDate</div>
+		</div>
+	</div>	
+
+	<div class="musicplayer_footer right">
+		<div id="musicPlayerMessage" class="text"></div>
+		<div id="musicPlayerControls"></div>	
+		<ul id="musicPlayerPlaylist" class="playlist scrollY"></ul>
+		<div id="musicPlayer"></div>
+	</div>
+
+</body>
+</html>

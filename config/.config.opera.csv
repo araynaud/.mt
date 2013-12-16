@@ -1,0 +1,10 @@
+DISPLAY.size;3
+DISPLAY.fadeIn;false
+DISPLAY.group;false
+DISPLAY.shadow;false
+.displayOptions;false
+.searchOptions;false
+
+keyboard;false
+slideshow.type;0
+transition.changeMode;false

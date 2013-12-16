@@ -1,0 +1,84 @@
+
+{
+	"FILE": 
+	{
+		"FileName": "2013-07-20_19-52-55_996.jpg",
+		"FileDateTime": 1374375176,
+		"FileSize": 1252793,
+		"FileType": 2,
+		"MimeType": "image/jpeg",
+		"SectionsFound": "ANY_TAG, IFD0, THUMBNAIL, EXIF, GPS"
+	},
+	"COMPUTED": 
+	{
+		"html": "width="3264" height="1840"",
+		"Height": 1840,
+		"Width": 3264,
+		"IsColor": 1,
+		"ByteOrderMotorola": 1,
+		"ApertureFNumber": "f/2.4",
+		"Thumbnail.FileType": 2,
+		"Thumbnail.MimeType": "image/jpeg",
+		"Thumbnail.Height": 120,
+		"Thumbnail.Width": 200
+	},
+	"IFD0": 
+	{
+		"YCbCrPositioning": 1,
+		"XResolution": "72/1",
+		"YResolution": "72/1",
+		"ResolutionUnit": 2,
+		"DateTime": "2013:07:20 19:52:55",
+		"Make": "Motorola",
+		"Model": "MB865",
+		"Exif_IFD_Pointer": 449,
+		"GPS_IFD_Pointer": 1243
+	},
+	"THUMBNAIL": 
+	{
+		"ImageWidth": 200,
+		"ImageLength": 120,
+		"Compression": 6,
+		"XResolution": "72/1",
+		"YResolution": "72/1",
+		"ResolutionUnit": 2,
+		"JPEGInterchangeFormat": 2027,
+		"JPEGInterchangeFormatLength": 9385
+	},
+	"EXIF": 
+	{
+		"ExifVersion": "0220",
+		"FlashPixVersion": "0000",
+		"ColorSpace": 1,
+		"ComponentsConfiguration": "?",
+		"CompressedBitsPerPixel": "0/1",
+		"ExposureTime": "11614/1000000",
+		"FNumber": "24/10",
+		"ExposureProgram": 0,
+		"ISOSpeedRatings": 100,
+		"ShutterSpeedValue": "7/1",
+		"ApertureValue": "3/1",
+		"BrightnessValue": "0/1",
+		"ExposureBiasValue": "0/10",
+		"MaxApertureValue": "3/1",
+		"SubjectDistance": "0/1",
+		"MeteringMode": 1,
+		"LightSource": 9,
+		"Flash": 16,
+		"FocalLength": "460/100",
+		"FlashEnergy": "0/1",
+		"ExposureIndex": "0/0",
+		"SceneType": "",
+		"CustomRendered": 1,
+		"ExposureMode": 0,
+		"WhiteBalance": 0,
+		"DigitalZoomRatio": "150733/65535",
+		"SceneCaptureType": 0,
+		"GainControl": 256,
+		"Contrast": 0,
+		"Saturation": 0,
+		"Sharpness": 0,
+		"SubjectDistanceRange": 0
+	}
+}
+

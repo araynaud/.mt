@@ -1,0 +1,11 @@
+Web Scratcher
+-------------
+JS that gets links from document with AJAX
+then filters elements with JQuery
+$("a").each(
+	$.ajax ( this.href, type: html)
+	parse HTML response, filter, append
+)
+open result HTML  in new window ?
+save HTML? post to other server?
+PDF conversion

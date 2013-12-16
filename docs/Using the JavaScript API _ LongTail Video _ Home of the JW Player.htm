@@ -1,0 +1,780 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+<link rel="canonical" href="http://www.longtailvideo.com/support/jw-player/28850/using-the-javascript-api/" />
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+<link rel="dns-prefetch" href="//s0-www.ltvimg.com http" />
+<link rel="shortcut icon" href="/sites/all/themes/community/favicon.ico" type="image/x-icon" />
+
+	<title>Using the JavaScript API | LongTail Video | Home of the JW Player</title>
+	<!-- CSS aggregated by CDN module. -->
+<link type="text/css" rel="stylesheet" media="all" href="http://s1-www.ltvimg.com/cdn/farfuture/uzyB-7qXZy9ahWDk_4sLtbOMoGuOBvHcezBtfL81OKU/mtime:1368647112/sites/default/files/css/cdn_css_http_033e2fc60e12732018de8cfcc9f2e95e_codefilter.css" />
+<link type="text/css" rel="stylesheet" media="all" href="http://s1-www.ltvimg.com/cdn/farfuture/MShZz5pZZ_Jg16HaTFGLLmvkkAr1nocZbTec5OSlaMg/mtime:1368647112/sites/default/files/css/cdn_css_033e2fc60e12732018de8cfcc9f2e95e.css" />
+<!-- CSS aggregated by CDN module. -->
+	<script type="text/javascript" src="http://s0-www.ltvimg.com/cdn/farfuture/lg-INBIPZEaUy-k4Bac4bPGiExMk7yFL3-2cK_dOJNY/mtime:1368647105/sites/default/files/js/js_611e3538f18109a7a3f5618503d72436.js"></script>
+<script type="text/javascript" src="/jwplayer/jwplayer.js?1368827573"></script>
+<script type="text/javascript" src="/jwplayer/key.js?1368827573"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/", "googleanalytics": { "trackOutgoing": 1, "trackMailto": 1, "trackDownload": 1, "trackDownloadExtensions": "7z|aac|arc|arj|asf|asx|avi|bin|csv|doc|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls|xml|z|zip" } });
+//--><!]]>
+</script>
+	<script type="text/javascript" src="http://www.longtailvideo.com/jw/embed/swfobject.js"></script>
+</head>
+<body>
+<div id="Container" class="clearfix">
+
+	
+<div id="Top" class="header_top_strip">
+
+	<ul class="header_tab_nav">
+		<li class="logo"><a href="http://www.longtailvideo.com/">LongTail Video Home</a></li>
+		<li class="products"><a href="http://www.longtailvideo.com/">Products</a></li>
+		<li class="support"><a href="http://www.longtailvideo.com/support/">Support</a></li>
+	</ul>	
+		
+	<ul class="links_left">
+		<li class="simple_link forums"><a href="http://www.longtailvideo.com/support/forums/">Our Forums</a></li>
+		<li class="simple_link blog"><a href="http://www.longtailvideo.com/blog/">Our Blog</a></li>
+	</ul>
+	
+	<ul class="links_right">
+		<li class="order"><a href="http://www.longtailvideo.com/order/" class="btn_order button orange">Order Now</a></li>
+		<li class="simple_link login"><a href="http://www.longtailvideo.com/sign-up" rel="nofollow">Sign Up</a> &nbsp; / &nbsp; <a href="http://www.longtailvideo.com/sign-in" rel="nofollow">Sign In</a></li>
+	</ul>
+	
+</div><!-- /.header_top_strip -->
+
+<div class="nav_bar product_site_nav">
+	<a href="/" class="header_logo"><img src="/sites/all/themes/ltv/images/logo.png" alt="LongTail Video" title="LongTail Video" /></a>
+
+	<ul class="top_nav">
+		<li><a id="nav_item_jw" href="http://www.longtailvideo.com/jw-player/">JW Player</a></li>
+		<li><a id="nav_item_botr" href="http://www.longtailvideo.com/bits-on-the-run/">Video Platform</a></li>
+		<li><a id="nav_item_ads" href="http://www.longtailvideo.com/video-ads/">Video Ads</a></li>
+	</ul>
+	
+	<form id="searchform" action="/jw/include/search_community.php" method="post">
+		<fieldset class="clearfix">
+			<input type="text" class="txtbox_search" id="searchCommunity" name="searchCommunity" value="Search Support &amp; Forums" onfocus="if
+(this.value==this.defaultValue) this.value='';" onblur="if
+(this.value=='') this.value='Search Support &amp; Forums';" />
+			<button type="submit" class="btn_search" value="Go">Go</button>
+		</fieldset>
+	</form>
+	
+</div><!-- /.product_site_nav -->	
+	<div id="Header">
+		<a href="/support/" class="LogoHeader"><img src="/sites/all/themes/community/images/logo_header.png" height="41" width="140" border="0" alt="LongTail Video" title="LongTail Video" /></a>
+		
+		<ul class="TertiaryLinks">
+			<li><a href="/support/forums/" class="Forums">Forums</a></li>
+			<li><a href="/jw-player/wizard/" class="Wizard">Wizard</a></li>
+			<li><a href="/jw-player/download/" class="Download">Get JW Player</a></li>
+		</ul>
+		
+		
+		
+<ul class="TopNav">		     <li id="JWPlayer" class="Top Active hoverable"><a href="/support/jw-player" class="TopLevel">JW Player</a></li>
+		     <li id="Forums" class="Top hoverable"><a href="/support/forums" class="TopLevel">Forums</a></li>
+		     <li id="BitsontheRun" class="Top hoverable"><a href="/support/bits-on-the-run" class="TopLevel">Bits on the Run</a></li>
+		     <li id="Blog" class="Top hoverable"><a href="/blog" class="TopLevel">Blog</a></li>
+		</ul>
+	</div>		
+		
+		<div class="SectionNavigation grid12 clearfix">
+		<p class="SectionProduct">JW Player</p>		
+<div class="SearchMain clearfix">
+	<form action="/support/jw-player/28850/using-the-javascript-api"  accept-charset="UTF-8" method="post" id="search-block-form">
+<div>
+<div class="form-item" id="edit-search-block-form-1-wrapper">
+ <label for="edit-search-block-form-1">Search this site: </label>
+ <input type="text" maxlength="128" name="search_block_form" id="edit-search-block-form-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="Search"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-6382ea560d3c5881ffd0ecc8c4789384" value="form-6382ea560d3c5881ffd0ecc8c4789384"  />
+<input type="hidden" name="form_id" id="edit-search-block-form" value="search_block_form"  />
+
+</div></form>
+</div>	</div>
+		
+	<div class="grid12">
+					</div>
+
+			<div class="ColumnLeft">
+			<div class="Sidebar clearfix">
+		<!--If its not collapsible -> no class, just <li> -->
+
+<ul id="jw6" class="sidenav">
+	<li>
+		<span>Documentation</span>
+		<ul>
+					<li><a href="/support/jw-player/28832/about-jw-player">About the JW Player</a></li>
+					<li><a href="/support/jw-player/28833/quick-start-guide">Quick Start Guide</a></li>
+                    <li><a href="/support/jw-player/28834/migrating-from-jw5-to-jw6">Migrating from JW5 to JW6</a></li>
+                    <li><a href="/support/jw-player/28835/release-notes" rel="nofollow">Release Notes</a></li>
+			<li class="closed">   
+             	<spatoon>Media & Devices</span>
+				<ul>
+					<li><a href="/support/jw-player/28836/media-format-support">Media Format Support</a></li>
+					<li><a href="/support/jw-player/28837/browser-device-support">Browser Device Support</a></li>
+					<li><a href="/support/jw-player/28838/mp4-video-encoding">MP4 Video Encoding</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29234/basic-mp4-video">Basic MP4 Video</a></li>
+							<li><a href="/support/jw-player/29235/basic-aac-audio">Basic AAC Audio</a></li>
+							<li><a href="/support/jw-player/29236/basic-youtube-stream">Basic YouTube Stream</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="closed">
+				<span>Embedding</span>
+				<ul>
+					<li><a href="/support/jw-player/28839/embedding-the-player">Embedding the Player</a></li>
+                                        <li><a href="/support/jw-player/31770/cloud-hosted-vs-self-hosted-jw-player">Cloud-Hosted vs. Self-Hosted</a></li>
+					<li><a href="/support/jw-player/28840/troubleshooting-your-setup">Troubleshooting Your Setup</a></li>
+					<li><a href="/support/jw-player/28841/branding-your-player">Branding Your Player</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29237/title-and-dimensions">Title and Dimensions</a></li>
+							<li><a href="/support/jw-player/29238/audio-only-controlbar">Audio Only Controlbar</a></li>
+							<li><a href="/support/jw-player/29239/flash-as-primary">Flash as Primary</a></li>
+							<li><a href="/support/jw-player/29240/autostart-and-mute">Autostart and Mute</a></li>
+							<li><a href="/support/jw-player/29241/a-chromeless-player">A Chromeless Player</a></li>
+							<li><a href="/support/jw-player/29244/custom-clickable-logo">Custom Clickable Logo</a></li>
+							<li><a href="/support/jw-player/32427/responsive-design-support">Responsive Design Support</a></li>
+							<li><a href="/support/jw-player/29242/player-without-fallback">Player without Fallback</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>	
+			<li class="closed">
+				<span>Playlists</span>
+				<ul>
+					<li><a href="/support/jw-player/28842/working-with-playlists">Working with Playlists</a></li>
+					<li><a href="/support/jw-player/28843/loading-rss-feeds">Loading RSS Feeds</a></li>
+					<li><a href="/support/jw-player/28844/crossdomain-file-loading">Crossdomain File Loading</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29247/basic-inline-playlist">Basic Inline Playlist</a></li>
+							<li><a href="/support/jw-player/29248/sd-and-hd-qualities">SD and HD Qualities</a></li>
+							<li><a href="/support/jw-player/29253/basic-rss-feed">Basic RSS Feed</a></li>
+							<li><a href="/support/jw-player/29254/sd-and-hd-qualities-in-rss">SD and HD Qualities in RSS</a></li>
+							<li><a href="/support/jw-player/29249/playlist-sidebar-component">Playlist Sidebar Component</a></li>
+							<li><a href="/support/jw-player/31802/youtube-rss-feed">YouTube RSS Feed</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>Text Tracks</span>
+				<ul>
+                                        <li><a href="/support/jw-player/28845/adding-video-captions">Adding Video Captions</a></li>
+					<li><a href="/support/jw-player/31778/adding-tooltip-thumbnails">Adding Tooltip Thumbnails</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29360/basic-vtt-captions">Basic VTT Captions</a></li>
+                                                        <li><a href="/support/jw-player/31804/basic-tooltip-thumbs">Basic Tooltip Thumbnails</a></li>
+							<li><a href="/support/jw-player/29361/multiple-subtitle-tracks">Multiple Subtitle Tracks</a></li>
+							<li><a href="/support/jw-player/29363/big-red-outlined-captions">Big Red Outlined Captions</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>Skinning</span>
+				<ul>
+                    <li><a href="/support/jw-player/28846/using-jw-player-skins">Using JW Player Skins</a></li>
+					<li><a href="/support/jw-player/28847/building-jw-player-skins">Building JW Player Skins</a></li>
+                    <li><a href="/support/jw-player/28849/skin-xml-reference">Skin XML Reference</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29364/basic-skin-setup">Basic Skin Setup</a></li>
+							<li><a href="/support/jw-player/29367/hiding-skin-elements">Hiding Skin Elements</a></li>
+							<li><a href="/support/jw-player/29366/changing-skin-elements">Changing Skin Elements</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>JavaScript API</span>
+				<ul>
+					<li><a href="/support/jw-player/28850/using-the-javascript-api">Using the JavaScript API</a></li>
+					<li><a href="/support/jw-player/28851/javascript-api-reference">JavaScript API Reference</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29404/video-download-button">Video Download Button</a></li>
+							<li><a href="/support/jw-player/29405/autostart-only-once">Autostart Only Once</a></li>
+							<li><a href="/support/jw-player/29411/resizing-the-player">Resizing the Player</a></li>
+							<li><a href="/support/jw-player/29406/a-poster-less-preview">A Posterless Preview</a></li>
+							<li><a href="/support/jw-player/29413/mutually-exclusive-playback">Mutually Exclusive Playback</a></li>
+							<li><a href="/support/jw-player/29414/link-to-time-offset">Link to Time Offset</a></li>
+							<li><a href="/support/jw-player/31800/loading-new-playlists">Loading New Playlists</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li class="closed">
+				<span>WordPress</span>
+				<ul>
+					<li><a href="/support/jw-player/31561/getting-started-with-the-jw-player-wordpress-plugin">Getting Started with the WordPress Plugin</a></li>
+					<li><a href="/support/jw-player/31560/jw-player-wordpress-plugin-reference">WordPress Plugin Reference</a></li>
+					<li><a href="/support/jw-player/29912/upgrading-wordpress-from-jw5-to-jw6">Upgrading WordPress from JW5 to JW6</a></li>
+				</ul>
+			</li>
+			<li class="closed">
+				<span>Analytics</span>
+				<ul>
+                    <li><a href="/support/jw-player/28852/using-jw-player-analytics">Using JW Player Analytics</a></li>
+					<li><a href="/support/jw-player/28853/using-google-analytics">Using Google Analytics</a></li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>Streaming</span>
+				<ul>
+                    <li><a href="/support/jw-player/28854/using-rtmp-streaming">Using RTMP Streaming</a></li>
+					<li><a href="/support/jw-player/28855/pseudo-streaming-in-flash">Pseudo-streaming in Flash</a></li>
+					<li><a href="/support/jw-player/28856/using-apple-hls-streaming">Using Apple HLS Streaming</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29393/hls-adaptive-stream">HLS Adaptive Streaming</a></li>
+							<li><a href="/support/jw-player/29394/hls-with-mp4-fallback">HLS with MP4 Fallback</a></li>
+							<li><a href="/support/jw-player/29395/rtmp-single-stream">RTMP Single Stream</a></li>
+							<li><a href="/support/jw-player/29365/rtmp-dynamic-stream">RTMP Dynamic Stream</a></li>
+							<li><a href="/support/jw-player/29396/rtmp-stream-subscription">RTMP Stream Subscription</a></li>
+							<li><a href="/support/jw-player/29392/flash-pseudo-streaming">Flash Pseudo Streaming</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>Discovery</span>
+				<ul>
+                    <li><a href="/support/jw-player/28857/social-sharing-options">Social Sharing Options</a></li>
+					<li><a href="/support/jw-player/28858/displaying-related-videos">Displaying Related Videos</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/29368/basic-sharing-setup">Basic Sharing Setup</a></li>
+							<li><a href="/support/jw-player/29369/embed-code-sharing">Embed Code Sharing</a></li>
+							<li><a href="/support/jw-player/29371/linking-related-videos">Linking Related Videos</a></li>
+							<li><a href="/support/jw-player/29372/playing-related-videos">Playing Related Videos</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>			
+			<li class="closed">
+				<span>Advertising</span>
+				<ul>
+                    <li><a href="/support/jw-player/28859/supported-ad-formats">Supported Ad Formats</a></li>
+					<li><a href="/support/jw-player/28862/configuring-video-ads">Configuring Video Ads</a></li>
+                    <li><a href="/support/jw-player/30261/migrating-from-ova-or-ima-to-jw6">Migrating from OVA/IMA to JW6</a></li>
+					<li class="closed">
+						<span>Examples</span>
+						<ul>
+							<li><a href="/support/jw-player/31401/vast-preroll-video">VAST Preroll Video</a></li>
+							<li><a href="/support/jw-player/29387/ima-preroll-video">IMA Preroll Video</a></li>
+							<li><a href="/support/jw-player/31402/vpaid-interactive-preroll">VPAID Interactive Preroll</a></li>
+							<li><a href="/support/jw-player/29388/preroll-with-companion-ad">IMA Preroll with Companion</a></li>
+							<li><a href="/support/jw-player/31404/ad-scheduling">Ad Scheduling</a></li>
+							<li><a href="/support/jw-player/31403/static-vast-xml-tag">Static VAST XML Tag</a></li>							
+						</ul>
+					</li>
+				</ul>
+			</li>						
+		</ul>
+	</li>
+</ul></div>
+		</div>
+		<div class="ColumnRight Document">
+		
+		
+		<h1>Using the JavaScript API</h1>						
+		<style>
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    tr { border-bottom: 1px solid #CCC; } 
+    tr:nth-child(even) { background: #EEE; }
+    td,th { padding: 5px; font-size: 12px; text-align: left; vertical-align: top; }
+</style>
+
+<p>This guide explains how to use the JavaScript API that is available with JW Player 6. This API can be used to enhance the functionality of your video embeds and/or to implement rich video-page interactions. It abstracts any differences between Flash and HTML5, so the code you write will work with both technologies.</p>
+
+
+<h2>Getting Started</h2>
+
+<p>Before it is possible to interact with a player, that player should be setup. The separate <a href="/support/jw-player/28839/embedding-the-player">Embedding JW Player</a> guide explains in detail how this works. Here is a quick example:</p>
+
+<pre>
+&lt;div id="myElement"&gt;Loading the player ...&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+    jwplayer("myElement").setup({
+        file: "/uploads/example.mp4",
+        height: 360,
+        image: "/uploads/example.jpg",
+        width: 640
+    });
+&lt;/script&gt;
+</pre>
+
+<p>When the player is setup, API calls can immediately be made. If you have one player on your page, it can always be accessed using the <em>jwplayer()</em> function. For example:</p>
+
+<pre>
+&lt;ul&gt;
+    &lt;li onclick='jwplayer().play()'&gt;Start playback&lt;/li&gt;
+    &lt;li onclick='alert(jwplayer().getVolume())'&gt;Get audio volume&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+<h3>Multiple Players</h3>
+
+<p>When you have multiple players on a page, you must be specific about which player you want to interact with. In that case, there are two ways to select a player:</p>
+
+<ul>
+<li>With the id of the element you instantiated the player over:
+<pre>jwplayer('myElement').play();</pre></li>
+<li>With the index in the list of players on the page (top to bottom):</li>
+<pre>jwplayer(2).play();</pre></li>
+</ul>
+
+<p>Note the selector <em>jwplayer(0)</em> is actually the same as <em>jwplayer()</em>.</p>
+
+
+
+<h2>API Calls</h2>
+
+<p>JW Player 6 supports a large number of API calls, grouped by functionality in classes. In each class, three types of API calls are available:</p>
+
+<ol>
+<li>Getters, which retrieve variables. For example:
+<pre>var volume = jwplayer().getVolume();</pre></li>
+<li>Setters, which control the player. For example:
+<pre>jwplayer().setVolume(80);</pre></li>
+<li>Events, which call a function whenever a variable changes. For example:
+<pre>jwplayer().onVolume( function(event){
+    alert('the volume is now: ' + event.volume);
+});</pre></li>
+</ol>
+
+<p>The table below provides an overview of all API calls. The separate <a href="/support/jw-player/28851/javascript-api-reference">JavaScript API Reference</a> guide contains an elaborate listing of all parameters for all API calls. Click on the name of a class in the table to jump to the corresponding section in the API Reference.</p>
+
+<table><tr>
+    <th>Class</th><th>Getters</th><th>Setters</th><th>Events</th>
+</tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#ready">Ready</a>
+    </td><td>
+        getRenderingMode
+    </td><td>
+        
+    </td><td>
+        onReady
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#playlist">Playlist</a>
+    </td><td>
+        getPlaylist<br/>
+        getPlaylistItem
+    </td><td>
+        load<br/>
+        playlistItem
+    </td><td>
+        onPlaylist<br/>
+        onPlaylistItem<br/>
+        onComplete<br/>
+        onPlaylistComplete
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#buffer">Buffer</a>
+    </td><td>
+        getBuffer
+    </td><td>
+    </td><td>
+        onBufferChange
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#playback">Playback</a>
+    </td><td>
+        getState
+    </td><td>
+        play</br>
+        pause<br/>
+        stop
+    </td><td>
+        onBeforePlay<br/>
+        onPlay<br/>
+        onPause<br/>
+        onBuffer<br/>
+        onIdle
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#seek">Seek</a>
+    </td><td>
+        getPosition<br/>
+        getDuration
+    </td><td>
+        seek
+    </td><td>
+        onSeek<br/>
+        onTime
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#volume">Volume</a>
+    </td><td>
+        getMute<br/>
+        getVolume
+    </td><td>
+        setMute<br/>
+        setVolume
+    </td><td>
+        onMute<br/>
+        onVolume
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#resize">Resize</a>
+    </td><td>
+        getWidth<br/>
+        getHeight<br/>
+        getFullscreen
+    </td><td>
+        resize
+    </td><td>
+        onFullscreen<br/>
+        onResize
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#quality">Quality</a>
+    </td><td>
+        getQualityLevels<br/>
+        getCurrentQuality
+    </td><td>
+        setCurrentQuality
+    </td><td>
+        onQualityLevels<br/>
+        onQualityChange
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#captions">Captions</a>
+    </td><td>
+        getCaptionsList<br/>
+        getCurrentCaptions
+    </td><td>
+        setCurrentCaptions
+    </td><td>
+        onCaptionsList<br/>
+        onCaptionsChange
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#button">Button</a>
+    </td><td>
+    </td><td>
+        addButton<br/>
+        removeButton
+    </td><td>
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#controls">Controls</a>
+    </td><td>
+        getControls<br>
+        getSafeRegion
+    </td><td>
+        setControls
+    </td><td>
+        onControls<br>
+        onDisplayClick
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#resize">Error</a>
+    </td><td>
+    </td><td>
+    </td><td>
+        onError
+</td></tr><tr><td>
+        <a href="/support/jw-player/28851/javascript-api-reference#metadata">Metadata</a>
+    </td><td>
+    </td><td>
+    </td><td>
+        onMeta
+</td></tr></table>
+
+
+
+
+<h2>Player Removal</h2>
+
+<p>In addition to the setup call and the various API classes, JW Player 6 contains a function to unload a specific player embed. It is very simple:</p>
+
+<pre>jwplayer().remove();</pre>
+
+<p>This formal <em>remove()</em> function will make sure the player stops playback, the DOM is re-set to its original state and all event listeners and timers are cleaned up.</p>		
+
+	</div> 
+</div>
+
+
+<div id="Footer">
+	
+<div class="footer_links">
+
+	<div class="link_groups clearfix">
+	
+		<div class="column c1">
+			<h5>JW Player</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/download/" class="btn_download button grey">Get JW Player</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/">Overview</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/features/">Features</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/pricing/">Pricing</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/enterprise-contact-us">Enterprise</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/faq/">JW Player FAQ</a></li>
+			</ul>
+		</div>
+		
+		<div class="column c2">
+			<h5>Video Platform</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/bits-on-the-run/">Overview</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/bits-on-the-run/features/">Features</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/bits-on-the-run/pricing/">Pricing</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/bits-on-the-run/enterprise-contact-us">Enterprise</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/bits-on-the-run/faq/">Bits on the Run FAQ</a></li>
+				<li><a rel="nofollow" href="http://dashboard.bitsontherun.com/">Bits on the Run Sign In</a></li>
+			</ul>
+		</div>
+		
+		<div class="column c3">
+			<h5>Video Ads</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/video-ads/">Overview</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/video-ads/enterprise-contact-us">Enterprise</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/video-ads/vast-vpaid">VAST/VPAID</a></li>
+			</ul>
+			<br />
+			<h5>AdSolution</h5>
+			<ul>
+				<li><a rel="nofollow" href="https://dashboard.longtailvideo.com/">Sign In</a></li>
+			</ul>
+		</div>
+		
+		<div class="column c4">
+			<h5>Company</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/about/">About Us</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/about/management-team/">Management Team</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/news/">In the News</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/blog/">Our Blog</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/about/customers/">Customers</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/about/careers/">Careers</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/contact-us/">Contact Us</a></li>
+			</ul>
+		</div>
+		
+		<div class="column c5">
+			<h5>Support: JW Player</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/support/forums/jw-player/">JW Player Forums</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/support/jw-player/">Documentation</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/wizard/">Setup Wizard</a></li>
+			</ul>
+			<br />
+			<h5>Support: Video Platform</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/support/forums/bits-on-the-run/">Bits on the Run Forums</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/support/bits-on-the-run/">Documentation</a></li>
+			</ul>
+		</div>
+		
+		<div class="column c6">
+			<h5>Quick Links</h5>
+			<ul>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/html5/">HTML5 Report</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/enterprise/">Enterprise Solutions</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/upgrade-steps">Upgrade Steps</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw-player/license">License</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/jw5/">JW5 Legacy</a></li>
+				<li><a rel="nofollow" href="http://www.longtailvideo.com/support/open-video-ads">OVA</a></li>
+			</ul>
+		</div>
+		
+	</div><!-- /.link_groups -->
+	
+</div><!-- /.footer_links -->
+
+
+<div class="footer_bottom clearfix">
+	
+	<div class="column social_links">
+		
+		<h4>Stay in Touch</h4>
+		
+		<!-- Facebook -->            
+		<div class="lt_fb">
+			<div id="facebook_like"></div>
+		</div>
+				
+		<!-- G+ -->
+		<div class="lt_google">
+			<a href="https://plus.google.com/108816587456088937096?prsrc=3" style="text-decoration:none;"><img src="https://ssl.gstatic.com/images/icons/gplus-16.png" alt="" style="border:0;width:16px;height:16px; margin-right:6px; margin-top:8px;"/></a>
+			<a href="https://plus.google.com/108816587456088937096?prsrc=3" style="text-decoration:none; color:#333333; font-size:11px; font-weight:bold;">
+			<span style="position:relative; text-align:left; top:-5px; background-color:#ededed; border:1px solid #cccccc; -webkit-border-radius:3px;
+			-moz-border-radius:3px;
+			border-radius:3px; 
+			padding:3px;
+			background: #ededed;
+			background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0e0e0));
+			background: -moz-linear-gradient(top,  #ffffff,  #e0e0e0);
+			">+ Add LongTail Video to your circles</span>
+			</a>
+		</div>
+
+		<!-- Twitter -->
+		<div class="lt_twitter">
+			<img src="/content/images/phoenix/longtail_twitter.png" class="twitter_icon" width="44" height="76" alt="Follow us on Twitter">
+			Follow us on Twitter: <a href="https://twitter.com/intent/follow?screen_name=longtailvideo" target="new">@longtailvideo</a>
+		</div>
+		
+	</div><!-- /.social_links -->
+	
+	
+	
+	<div class="column newsletter_sign_up">
+	
+		<h4>Sign Up for Our Newsletter</h4>
+		
+		<img src="/content/images/phoenix/footer_newsletter.png" width="168" height="195" alt="Sign Up for Our Newsletter" class="newsletter_image">
+		
+		<p>Receive our monthly news and views, right in your inbox. Our newsletter covers updates to the <strong>JW Player</strong> and analysis of the video industry at large.</p>
+
+		<div id="icontact_prompt">
+			<input type="text" id="icontact_email" class="textbox" value="Enter your email here" onBlur="if(this.value=='') this.value='Enter your email here';" onFocus="if(this.value==this.defaultValue) this.value='';">
+			<a class="btn_sign_up" onClick="icontact_subscribe();">Sign Up</a>
+		</div>
+		<p id="icontact_success" style="display:none">Thanks! You are now subscribed!</p>
+		<p id="icontact_failure" style="display:none">Failed to add subscription.</p>
+
+	</div><!-- /.newsletter_sign_up -->
+	
+	
+	
+	<div class="column recent_news">
+		
+		<h4>Recent News</h4>
+		<p>
+			<strong>JW Player in Forbes</strong><br />
+			Dave Otten, LongTail Video CEO, shares the great start-up story behind JW Player with Forbes.
+			<br />
+			<a rel="nofollow" href="http://www.longtailvideo.com/news/" class="more_link">More Here</a>
+			<span class="news_meta">April 5, 2013</span>	
+		</p>
+		
+	</div><!-- /.recent_news -->
+	
+</div><!-- /.footer_bottom -->
+
+
+
+<div class="footer_colophon">
+
+	<p class="colophon">&copy; 2013 LongTail Ad Solutions. All Rights Reserved. LongTail Video is a registered trademark. <a rel="nofollow" href="http://www.longtailvideo.com/tos">Terms of Service</a> | <a rel="nofollow" href="http://www.longtailvideo.com/privacy">Privacy Policy</a> | <a rel="nofollow" href="http://www.longtailvideo.com/dmca">DMCA</a></p>
+
+</div><!-- /.footer_colophon -->
+
+
+
+
+
+<script type="text/javascript">
+	$(window).load(function () {
+	
+		// twitter not needed any more
+		// var scripts = [{ src: "http://platform.twitter.com/widgets.js" }];
+		var scripts = [];
+		
+		for (var script in scripts) {
+			var scripttag = document.createElement("script");
+			scripttag.type = "text/javascript";
+			scripttag.src = scripts[script].src;
+			if (scripts[script].location) {
+				document.getElementById(scripts[script].location).parentNode.replaceChild(scripttag, document.getElementById(scripts[script].location));
+			} else {
+				document.getElementsByTagName("head")[0].appendChild(scripttag);
+			}
+			if (scripts[script].callback) {
+				scripts[script].callback();
+			}
+		}
+		
+		var iframes = {
+			"facebook_like": {
+				src: "http://www.facebook.com/plugins/like.php?app_id=221239234572119&href=http%3A%2F%2Fwww.longtailvideo.com&send=false&layout=standard&width=240&show_faces=false&action=like&colorscheme=light&font&height=30",
+				scrolling: "no",
+				frameBorder: "0",
+				allowTransparency: "true",
+				style: {
+					border:"none", 
+					overflow:"hidden",
+					width:"240px",
+					height:"30px",
+					padding: "5px 0"
+				}
+
+			}
+		};
+		
+		for (var iframe in iframes) {
+			var iframetag = document.createElement("iframe");
+			var iframeobject = iframes[iframe];
+			for (var attribute in iframeobject){
+				if (attribute != "style")
+				iframetag[attribute] = iframeobject[attribute];
+			}
+			for (var attribute in iframeobject.style) {
+				iframetag.style[attribute] = iframeobject.style[attribute];
+			}
+			document.getElementById(iframe).parentNode.replaceChild(iframetag, document.getElementById(iframe));
+		}
+		
+	});
+
+	function icontact_subscribe() {
+		var email = encodeURIComponent(document.getElementById("icontact_email").value);
+		if (email != "") {
+			document.getElementById("icontact_prompt").style.display = "none";
+			addEmailToList(email, 9910477, function() {
+				var responseText = iContactReq.responseText;
+				if (responseText != "") {
+					if (responseText == "1") {
+						document.getElementById("icontact_success").style.display = "block";
+						document.getElementById("icontact_prompt").style.display = "none";
+					} else {
+						document.getElementById("icontact_failure").style.display = "block";
+					}
+				}
+			});
+		}
+	}
+	
+	var iContactReq;
+	function addEmailToList(email, list_id, callback) {
+	  iContactReq = null;
+	  if (window.XMLHttpRequest) {
+		iContactReq = new XMLHttpRequest();
+	  } else {
+		iContactReq = new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  if (iContactReq) {
+		iContactReq.onreadystatechange = callback;
+		iContactReq.open("GET", "/jw/include/common/icontact_ajax.php?email=" + email + "&list_id=" + list_id + "&ref=homepage", true);
+		iContactReq.send();
+	  }
+	}
+	
+</script></div><!-- /#Footer -->
+
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var _gaq = _gaq || [];_gaq.push(["_setAccount", "UA-4011032-1"]);_gaq.push(["_trackPageview"]);(function() {var ga = document.createElement("script");ga.type = "text/javascript";ga.async = true;ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(ga, s);})();
+//--><!]]>
+</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-3.newrelic.com","01407b578b","2059510","ZFwBZBBYWUBXUBdZWl0WNkILFl5dUlYbHkVbSQ==",0,20,new Date().getTime(),"","","","",""]);</script>
+</body>
+</html>

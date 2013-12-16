@@ -1,0 +1,35 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=1024" />
+<meta name="description" content="is closed and will not re-open. Thank You, all the many customers. You will be missed." />
+<meta property="og:title" content="The British Bankers Club" />
+<meta property="og:description" content="is closed and will not re-open. Thank You, all the many customers. You will be missed." />
+
+<meta property="og:image" content="http://cache.nebula.phx3.secureserver.net/obj/NjVGQUM1RjRCMDQxRUIzN0FERjA6NTFiZTNhNzdhM2IzMTYzMDc3NzllZDQwODBkMWZlOWU=" />
+<link rel="image_src" href="http://cache.nebula.phx3.secureserver.net/obj/NjVGQUM1RjRCMDQxRUIzN0FERjA6NTFiZTNhNzdhM2IzMTYzMDc3NzllZDQwODBkMWZlOWU=" />
+<meta property="og:image" content="http://imagesak.websitetonight.com/skins/pl.gd/images/logo1.gif" />
+
+<link rel="shortcut icon" type="image/ico" href="http://img1.wsimg.com/ip/v1.2.0/images/favicon.ico" />
+<link rel="icon" type="image/png" href="http://img1.wsimg.com/ip/v1.2.0/images/favicon.jpg" />
+
+==============================
+
+<meta property="og:site_name" content="Le Gorafi.fr Gorafi News Network" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="fb:app_id" content="142787252530222" />
+<meta property="og:url" content="http://www.legorafi.fr/2013/07/22/quest-ce-que-va-changer-la-naissance-du-royal-baby-pour-nous/" />
+<meta property="og:title" content="Qu&rsquo;est-ce que va changer la naissance du Royal Baby pour nous?" />
+<meta property="og:description" content="." />
+<meta property="article:published_time" content="2013-07-22T19:47:40+00:00" />
+<meta property="article:modified_time" content="2013-07-23T18:54:31+00:00" />
+<meta property="article:author" content="http://www.legorafi.fr/author/admin/" />
+<meta property="article:section" content="Monde Libre" />
+<meta property="article:tag" content="Angleterre" />
+<meta property="article:tag" content="Kate" />
+<meta property="article:tag" content="Royal Baby" />
+<meta property="article:tag" content="William" />
+<meta property="article:tag" content="Windsor" />
+<meta property="og:image" content="http://www.legorafi.fr/wp-content/uploads/2013/07/katewilliam.jpg" />
+<meta property="og:image:width" content="500" />
+<meta property="og:image:height" content="372" />

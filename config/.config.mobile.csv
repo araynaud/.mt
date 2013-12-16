@@ -1,0 +1,12 @@
+TITLE;(mobile)
+DISPLAY.maxTnIndex;1
+DISPLAY.border;true
+DISPLAY.fadeIn;false
+DISPLAY.displayOptions;false
+DISPLAY.searchOptions;false
+
+PAGINATE.DEFAULT;10
+
+transition.changeMode;false
+slideshow.changeMode;false
+slideshow.zoomFunction;crossFade

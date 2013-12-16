@@ -1,0 +1,60 @@
+The X-UA-Compatible meta tag allows web authors to choose what version of Internet Explorer the page should be rendered as.
+
+Here are your options:
+
+    "IE=edge"
+    "IE=10"
+    "IE=EmulateIE10"
+    "IE=9"
+    "IE=EmulateIE9
+    "IE=8"
+    "IE=EmulateIE8"
+    "IE=7"
+    "IE=EmulateIE7"
+    "IE=5"
+
+To attempt to understand what each means here are definitions provided by Microsoft:
+
+    Internet Explorer supports a number of document compatibility modes that enable different features and can affect the way content is displayed:
+
+        IE10 mode provides the highest support available for established and emerging industry standards, including the HTML5, CSS3 and others.
+
+        IE9 mode provides the highest support available for established and emerging industry standards, including the HTML5 (Working Draft), W3C Cascading Style Sheets Level 3 Specification (Working Draft), Scalable Vector Graphics (SVG) 1.0 Specification, and others. [Editor Note: IE 9 does not support CSS3 animations].
+
+        IE8 mode supports many established standards, including the W3C Cascading Style Sheets Level 2.1 Specification and the W3C Selectors API; it also provides limited support for the W3C Cascading Style Sheets Level 3 Specification (Working Draft) and other emerging standards.
+
+        IE7 mode renders content as if it were displayed in standards mode by Internet Explorer 7, whether or not the page contains a directive.
+
+        Emulate IE9 mode tells Internet Explorer to use the directive to determine how to render content. Standards mode directives are displayed in IE9 mode and quirks mode directives are displayed in IE5 mode. Unlike IE9 mode, Emulate IE9 mode respects the directive.
+
+        Emulate IE8 mode tells Internet Explorer to use the directive to determine how to render content. Standards mode directives are displayed in IE8 mode and quirks mode directives are displayed in IE5 mode. Unlike IE8 mode, Emulate IE8 mode respects the directive.
+
+        Emulate IE7 mode tells Internet Explorer to use the directive to determine how to render content. Standards mode directives are displayed in Internet Explorer 7 standards mode and quirks mode directives are displayed in IE5 mode. Unlike IE7 mode, Emulate IE7 mode respects the directive. For many web sites, this is the preferred compatibility mode.
+
+        IE5 mode renders content as if it were displayed in quirks mode by Internet Explorer 7, which is very similar to the way content was displayed in Microsoft Internet Explorer 5.
+
+        Edge mode tells Internet Explorer to display content in the highest mode available. With Internet Explorer 9, this is equivalent to IE9 mode. If a future release of Internet Explorer supported a higher compatibility mode, pages set to edge mode would appear in the highest mode supported by that version. Those same pages would still appear in IE9 mode when viewed with Internet Explorer 9.
+
+NOTE: As of Internet Explorer 10, quirks mode behaves differently than it did in earlier versions of the browser. In Windows Internet Explorer 9 and earlier versions, quirks mode restricted the webpage to the features supported by Microsoft Internet Explorer 5.5. In Internet Explorer 10, quirks mode conforms to the differences specified in the HTML5 specification.
+
+Personally I choose always have meta http-equiv="X-UA-Compatible" content="IE=edge" As older versions have plenty of bugs and I do not want IE to decide to go into "Compatibility mode" and show my site as IE 7 vs IE 8. I always prefer the latest version of IE.
+
+Chrome=1 Info for IE
+
+There is also chrome=1 that you can use or use together with one of the above options, EX: <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"> chrome=1 is for Google's Chrome Frame which is defined as:
+
+    Google Chrome Frame is an open source browser plug-in. Users who have the plug-in installed have access to Google Chrome's open web technologies and speedy JavaScript engine when they open pages in the browser.
+
+    Google Chrome Frame seamlessly enhances your browsing experience in Internet Explorer. It displays Google Chrome Frame enabled sites using Google Chrome’s rendering technology, giving you access to the latest HTML5 features as well as Google Chrome’s performance and security features without in any way interrupting your usual browser usage.
+
+    When Google Chrome Frame is installed, the web just gets better without you having to think about it.
+
+But for that plug-in to work you must use chrome=1 in the X-UA-Compatible meta tag.
+
+More info on Chrome Frame can be found here.
+
+Note: Google Chrome Frame will be retired in January 2014. More info can be found here. Thank You @mck for the link.
+
+Footnote:
+
+When using the tag <meta http-equiv="X-UA-Compatible" content="IE=Edge"> you will not be able to validate the page successfully. I would say to ignore this but if you must have page validation change the > to /> and it will validate without issue and still work. 

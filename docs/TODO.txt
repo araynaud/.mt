@@ -1,0 +1,1840 @@
+The Getaway : Paul Feig Goes Seafood Crazy In Boston's North End 
+http://www.youtube.com/watch?v=rMxhMOYJ-Dc
+
+The Getaway - Paul Feig in Boston
+http://tv.esquire.com/now/show/The%20Getaway/63358531571/0/Paul%20Feig%20in%20Boston
+
+Google API maps
+Static image (PNG)
+http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=12&size=640x640&sensor=false
+http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=16&size=320x320&scale=2&sensor=true
+
+Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true
+Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
+
+
+if !ffmpeg enabled
+upload .ss images for videos
+function uploadThumbnail($subdir)
+
+-----------
+BUGS
+Hidden Files: HTTP Error 404.9 - Not Found
+This error occurs when the requested file is marked as hidden on the file system.
+
+-----------
+data mediafile: use &name=DSC_0135
+
+before upload:
+if site.maxsize
+_publish.local.image.size;1920
+{
+1 find largest image < max size
+2 resize image if it doesn't exist, using image.php ajax
+do not use _publish.local.image.subdir;.hd
+3 refresh mediafile with data.php ajax
+ 
+4 Save metadata / exif and upload it
+}
+5 upload tn/ss ?
+}
+
+video convert progress
+every N seconds: refresh mediafile with data.php / ajax
+
+right pane:
+dir nested tree
+
+facebook comments
+----------------
+
+MTuser/mThingy2013
+PHP CURL
+OK handle HTTP login 401 
+http://stackoverflow.com/questions/11336879/http-basic-authorization-with-php-class?lq=1
+curl_setopt($process, CURLOPT_USERPWD, "$username:$password");  
+or	http://username:password@query7.com/php-curl
+
+----------------
+
+PUBLISH TO URL (minorart.free.fr)
+create dir
+
+One-click upload:
+select site and path on site
+loop album.mediaFiles, send each file via AJAX curlPostFile.
+when response received, send next file.
+
+AJAX loop files:
+for each mediaFile: call upload script AJAX
+when success or error: 
+index++; call script for next file
+Test with dummy script.
+
+curlPostFile.php:
+  upload image or resized image (.hd 2MP 1920)
+http://localhost/pictures/.mt/image.php?path=2013/FrenchParty&file=DSC_0346.JPG&size=1520&target=.hd
+192M memory limit
+
+for video: upload thumbnail
+copy exif data into resized image? store in .tn/.csv file
+
+upload.php: create site path
+
+--- upload video
+choose mp4 version
+convert to .ss if already mp4
+
+if filesize > POST limit:
+HTTP Error 404.13 - Not Found - The request filtering module is configured to deny a request that exceeds the request content length
+
+OK upload file chunks
+file.mp4.1.chunk ... file.mp4.last.chunk
+reassemble on server with writebinaryfile, delete chunks
+
+curlpostfile: splitChunks => get chunk names array
+post 1st chunk, then return list in response.
+for each of them, upload
+
+Upload progress bar:
+mt.progress.js
+setMax
+setProgress
+hide, show.
+
+<div class="progressBar">
+	<div class="progress" width="x%"></div>
+</div>
+UI : select site.
+select parent folder
+optional: create new album: title (becomes $dir name)
+
+sync dir
+sync: get file list first, then diff. upload missing files
+
+upload to facebook, dropbox, etc. using REST APIs
+download from web sites.
+
+
+//---------
+
+----------------
+Images / thumbs.
+original
+tn 225
+ss 1000
+original
+hd 1920
+
+rewrite UI.selectThumbnail depending on img.size
+in JS and PHP
+
+image.php : if target and no size: get size from config.thumbnails.
+
+
+PHP add thumbnail: just [ .exists]
+
+sort by width, height, ratio
+
+-------------
+Select multiple files.
+move to: show nested dir tree
+---------
+Slideshow
+
+zoom: .tn, .ss, .hd actual size. fit: width, height, long (current, .ss)  short (.hd)
+use .hd pictures, for scroll, scale effects
+
+http://oridomi.com/ fold images
+
+use selectThumbnail depending on UI.size and window size and image size
+generate .tn , .ss. , .hd only if image size > tn.Size
+
+inline: video UI.selectthumbnailsize ?
+
+3b after changing options : do not render/refresh index with options until Esc / setMode();
+
+OK Mobile: slideshow icons over slide 1 over 0 ? prevents clicking.
+
+
+select multiple file: when upload or admin
+checkbox in upper right corner, when checked toggleClass(".selected")
+-------------
+
+7 - video convert / thumbnail
+OK include sound
+
+1 use ffprobe data to resize: display_aspect_ratio and target size multiple of 2 or 4
+2 set bitrate and dimensions for mp4 stream 
+
+MTS
+SAR: 1:1
+1920x1080 [SAR 1:1 DAR 16:9]
+
+slow motion:
+1440x1080 [SAR 4:3 DAR 16:9] + no sound => 960x720 
+
+_convert.type;mp4
+_convert.bitrate;800k
+_convert.ratio;keep
+
+resize only if input dimensions and bitrate > output
+3 store mp4 stream in .ss
+
+For vides and audio:
+"FORMAT": 
+{
+	"filename": "../2013/AmericasCup/DSC_0890.MOV",
+	"nb_streams": "2",
+	"format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+	"format_long_name": "QuickTime / MOV",
+	"start_time": "0.000000",
+	"duration": "16.716700",
+	"size": "50691608",
+	"bit_rate": "24259145",
+}
+
+------------
+
+OK load image info: delete .tn/.csv if isset "type" or .jpg
+
+7 cleanup onclick => .click();
+11 define icons and UI.keys functions and jwplayer properties in config file: events.csv
+loaded by UI.setupEvents()
+key;iconId;args;function;description;keyName
+use bindReset
+
+12 display keyboard shortcut help (H) according to events.csv
+
+click on background or slide img
+img.slide hover: show icons depending on location: next, prev, zoom, close
+img.slide click: do it
+{icon: "icons/close128.png", funct: ui.slideshow.toggleZoom};
+
+ANDROID go back to index: use android back key. event?
+
+-----------
+14 cleanup .tn / .ss
+list .tn files, list files, diff, delete files that exist in .tn
+
+
+---- BUGS:
+dateFormat returns false on mobile and old IE
+Firefox, root dir : group by date not working.
+false with some browsers
+
+OK Slideshow: toggle margin?
+OK remove dependency on UI: album.loadDisplayOptions() called in constructor
+move UI.divStyles
+OK this.url.getFilename : use new querystring(this.src).get("file");
+OK IIS add 3gp : content type video/?
+OK ipad / chrome HTML5 : play&start>0
+OK templates when depth<0 : check combine function with ..
+OK AngryNerds.gif => image.php tn,ss => AngryNerds.png
+OK JSON / XML !$includeEmpty: still output 0 and false
+OK fit height: substract border and margin height. use outerHeight(true)
+OK options: size in row mode / fit in column mode
+OK groups: if album.rotate, add margins to subtitle
+OK dateDiff in french
+
+OK UI.options.transitionfunction depending on action
+OK refactor make UI.transitions function array and object
+
+OK Mobile: disable UI mode transitions, UI.syncFade
+OK extract JPG thumbnail
+OK disable ffmpeg links if ffmpeg not enabled
+
+OK slideshowfit : too much recursion ?   new Slideshow(options) vs .setOptions
+OK problem with album.extractFiles by type returns and removes all files
+OK rewrite selector/elements in transition or slideshow
+
+OK Background: use mt.color.js
+OK IE:	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFDDDDDD', endColorstr='#00DDDDDD', GradientType=0 );
+replace with ARGB
+
+Generate dynamic CSS or <style/> according to config and other CSS in PHP
+Get CSS rules
+document.styleSheets[0].cssRules[0].style
+
+function getCssRule(selectorText) {
+	var ss = document.styleSheets;
+
+	for (var i = 0; i < ss.length; i++) {
+	    var rules = ss[i].cssRules || ss[i].rules;	    
+
+		for (var j = 0; j < rules.length; j++) {
+		    if (rules[j].selectorText != undefined) {
+		        if (rules[j].selectorText.indexOf(selectorText) != -1)
+		            return rules[j];
+		    }
+		}
+	}
+}
+
+--------
+JSON/XML api:
+data.php?param &type=config|album|mediafile|metadata &metadata=false & format=xml|json
+xml.php,json.php
+
+OK slideshow: setStatus("generating image") when using image.php
+
+OK 13 link between mediafile and img
+div and img have index, id and file attributes
+
+12 image.php : if transparent and smaller than required size,
+just return orginal file. do not create copy.
+=> Refactor the script and how to handle multiple parameters and transforms. Disable rotate?
+
+--------
+
+14 metadata: store in filename.csv all data that is expensive to read
+date;
+description;
+transparent; (PNG / GIF)
+alpha; (PNG)
+duration; (VIDEO) + ffprobe data
+animated (GIF)
+14b metadata:
+add: hasTransparentColorPixels.
+HasAlphaPixels: look in 4 corners and edges first.
+
+JSON output: metadata = true/false.
+
+6 small gif or png: 
+OK slideshow: play animated gif
+do not make .ss version.
+album? depending on options
+OK if animated: detect animation end and nb frames. 
+=> set slideshow interval proportional to nb frames
+OK detect transparency => no shadow and border
+
+refactor exif.php / image.php
+
+image.php: get exif thumbnail if image too large to load or load error
+image.php?path=AmyPhone&file=2012-03-23_20-31-46_741.jpg&size=225&target=.tn
+
+exif.php: getImageInfo + metadata + exif
+
+15 DISPLAY IMAGES
+OK In mt.index.js, UI.displayFiles:
+Use mediaFile.metadata.width, height and ratio for column and row layout BEFORE image.onLoad :)
+
+displayFiles: mediaFiles.divideInto rows or column
+ROW: sum widths - margins , scale to window width
+COLUMN: sum height - margins, scale to window height
+
+------------
+
+16 Generate album covers.
+- 16a Slideshow: display title/ description text centered over 1st image
+
+- 16b Server Side GD
+Generate single image collages with layout options:
+nb Rows, columns, 
+output image dimensions,
+background color,
+border, margin, shadow, rotate
+Add text to generate covers using TTF fonts.
+
+montage($files, width, height, rows, columns, margin, background) + border, shadow
+$files: array of filenames.
+divide into rows or columns
+ use metadata size, load image, copyresampled, destroy
+
+
+Need PHP function: 
+array_divideInto 
+array_splitBy like Array.prototype.groupBy 
+
+11 Config: 
+mobile: add maxColumns = 3 , generate dd_columns according to that
+toggle column mode : 2/0
+
+1 column: set max-width: 100% for images.
+OK if not fixed width
+
+Mobile / Android 2.3 browser:
+OK Zoom +  / - buttons on top left and right, // Like + and - keys. function() { $('#dd_size').selectNextOption(); }  
+
+-- column mode: zoom+ = columns-- / zoom -- = columns++
+or fit height/width
+.row .medium, .largeImage, .full : set max-width
+UI.zoomIn, UI.zoomOut
+
+if jwplayer disabled.
+
+10 video / audio player
+Mobile / Android 2.3 browser:
+
+if jwplayer disabled.
+if(!config.MediaPlayer.video.enabled)
+video thumbnail image = link to download mp4  
+video: mp4 download/play, do not change UI.mode
+android: types.video.stream = mp4, like ipad
+
+audio: do not display audio jwplayer in corner => larger download links/icons at bottom of page (in contentFooter?)
+if(!config.MediaPlayer.audio.enabled)
+do not use jwplayer
+playlist template: only link to download mp3
+
+audio links: use soundmanager?
+
+Android 4: test html5 video player for mp4
+OK ipad: test players
+
+--------
+
+1 Direct Links to image/video
+http://localhost/pics/.mp/?path=2013/March&file=IMG_20130303_081507.jpg =>slideshow
+http://localhost/pics/.mp/?path=2013/March&file=video.mp4&playlist=true => video player + playlist?
+http://localhost/pics/.mp/?path=2013/March&file=music.mp3&playlist=true => music player + playlist?
+
+play video : load playlist, set start by name, like slideshow.
+MediaPlayer.loadPlaylist(startItem): 
+find position of file in playlist
+playlist.getElementPosition(fileDiv.attr("id"), "name");
+
+2 toggle playlist.
+
+3a when exiting player: render index template
+
+------------------
+Slideshow
+4 mixed image, video slideshow. take all mediaFiles
+switch UI depending on file type
+
+5: deleted files go to .bad
+best : make .best.csv like .dateindex.
+add to best: copy row from .dateindex
+
+6 custom file order
+
+1 transparent png or gif: no border, no shadow 
+store transparency in metadata file or get from server
+OK except in column mode.
+
+OK 2 EXIF data:
+ cleanup where non print characters contains("\0");
+  if($name!="MakerNote")
+Use DateTimeOriginal
+
+OK 3 Mobile: zoom in/out buttons + - visible
+next/prev page
+
+5 Unify index Options and slideshow controls
+index.caption: none, description only, all
+slideshow.controls: none, description + commments only, all
+
+6 Slideshow.linked : sync another instance with events
+
+----------------
+OK mobile: scroll to bottom: load next page, append
+There are some properties/methods you can use:
+$().scrollTop()//how much has been scrolled
+$().innerHeight()// inner height of the element
+DOMElement.scrollHeight//height of the content of the element
+So you can take the sum of the first two properties, and when it equals to the last property, you've reached the end:
+
+http://jsfiddle.net/doktormolle/w7X9N/
+
+$('#flux').bind('scroll', function()
+{
+  if($(this).scrollTop() + $(this).innerHeight()>=$(this)[0].scrollHeight)
+  {
+    $(this).append('<br/>end reached');
+  }
+});
+
+$(window).scroll(function()
+{
+   if($(window).scrollTop() + $(window).height() < $(document).height()) return;
+     alert("bottom!");
+});
+----------------
+
+OK If transition interrupted?
+ if transition.inProgress, do not make transition 2nd time
+make Transition object instances. 1 for UI, 1 for slideshow.
+properties: maxType for next and random selection
+
+OK 1 slideshow.setMargin    //alignX:"right", alignY:"bottom",
+
+2 Irfan View integration
+2a rotate 90 button 
+http://localhost/pics/.mp/image.php?path=img&file=Ashkan-2.jpg&debug=true&transform=-90
+ajax, return JSON. url of static file + ?date to avoid cache
+
+If no irfan view ? normal rotate with GD
+what about gif and png, keep transparent bg ?
+
+2b gd-jpeg, libjpeg: recoverable error: Corrupt JPEG data: 67 extraneous bytes before marker 0xd4 in C:\Users\Arthur Raynaud\Pictures\.mp\include\image_functions.php on line 212
+http://localhost/pics/.mp/image.php?path=Concerts/Rodrigo_Y_Gabriella&file=2013-07-10_21-03-20_65.jpg&size=225&target=.tn
+
+3 img.onError: set tn exists = false;
+
+6 dateFormat: format date range:
+July 22-24,    2013 March - May 2013,    July 2012 - May 2013
+22-24 Juin 2013,    Mars - May 2013,    Juin 2012 - Mai 2013
+
+OK 4 Flash video shows transparent. 
+reverted to jwplayer 5.10
+
+5 long video: seek +- 1min, 5min
+
+COLUMN MODE:
+0 OK - equalize height: reduce width of highest column.
+1 OK - make configurable
+2 OK - fit window height
+also when 1 column on page: fit width + max-height
+
+OK 2 - H: toggle title
+add H checkbox
+
+OK 4 config.mobile.csv
+in index: only use .tn 0 
+OK analyze user agent form multiple keywords.
+
+5 - slideshow with multiple photos at once / auto change page or auto scroll
+autoplay
+
+OK 6 limit page transitions to fade and slide (1 to 3: options.maxTransition = 3)
+manual: 
+if 1 page: disable next page /prev page keys
+
+OK 8
+UI.displaySelectedFiles called by 
+- document.ready(); none
+- UI.selectNextPage(); slidehorizontal
+- .dOption.change();  fade
+
+fix height in column mode for slideHorizontal disable/rewrite equalizeColumns
+
+columnMode: selectThumbnail: use image.php with AJAX / createMissingThumbnail to test error.
+
+OK
+transitionFunction: depends on action
+  config.fadeIn=false : switch
+  next/prev page: slideHorizontal
+  change size: scale
+  toggle border, shadow, rotate: fade
+
+4 image animate: Zoom and slow scroll
+
+
+takenDate: sort by: start date, end date
+make functions for startDate, endDate
+
+DATES
+dateFormat: UTC time or not ? set in dir config
+          dateFormat: relative time to now. 3 months ago
+getDateFromName ? if future date, take filemdate see in bad 2071-10-10
+suffix: 1st, 2nd, 3rd, 4th 10th, 11th
+1er
+
+April 10 - 12, 2012
+April 10 - May 12, 2012
+
+largeImages / size: largeImage + 0 columns + border : no border on images.
+
+search
+criteria: by name, date (mdate and exif), type, description, EXIF location
+in dir : just filter album
+
+on depth change if depth !=0 : get album ajax
+
+options: in subdirs, hidden dirs/files
+results: files and dirs
+
+
+same name, different types (audio .mp4 / video .mp3)?
+store type, subtype for each version?
+PHP group by name+type key = VIDEO_name
+
+PS3: video player
+crash when playing multiple videos.
+only 1 flash player at a time.
+modbile: download videos only ?
+
+Enhance UI
+
+Color API
+function addHexColor(c1, c2) {
+  var hexStr = (parseInt(c1, 16) + parseInt(c2, 16)).toString(16);
+  while (hexStr.length < 6) { hexStr = '0' + hexStr; } // Zero pad.
+  return hexStr;
+}
+
+Number.prototype.leftZeroPad = function(numZeros) {
+	var n = Math.abs(this);
+	var zeros = Math.max(0, numZeros - Math.floor(n).toString().length );
+	var zeroString = Math.pow(10,zeros).toString().substr(1);
+	if( this < 0 ) {
+		zeroString = '-' + zeroString;
+	}
+
+	return zeroString+n;
+}
+
+OK VIDEO and DIR templates for large and column mode
+if same page as before: (not first load and no page change): do not fade in
+
+OK functions to get classes for div.file and img.thumbnail depending on album options and mediaFile
+
+OK if captions off: append editDiv to filebox with .caption class ?
+admin: delete, move.
+
+OK index: load album via AJAX
+click on dir: load album, bg and load config via ajax or as album.config
+
+OK DATE INDEX write only files in TYPES.index
+OK fix date index dates when dir has no images and videos
+OK simpler implementation?
+OK key =name, without extension. take oldest date for file.
+OK getfiledate: parse date without separator: 20130411210843 = 2013-04-11 21:08:43
+OK chrome : sort by isDir
+
+2 - display options checkboxes:
+do not render again, just toggle styles/classes 
+If no page change, do not fade.
+
+3 animate with jquery
+if upload/admin: click on album or file description: make text input and button for AJAX post and cancel.
+
+4 video player: exit to thumbnails, go back  to resume playlist?
+single file play: show playlist ?
+resize player. window.resize()
+when player full screen: disable ESC returning to index
+
+5 direct link to image or video : set default UI mode. do not render index template?
+?file=filename.jpg  : UI.slideshow.display()
+?file=video.mp4		: UI.mediaplayer.video(). if not stream ?
+
+http://www.annodex.net/~silvia/itext/mediafrag.html#t=266.078
+Configuring web servers for HTML5 Ogg video and audio : X-Content-Duration headers
+Content-Duration: 00:01:00.046
+http://blog.pearce.org.nz/2009/08/configuring-web-servers-for-html5-ogg.html
+
+8 Mobile UI: display options toolbar as a dialog with large widgets
+
+9 - convert / rotate image with irfanview command line mode 
+call command script from php
+
+rotate: Lossless with irfanview if available or with GD
+ 90: "C:\Program Files (x86)\IrfanView\i_view32.exe" 575x459.jpg /jpg_rotate=(3,1,0,1,0,0,0,0) /cmdexit
+-90: "C:\Program Files (x86)\IrfanView\i_view32.exe" 575x459.jpg /jpg_rotate=(5,1,0,1,0,0,0,0) /cmdexit
+180: "C:\Program Files (x86)\IrfanView\i_view32.exe" 575x459.jpg /jpg_rotate=(4,1,0,1,0,0,0,0) /cmdexit
+
+/jpg_rotate=(options): transformation, optimize, EXIF date, current date, set DPI, DPI value, marker option, custom markers
+Transformation: None (0), Vertical (1), Horizontal (2) 90 (3) 180 (4), -90 (5) Auto rotate (6) 
+
+
+10 CONFIG files
+Read config
+default, then data folders, then browser specific config depending on user agent.
+.config.Opera.csv
+.config.android.csv
+
+.config.1.csv by depth
+
+editDiv?
+
+1 - Most recent albums rotator
+---------
+ 
+1 - Album.getAlbumAjax(search);
+for accent filenames: parsererror SyntaxError: Invalid character
+=> set encoding for ajax response in PHP or jquery
+PHP: store file in ISO, convert JSON to UTF8
+
+//Detect encoding and make everything UTF-8
+http://stackoverflow.com/questions/910793/detect-encoding-and-make-everything-utf-8
+function correct_encoding($text)
+{
+    $current_encoding = mb_detect_encoding($text, 'auto');
+    $text = iconv($current_encoding, 'UTF-8', $text);
+    return $text;
+}
+
+&amp; => not necessary in JSON
+
+2 UI
+this.src.getFilename => URL decode before
+
+function urldecode(url) {
+  return decodeURIComponent(url.replace(/\+/g, ' '));
+}
+
+function urldecode (str) {
+  return decodeURIComponent((str + '').replace(/\+/g, '%20'));
+}
+
+OK 2 setMode / toggleUI ?
+
+OK 3 editDiv : disappears after changing page or refreshing files
+before => appendTo(body) and hide
+
+----------
+UI.setMode ? 
+toggleUI: called from UI, not from slideshow or MediaPlayer
+make custom events
+event.html and .js
+http://www.kaizou.org/2010/03/generating-custom-javascript-events/
+http://www.dustindiaz.com/custom-events/
+
+closure scope:
+http://www.mennovanslooten.nl/blog/post/62
+
+function attachEventsToListItems( ) 
+{
+    var oList = document.getElementById('myList');
+    var aListItems = oList.getElementsByTagName('li');
+    for(var i = 0; i < aListItems.length; i++) {
+        var oListItem = aListItems[i];
+        // Watch this:
+        oListItem.onclick = (function(value) {
+            return function() {
+                alert(value);
+            }
+        })(i);
+    }
+}
+
+-----------------
+
+IN PROGRESS
+select file box size
++ use position thumbnail factor
+
+onload => replace with jquery.on
+
+  $("#div2").live("click",function(){
+    $(this).css("background-color","pink");
+  });
+
+  
+$("#tasksWrapper").on('click', '.checkButton' , function(){
+    alert("test text");
+});
+  
+-----------
+search UI: 
+name text box + depth drop down + types
+text onchange
+album.selectFiles
+search button filters existing album or calls ajax
+
+- Album.getAlbumAjax(search);
+for accent filenames: parsererror SyntaxError: Invalid character
+=> set encoding for ajax response in PHP or jquery
+
+search Files
+var result= string.search(new RegExp(searchstring, "i")); 
+var result= string.match(new RegExp(searchstring, "i")); 
+
+---------
+admin: delete, move.
+
+if empty album:
+rmdir: remove speciaFiles: .tn, .ss .dateIndex.csv, index.html
+
+post to .admin/file.php?action= (delete|move) & parameters
+no action: just login
+
+dir widget
+listFiles: nested or flat ?
+
+make ajax response showing success/failure
+pass function after action success
+move/delete : remove file from array
+background: display new background, fade
+
+upload: image edit, description, convert video.
+
+edit folder config: description, styles, bg, default page count, sort
+
+select multiple images: checkbox, click ?
+
+------------
+events
+UI.setMode("slideshow")?
+call when Slideshow.onStart
+Slideshow.loadSlideShow: call showImage
+
+UI.setMode("video")?
+call when MediaPlayer.video.onplay
+
+dependency with UI
+//disable keyboard from drop down
+
+printable albums
+use css page-break-after every N images
+
+calendar: 1 or 2 photos, JS calendar below
+
+---------
+
+44 AJAX Load template from external files
+https://github.com/stevenmhunt/tmpl.loader
+tmpl.loader-master
+
+test functions in templates.js
+my.
+
+----------
+
+21 embed slideshow / video in div
+javascript API:  slideshow.start(url, path)
+
+Gallery.setContainer("#slideshowContainer");	
+Album.getAlbumAjax(search);
+search: add sort
+options: container, interval, play, zoom, sort
+
+Make events / callbacks that can be assigned
+Album.onLoad
+Album.onRefresh =>displaySelectedfile
+
+MediaFile.display():
+- image: slideshow
+- video / audio : jwplayer(type)
+nextFile.display() : when image interval over or when player.onComplete
+
+slideshow:
+onImageLoaded
+onImageChange
+onHide
+
+MediaPlayer
+onInit : when new
+onStart : when load + autostart or play
+onStop :
+onHide :
+
+gallery / index:
+onPageChange
+onSort
+onFilter
+refresh:  
+
+---- ADD FEATURES:
+
+Slideshow.linked : sync another instance with events
+
+MediaFile = templates + filenames 
+MediaFile class like querystring.js
+MediaPlayer
+
+function foo()
+{
+   // if user accidentally omits the new keyword, this will 
+   // silently correct the problem...
+   if ( !(this instanceof foo) )
+      return new foo();
+
+   // constructor logic follows...
+}
+
+Album ? templates
+in constructor: make MediaFile objects from mediaFiles
+MediaPlayer = players
+make class instances with settings for each
+
+TO ADD
+IrfanView command:
+i_view32.exe "c:\Users\Arthur Raynaud\Downloads\*.jpg" /resize=(250,250) /aspectratio /resample /convert=c:\images\*.JPG
+i_view32.exe "c:\Users\Arthur Raynaud\Downloads\*.jpg" /resize_long=250 /aspectratio /resample /convert=c:\images\*.JPG
+shrink only ?
+
+----------------
+Zoom levels: none, fit long side (done)	
+Add fit short side, fit width, fit height
+stretch on/off / shrink only
+container style="background-color: rgba(255, 0, 255, 0.3); => makes colored overlay filter
+
+--------
+JS pseudo-enums: 
+var DaysOfTheWeek = { "Sunday":1, "Monday":2, "Tuesday":3, "Wednesday":4, "Thursday":5, "Friday":6, "Saturday":7}
+Object.freeze(DaysOfTheWeek);
+
+-----
+20 mix slideshow + video player (1 at a time)
+MediaFile.play() =>image:slideshow, audio|video:MediaPlayer
+preload video in hidden player?
+
+33: multiple players
+events in sync, or when pl1.onComplete play file in pl2
+
+34: multiple slideshows
+divide album.images into 1/N
+
+
+31: Make mediaFiles from array of url or filename strings
+if no thumbnail: take main image URL
+
+9 group files: make title separator : type, date, dir
+by date: check album date range: auto group by year, month, day, hour
+album.displayFileCounts (groupBy)  groupBy = date, type, size, ext, etc.
+{
+	return {"video":3, "image":12}
+}
+
+
+OK 11 featured items:
+view most recent/popular dirs or pics larger on top
+
+print background or not :
+$(".icon, #divbg").toggleClass("noprint") 
+$(".slide, .thumbnail").toggleClass("shadow, rotate") 
+
+rotateImage:
+rotate random angle between (-10, 10) 
+in slideshow: AFTER slide transition
+R/L rotate image CSS/JS +- 90: animate
+
+.animate( properties [, duration] [, easing] [, complete] )
+
+
+slideshow: animate zoom toFullScreen()
+create slide img with same src, size and offset as selected image
+=>zoom and center
+
+
+propertiesA map of CSS properties that the animation will move toward.
+
+durationA string or number determining how long the animation will run.
+
+easingA string indicating which easing function to use for the transition.
+
+completeA function to call once the animation is complete.
+version added: 1.0.animate( properties, options )
+
+propertiesA map of CSS properties that the animation will move toward.
+
+optionsA map of additional options to pass to the method. Supported keys:
+
+    duration: A string or number determining how long the animation will run.
+    easing: A string indicating which easing function to use for the transition.
+    complete: A function to call once the animation is complete.
+    step: A function to be called after each step of the animation.
+    queue: A Boolean indicating whether to place the animation in the effects queue. If false, the animation will begin immediately. As of jQuery 1.7, the queue option can also accept a string, in which case the animation is added to the queue represented by that string.
+    specialEasing: A map of one or more of the CSS properties defined by the properties argument and their corresponding easing functions (added 1.4).
+
+
+21 ---CONFIG FILE .config.csv 
+define default sort and encoding in config.php or config.csv
+$CONFIG["APP_DIR"]
+
+1 default in .mp + presets in .mp/config
+2 supersede values with file in $relPath / find in parent
+config options: sort, count, title, slide interval, links + text
+
+moved from (original for FB comments)
+moved to (to redirect from old URL if folder moved)
+
+Config editor in .upload/description for folder
+background: choose file or remove=>delete .bg.jpg
+description in readme.txt
+
+date
+
++ style, to tranform into CSS (css.php handler or <style> element):
+style.subdir.margin;10px
+
+Apply config: load in config.php into $CONFIG
+parse every column value right after readcsv.
+parse booleans and numbers
+trim strings?
+
+select by type: VIDEO.HTML5
+extension array to regex recursive join '|'
+add UI functions for index.php dropdowns
+apply default sort and count per page from config
+
+
+TODO
+
+----
+DATA_ROOT: can be separated from APP ROOT
+Multiple separate data roots (have to be mapped with IIS):
+DATA_ROOT.MusicVideos=I:\MusicVideos
+DATA_ROOT.Racing=I:\MusicVideos
+
+---------
+
+select by type: VIDEO.HTML5
+-------------
+
+DONE
+refactor handleKeys
+for each key:
+keyboard(key) = function() {...}
+if(isFunction(keyboard(key))) keyboard(key)();
+
+14: change thumbnail display size
+print quality: use .ss images
+buttons to change display size $(.largeImage).width / height: make drop down
+
+unify image / largeImage template implementation
+
+positionThumbnail: split fit/size, position, fade in 3 functions
+fit/size to use in slideshows fitImage
+
+10 refactor JS in classes/namespaces:
+MediaThingy
+Slideshow : rewrite as instance to enable multiple slideshows on page.
+UI rename functions. Album.displaySelected files => UI
+templates: test load from ajax methods => UI
+
+music player: 
+
+DONE 
+use makePlaylist
+display playlist HTML
+music click: loadMusicPlayer
+
+if(playlistDiv.height() < playerHeight)
+	playlistDiv.height("auto");
+
+_showAllPlaylistItems: 1 per player
+
+make player objects with jwplayer + other properties,
+show playlist, allowHtml5, allowFlash, etc.
+var playerIds = { id: "musicPlayer", id: "videoPlayer" };
+
+var players = 
+{
+	AUDIO: { id: "musicPlayer", allowHtml5: false, allowFlash: true},
+	VIDEO: { id: "videoPlayer", allowHtml5: true,  allowFlash: true}
+};
+
+
+TO DO
+unload jwplayer after each video? 
+keep playlist in memory, load file 1 by 1.
+load 1 file at a time + display title & metadata.duration
+load other file: + use onComplete + icon buttons
+
+change sort while playing. 
+use shuffle?
+
+Put in config.csv
+Keys containing . ? like "playlist.position"
+
+GETTERS:
+var state = jwplayer().getState();
+set position: player.seek(seconds);
+var elapsed = jwplayer().getPosition();
+jwplayer().getMeta() //metadata;
+
+player setup:
+use  Object.merge
+or
+jQuery.extend( [deep], target, object1 [, objectN] )
+$.extend(true, object1, object2);
+
+settings <=> player.config
+
+put in config
+PLAYERS.AUDIO.ID;musicPlayer
+PLAYERS.VIDEO.ID;videoPlayer
+
+TYPES.AUDIO.MOZILLA;ogg
+TYPES.AUDIO.CHROME;ogg;mp3
+TYPES.AUDIO.FLASH;mp3
+
+TYPES.VIDEO.MSIE;ogm;webm
+TYPES.VIDEO.MOZILLA;ogm;webm
+TYPES.VIDEO.CHROME;mp4;webm
+TYPES.VIDEO.FLASH;flv;mp4
+
+cleanup playlist size code.
+reuse if clicking other video
+---------
+
+function to adjust html5/flash depending on file type
+		IE		Firefox		Chrome
+mp3		H5 F	F			H5 F
+m4a		F		F			F
+ogg		X		H5			H5
+webm ?
+
+
+getModes()
+use allowFlash and allowHtml5 per in playerSettings.
+call getModes() for each onPlaylistItem or onComplete
+reload player for next file if mode change.
+
+----------
+
+video click: loadVideoPlaylist
+show playlist on/off? make in HTML with templates
+close/remove player?
+jwplayer().remove() 
+
+filter by type, date
+paginate: use min_pages.
+if last page is short: add to 2nd last page.
+
+
+1: page load: getAlbumData via ajax
+ - encoding: convert text files and file names to utf-8 if necessary
+UI for search & depth: reload album data via AJAX
+
+13: JS manipulating objects
+file actions: refresh index page
+move/delete: hide image div
+reload background after change
+use jsviews/ data link
+
+ADMIN/upload features using ajax
+http://www.9lessons.info/2012/09/multiple-file-drag-and-drop-upload.html
+1 edit div
+2 JS confirm file action
+3 PHP  script for all actions. action parameter
+.admin/ajax.php?action=delete&path=img&file=df.jpg
+4 JS remove mediaFile depending on action, refresh view
+
+Links:
+To query string: http_build_query
+
+12 use ffmpeg to resize images or video thumbs
+orientation, rotation, long side?
+for %f in (*.jpg) do .\scripts\ffmpeg.exe -i %f -vf scale=225:-1 .tn\%f
+
+.\scripts\ffmpeg.exe -i %f% -vf scale=-300:-1 .tn\%f%.jpg
+.\scripts\ffmpeg.exe -i %f% -vf scale=-1:225 .tn\%f%.jpg
+
+script using data from getimagesize() then compute target size for long side=225
+0: 500 1: 281 2: 1 3: width="500" height="281" bits: 8 channels: 3 mime: image/gif
+
+use escapeshellcmd, escapeshellarg
+
+IIS : Make AppPool for PHP with Maximum Failures > 5
+
+22 video + canvas effects
+http://craftymind.com/factory/html5video/CanvasVideo.html
+
+08 PHP refactor dir object: extends MediaFile
+common implementation for album and Mediafile in BaseObject
+ parent::__construct();
+path functions, combine: use realpath, pathinfo, basename
+
+2 reduce JSON / XML size
+if filename=name, if title=name
+if tn.ext same as file (for images)
+makeTitle function in JS
+add ffprobe metadata fields to video and audio ?
+
+9 double sort: date, type, name, random
+dirs first: use sort multiplier
+if a.isDir and !b.isDir return 10l
+
+9b open player in overlay + close button
+hide files
+
+12: make directory browse widget
+browse parents to root + subdirectories (depth?)
+
+14
+info about dirs:
+metadata.csv
+title
+oldestDate, newestDate (self updating when making album data)
+
+config.csv: global (default) + in dir
+sort
+filesPerPage
+tn size
+show slideshow controls
+enable multiple downloads?
+
+12 index / download link : download.php, or file if mobile
+UI: choose between original (full size), .tn and .ss images. 
+correct URLS if .ss not available : use image.php with attachment header ?
+iframe.onload event?
+
+12 cleanup unused code and pages?
+
+12 Sound Manager
+http://www.schillmania.com/projects/soundmanager2/
+
+slideshow: no ajax.
+
+
+config mappings:
+separate app_root and data root
+MAPPING["pictures"]="D:\Pictures\"
+allow unmapped dirs? output images with image.php / fpassthru
+
+---------------
+
+13 select multiple images: checkbox on top right corner of image
+then click action on other image. highlight all selected images in between.
+.selected { border : green, background-color: green}
+
+14 : use jquery.sortable, draggable functions ?
+
+15: mixed views thumbs/ image / multiple image tiles
+
+16: mixed image / video slideshows
+load 1 video at a time. when complete, load next file (image or video).
+use 2nd player to preload next video?
+
+highlights / edit mode: set start/end for each video. random?
+highlight scripts 
+video/audio file; start, end time
+image file: time 
+
+-------------
+
+22 : music playlist: use php lib for ID3 tags?
+
+17 date operations
+time zone
+
+7 remove orphans from .ss and .tn
+list path/.tn images, list path videos findThumbnail => diff to keep video tn
+
+8 SMALL IMAGES gif, png: use original image in .ss and in .tn if small
+copy to .tn and to .ss ?
+
+9 RSS: rewrite using listFiles and dateIndex
+format like picasa RSS
+common implementation with playlist.php, use file search and options
+pubDate= file date, mdate ?
+
+1 dir: if no media files and subdirs, getNewestFile: look in subdirs,
+make .dateIndex.dirs.csv: sorted by rdate. contains dir with most recent file first
+rewrite index when listFiles or sortDirs ?
+==> in subdir, propagate oldest and newest date to parent dirs.
+dir: find most recent, then recurse in parent dirs
+
+3 use dir|file with other types: png|image
+filehasnameandtype 	if(contains($ext,"DIR")) $result=fileIsDir($file);
+
+4 test performance: use timer functions for selectFilesByType, sortFiles, sortDirs
+
+5 JS for IE6 .bg => bgIE position: absolute
+
+Dropbox REST API
+https://www.dropbox.com/developers/core/api
+
+------------- DONE
+
+OK when .tn image created: update JSON data. exists=true
+
+11 OK icon / buttons: based on total count, not page
+OK remove songs from album.mediaFiles
+
+12 OK 
+music & video player: make prev and next buttons in JS setup functions for this player instance
+keyboard shortcuts?
+space: prevent default?
+
+OK 13 thumbnails images: hidden + fadeIn + use positionThumbnail
+use allowJqueryFx
+
+9 index: use use jsviews/ data link instead of XSLT
+reproduce all index functionality
+
+use conditional template to sort files
+
+10: paging functions: manipulate start and number displayed
+add prev/next page button + keyboard shortcuts
+do not count non media files
+exclude/filter functions
+
+11 background: resize from .ss if it exists
+
+5 list files: add search param to return elements as file names or arrays/objects (files grouped by name)
+add search param to prepend path (relative or absolute?)
+ex: true in index, false in indexjson
+
+6 objects: class MediaFile
+	$key=combine($subdir,$name);
+	fullPath=combine($relPath,$file);
+	"subdir", "name"=$name, "date", "type"
+
+7 file objects to JSON
+array with numeric keys: []
+other arrays: {} like objects
+
+combine: use ..  and getParent 
+---
+1 rewrite FindInParent, getFilesBeginningBy + has_files to call listFiles
+remove unused dir functions: list_files_beginning_by, findInParent, list_subdirs
+---
+3 filehasname, filehastype: call filehasnameandtype: pass $search array to it
+add criteria: "start"=>true, "end"=>false, "date"=>"2010-01-12 : 2010-04-22",
+
+---
+search: depth>0
+fix search params: array by ref / recursive vars by value: remaining, subdir
+pass array for search criteria $filters["name"], $filters["type"], etc.
+ex: $filters=array("dir"=>$relPath, $subdir=>"img", "name" => "dsc", "start"=>true, "end"=>false, "date"=>"2010-01-12", "type" => "image", "count"=> 20, "tndir"=>".tn");
+
+1 search: depth>0
+if no file found in root, no recursion
+
+or
+after listFiles and group: if date(subdir) > date(parent), date(parent)=date(subdir) 
+
+dateIndex: specify which files to index in config: IMAGE|VIDEO
+
+4 function to generate links/js with file path and query string parameters: 
+PHP function loop though getParams => passed to XML <options><path><count><type><name> => template to make link
+
+xsl: play link with depth: different in thumbnail and in play icon
+play.php?path=<xsl:value-of select="$path"/>&amp;depth=$depth&amp;start=count(preceding-sibling::video)&amp;file=$filename
+play individual file, load player in index.php with JS
+
+5: serial download
+6: serial upload (ajax post to upload.php)
+http://www.webtoolkit.info/ajax-file-upload.html
+http://blog.manki.in/2011/08/ajax-fie-upload.html
+
+
+description: thumbnail binary printed for photoso from Sony 9MP
+in EXIF between MakerNote and Standard FlashPixVersion
+if depth<0 : appendPath=true;
+get real parent path instead of path/..
+
+--------
+
+if depth>0 : appendPath=true;
+slideshow.js: if no path only: add path to pic url
+when image.php in subdir: not showing
+
+make .tn paths more consistent between dirs, images, videos
+playlist.php : use depth
+links in recursive search: slideshow + JS, indexjson
+
+sort by date: getDateIndex($relPath,$files)
+add $depth: load subdir/.dateIndex.csv for subdir/files
+then asort, as in groupByName
+		splitFilename($filename,$name,$ext);
+		$key=combine($subdir,$name);
+		if($subdir!=$prevDir) // if file in different dir: load new date index
+			$dateIndex=loadDateIndex(combine($relPath,$subdir));
+		
+download link
+XML/XSLT: template or function to combine relpath,subdir,file
+download.php : if !file_exists => header 404
+
+selectFilesByExt("IMAGE|VIDEO"): fileHasExt
+listFiles: add name starts with, ends with, or parse *name*
++ first & last file
+pass array for search criteria $filters["name"], $filters["type"], etc.
+
+add start, end global params to fileHasNameAndType
+remove fileHasName, fileHasType?
+listfilesbeginningby, has_files: remove other list functions or make them call listFiles
+
+move.php: use listFiles to move multiple files
+
+
+DONE
+function listFiles($dir,$name="",$type="",$recursive=0,$maxCount=0,$sort=false)
+add arguments: tnDir (".tn") + first & last file
+filterFiles($fileList,$name,$type,$maxCount=0,$sort=false)
+recursive in subdirs: list subdirs in all cases
+
+---------
+refactor
+require all includes in config.php only
+check_thumb => findThumbnail getDirs => filterDirs getFileByExt => filterFiles
+
+slideshow: JS get filenames from image.php and fix image link
+webkit image load: image.php?format=ajax. output imageUrl when image ready
+call from ajax
+add timeout
+use  getPicUrlAjax(index,imageScriptUrl) for .tn when too many image.php
+<img class="new" src="image.php?"/> for each, call getPicUrlAjax
+
+
+SMALL IMAGES gif, png: use original image in .ss and in .tn if small
+
+--------
+unify JS confirmChoice and confirmFileAction
+link: confirmChoice('.admin/move.php?path={$path}&amp;file={@name}.{ext}','Delete {@name}')
+ajax: confirmFileAction('move')
+config setting for move or delete
+--------
+
+use array_search
+http://localhost/pics/.mp/.admin/move.php?path=FinnishWedding&file=DSC01781.JPG&last=DSC01786.JPG&to=h5
+
+new:
+sort dirs by date using .dateIndex
+separate date index for photos, videos, date
+.photo.dates.csv
+.video.dates.csv
+.audio.dates.csv
+.dir.dates.csv
+
+
+getPath: partialPath, case insensitive p=cal/pr
+rewite JS as object/ jq plugin
+description: set file date with calendar, update dateIndex
+admin/upload pages: unite admin pages .admin/?action=&file
+make common header with bg and footer in ui functions + ajax mode like move.php
+move file: list dirs in <select>: parents + subs
+
+ajax player: use loadVideoPlaylist, player in index.php
+
+select multiple files from index, range
+select start with checkbox, click delete /move icon for end
+search/select in 1 folder by name, type, date
+
+sync 2 servers: upload/download file list and files from another server
+zip folder
+
+---------------
+
+multiple upload
+for each file in list : post to .upload/upload.php
+multiple download: response send attachment header + passthru file
+http://peter.worksontheweb.net/2009/04/16/sequentially-download-multiple-files-with-jquery/
+
+element,property,value: color-picker
+body,color,#000000;
+body,background-color,#000000;
+a,color,#000000;
+.albumCaption,background-color,#000000;
+backgroundFile,.bg.jpg
+---------
+
+
+done
+---------
+UI
+ajax slideshow: hide fbContainer and title: done
+
+small images: div.thumbContainer.bottom=$(.albumCaption).height()
+XSL: add download link for videos mp4 flv avi 
+
+find in parent for css
+hint with mp4box or ffmpeg
+delete:move to .bad or delete, depending on config/local
+- use array_slice($start,$count) in xmldirindex => no need to
+accept only filenames path=2012&file=DSC0012.JPG, resolve $start pos in array => done in Slideshow
+
+implementation:
+improve implementation: use class
+index: name;date;type;exts;size
+
+- video players:
+accept only filenames path=2012&file=DSC0012.JPG, resolve $start pos in array => done in Slideshow
+
+test jwplayer with single file
+test HTML5 audio if !isFirefox
+make Json playlists: playlist.php?format=json
+
+UI
+for mobile: bigger icons 
+play / pause music icon
+big pause icon
+remove small icons if big icons enabled
+
+index/slideshow/play: audio controls: generate with JS. state? play/pause icon
+Use UI conditional functions
+
+webkit image load:
+
+static jpg image headers
+HTTP/1.1 200 OK
+Content-Type: image/jpeg
+Last-Modified: Mon, 27 Feb 2012 02:16:33 GMT
+Accept-Ranges: bytes
+ETag: "468165d3f5f4cc1:0"
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+Date: Mon, 27 Feb 2012 02:18:02 GMT
+Content-Length: 90246
+
+image.php headers
+HTTP/1.1 200 OK
+Content-Type: image/jpeg
+Server: Microsoft-IIS/7.5
+X-Powered-By: PHP/5.2.13
+X-Powered-By: ASP.NET
+Date: Mon, 27 Feb 2012 02:16:32 GMT
+Content-Length: 90246
+
+Ipad: OK
+
+Playstation: 
+disable music player in slideshow 
+if zoom=true and resolution=full
+or in resolution -2
+=> do not play music by default
+
+- webkit
+footer classes: position
+change CSS, bigger fonts, background colors
+
+--------------
+new features:
+
+- on edit description
+photo: display exif info (also on slideshow)
+video: select date: touch file
+file/dir : rename/move 
+hide: toggleDot
+
+- themes
+- bg, text, link colors 
+- bgimage
+- fb-root bgColor + dark or default 
+=> Generate dynamic <style> or css 
+
+- config as CSV file
+APP_ROOT_FOLDER,pictures
+DEFAULT_SORT,name
+VIDEO_DEFAULT_SORT,name
+
+config per directory: use findInParent 
+background, theme, count, etc.
+
+config per device: 
+default, ipad, playstation, mobile
+ipad: VIDEO_STREAM = "mp4"
+pass extenstions to xmlDirIndex <video_stream>mp4</video_stream> ... <video_stream>flv</video_stream>
+
+
+CSS 3: drop shadow, gradient, rotate...
+-----------
+implementation:
+
+- improve 1st image loading
+- if auto play music: play music only after img.load;
+ get page with ajax: get body children ?
+
+- img.load event with chrome/safari/webkit with image.php
+
+done
+
+- indexjson : no caching for IE
+sort=date 
+sort=shuffle
+sort=name: sort index by name
+use date index for photos and videos
+use same sort before xml and slideshow
+---
+admin
+- for mobile: bigger icons 
+for slideshow controls, html5 player
+admin pages: use PopupDialog iframe, then close dialog
+-------
+album date: touch readme.txt with most recent file date;
+bool touch ( string $filename [, int $time = time() [, int $atime ]] 
+
+index
+partial index
+ajax refresh
+
+verify slideshow footer styles
+index verify slideshow/play icons on subdirs
+
+ok utf8comments ajax : not visible or not loaded
+ok upload/store_description lose path
+
+urlencode links to dirs with & and spaces
+fb comments: how to keep old comments with new plugin
+
+----------
+convert video with ffmpeg 
+call command script from php
+
+---------
+ui-functions.php
+page title, fb, path links, page links
+
+index.php 
+- XSL for partial page: only /dir title and wrapper
+- no header, fb or footer
+
+add buttons or in description.php:
+- delete .bg or description
+- apply .bg to other directory (parent or sub?)
+- choose preset CSS from a dir in .mp/style: default, night.css
+
+rotate images 90 + refresh tn and ss
+GD: rotate lossless?
+
+CSS3 Background gradients:
+http://css-tricks.com/css3-gradients/
+http://www.colorzilla.com/gradient-editor/
+http://lea.verou.me/css3patterns/
+http://nimbupani.com/
+
+- thumbnails on demand: when too many images, make JS to (re)load them
+when img.thumbnail load, removeClass("loading")
+when window.load, append img in placeholder for img.loading
+when img.load, load next image
+
+for albums with > 100 images
+save index.xml
+save index.json sorted by date 
+{
+	path: "2012/01 Florida"
+	files: [{name: "DSC00021.JPG" , date: "2010-01-12 12:34:35"},]
+}
+
+test if file exists with [filemdate > filemdate(xmlDirIndex.xml)]  or filemdate of dir ?
+refresh index.xml after rename/delete/move/upload
+- add new file info: generate 1 xml element, append to root node
+- if file in index does not exist: remove node
+
+sort by name or date: done in index.xsl
+group files
+by date, type, description, location from Exif
+index:group files by type, date if sort=date
+<hr>Monday, February 13th, 2012
+
+---
+file actions: delete, move, background, description
+call scripts using ajax => no need to redirect
+scripts returns message in JSON
+use PopupDialog?
+----
+slideshow.php
+
+ok fit image: auto resize with class stretch
+
+ok slideshow.xsl : output JSON array of image urls from index.xml
+
+slideshow dialog: 
+	add empty div with full window size and 2 divs for 2 img
+	no title, no FB, no bg
+	use main window music player: start play with with JS api
+music player: wait for pic load to start playing
+hide thumbnails or make transparent
+
+filenames.js
+// makeTitle
+// image in .ss, image in parent
+// actual stored image from image.php
+
+----
+image filters
+add: select by color, make transparent => PNG
+rotate using CSS + IE8 matrix
+---------
+
+search
+criteria: by name, date (mdate and exif), type, description, EXIF location
+in dir
+options: in subdirs, hidden dirs/files
+results: files and dirs
+
+results: output JSON or XML array of image urls.
+jsonFileList
+if .tn or .ss does not exist: return image.php?path=&file=&target=.ss
+
+TODO: jsonDetailedFileList array of file objects : 
+{name : "DSC.jpg", name: "DSC", title, ext:"JPG", date: "2011-08-29T111:03:43", size: 454534}
+PHP file class ?
+
+search recursive:
+path=images&filter=0824&recursive=true&private=true (look in private subdirs if admin)
+
+results in XML, display with XSLT
+slideshow with results
+
+---------
+
+slideshow with images from 
+- various folders,
+- folders + subfolders
+- random
+- external sites (url playlist in text file)
+
+--------
+
+integrate JW Player 5.8
+test JS API
+test video flv, mp4
+
+slideshow images mixed with videos
+
+--------
+
+- for mobile: bigger icons
+how to detect mobile browser (android,safari)
+in PHP
+in CSS: test screen size in @media rule
+in JS
+if( navigator.userAgent.match(/Android/i) ||
+ navigator.userAgent.match(/webOS/i) ||
+ navigator.userAgent.match(/iPhone/i) ||
+ navigator.userAgent.match(/iPod/i)
+ ){
+ // some code
+}
+
+/*** sniff the UA of the client and show hidden div's for that device ***/
+var customizeForDevice = function(){
+    var ua = navigator.userAgent;
+    var checker = {
+      iphone: ua.match(/(iPhone|iPod|iPad)/),
+      blackberry: ua.match(/BlackBerry/),
+      android: ua.match(/Android/)
+    };
+    if (checker.android){
+        $('.android-only').show();
+    }
+    else if (checker.iphone){
+        $('.idevice-only').show();
+    }
+    else if (checker.blackberry){
+        $('.berry-only').show();
+    }
+    else {
+        $('.unknown-device').show();
+    }
+}
+
+
+-----------
+
+fb comments
+
+Include the JavaScript SDK on your page once, ideally right after the opening <body> tag.
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+Place the code for your plugin wherever you want the plugin to appear on your page.
+<div class="fb-comments" data-href="http://minorart.free.fr/.mp/?path=.marmeutes/NouvelAngers" data-num-posts="2" data-width="500"></div>
+or
+
+<html xmlns:fb="http://ogp.me/ns/fb#">
+
+<fb:comments href="http://minorart.free.fr/.mp/?path=.marmeutes/NouvelAngers" num_posts="2" width="500"></fb:comments>
+-------------
+
+if (typeof KeyEvent == "undefined") var KeyEvent = 
+{
+	DOM_VK_CANCEL: 3,
+	DOM_VK_HELP: 6,
+	DOM_VK_BACK_SPACE: 8,
+	DOM_VK_TAB: 9,
+	DOM_VK_CLEAR: 12,
+	DOM_VK_RETURN: 13,
+	DOM_VK_ENTER: 14,
+	DOM_VK_SHIFT: 16,
+	DOM_VK_CONTROL: 17,
+	DOM_VK_ALT: 18,
+	DOM_VK_PAUSE: 19,
+	DOM_VK_CAPS_LOCK: 20,
+	DOM_VK_ESCAPE: 27,
+	DOM_VK_SPACE: 32,
+	DOM_VK_PAGE_UP: 33,
+	DOM_VK_PAGE_DOWN: 34,
+	DOM_VK_END: 35,
+	DOM_VK_HOME: 36,
+	DOM_VK_LEFT: 37,
+	DOM_VK_UP: 38,
+	DOM_VK_RIGHT: 39,
+	DOM_VK_DOWN: 40,
+	DOM_VK_PRINTSCREEN: 44,
+	DOM_VK_INSERT: 45,
+	DOM_VK_DELETE: 46,
+	DOM_VK_0: 48,
+	DOM_VK_1: 49,
+	DOM_VK_2: 50,
+	DOM_VK_3: 51,
+	DOM_VK_4: 52,
+	DOM_VK_5: 53,
+	DOM_VK_6: 54,
+	DOM_VK_7: 55,
+	DOM_VK_8: 56,
+	DOM_VK_9: 57,
+	DOM_VK_SEMICOLON: 59,
+	DOM_VK_EQUALS: 61,
+	DOM_VK_A: 65,
+	DOM_VK_B: 66,
+	DOM_VK_C: 67,
+	DOM_VK_D: 68,
+	DOM_VK_E: 69,
+	DOM_VK_F: 70,
+	DOM_VK_G: 71,
+	DOM_VK_H: 72,
+	DOM_VK_I: 73,
+	DOM_VK_J: 74,
+	DOM_VK_K: 75,
+	DOM_VK_L: 76,
+	DOM_VK_M: 77,
+	DOM_VK_N: 78,
+	DOM_VK_O: 79,
+	DOM_VK_P: 80,
+	DOM_VK_Q: 81,
+	DOM_VK_R: 82,
+	DOM_VK_S: 83,
+	DOM_VK_T: 84,
+	DOM_VK_U: 85,
+	DOM_VK_V: 86,
+	DOM_VK_W: 87,
+	DOM_VK_X: 88,
+	DOM_VK_Y: 89,
+	DOM_VK_Z: 90,
+	DOM_VK_CONTEXT_MENU: 93,
+	DOM_VK_NUMPAD0: 96,
+	DOM_VK_NUMPAD1: 97,
+	DOM_VK_NUMPAD2: 98,
+	DOM_VK_NUMPAD3: 99,
+	DOM_VK_NUMPAD4: 100,
+	DOM_VK_NUMPAD5: 101,
+	DOM_VK_NUMPAD6: 102,
+	DOM_VK_NUMPAD7: 103,
+	DOM_VK_NUMPAD8: 104,
+	DOM_VK_NUMPAD9: 105,
+	DOM_VK_MULTIPLY: 106,
+	DOM_VK_ADD: 107,
+	DOM_VK_SEPARATOR: 108,
+	DOM_VK_SUBTRACT: 109,
+	DOM_VK_DECIMAL: 110,
+	DOM_VK_DIVIDE: 111,
+	DOM_VK_F1: 112,
+	DOM_VK_F2: 113,
+	DOM_VK_F3: 114,
+	DOM_VK_F4: 115,
+	DOM_VK_F5: 116,
+	DOM_VK_F6: 117,
+	DOM_VK_F7: 118,
+	DOM_VK_F8: 119,
+	DOM_VK_F9: 120,
+	DOM_VK_F10: 121,
+	DOM_VK_F11: 122,
+	DOM_VK_F12: 123,
+	DOM_VK_F13: 124,
+	DOM_VK_F14: 125,
+	DOM_VK_F15: 126,
+	DOM_VK_F16: 127,
+	DOM_VK_F17: 128,
+	DOM_VK_F18: 129,
+	DOM_VK_F19: 130,
+	DOM_VK_F20: 131,
+	DOM_VK_F21: 132,
+	DOM_VK_F22: 133,
+	DOM_VK_F23: 134,
+	DOM_VK_F24: 135,
+	DOM_VK_NUM_LOCK: 144,
+	DOM_VK_SCROLL_LOCK: 145,
+	DOM_VK_COMMA: 188,
+	DOM_VK_PERIOD: 190,
+	DOM_VK_SLASH: 191,
+	DOM_VK_BACK_QUOTE: 192,
+	DOM_VK_OPEN_BRACKET: 219,
+	DOM_VK_BACK_SLASH: 220,
+	DOM_VK_CLOSE_BRACKET: 221,
+	DOM_VK_QUOTE: 222,
+	DOM_VK_META: 224
+};

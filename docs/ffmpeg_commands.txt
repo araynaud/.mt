@@ -1,0 +1,14 @@
+series of JPEG frames
+ffmpeg -i "The Getaway - Paul Feig Goes Seafood Crazy In Boston.mp4" -an -ss 145 -t 1.5 -y TheGetawayBoston145_%03d.jpg
+
+1 image
+ffmpeg -i "The Getaway - Paul Feig Goes Seafood Crazy In Boston.mp4" -an -ss 45 -t 1 -r 1 -y TheGetawayBoston45.jpg
+
+10 images per second
+ffmpeg -i "The Getaway - Paul Feig Goes Seafood Crazy In Boston.mp4" -an -ss 42 -t 3 -b:v 1200k -r 10 -y TheGetawayBoston45_%02d.jpg
+
+ffmpeg -i "%1" -an -ss %2 -t 3 -b:v 1200k -r 10 -y TheGetawayBoston%2_%02d.jpg
+
+
+key frames only
+ffmpeg -i "The Getaway - Paul Feig Goes Seafood Crazy In Boston.mp4" -an -vf select="eq(pict_type\,I)" -y TheGetawayBoston45_%02d.jpg

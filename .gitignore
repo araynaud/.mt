@@ -1,0 +1,7 @@
+.pw/
+unused/
+.temp/
+*.mp4
+jwplayer510/
+jwplayer/
+web.config

@@ -1,0 +1,29 @@
+upload form:
+http://localhost/pics/.mp/config/upload.php?debug=true
+
+Post request: {"path": "uploads","upload": "Upload"}
+Post files: {
+	"file": {"name": "21197_10151922708744782_26069403_n.jpg","type": "image/jpeg","tmp_name": "C:\\Windows\\Temp\\php5D72.tmp","error": 0,"size": 59129}
+}
+moving to ../../uploads/21197_10151922708744782_26069403_n.jpg: true
+
+{
+	"path": "uploads",
+	"getcwd": "C:\\Users\\Arthur Raynaud\\Pictures\\.mp\\config",
+	"freeSpace": 317399056384,
+	"tmpFile": "C:\\Windows\\Temp\\php5D72.tmp",
+	"fileType": "image/jpeg",
+	"target": "../../uploads/21197_10151922708744782_26069403_n.jpg",
+	"moved": true
+}
+
+CURL post file:
+
+http://localhost/pics/.mp/curlpostfile.php?file=de-0314-457146-front.jpg
+
+readCsvFile: "../config/.config.csv" readCsvFile: "../config/.config.1.csv" readCsvFile: "../../.config.csv"
+Post request:
+Post files: {"file": {"name": "de-0314-457146-front.jpg","type": "application/octet-stream","tmp_name": "C:\\Windows\\Temp\\phpFBC7.tmp","error": 0,"size": 132728}} 
+moving to ../../uploads/de-0314-457146-front.jpg: true 
+{ "path": "uploads", "getcwd": "C:\\Users\\Arthur Raynaud\\Pictures\\.mp\\config", "freeSpace": 317272813568, "tmpFile": "C:\\Windows\\Temp\\phpFBC7.tmp", "fileType": "application/octet-stream", "target": "../../uploads/de-0314-457146-front.jpg", "moved": true 
+}

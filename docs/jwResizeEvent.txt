@@ -1,0 +1,46 @@
+Detecting FULLSCREEN exit
+
+Posted: Sun, 2009-12-06 22:46 Marcus Rowell
+I am wanting to detect when the user returns from FullScreen.
+
+I have a listener that is trigger when the user enters fullscreen but does not detect when the user exits fullscreen.
+
+When entering fullscreen the alert('fullscreen change detected'); is opened. But does not open on exiting fullscreen.
+<script type="text/javascript">
+    var player;
+    function playerReady(obj) {
+        player = gid(obj.id);
+        addListeners();
+    };
+
+    function gid(name) {
+        return document.getElementById(name);
+    };
+
+    function addListeners() {
+        playlist = player.getPlaylist();               
+        if ((playlist !== null) && (playlist.length > 0)) {
+            player.addViewListener('FULLSCREEN','fullscreenHandler');
+        } else {
+            setTimeout("addListeners()", 100);
+        }
+    };
+
+    function fullscreenHandler(obj) {
+        alert('fullscreen change detected');
+        if (obj.state = false) {
+            alert('exited full screen');
+        }
+    };
+</script>
+
+Is it possible to detect the exit from fullscreen?
+
+Thanks,
+
+Marcus.
+
+Posted: Mon, 2009-12-07 04:37 JeroenW  
+The FULLSCREEN event is only triggered when someone exits fullscreen by clicking the controlbar button. If someone exits by pressing [ESC], the event is not triggered.
+
+Instead, it's best to listen to the RESIZE event. This one will be triggered. It has three properties: height, width and fullscreen. If you get a resize event with the property fullscreen=false, while the previous resize had fullscreen=true, the user just exited fullscreen.

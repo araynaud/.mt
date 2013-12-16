@@ -1,0 +1,1074 @@
+body
+{
+	font-family:Helvetica,Verdana;
+	margin-bottom: 0px;
+}
+
+.gradient
+{
+	position:absolute;
+	left: 0px;
+	width: 100%;
+	height: 30%;
+}
+
+div.topGradient
+{
+	top: 0px;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(221,221,221,1)), color-stop(100%, rgba(221,221,221,0)));
+	background-image: linear-gradient(to top, rgba(221,221,221,0) 0%, rgba(221,221,221,1) 100%);
+}
+
+div.topGradient.oldIE
+{
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdddddd', endColorstr='#00dddddd', GradientType=0 );
+}
+
+div.bottomGradient
+{
+	bottom: 0px;
+	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(221,221,221,0)), color-stop(100%, rgba(221,221,221,1)));
+	background-image: linear-gradient(to top, rgba(221,221,221,1) 0%, rgba(221,221,221,0) 100%);
+}
+
+div.bottomGradient.oldIE
+{
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00dddddd', endColorstr='#ffdddddd', GradientType=0 );
+}
+
+div.rightGradient
+{
+	position:absolute;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+}
+
+div.gradientH
+{
+	height: 2px;
+	text-align:right;
+	overflow:hidden;
+}
+
+div.gradientV
+{
+	width: 2px;
+	height: 100%;
+	overflow: hidden;
+	float: left;
+}
+
+pre
+{
+	font-family:Helvetica,Verdana;
+}
+
+.title
+{
+	text-align: center;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+.container
+{
+	position: relative;
+}
+
+.slide
+{
+	display:block;
+	position: absolute;
+}
+
+.desktop .slide
+{
+	z-index: -2;
+}
+
+.bg
+{
+	position: fixed;
+	z-index: -5;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.bg img
+{
+	z-index: -3;
+}
+
+div#files
+{
+	text-align: center;
+}
+
+.mediaFileList
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+}
+
+.overlay-pink
+{
+	background-color: rgba(255, 0, 255, 0.2);
+}
+
+.overlay-yellow
+{
+	background-color: rgba(255, 255, 0, 0.2);
+}
+
+.overlay-cyan
+{
+	background-color: rgba(0, 255, 255, 0.2);
+}
+
+.slide.left
+{
+	left: 0px;
+}
+
+.slide.top
+{
+	top: 0px;
+}
+
+.slide.bottom
+{
+	bottom: 0px;
+}
+
+.slide.right
+{
+	right: 0px;
+}
+
+.bgIE /*for IE6*/
+{
+	position: absolute;
+	z-index: -3;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 99%;
+}
+
+.controls
+{
+	z-index: 5;
+}
+
+.caption
+{
+	/* fix it at the bottom */
+	position:absolute;
+	bottom: 0px; /* fix IE issue */
+	left: 0px;
+	width: 100%;
+	
+}
+
+.edit
+{
+	/* fix it at the bottom */
+	position:absolute;
+	top: 0px; /* fix IE issue */
+	left: 0px;
+	width: 100%;	
+}
+
+.caption, .captionBelow, .edit
+{
+	/* fix it at the bottom */
+	font-weight:bold;
+	text-align: center;
+}
+
+.paddingH
+{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.column .captionBelow, .largeImage .captionBelow
+{
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 100%;
+}
+
+div.video .caption, div.video .captionBelow, div.dir .caption, div.dir .captionBelow
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.translucent a, .caption a, .captionBelow a
+{
+	color: orange;
+}
+
+.caption .small, .text
+{
+	white-space:pre-line;
+}
+
+img.icontr:hover, img.iconTrans:hover
+{
+	opacity:1;
+}
+
+img.icontr, img.iconTrans
+{
+	opacity:0.5;
+}
+
+.comments
+{
+	position: fixed;
+	bottom: 15px;
+	right: 20px;
+	text-align: right;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+
+.fixedLeft
+{
+	position: fixed;
+	bottom: 50%;
+	left: 20px;
+}
+
+.fixedRight
+{
+	position: fixed;
+	bottom: 50%;
+	right: 20px;
+}
+
+
+.footerLeft50
+{
+	position: fixed;
+	bottom: 50px;
+	left: 20px;
+}
+
+.footerLeftCorner
+{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+}
+
+.headerLeftCorner
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+.footerRight50
+{
+	position: fixed;
+	bottom: 50px;
+	right: 20px;
+}
+
+.footerRightCorner, .musicplayer_footer
+{
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+}
+
+.musicplayer
+{
+	float: right;
+	margin-right: 15px;
+}
+
+.wrapper
+{
+	float:none;
+	clear:both;
+	text-align: center;
+}
+
+#fbContainer
+{
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
+	height: 225px;
+}
+
+.rightPane
+{
+	/*float: right;*/
+	max-width: 398px;
+	border: 1px solid black;
+	position: relative;
+	overflow: auto;
+}
+
+#fb-root, .rightPane
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+.block
+{
+	display: block;
+}
+
+.inlineBlock
+{
+	display: inline-block;
+}
+
+.floater, .inlineBlock
+{
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+.column
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.floaterLeft {
+	float: left;
+	display: block;
+}
+
+.floaterRight {
+	float: right;
+	display: block;
+}
+
+.file /*.floater, .floaterRight, .floaterLeft*/
+{
+	padding: 0px;
+	position:relative;
+}
+
+/*.file.margin, .slide.margin, .column.margin*/
+.margin
+{
+	margin: 20px;
+}
+
+.marginV
+{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.marginH
+{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.player
+{
+	width: 400px;
+}
+
+.photoBorder, .dir.photoBorder
+
+{
+	border: 10px solid white;
+}
+
+/* ---------------- file templates ---------------- */
+
+div.dir
+{
+	border: 1px solid black;
+	border-radius: 60px;
+	background-color: #DDDDDD;
+	overflow:hidden;
+}
+
+.row  div.dir
+{
+	width: 298px;
+	height: 223px;
+}
+
+.tinyImage img.thumbnail
+{
+	height: 100px;
+}
+
+.row div.dir.tinyImage
+{
+	width: 128px;
+	height: 98px;
+}
+
+.column  div.dir
+{
+	min-height: 118px;
+}
+
+.smallImage img.thumbnail
+{
+	max-width: 225px;
+	max-height: 225px;
+}
+
+.mediumImage img.thumbnail
+{
+	height: 270px;
+}
+
+.row div.dir.mediumImage
+{
+	width: 448px;
+	height: 268px;
+}
+
+.largeImage img.thumbnail
+{
+	height: 450px;
+}
+
+div.dir img.thumbnail
+{
+	height: auto;
+}
+
+.fullImage
+{
+	max-width: 100%;
+}
+
+.row div.dir.largeImage
+{
+	width: 598px;
+	height: 448px;
+}
+
+/* ---------------- generic styles ---------------- */
+
+.centered, #videoPlayer_wrapper
+{
+	margin-left:auto;
+	margin-right:auto;
+	text-align: center;
+}
+
+h1
+{
+	text-align: center;
+}
+
+img
+{
+	vertical-align: top;
+	border: none;
+}
+
+.title a, .small a, li a, .caption a, .captionBelow a, .translucent a, .pages a, .pager a
+{
+	text-decoration: none;
+}
+
+.playlist 
+{
+	text-align: left;
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+.playlist li
+{
+/*	border-bottom: solid 1px #444;*/
+	margin-top: 1px;
+	margin-bottom: 1px;
+	padding-top: 1px;
+	padding-bottom: 1px;
+}
+
+.playlist li.selectedItem
+{
+	font-weight: bold;
+	border-top: solid 1px #BBB;
+	border-bottom: solid 1px #BBB;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.playlist .number
+{
+	width: 15px; 
+	padding-right: 5px;
+}
+
+.playlist .duration
+{
+	width: 20px; 
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.playlist .selectedItem a
+{
+	color: white;
+}
+
+.playlist a
+{
+	vertical-align: bottom;
+}
+
+.pager a, .playlist a
+{
+	cursor: pointer;
+}
+
+.pages img, .title img, .caption img, .pager img
+{
+	vertical-align: middle;
+}
+
+div.thumbContainer
+{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.smallThumb, .smallThumbLeft, .smallThumbRight
+{
+	width: 50%;
+	margin: 0;
+	padding: 0;
+	display:block;
+}
+
+.smallThumbTop img, .smallThumbBottom img
+{
+	height: 168px;
+	max-width: 600px;
+}
+
+/* ---------------- rounded borders ---------------- */
+
+div.video
+{
+	border-radius: 40px;
+}
+
+div.video img.thumbnail
+{
+	border-radius: 40px;
+}
+
+.video.photoBorder img.thumbnail
+{
+	border-radius: 30px;
+}
+
+div.video .caption
+{
+	border-bottom-left-radius: 40px;
+	border-bottom-right-radius: 40px;
+}
+
+div.video.photoBorder .caption
+{
+	border-bottom-left-radius: 30px;
+	border-bottom-right-radius: 30px;
+}
+
+div.video.photoBorder .edit
+{
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+
+.smallThumbLeft img:first-child
+{
+	border-top-left-radius: 59px;
+}
+
+.smallThumbRight img:first-child
+{
+	border-top-right-radius: 59px;
+}
+
+.photoBorder .smallThumbLeft img:first-child
+{
+	border-top-left-radius: 50px;
+}
+
+.photoBorder .smallThumbRight img:first-child
+{
+	border-top-right-radius: 50px;
+}
+
+div.dir .caption
+{
+	border-bottom-left-radius: 59px;
+	border-bottom-right-radius: 59px;
+}
+
+div.dir.photoBorder .caption
+{
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+}
+
+img.tinyThumb
+{
+	width: 60px;
+	height: 40px;
+}
+
+ul
+{
+	list-style: none;
+}
+
+ol
+{
+	color: red;
+	list-style-type:decimal;
+}
+
+.selection
+{
+	position: absolute;
+	z-index: 10;
+	border: 1px dashed green;
+	background-color: rgba(255, 255, 0, 0.2);
+	text-align: left;
+}
+
+.selected.photoBorder, .selected .photoBorder
+{
+	background-color: rgb(0, 255, 0);
+	border: 10px double rgb(0, 200, 0);
+}
+
+.selected.photoBorder img.thumbnail, .selected img.thumbnail.photoBorder
+{
+	background-color: rgb(0, 255, 0);
+	opacity:0.8;
+}
+
+
+.selected .caption, .selected .captionBelow
+{
+	background-color: rgba(0, 127, 0, 0.5);
+}
+
+
+/* simple reusable styles */
+.noscroll {
+	overflow: hidden;
+}
+
+.noscrollX {
+	overflow-x: hidden;
+}
+
+.noscrollY {
+	overflow-y: hidden;
+}
+
+.scroll {
+	overflow :auto;
+}
+
+.scrollX {
+	overflow-x: auto;
+}
+
+.scrollY {
+	overflow-y: auto;
+}
+
+.icon, .spaceLeft { 
+	margin-left:10px;
+}
+
+.spaceRight { 
+	margin-right:10px;
+}
+
+.nomargin
+{
+	margin: 0px;
+}
+
+.nomarginX
+{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.nomarginY
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.small
+{
+	font-size: 8pt;
+}
+
+.big
+{
+	font-size: 16pt;
+}
+
+.shrinkW {
+    max-width: 100%;
+}
+
+.shrinkW90 {
+    max-width: 90%;
+}
+
+.shrinkH {
+    max-height: 100%;
+}
+
+.shrink {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.shrinkWmin {
+    min-width: 100%;
+}
+
+.stretch {
+    width: 100%;
+    height: 100%;
+}
+
+.stretchW {
+    width: 100%;
+}
+
+.stretchW110 {
+    width: 110%;
+}
+
+.stretchW90 {
+    width: 90%;
+}
+
+.stretchH {
+    height: 100%;
+}
+
+.stretchH90 {
+    height:90%;
+}
+
+.floatL
+{
+	float: left;
+	display: block;
+}
+
+.floatR
+{
+	float: right;
+	display: block;
+}
+
+.nofloat, br
+{
+	float: none;
+	clear: both;
+}
+
+.left
+{
+	text-align: left;
+}
+
+.number, .right {
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.date {
+	width: 100px;
+	text-align: center;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.hidden {
+	display: none;
+}
+
+.hiddenV {
+	opacity: 0;
+	visibility: hidden;
+}
+
+a.download
+{
+	background-color: #444;
+	padding-left: 2px;
+	padding-right: 2px;
+	line-height: 18px;
+	border: 1px solid orange;
+	border-radius: 6px;
+}
+
+.shadow
+{
+	-webkit-box-shadow: -5px -5px 8px #444;
+	box-shadow: -5px -5px 8px #444;
+}
+
+.margin.shadow 
+{
+	-webkit-box-shadow: -5px 5px 8px #444;
+	box-shadow: -5px 5px 8px #444;
+}
+
+.shadowIn
+{
+	-webkit-box-shadow: inset -5px 10px 10px #AAA;
+	box-shadow: inset -5px 10px 10px rgba(160, 160, 160, 0.8);
+}
+
+.error
+{
+	color:red;
+	font-weight: bold;
+}
+
+/*differences between screen and print*/
+@media screen
+{
+	body, .defaultBg
+	{
+		background-color: rgb(221,221,221);
+	}
+
+	.translucent, .caption, .captionBelow, .edit
+	{
+		color:white;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+}
+	
+@media print
+{
+	body, .defaultBg
+	{
+		background-color: white;
+	}
+
+	.noprint, .icon, .icontr, .download, #fbContainer , #options, .pager, #counts, #pageCounts, #pathLinks, #dateRange, #state/*, #divbg*/
+	{
+		display:none;
+	}
+
+	.translucent, .caption, .captionBelow, .edit
+	{
+		color:black;
+		background-color: rgba(255, 255, 255, 0.5);
+	}	
+}
+
+/*CSS3 rotate test*/
+
+.transition {
+	-webkit-transition: all 1s ease-in-out; 
+	transition: all 1s ease-in-out; 
+}
+
+.rotator:hover { 
+	-ms-transform: rotate(-90deg); 
+	transform: rotate(-90deg); 
+}
+
+.scale:hover, .zoomHalf
+{
+	-webkit-transform: scale(.5,.5);
+	-ms-transform: scale(.5,.5);
+	transform: scale(.5,.5);
+}
+
+.scale2:hover, .zoomDouble
+{
+	-webkit-transform: scale(2,2);
+	-ms-transform: scale(2,2);
+	transform: scale(2,2);
+}
+
+.rotateL
+{
+	-ms-transform: rotate(-5deg); 
+	transform: rotate(-5deg); 
+}
+
+.rotateR
+{
+	-ms-transform: rotate(5deg); 
+	transform: rotate(5deg); 
+}
+
+
+input.numericField
+{
+	width: 40px;
+}
+
+.toolbar 
+{
+	padding: 4px;
+	vertical-align: middle;
+}
+
+.toolbar > div, .toolbar img
+{
+	vertical-align: middle;
+}
+
+/* Checkbox Styles */
+label.checkboxLabel
+{
+	margin: 2px;
+	min-width: 16px;
+	height: 16px;
+	font-size: 14px;
+	color: #FFF;
+	text-align: center;
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	transition: all .5s ease;
+	cursor: pointer;
+	background: #522;
+
+	box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+
+	display: inline-block;
+	border: 4px solid #BBB;
+	border-radius: 100px;
+}
+
+.checkButton img
+{
+	height: 14px;
+}
+
+/* Create the checked state */
+input[type=checkbox]:checked + label.checkboxLabel
+{
+	background: #26ca28;
+	font-weight: bold;
+	box-shadow:inset 1px 2px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: inset 1px 2px 3px rgba(0,0,0,0.5);
+	border: 4px solid #AEA;
+}
+
+/*========= MOBILE ==============*/
+
+body.mobile
+{
+	font-size: .6cm;
+}
+
+/* big UI widgets for mobile */
+.mobile input, .mobile select
+{
+	font-size: .6cm;
+}
+
+.translucent select, .translucent input
+{
+	background-color: rgba(0, 0, 0, 0.3);
+	color: white;
+	border: 1px solid gray;
+}
+
+.mobile .small
+{
+	font-size: .3cm;
+}
+
+.mobile label.checkboxLabel img, .mobile img.icon, .mobile img.icontr, .mobile .controls img
+{
+	min-height: .9cm;
+}
+
+.mobile label.checkboxLabel
+{	min-width: 1cm;
+	height: 1cm;
+	font-size: 0.9cm;
+	margin-left: 10px;
+	border: 8px solid #CCC;
+}
+
+.progressBar
+{
+	text-align: left;
+	color: white;
+	font-weight: bold;
+}
+
+.progressBar .progress
+{
+	background-color: rgba(0, 255, 0, 0.6);
+	margin: 1px;
+	text-align: right;
+}
+
+.progressBar .progessValue
+{
+	margin-right: 3px;
+}
+
+.progressBar .remainingValue
+{
+	margin-left: 3px;
+	margin-right: 3px;
+}

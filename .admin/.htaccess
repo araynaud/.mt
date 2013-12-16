@@ -1,0 +1,5 @@
+AuthName "MinorArt admin"
+PerlSetVar AuthFile "/.mp/.admin/.pw/.htpasswd"
+AuthType Basic
+Require valid-user
+ErrorDocument 401 "Login failed.

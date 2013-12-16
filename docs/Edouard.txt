@@ -1,0 +1,81 @@
+﻿
+Merci pour tes conseils et ton travail! 
+Je fairais un article sur le blog du mariage pour en parlé quand cela sera au point.
+Je suis en train doucement de faire un trie des photos avec Sybille. J'espere que pourra mettre cette sélection avec ton script.
+
+-----Message d'origine-----
+De : Arthur Raynaud [mailto:arthur_raynaud@hotmail.com] 
+Envoyé : mercredi 5 septembre 2012 00:47
+
+Je suis toujours en train de faire ma transition vers la nouvelle version, il manque encore qq fonctionnalites de l'ancienne.
+J'ai uploade qq modifications sur ton site, je continuerai pendant la semaine.
+
+En priorite:
+1 reproduire les fonctionnalites de lecture pour les visiteurs: slideshow, lecteur video et musique
+tri (sur serveur + client), pagination sur client
+
+2 solutions pour la generation d'images.
+3 remettre les fonctionnalites upload / admin et gestion des droits
+ 
+- Changer le fond?
+S'il y a un fichier appele .bg.jpg dans le dossier, c'est le fond (le meme fond s'appliquera aussi aux sous dossiers s'il n'en ont pas).
+Il y a un script admin pour ca, qui bien sur utilise GD...
+ > Ok, je n'ai pas vu le lien. Il faudra que tu me donnes le lien. J'avais essayé /.admin mais cela ne fonctionnait pas.
+
+ 
+- comment mettre de la musique? 
+Normalement, mettre les fichiers mp3 dans le dossier :)  
+Mais pour l'instant, la nouvelle page n'appelle pas le player musique. J'essaie de le remettre vite en service.
+Ceci dit je suis pas sur que ce soit une bonne idee avec ta bande passante. 
+
+> Tu as certainement raison... Vu les pb de débits et de perf' du serveur ce n'est peut-être pas une bonne idée dans mon cas. 
+ 
+- Est-ce que ton script gére aussi les vidéos?
+Qu'est ce que tu appelles gerer? :)
+Telecharger: oui (voir mes AVI our le mp4 de Xavier)
+ 
+Streaming: J'ai (re)active le lien vers le player video, mais il faut que ce soit une video en FLV ou MP4 pour que ca fonctionne.
+Donc faut que je mette une condition sur le type de video pour afficher ce lien ou pas.
+ 
+Convertir en mp4 et generer les minatures des videos: non, pas par le site.
+Mais je sais le faire : chez moi j'utilise des commandes de ffmpeg avec des scripts .bat windows pour tout un repertoire de videos.
+Je pourrais aussi te les passer.
+Il y aurait moyen de les appeler depuis PHP en commande externe, mais ca pose des problemes de deploiement specifique windows/linux (free me laissera jamais le faire), plus le pb de temps  d'execution.
+Donc ce serait a lancer sur ton PC, pas sur ce serveur.
+> Oui, bon ca c'est pas important. Je me disais que des vignettes ca aurait pu etre bien. Mais bon ce n'est pas trés important, vu que c'est compliqué. 
+
+ 
+- Pour le slide show, il y a des boutons sur le côté: supprimer, favoris... il y a des droits?
+Si on est logge en admin, ca apparait, sinon non. S'il apparaissent sans etre logge, je vais les enlever temporairement.
+Tu devrais configurer ton serveur avec des mots de passe differents pour .mp/.upload et .mp/.admin
+Pour l'instant, c'est desactive pour mettre la priorite sur la visualisation.
+> Heu.... Comment on se loggue? Moi j'ai l'impression qu'à la maison, j'ai ces icônes (sans s'être loggé). Et au boulot je ne les ai pas... Bon si c'est desactivé, je verrais plus tard 
+
+
+Sinon côté problémes, j'en ai toujours qqs un:
+- performance pour la génération de vignette. Faut dire que mon serveur est pas super performant, que j'ai des répertoires avec de nmobreuses photos de grosses taille (>3Mo) et que ta lib semble être assez consomatrice en ressources. Bref, le probléme de génération de vignette persiste. Je prend du temps pour générer toutes les vignettes pour que cela soit potable pour les visiteurs éventuelles (j'ai lancé un autre serveur sur mon portable pour accélerer).
+
+Oui j'ai teste, je n'ai jamais eu de tel probleme de perf pour ca. 2 minutes pour generer une image c'est assez catastrophique comme temps. Sur ton PC ca doit prendre 2 secondes?
+J'avais un script qui generait toutes les images, mais justement je ne l'utilise plus a cause de la limite de temps d'execution.
+Enfin je l'ai encore, on pourra essayer mais pas sur ton serveur (ou alors temps max= 10 heures?) 
+
+> Oui, le cpu du nas est trés petit (800 Mhz) et les images trés grosses. Sur mon pc, cela prend plutôt 5s (suivant la taille de l'image). Bon je crois que je vais continuer ma méthode de générer à la main sur mon portable et de transférer aprés.
+ 
+- les photos sembles affichés dans un ordre aléatoire. J'ai nomé mes répertoires: 01, 02, etc. Les répertoires ne sont pas par ordre alphabétiques :-(
+Dans l'ancienne version, j'avais tri par date chronologique (mais y a besoin de la librairie EXIF pour extraire la date de prise de vue, car on ne peut se fier a la date de modif ou de creation du fichier), et on pouvai choisir le mode de tri dans l'url : 
+ex: sort=rd (reverse date), sort=n (nom)
+Je reactive le tri des que je peux cette semaine. 
+
+> Ok ca c'est important pour moi! Merci. 
+ 
+Dans la meme veine, j'ai pas encore reactive la pagination, mais ce serait important car ca rame quand il y a des centaines d'images dans un dossier.
+J'ai aussi des fonctions de recherche, mais pas encore d'interface qui va avec.
+> Oui bonnes idées! La pagination serait trés pratique, vu le nombre de photos. 
+
+  
+Et tiens, pendant ce temps, Free a suspendu mon compte, faut que j'attende qu'ils le retablissent d'ici 72 heures :(
+Enfin ca m'empeche pas de developper sur mes PC Windows.
+> Bizarre. Heureusement, je n'ai jamais eu ce soucis. Pourquoi, ont-il fait cela?  
+
+ 
+ Arthur
