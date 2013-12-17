@@ -71,6 +71,10 @@ function getMediaFileInfo($relPath, $file="")
 		return $data;
 	}
 
+	$metadata = loadImageInfo($filePath);
+//debug("loadImageInfo", $metadata);
+	if($metadata) 
+		return $metadata;	
 	$ffprobe=getExePath("PROBE");
 	$cmd = makeCommand("[0] -i [1] -show_format -show_streams", $ffprobe, $filePath);
 	$output = execCommand($cmd, false, false);	
@@ -209,9 +213,23 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 //$cmd = "$ffmpeg -i $video -an -t 00:00:01 -ss 2 -r 1 -y -vf scale=300:-1 $image";
 //$cmd = "$ffmpeg -i $video -vf scale=300:-1 $image";
 
+function getVideoProperties($relPath, $file)
+{
+	$metadata = getMediaFileInfo($relPath, $file);
+	$data = array();
+	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
+	$data["width"]  = arrayGet($metadata, "STREAM.0.width");
+	$data["height"] = arrayGet($metadata, "STREAM.0.height");
+	return $data;
+}
+
 function convertVideo($relPath, $inputFile, $format, $size)
 {
 	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
+
+	$data = getVideoProperties($relPath, $inputFile);
+
+	$size = min($data["width"], $size);
 
 	$outputFile = getFilename($inputFile, $format);
 	$outputFile = combine($relPath, $outputFile);	
@@ -227,7 +245,7 @@ function convertVideo($relPath, $inputFile, $format, $size)
 //	$cmd = "[0] -i [1] -b:v 800k -vf scale=[3]:-1 -ab 128k -ac 2 [2]";
 //	$cmd = makeCommand($cmd, $ffmpeg, $inputFile, $outputFile, $size);
 
-	$cmd = "..\\config\\ffmpeg2mp4.bat [0] [1] [2] [3]";
+	$cmd = "..\\config\\ffmpeg2mp4.bat [0] [1] [2]";
 	$cmd = makeCommand($cmd, $inputFile, $outputFilename, $size);
 	$output = execCommand($cmd, false); //exec in background
 	
@@ -253,7 +271,7 @@ function remuxVideo($relPath, $video, $format)
 	//-acodec copy
 	$cmd = "[0] -i [1] -vcodec copy -ab 128k -ac 2 [2]";
 
-	$cmd = makeCommand($cmd, $ffmpeg, $video, $outputFile, $size);
+	$cmd = makeCommand($cmd, $ffmpeg, $video, $outputFile);
 	$output = execCommand($cmd, false); //exec in background
 	return $outputFile;
 }

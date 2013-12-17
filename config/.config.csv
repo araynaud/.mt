@@ -85,7 +85,7 @@ thumbnails.VIDEO.script;video_thumbnail.php
 ;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
 TYPES.IMAGE;jpg;jpeg;png;gif
 TYPES.AUDIO;mp3;wav;m4a;aac;ogg
-TYPES.VIDEO;avi;wmv;mov;mpg;mkv;m2t;m4v;mts;mp4;ogv;ogm
+TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;m4v;mts;mp4;ogv;ogm
 TYPES.VIDEO.STREAM;mp4;m4v;flv;3gp;ogv
 TYPES.VIDEO.HTML5;mp4;m4v;webm;ogm;ogv
 TYPES.SPECIAL;txt;csv;xml;php;chunk

@@ -1,8 +1,6 @@
 <?php
 require_once("../include/config.php");
 
-startTimer();
-
 $path=getPath();
 $relPath=getRelPath($path);
 $file=getParam("file");
@@ -14,7 +12,10 @@ $format=getParam("format");
 //if (fileHasType($file,"mts"))
 //	$outputFile=remuxVideo($relPath, $file, "mp4");
 //else
-	$outputFile=convertVideo($relPath, $file, "mp4", $size);
+
+startTimer();
+
+$outputFile=convertVideo($relPath, $file, "mp4", $size);
 
 $imgType=getImageTypeFromExt($outputFile);
 
@@ -22,7 +23,6 @@ if($debug)
 {
 	debug($outputFile,$imgType);
 	debug("REQUEST_URI", $_SERVER['REQUEST_URI']);
-	debug("Content-Type", "video/$imgType");
 	if(file_exists($outputFile))
 		debug('Content-Length: ', filesize($outputFile));
 }
@@ -47,7 +47,7 @@ if(!file_exists($outputFile))
 	
 //download video as attachment?
 
-header("Content-Type: video/$imgType");
+setContentType("video", "$imgType");
 header('Content-Length: ' . filesize($outputFile));
 
 $fp = fopen($outputFile, 'rb'); //stream the image directly from the generated file
