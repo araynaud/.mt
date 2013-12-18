@@ -77,10 +77,13 @@ thumbnails.sizes.tn;225
 thumbnails.sizes.ss;1000
 thumbnails.sizes.hd;1920
 thumbnails.IMAGE.script;image.php
-thumbnails.background;1000
 thumbnails.VIDEO.ext;jpg
 thumbnails.VIDEO.max_size;1000
 thumbnails.VIDEO.script;video_thumbnail.php
+
+;background image properties
+background.size;1000
+background.fit;stretch
 
 ;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
 TYPES.IMAGE;jpg;jpeg;png;gif
@@ -107,6 +110,20 @@ _FFMPEG.FFMPEG;ffmpeg.exe
 _FFMPEG.PROBE;ffprobe.exe
 _FFMPEG.QTFS;qt-faststart.exe
 _FFMPEG.MP4BOX;MP4Box.exe
+
+_FFMPEG.convert.title;convert video
+_FFMPEG.convert.format;mp4
+_FFMPEG.convert.script;ffmpeg2mp4.bat
+_FFMPEG.convert.width;960
+_FFMPEG.convert.height;540
+_FFMPEG.convert.video_bitrate;800k
+_FFMPEG.convert.audio_bitrate;128k
+
+_FFMPEG.extmp3.title;extract audio
+_FFMPEG.extmp3.format;mp3
+_FFMPEG.extmp3.script;extmp3.bat
+_FFMPEG.convert.audio_bitrate;128k
+
 ;put bat files in same directory
 
 ;Irfan View

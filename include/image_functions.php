@@ -161,7 +161,7 @@ function getSubdirForTnIndex($tn)
 function setBackgroundImage($relPath,$file,$size=0)
 {
 	if(!$size) 
-		$size=getConfig("thumbnails.background");
+		$size=getConfig("background.size");
 	createResizedImage($relPath, $file, ".bg.jpg", $size, $size);
 }
 

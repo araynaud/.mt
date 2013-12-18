@@ -36,6 +36,8 @@ function makeCommand()
 	{
 		$cmd = str_replace("[$n]", quoteFilename($param), $cmd);
 	}
+	//TODO: quote filenames only if [f$n]
+	//replace unused [$n] arguments with empty
 	return $cmd;
 }
 
@@ -72,9 +74,11 @@ function getMediaFileInfo($relPath, $file="")
 	}
 
 	$metadata = loadImageInfo($filePath);
-//debug("loadImageInfo", $metadata);
 	if($metadata) 
+	{
+		$metadata["source"] = getMetadataFilename($filePath);
 		return $metadata;	
+	}
 	$ffprobe=getExePath("PROBE");
 	$cmd = makeCommand("[0] -i [1] -show_format -show_streams", $ffprobe, $filePath);
 	$output = execCommand($cmd, false, false);	
@@ -216,20 +220,44 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 function getVideoProperties($relPath, $file)
 {
 	$metadata = getMediaFileInfo($relPath, $file);
+debug("getMediaFileInfo", $metadata);
 	$data = array();
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
-	$data["width"]  = arrayGet($metadata, "STREAM.0.width");
+	$data["width"] = arrayGet($metadata, "STREAM.0.width");
 	$data["height"] = arrayGet($metadata, "STREAM.0.height");
+	$data["display_aspect_ratio"] = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
+	$data["height2"] = $data["width"] / $data["display_aspect_ratio"];
+	$data["width2"] = $data["height"] * $data["display_aspect_ratio"];
+
+	$videoBitrate = getConfig("_FFMPEG.convert.video_bitrate");
+	$audioBitrate = getConfig("_FFMPEG.convert.audio_bitrate");
+	$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
+
 	return $data;
+}
+
+function fractionValue($fraction)
+{
+	$fr = explode(":", $fraction);
+	return $fr[0] / $fr[1];
+}
+
+function estimateFileSize($duration, $videoBitrate, $audioBitrate=0)
+{
+	$bps = ($videoBitrate + $audioBitrate) / 8 * 1000; //kbits to bytes / sec
+	return $bps * $duration;
 }
 
 function convertVideo($relPath, $inputFile, $format, $size)
 {
+
+//if input is MPEG or MPEG2 : deinterlace with yadif filter?
 	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
+	$prop = getVideoProperties($relPath, $inputFile);
+debug("getVideoProperties", $prop);
+	$size = min($prop["width"], $size); //resize only if input video is larger than $size
 
-	$data = getVideoProperties($relPath, $inputFile);
-
-	$size = min($data["width"], $size);
+//calculate height from display_aspect_ratio
 
 	$outputFile = getFilename($inputFile, $format);
 	$outputFile = combine($relPath, $outputFile);	
@@ -241,9 +269,6 @@ function convertVideo($relPath, $inputFile, $format, $size)
 		unlink($outputFile);
 //use metadata display_aspect_ratio to calculate size
 //round to multiples of 2 or 4
-
-//	$cmd = "[0] -i [1] -b:v 800k -vf scale=[3]:-1 -ab 128k -ac 2 [2]";
-//	$cmd = makeCommand($cmd, $ffmpeg, $inputFile, $outputFile, $size);
 
 	$cmd = "..\\config\\ffmpeg2mp4.bat [0] [1] [2]";
 	$cmd = makeCommand($cmd, $inputFile, $outputFilename, $size);
