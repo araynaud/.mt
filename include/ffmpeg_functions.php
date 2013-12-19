@@ -93,13 +93,12 @@ function getMediaFileInfoFormat($relPath, $file="", $format)
 	return $output;
 }
 
-
 //from ffprobe output
 function parseFfprobeMetadata($output)
 {
 	$metadata=array();
 	$sections=array();
-	
+	if(!$output) return $sections;
 	foreach($output as $item)
 	{
 		if (preg_match('/^\[\/(.+)\]$/s', $item, $meta)) //end section [/STREAM]
