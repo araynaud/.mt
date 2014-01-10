@@ -4,7 +4,7 @@ require_once("include/config.php");
 startTimer();
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $target=getParam("target");
 $size=getParam("size");

@@ -12,10 +12,13 @@ http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=1
 Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
+Midnight Oil - The Dead Heart http://www.youtube.com/watch?v=16bFBzx7I_0
 
+Hoodoo Gurus - 1000 Miles Away : http://www.youtube.com/watch?v=HDlavnA1ck8
+-----------
 if !ffmpeg enabled
-upload .ss images for videos
-function uploadThumbnail($subdir)
+OK upload .ss images for videos. function uploadThumbnail($subdir)
+if no .ss : use .tn
 
 -----------
 BUGS

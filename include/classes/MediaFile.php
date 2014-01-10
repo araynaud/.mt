@@ -78,6 +78,8 @@ class MediaFile extends BaseObject
 				$this->getImageInfo($tnPath);
 			}
 			$this->addThumbnail("ss", "jpg");
+			if(!$this->_thumbnails[1]->exists && !isFfmpegEnabled())
+				unset($this->tnsizes[1]);
 //				$this->getMetadata();
 		}
 //		else if ($this->type=="AUDIO")

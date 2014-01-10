@@ -4,6 +4,8 @@ session_start();
 $path=getPath();
 $album = new Album($path, false);
 $relPath=$album->getRelPath();
+$urlPath=$album->getAbsPath();
+$urlPath = $urlPath ? "/$urlPath" : $relPath;
 $title=$album->getTitle();
 $description=$album->getDescription();
 $depth=$album->getDepth();
@@ -98,13 +100,7 @@ $(document).ready(function()
 $(window).load(function()
 {	
 	if(!window.album) return;
-
 	$(".lOption").each(UI.toggleLayoutOption); 
-/*	.each(function()
-	{
-		var id = this.id.substringAfter("_");
-		$('#'+id).toggleEffect($(this).isChecked());
-	});*/
 });
 //if columns : new columns on a different row.
 //make page container .nofloat
@@ -116,7 +112,6 @@ $(window).resize(function(event)
 	UI.setContentHeight();
 	UI.setContentWidth();
 	UI.setColumnWidths();
-
 });
 </script>
 
@@ -156,7 +151,7 @@ $(window).resize(function(event)
 		<span class="small" id="pathLinks">
 			<?php pathLinks($path,true)?>
 		</span>
-		<a class="spaceLeft" href="<?php echo $relPath?>"><?php echo $title?></a>
+		<a class="spaceLeft" href="<?php echo $urlPath?>"><?php echo $title?></a>
 		<span class="small" id="counts"></span>
 		<img class="icon" src="icons/slideshow.png" id="slideshowIcon" alt="Slide show" title="Slide show (Space)" onclick="UI.slideshow.display()" />
 		<img class="icon" src="icons/play.png" id="playIcon" alt="Play videos" title="Play all videos (V)" onclick="UI.playAllVideos()"/>

@@ -128,7 +128,9 @@ function addScript($scriptPath, $file="")
 
 function addStylesheet($relPath)
 {
-	$stylesheet=findInParent($relPath,"night.css",true);
+	$stylesheet = findInParent($relPath,"night.css",true);
+	$stylesheet = resolveMappedPath($stylesheet);
+
 	if (!empty($stylesheet)) {
 ?><link type="text/css" rel="stylesheet" media="screen" href="<?php echo $stylesheet?>"/>
 <?php }
@@ -137,7 +139,8 @@ function addStylesheet($relPath)
 
 function displayBackground($path, $hidden=false)
 {
-	$background=findInParent($path, ".bg.jpg", false);
+	$background = findInParent($path, ".bg.jpg", false);
+	$background = resolveMappedPath($background);
 	$class=isIE()? "bgIE" : "bg";
 	if (!empty($background)) {
 ?>	<div id="divbg" class="bg noprint">

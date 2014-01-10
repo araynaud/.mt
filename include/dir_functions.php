@@ -104,7 +104,7 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 	//recursion in parent dir
 	if($recurse < 0 && $dir!=pathToDataRoot())
 	{
-		$newDir=getParent($dir);		
+		$newDir=getParent($dir);
 		if($remaining)
 		{
 			if(count($files) >= $remaining) break;
@@ -525,7 +525,7 @@ function findFilesInParent($relPath,$file,$getOther=false, $maxCount=0, $appendP
 		
 	$search["depth"]=-10;
 	$search["maxCount"]=$maxCount; // find only first one
-	$found=listFiles($relPath,$search);
+	$found=@listFiles($relPath,$search);
 	if(!$found) 
 		return false;
 

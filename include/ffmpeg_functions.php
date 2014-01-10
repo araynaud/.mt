@@ -73,10 +73,10 @@ function getMediaFileInfo($relPath, $file="")
 		return $data;
 	}
 
-	$metadata = loadImageInfo($filePath);
+	$metadata = loadImageInfo($relPath, $file);
 	if($metadata) 
 	{
-		$metadata["source"] = getMetadataFilename($filePath);
+		$metadata["source"] = getMetadataFilename($relPath, $file);
 		return $metadata;	
 	}
 	$ffprobe=getExePath("PROBE");

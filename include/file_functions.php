@@ -172,6 +172,9 @@ function LoadConfiguration($path=null, &$configData = array())
 	$configFilename=combine($appRootDir,"config",".config.csv");
 	$configData=readCsvFile($configFilename, 0, ";", ".");
 
+	$configFilename=combine($appRootDir,"config",".config.mapping.csv");
+	readCsvFile($configFilename, 0, ";", ".", $configData);
+
 //2 default config by path depth
 	$depth=pathDepth($path);
 	$configFilename=combine($appRootDir,"config",".config.$depth.csv");
@@ -526,13 +529,16 @@ function deleteMediaFile($relPath,$file)
 function createDir($relPath,$dir="")
 {
 	//create output folder if necessary
-	$outputDir= combine($relPath, $dir);
-	if (file_exists($outputDir))	return false;
-	//TODO create parent subdirs if they do not exist, recursive
 debug("createDir $dir in ",$relPath);
+	$outputDir = combine($relPath, $dir);
+	$ex=file_exists($outputDir);
+	debug("file_exists $outputDir", $ex);
+	if(file_exists($outputDir))
+		return false;
+	//TODO create parent subdirs if they do not exist, recursive
 	$dir = dirname($dir);
 	if($dir && $dir!=".")
 		createDir($relPath,$dir);
-	return mkdir ($outputDir, 0700);
+	return mkdir($outputDir, 0700);
 }
 ?>

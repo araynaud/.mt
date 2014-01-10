@@ -5,6 +5,7 @@ class Album extends BaseObject
 //    private $config;
     private $path;
     private $relPath;
+    private $urlAbsPath;
 	private $buildTime;
     private $name;
     private $title;
@@ -28,11 +29,11 @@ class Album extends BaseObject
 	{
 		global $config;
 		global $dateIndex;
-		global $relPathG;
 	
         $this->user = new User();
         $this->path = $path;
 		$this->getRelPath();
+		$this->getAbsPath();
 		$this->getTitle();
 		$this->getDescription();
 		if($details)
@@ -41,27 +42,26 @@ class Album extends BaseObject
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath,$this->search); //TODO : group by name / make MediaFile objects
 			$this->dirs=selectDirs($this->relPath,$allFiles);
-			//$relPathG=$this->relPath;
 			$this->_allFiles=selectFilesByType($allFiles,"VIDEO|IMAGE");
 			$this->_allFiles=array_merge($this->_allFiles, $this->dirs);
 			//Group by name / make MediaFile objects
 			$dateIndex=getRefreshedDateIndex($this->relPath,$this->_allFiles,true);
 			//$this->dateIndex=$dateIndex;
-			createDir($this->relPath,".tn");
-			$this->mediaFiles=$this->createMediaFiles($this->relPath,$allFiles,$dateIndex);
+//			createDir($this->relPath,".tn");
+			$this->mediaFiles=$this->createMediaFiles($allFiles, $dateIndex);
 			if($this->search["sort"])
-				$this->mediaFiles=sortFiles($this->mediaFiles,$this->search["sort"],$dateIndex);
+				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $dateIndex);
 			$this->mediaFiles=array_values($this->mediaFiles);
 
 			$this->oldestDate=getOldestFileDate($this->relPath);
 			$this->newestDate=getNewestFileDate($this->relPath);
 			$this->cDate=$this->oldestDate;
 			$this->mDate=$this->newestDate;
-					
-			$this->config = $config;
+			if($this->search["conf"])			
+				$this->config = $config;
 		}
 		//$this->jquery = allowJqueryFX();
-		$this->private= isPrivate($path);
+		$this->private = isPrivate($path);
 		$this->buildTime=getTimer();
     }
 
@@ -74,6 +74,7 @@ class Album extends BaseObject
 		$this->search["sort"]=getParam("sort");
 		$this->search["depth"]=$this->getDepth();
 		$this->search["metadata"]=getParamBoolean("metadata");
+		$this->search["conf"]=getParamBoolean("conf",true);
 
 		return $this->search;
 	}
@@ -89,8 +90,17 @@ class Album extends BaseObject
     public function getRelPath()
 	{
 		if(!$this->relPath)
-			$this->relPath=getRelPath($this->path);
+			$this->relPath = getDiskPath($this->path);
+
 		return $this->relPath;
+	}
+
+    public function getAbsPath()
+	{
+		if(isMappedPath($this->path) && !$this->urlAbsPath)
+			$this->urlAbsPath = $this->path;
+
+		return $this->urlAbsPath;
 	}
 	
     public function getTitle()
@@ -113,7 +123,7 @@ class Album extends BaseObject
     }
 	
 	//create array of MediaFile objects
-	private function createMediaFiles($relPath,$files,$dateIndex)
+	private function createMediaFiles($files, $dateIndex)
 	{
 		$distinct=array();
 		$prevDir="";
@@ -121,7 +131,6 @@ class Album extends BaseObject
 		{
 			//split subdir/file.ext1:ext2
 			splitFilePath($file,$subdir,$filename);
-//debug("createMediaFiles	splitFilePath", "$file , $subdir , $filename");
 			splitFilename($filename,$name,$ext);
 			$key=combine($subdir,$name);
 			$filePath=combine($this->path,$subdir);

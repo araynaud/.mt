@@ -6,7 +6,7 @@ function getFileData(&$getData, $path, $file)
 	global $config;
 
 	$arrays=getParamBoolean("arrays");
-	$relPath=getRelPath($path);
+	$relPath=getDiskPath($path);
 	$filePath=combine($relPath, $file);
 	switch (strtolower($getData))
 	{
@@ -49,7 +49,7 @@ $data=objToArray($data, true, true);
 
 $save=getParamBoolean("save");
 if($save)
-	saveImageInfo($filePath, $data);
+	saveImageInfo($relPath, $file, $data);
 
 $data["fileDate"] = getFileDate($filePath);
 $data["time"] = getTimer();

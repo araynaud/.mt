@@ -17,7 +17,7 @@ function uploadFile($filePath, $destPath, $subdir="")
 startTimer();
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $debug = BtoS(isDebugMode());
 $chunk = getParam("chunk",0);
@@ -96,7 +96,7 @@ if(!file_exists($metadataFilename))
 {
 	$data = getMediaFileInfo($filePath);
 	if($data)
-		saveImageInfo($filePath, $data);
+		saveImageInfo($relPath, $file, $data);
 }
 
 $response["filesize"] = filesize($filePath);	

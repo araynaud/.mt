@@ -432,7 +432,7 @@ function getImageInfo($file, $img=null, &$imageInfo=array())
 
 	getImageSizeInfo($file, $imageInfo);
 	if(isTransparentType($imageInfo))
-		loadImageInfo($file, $imageInfo);
+		loadImageInfo($file, "", $imageInfo);
 debug("loadImageInfo", $imageInfo);
 
 //do not return if GIF or PNG
@@ -450,7 +450,7 @@ debug("getImageSizeInfo", $imageInfo);
 debug("img", $img);
 	getImageTransparencyInfo($file, $img, $imageInfo);
 debug("saveImageInfo",$imageInfo);
-	saveImageInfo($file, $imageInfo);
+	saveImageInfo($file, "", $imageInfo);
 
 debug("getImageInfo return", $imageInfo);
 	return $imageInfo;
@@ -500,33 +500,36 @@ debug("alpha", @$imageInfo["alpha"]);
 	return $imageInfo;
 }
 
-function loadImageInfo($file, &$imageInfo=array())
+function loadImageInfo($relPath, $file="", &$imageInfo=array())
 {
-	$csvFilename = getMetadataFilename($file);
+	$csvFilename = getMetadataFilename($relPath, $file);
 	readCsvFile($csvFilename, 0, ";", ".", $imageInfo);
 	if(isset($imageInfo["type"]))
-		$imageInfo = resetMedadata($file);
+		$imageInfo = resetMedadata($relPath, $file);
 	return $imageInfo;
 }
 
-function saveImageInfo($file, $imageInfo)
+function saveImageInfo($relPath, $filename, $imageInfo)
 {
-	$csvFilename = getMetadataFilename($file,"",true);
-debug("saveImageInfo", $csvFilename);
+	$csvFilename = getMetadataFilename($relPath, $filename, true);
 	if($csvFilename)
 		writeCsvFile($csvFilename, $imageInfo, true);
 }
 
-function resetMedadata($file)
+function resetMedadata($relPath, $file)
 {
-	saveImageInfo($file, null);
+	saveImageInfo($relPath, $file, null);
 	return array();
 }
 
 function getMetadataFilename($relPath, $filename="", $createDir=false)
 {
+	debug("getMetadataFilename", "($relPath, $filename)");
 	if(!$filename)
+	{
 		splitFilePath($relPath, $relPath, $filename);
+		debug("splitFilePath", "($relPath, $filename)");
+	}
 	if(!file_exists($relPath) && !$createDir) return false;
 	createDir($relPath,".tn");
 	$filename = getFilename($filename, "csv");

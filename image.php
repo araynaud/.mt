@@ -6,7 +6,7 @@ error_reporting(E_ERROR | E_PARSE | E_WARNING | E_NOTICE);
 startTimer();
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 
 //input file
 $url=getParam("url");
@@ -64,7 +64,7 @@ if($transform) //only for JPEG, angle multiple of 90
 
 	$tnPath=findThumbnail($relPath, $file, ".ss");
 	if($tnPath)		deleteFile($tnPath);
-	resetMedadata($inputFile);
+	resetMedadata($relPath, $file);
 
 	if($format == "ajax")
 	{

@@ -145,10 +145,10 @@ $value=null;
 $empty=isEmptyValue($value);
 debug(jsValue($value), $empty);
 
-//$bg=findInParent($relPath,".bg.jpg");
-//debug("Background", $bg);
-//$stylesheet=findInParent($path,"night.css",true);
-//debug("Stylesheet", $stylesheet);
+$bg=findInParent($relPath,".bg.jpg");
+debug("Background", $bg);
+$stylesheet=findInParent($path,"night.css",true);
+debug("Stylesheet", $stylesheet);
 //addStylesheet($relPath);
 debug();
 

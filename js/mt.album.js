@@ -17,7 +17,7 @@ function Album(data)
 	else if(isString(data))
 		this.url=data;
 
-	this.relPath = String.combine(Album.serviceUrl, this.relPath);
+	this.relPath = this.urlAbsPath ? "/" + this.urlAbsPath : String.combine(Album.serviceUrl, this.relPath);
 	this.dateRange = this.getDateRange();
 
 	this.loadDisplayOptions();

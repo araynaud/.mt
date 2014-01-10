@@ -71,13 +71,15 @@ function getPath($path="")
 	{
 		if(isset($_GET["path"]))
 			$path=$_GET["path"];
-		else if(isset($_SERVER["QUERY_STRING"]))
-			$path=$_SERVER["QUERY_STRING"];
+		//else if(isset($_SERVER["QUERY_STRING"]))
+		//	$path=$_SERVER["QUERY_STRING"];
 	}
 	if(empty($path))
 		return "";
 
 	$path=urldecode($path);
+	return $path;
+
 	//if not, parse level by level
 	$defaultRoot=pathToDataRoot();
 	$pathArray = pathFragments($path); //remove empty between //
@@ -103,6 +105,48 @@ function getRelPath($path)
 	if(empty($path))
 		return $defaultRoot;
 	return "$defaultRoot/$path";		
+}
+
+function getDiskPath($path)
+{	
+	$mapping = isMappedPath($path);
+	if(!$mapping) return getRelPath($path);
+
+	$path2 = substringAfter($path,"/");
+	$diskPath = combine($mapping,$path2);
+	return $diskPath;		
+}
+
+function isMappedPath($path)
+{	
+	$path1 = substringBefore($path,"/");
+	$mapping = getConfig("_mapping.$path1");
+debug("_mapping.$path1", $mapping);
+	if(!$mapping) return false;
+	return $mapping;
+}
+
+//disk path to /absPath
+//search in mappings for 1st value starting with this path
+//find key
+function resolveMappedPath($path)
+{	
+	//$path1 = substringBefore($path,"/");
+//debug("resolveMappedPath $path", $path);
+	$mapping = getConfig("_mapping");
+	if(!$mapping) return $path;
+	debug("_mapping", $mapping);
+	$key="";
+	foreach ($mapping as $key => $value)
+	{
+//debug("resolveMappedPath $path $key", $value);
+		if((startsWith($path, $value)))
+		{
+			$absPath = str_replace($value, $key, $path);
+			return "/$absPath";
+		}
+	}
+	return $path;
 }
 
 function pathDepth($path)
