@@ -97,9 +97,9 @@ class Album extends BaseObject
 
     public function getAbsPath()
 	{
-		if(isMappedPath($this->path) && !$this->urlAbsPath)
-			$this->urlAbsPath = $this->path;
-
+//		if(isMappedPath($this->path) && !$this->urlAbsPath)
+		if(!$this->urlAbsPath)
+			$this->urlAbsPath = resolveMappedPath($this->relPath);
 		return $this->urlAbsPath;
 	}
 	

@@ -1,4 +1,4 @@
-var APP_DIR=".mp";
+var APP_DIR="mt";
 var DATA_ROOT="";
 
 function trimChar(str,ch)

@@ -2,10 +2,14 @@
 require_once("include/config.php");
 session_start();
 $path=getPath();
+debugVar("path");
 $album = new Album($path, false);
 $relPath=$album->getRelPath();
 $urlPath=$album->getAbsPath();
-$urlPath = $urlPath ? "/$urlPath" : $relPath;
+$urlPath = coalesce($urlPath, $relPath);
+debugVar("relPath");
+debugVar("urlPath");
+
 $title=$album->getTitle();
 $description=$album->getDescription();
 $depth=$album->getDepth();
