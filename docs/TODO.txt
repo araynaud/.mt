@@ -13,7 +13,6 @@ Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphith
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
 Midnight Oil - The Dead Heart http://www.youtube.com/watch?v=16bFBzx7I_0
-
 Hoodoo Gurus - 1000 Miles Away : http://www.youtube.com/watch?v=HDlavnA1ck8
 -----------
 if !ffmpeg enabled
@@ -24,6 +23,22 @@ if no .ss : use .tn
 BUGS
 Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
+
+
+----
+OK Multiple separate data roots (have to be mapped with IIS):
+_mapping.MusicVideos=I:/MusicVideos
+_mapping.Racing=I:/Racing
+_mapping.pictures;C:/Users/arthur.raynaud/Pictures
+_mapping.photos;E:/Photos
+_mapping._root;pictures
+
+TODO: invisible root. 2013 => pictures/2013
+
+Add Listing mapped dirs in root dir
+
+refactor getPath / getRelPath / getDiskPath
+filter mappings with file_exists / is_dir
 
 -----------
 data mediafile: use &name=DSC_0135
@@ -955,12 +970,6 @@ apply default sort and count per page from config
 
 
 TODO
-
-----
-DATA_ROOT: can be separated from APP ROOT
-Multiple separate data roots (have to be mapped with IIS):
-_mapping.MusicVideos=I:\MusicVideos
-_mapping.Racing=I:\Racing
 
 ---------
 

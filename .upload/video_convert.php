@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $tnDir=getParam("target",".tn");
 $size=getParam("size", 960);
