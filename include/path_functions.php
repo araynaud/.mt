@@ -74,10 +74,13 @@ function getPath($path="")
 		//else if(isset($_SERVER["QUERY_STRING"]))
 		//	$path=$_SERVER["QUERY_STRING"];
 	}
-	if(empty($path))
-		return "";
+	//if(empty($path))	return "";
 
 	$path=urldecode($path);
+	$root = getConfig("_mapping._root");
+	if($root && !startsWith($path,$root) && !isMappedPath($path))
+		$path = combine($root, $path);
+
 	return $path;
 
 	//if not, parse level by level

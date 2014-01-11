@@ -959,8 +959,8 @@ TODO
 ----
 DATA_ROOT: can be separated from APP ROOT
 Multiple separate data roots (have to be mapped with IIS):
-DATA_ROOT.MusicVideos=I:\MusicVideos
-DATA_ROOT.Racing=I:\MusicVideos
+_mapping.MusicVideos=I:\MusicVideos
+_mapping.Racing=I:\Racing
 
 ---------
 
