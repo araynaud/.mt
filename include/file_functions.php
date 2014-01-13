@@ -165,7 +165,7 @@ function readArray($filename)
 // in .mp/config, then data root, then subdirs to current path
 function LoadConfiguration($path=null, &$configData = array())
 {
-	$relPath=getRelPath($path);
+	$relPath=getDiskPath($path);
 
 	$appRootDir=pathToAppRoot();
 //1 default config in .mp/config
@@ -221,7 +221,7 @@ function LoadConfiguration($path=null, &$configData = array())
 //config for the current dir only
 function getDirConfig($path, $key=null)
 {
-	$relPath=getRelPath($path);
+	$relPath=getDiskPath($path);
 	$depth=pathDepth($path);
 
 //1 default config by path depth

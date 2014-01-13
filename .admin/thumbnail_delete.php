@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $format= getParam('format','html');
 $title = makePathTitle($path);
 $subfolder=getParam("subfolder",".tn");

@@ -4,7 +4,7 @@ session_start();
 $user=session_login();
 set_admin() ; 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file","readme.txt"); // file or folder description file
 
 splitFilename($file,$filename,$ext);	

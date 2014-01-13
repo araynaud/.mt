@@ -20,7 +20,7 @@ require_once("classes/MediaFile.php");
 require_once("classes/Album.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+//$relPath=getDiskPath($path);
 
 if(isDebugMode())
 	header("Content-Type: text/plain");

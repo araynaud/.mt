@@ -16,8 +16,8 @@ if(isset($_POST['path']))
 else
 	$path=$_GET["path"]; //getPath();
 
-$dataRoot = getRelPath("");
-$relPath=getRelPath($path);
+$dataRoot = getDiskPath("");
+$relPath=getDiskPath($path);
 $index=@$_POST['index'];
 
 $response=array();

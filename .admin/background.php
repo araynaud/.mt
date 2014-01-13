@@ -4,10 +4,10 @@ error_reporting(E_ERROR | E_PARSE | E_WARNING | E_NOTICE);
 require_once("../include/config.php");
 
 //original file
-$path=getPath();
-$relPath=getRelPath($path);
+$path = getPath();
+$relPath = getDiskPath($path);
 $file = getParam('file');
-$format= getParam('format','html');
+$format = getParam('format','html');
 
 //TODO: apply .bg to other directory (parent or sub?)
 setBackgroundImage($relPath,$file);

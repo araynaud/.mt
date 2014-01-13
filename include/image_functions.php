@@ -226,13 +226,13 @@ debug("outputImage $dstFilename", $img);
 function getTempImageName()
 {
 	global $config;
-	return getRelPath(combine(@$config["TEMP_DIR"], session_id() . ".gd2"));
+	return getDiskPath(combine(@$config["TEMP_DIR"], session_id() . ".gd2"));
 }
 
 function getUndoImageName()
 {
 	global $config;
-	return getRelPath(combine(@$config["TEMP_DIR"], session_id() . "_0.gd2"));
+	return getDiskPath(combine(@$config["TEMP_DIR"], session_id() . "_0.gd2"));
 }
 
 function loadTempImage($undo=false)
@@ -613,7 +613,7 @@ function colorMatches($pixelColor, $newColor, $prevColor, $tolerance)
 	return false;
 }
 
-function replaceColor($img, $startColor, $tolerance, $newColor)
+function replaceColor($img, $imageInfo, $startColor, $tolerance, $newColor)
 {
 	global $iterations, $startColor;
 	$result=0;
@@ -629,11 +629,11 @@ function replaceColor($img, $startColor, $tolerance, $newColor)
 	return $result;
 }
 
-function replacePixelColor($img, $x, $y, $tolerance, $newColor)
+function replacePixelColor($img, $imageInfo, $x, $y, $tolerance, $newColor)
 {
 	global $imgWidth, $imgHeight, $iterations, $startColor;
 	$startColor = imagecolorat($img, $x, $y);
-	return replaceColor($img, $startColor, $tolerance, $newColor);
+	return replaceColor($img, $imageInfo, $startColor, $tolerance, $newColor);
 }
 
 function isInImage($img,$x,$y)

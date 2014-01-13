@@ -2,7 +2,7 @@
 require_once("include/config.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $contentType=getParam("type");
 $download=getParamBoolean("download",empty($contentType));

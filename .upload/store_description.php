@@ -5,7 +5,7 @@ require_once("../include/config.php");
 
 $user = current_user();
 $path=getPath($_POST['path']);
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 ?>
 <html>
 <head>

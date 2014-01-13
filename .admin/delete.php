@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $title = makePathTitle($path);
 $file = getParam('file');
 $format= getParam('format','html');

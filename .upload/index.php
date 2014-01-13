@@ -12,7 +12,7 @@ if($format=="ajax")
 }
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 
 ?>
 <!DOCTYPE html>

@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 set_admin();
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $user=session_login();
 
 $format=getParam('format','html');

@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $title = makePathTitle($path);
 $file = getParam('file');
 $lastFile = getParam('last');
@@ -11,7 +11,7 @@ $format= getParam('format','html');
 $defaultTarget=".bad";
 $target = getParam('to',$defaultTarget);
 $target=combine($path,$target);
-$relTarget=getRelPath($target);
+$relTarget=getDiskPath($target);
 
 $message="";
 $message = "from " . realpath($path) . " to " .  realpath($target) . ". ";

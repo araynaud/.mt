@@ -3,7 +3,7 @@ require_once("../include/config.php");
 session_start(); 
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $filePath=combine($relPath,$file);
 $imageUrl= "../image.php?" . $_SERVER["QUERY_STRING"];

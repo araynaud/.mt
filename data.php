@@ -41,7 +41,7 @@ $includeEmpty=getParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file"); // file or folder description file
 $filePath=combine($relPath, $file);
 $data=getFileData($getData, $path, $file);

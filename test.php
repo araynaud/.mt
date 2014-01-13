@@ -84,9 +84,13 @@ $dir = dirname($dir);
 debug("dirname $dir",dirname($dir));
 
 $path=getPath();
-$relPath=getRelPath($path);
 debugVar("path");
+$relPath=getRelPath($path);
 debugVar("relPath");
+$relPath=getDiskPath($path);
+debugVar("relPath");
+$absPath=resolveMappedPath($path);
+debugVar("absPath");
 debug("currentDir",realpath(""));
 debug("relPath $relPath",realpath($relPath));
 

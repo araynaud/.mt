@@ -5,7 +5,7 @@ $user = session_login();
 set_upload();
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $defaultFile="readme.txt";
 $file=getParam("file"); // file or folder description file
 $filePath=combine($relPath,$file);
@@ -41,7 +41,7 @@ if($add) //make comment filename
 	<script type="text/javascript">
 		$(document).ready(function()
 		{
-			makeBackgroundGradients();		
+			UI.makeBackgroundGradients();		
 		});
 	</script>
 </head>

@@ -4,7 +4,7 @@ require_once("../include/config.php");
 
 $user=session_login();
 $path=getPath($_POST['path']);
-$content_dir=getRelPath($path);
+$content_dir=getDiskPath($path);
 ?>
 <html>
 <head>

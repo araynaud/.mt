@@ -6,7 +6,7 @@ text
 require_once("include/config.php");
 //error_reporting(E_PARSE);
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 
 $file=getParam("file","readme.txt");
 splitFilename($file,$name,$ext);

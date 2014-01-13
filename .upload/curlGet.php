@@ -6,7 +6,7 @@ header("Content-Type: text/plain");
 $url=getParam("url");
 
 $path=getPath();
-$relPath=getRelPath($path);
+$relPath=getDiskPath($path);
 $file=getParam("file");
 $filePath = $file ? combine($relPath, $file) : "";
 

@@ -4,7 +4,6 @@ require_once("../include/config.php");
 
 $user = current_user();
 $path=getPath();
-//$relPath=getRelPath($path);
 ?>
 <!DOCTYPE html>
 <html>
