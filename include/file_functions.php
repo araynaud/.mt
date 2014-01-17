@@ -48,6 +48,14 @@ function getFilename($file, $ext="", $append=false)
 	return $ext ? "$file.$ext" : $file;
 }
 
+//key : filename without extension and special characters
+function getFileId($filename, $type="")
+{
+	$id =  preg_replace("/[\.#\(\)\{\}' -]/", "_", $filename);
+	if(!$type)	return $id;
+	return $type . "_$id";
+};
+
 function readTextFile($filename)
 {
 	if(!file_exists($filename) || filesize($filename)==0 || is_dir($filename))
@@ -433,7 +441,7 @@ function parseDateFromFilename($filename)
 	$sep="[-_:]?";
 //16 105_10151545228463135_1547522270_n	
 	$dateRegex="(1[0-9]{3}|2[0-9]{3})$sep(0[1-9]|1[012])$sep(0[1-9]|[12][0-9]|3[01])";  //yyyy-mm-dd or yyyymmdd
-	$timeRegex="(0[1-9]|1[0-9]|2[0-3])$sep([0-5][0-9])$sep([0-5][0-9])";
+	$timeRegex="(0[0-9]|1[0-9]|2[0-3])$sep([0-5][0-9])$sep([0-5][0-9])";
 	$dateTimeRegex="$dateRegex$sep$timeRegex";
 	$status = preg_match("/$dateTimeRegex/",$filename,$matches);
 //debug("$dateTimeRegex $filename",$matches);

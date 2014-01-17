@@ -1,5 +1,6 @@
 var APP_DIR="mt";
 var DATA_ROOT="";
+var MAPPING_ROOT="pictures";
 
 function trimChar(str,ch)
 {
@@ -29,8 +30,11 @@ function redirect()
 		path=trimChar(path,"/");
 	}
 
-	var APP_PATH="/" + combine(DATA_ROOT,APP_DIR);
+	var APP_PATH="/" + combine(DATA_ROOT, APP_DIR);
 
+	if(path.indexOf(MAPPING_ROOT+"/")==0)
+		path=path.substr(MAPPING_ROOT.length+1);
+	
 	if(path.length>0) 
 		APP_PATH += "?path=" + path;
 	window.location = APP_PATH;

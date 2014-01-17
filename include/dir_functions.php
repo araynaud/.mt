@@ -75,8 +75,7 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 				
 			if(!fileHasNameAndType($file,@$search["name"],@$search["exts"],@$search["start"],@$search["end"])) continue;
 //use name as key
-//			splitFilename($file,$key,$ext);
-			$key=combine($subPath,$key);
+			$key=combine($subPath,$file);
 //debug("splitFilename", "file=$file / key=$key / ext=$ext");
 			if(@$search["tnDir"])
 			{	
@@ -84,12 +83,8 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 				if($thumb)
 					$files[$key] = combine($subPath,$search["tnDir"],$thumb);
 			}
-			else if(isset($files[$key])) //other file with same name: append extension
-			{
-				$files[$key] .= ":$ext";
-			}
 			else
-				$files[$key] = combine($subPath,$file);
+				$files[$key] = $key; //combine($subPath,$file);
 
 			if(count($files)==$remaining) break;
 		}

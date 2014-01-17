@@ -35,8 +35,8 @@ MediaFile.prototype.contains = function(key)
 
 MediaFile.prototype.getId = function()
 {
-	if(this.id) return this.id;
-	this.id = this.name.replace(/[\.#\(\)\{\}' ]/g,"_");
+	if(!this.id)
+		this.id = this.name.replace(/[\.#\(\)\{\}' ]/g,"_");
 	return this.id;
 };
 

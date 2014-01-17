@@ -1,8 +1,14 @@
 <?php
+
+function getDateIndexFilename($relPath)
+{
+	return "$relPath/.dateIndex.csv";
+}
+
 function getOldestFileDate($relPath)
 {
 	//read 1st line of CSV
-	$indexFilename="$relPath/.dateIndex.csv";
+	$indexFilename=getDateIndexFilename($relPath);
 	if(!file_exists($indexFilename))
 		return;
 	$handle = fopen($indexFilename, "r");
@@ -15,7 +21,7 @@ function getOldestFileDate($relPath)
 function getNewestFileDate($relPath)
 {
 	//get index mdate
-	return formatFilemtime("$relPath/.dateIndex.csv");
+	return formatFilemtime(getDateIndexFilename($relPath));
 }
 
 function getOldestDate($relPath)
@@ -41,7 +47,7 @@ function getDateRange($relPath)
 //get index csv without trying to refresh
 function loadDateIndex($relPath)
 {
-	$indexFilename="$relPath/.dateIndex.csv";
+	$indexFilename=getDateIndexFilename($relPath);
 	$dateIndex=readCsvFile($indexFilename,1);
 	return array_filter($dateIndex);
 }
@@ -86,8 +92,7 @@ function updateIndex($relPath,$files,&$dateIndex=array())
 function writeDateIndex($relPath,$dateIndex)
 {
 	global $config;
-	//$DATE_INDEX_TYPES=getExtensionsForTypes($config["DATE_INDEX_TYPES"]);
-	$indexFilename="$relPath/.dateIndex.csv";
+	$indexFilename=getDateIndexFilename($relPath);
 
 	if(empty($dateIndex))
 	{	
@@ -102,7 +107,6 @@ debug("writeDateIndex", count($dateIndex));
 
 	foreach ($dateIndex as $file => $date)
 	{	
-		//if(!fileHasType($file, $DATE_INDEX_TYPES)) continue;
 		fwrite($fp, "$date,$file\n" );
 		$maxDate=$date;
 	}
@@ -115,9 +119,11 @@ debug("writeDateIndex", count($dateIndex));
 //TODO check if index up to date, no file missing, no file deleted: load it
 function getRefreshedDateIndex($relPath,$files=array(),$completeIndex=false)
 {
-	$indexFilename="$relPath/.dateIndex.csv";
 	//keep only files in current dir
 	$subdirFiles = array_filter($files,"fileIsInSubdir");
+//TODO replace array_diff_key with function
+//	$files keys and values = $filename.$ext, use only $filename
+
 	$files=array_diff_key($files,$subdirFiles);
 	
 	if(empty($files)) return array();
@@ -137,7 +143,7 @@ debug("addedFiles", $addedFiles, true);
 	}
 
 	//test that all files in index exist: remove deleted file entries
-	$deletedFiles=array_diff_key($dateIndex,$files);
+	$deletedFiles=array(); //array_diff_key($dateIndex,$files);
 	debug("deletedFiles", $deletedFiles, true);
 	//if($deletedFiles)
 	$filteredIndex=array_diff_key($dateIndex, $deletedFiles);

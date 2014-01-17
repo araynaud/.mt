@@ -228,7 +228,8 @@ $(window).resize(function(event)
 
 	<img class="icon upload notdir" id="editIcon" src="icons/edit.gif" alt="edit" onclick="UI.goToActionPage('.upload/imageEdit')"/>
 	<img class="icon upload" id="commentIcon" src="icons/comment.gif" alt="description" onclick="UI.goToActionPage('.upload/description')"/>
-	<img class="icon upload video" id="convertIcon" src="icons/step_next.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, format:'ajax'}, 'convert')"/>
+	<img class="icon upload video" id="convertIcon" src="icons/step_next.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, to:'stream', format:'ajax'}, 'convert')"/>
+	<img class="icon upload video" id="convertSoundIcon" src="icons/sound.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, to:'audio', format:'ajax'}, 'convert')"/>
 	<img class="icon admin notdir" id="parentIcon" src="icons/parent.gif" onclick="UI.confirmFileAction('move','..')" title="move to parent" alt="move to parent"/>
 	<img class="icon admin notdir" id="bestIcon" src="icons/star.png" onclick="UI.confirmFileAction('move','best')" title="move to best" alt="best"/>
 	<img class="icon admin notdir" id="deleteIcon" src="icons/delete.png" onclick="UI.confirmFileAction('move')" title="delete" alt="delete"/>

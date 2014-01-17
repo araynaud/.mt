@@ -58,8 +58,9 @@ transition.changeMode;queue
 
 ;index options
 DEPTH;0
-DISPLAY_TYPES;IMAGE;VIDEO;AUDIO
-DATE_INDEX_TYPES;IMAGE;VIDEO
+display.types;IMAGE;VIDEO;AUDIO
+dateIndex.enabled;true
+dateIndex.types;IMAGE;VIDEO
 
 ;file sorting
 SORT.OPTIONS;name;type;random;width;height;ratio;title;filename;description;subdir
@@ -111,18 +112,19 @@ _FFMPEG.PROBE;ffprobe.exe
 _FFMPEG.QTFS;qt-faststart.exe
 _FFMPEG.MP4BOX;MP4Box.exe
 
-_FFMPEG.convert.title;convert video
-_FFMPEG.convert.format;mp4
-_FFMPEG.convert.script;ffmpeg2mp4.bat
-_FFMPEG.convert.width;960
-_FFMPEG.convert.height;540
-_FFMPEG.convert.video_bitrate;800k
-_FFMPEG.convert.audio_bitrate;128k
+_FFMPEG.scripts;config
+_FFMPEG.convert.stream.title;convert video
+_FFMPEG.convert.stream.format;mp4
+_FFMPEG.convert.stream.script;ffmpeg2mp4.bat
+_FFMPEG.convert.stream.width;960
+_FFMPEG.convert.stream.height;540
+_FFMPEG.convert.stream.video_bitrate;800k
+_FFMPEG.convert.stream.audio_bitrate;128k
 
-_FFMPEG.extmp3.title;extract audio
-_FFMPEG.extmp3.format;mp3
-_FFMPEG.extmp3.script;extmp3.bat
-_FFMPEG.convert.audio_bitrate;128k
+_FFMPEG.convert.audio.title;extract audio
+_FFMPEG.convert.audio.format;mp3
+_FFMPEG.convert.audio.script;ffmpeg2mp3.bat
+_FFMPEG.convert.audio.convert.audio_bitrate;128k
 
 ;put bat files in same directory
 

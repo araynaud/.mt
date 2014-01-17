@@ -24,6 +24,67 @@ BUGS
 Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
 
+OK Filename with different types
+breaks date index
+
+date index should only have oldest and newest file. 
+then update parent dirs.
+-----------
+
+File tags
+ 1 Txt file per tag in subdir .tag with list of files
+ List album tags : list .tag files.
+ Tags for 1 file In metadata file. Or filename.tag
+ Tags;bird;Australia;etc 
+ Move files: add tag files in new dir
+ Empty tag file : delete file.
+
+Implement best as tag.
+ Search/Filter by tag:
+ ?tag=animal,Sydney and
+ ?tag=animal|Sydney or
+
+Load:
+ Tags:{
+ Bird:[File1, file2, Subdir/file3], 
+ ...}
+ Set tags for each file by id
+
+PHP: loadtags : arrays
+ List files: a d f
+ Load tags: Bird : a b d, zoo : b d f
+ Tag files. If files[b] doesn't exist, remove from tag file.
+
+Tags in subdirs?
+
+Admin/upload mode 
+ Click name: edit it, rename.
+ Click description or icon: edit, store it.
+
+Tag selected files
+ Ui Show tag list or type new tag
+ Icon to remove existing tags.
+ Post tag.PHP?path&file&tag=bird&mode=add|remove 
+ Add filename to tag file if not present. 
+ Create metadata filename.tag
+
+Move / delete selected files.
+ Ui: Show dir list + type new
+ Update tag files.
+
+Split album by date or other field
+ Use array group by
+ Display distinct values links. + all
+
+Image / video mixed slideshow.
+ Enable in configuration.
+ Slideshow.Display next file :
+ If video/stream : UI set mode video, Load media file, auto play.
+ Preload video?
+ If video non stream: convert?
+ On playback complete : next file.
+ If image : set mode image, show image. 
+
 
 ----
 OK Multiple separate data roots (have to be mapped with IIS):
@@ -1324,10 +1385,7 @@ links in recursive search: slideshow + JS, indexjson
 sort by date: getDateIndex($relPath,$files)
 add $depth: load subdir/.dateIndex.csv for subdir/files
 then asort, as in groupByName
-		splitFilename($filename,$name,$ext);
-		$key=combine($subdir,$name);
-		if($subdir!=$prevDir) // if file in different dir: load new date index
-			$dateIndex=loadDateIndex(combine($relPath,$subdir));
+DSC00024;2014-01-16 12:12:42
 		
 download link
 XML/XSLT: template or function to combine relpath,subdir,file

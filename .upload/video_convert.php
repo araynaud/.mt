@@ -4,10 +4,11 @@ require_once("../include/config.php");
 $path=getPath();
 $relPath=getDiskPath($path);
 $file=getParam("file");
-$tnDir=getParam("target",".tn");
+$tnDir=getParam("target");
 $size=getParam("size", 960);
 $debug=getParamBoolean("debug");
 $format=getParam("format");
+$convertTo = getParam("to", "stream");
 //if metadata / stream[0] is mp4 format 
 //if (fileHasType($file,"mts"))
 //	$outputFile=remuxVideo($relPath, $file, "mp4");
@@ -15,7 +16,7 @@ $format=getParam("format");
 
 startTimer();
 
-$outputFile=convertVideo($relPath, $file, "mp4", $size);
+$outputFile=convertVideo($relPath, $file, $convertTo, $size);
 
 $imgType=getImageTypeFromExt($outputFile);
 

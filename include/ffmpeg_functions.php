@@ -225,9 +225,11 @@ debug("getMediaFileInfo", $metadata);
 	$data["width"] = arrayGet($metadata, "STREAM.0.width");
 	$data["height"] = arrayGet($metadata, "STREAM.0.height");
 	$data["display_aspect_ratio"] = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
-	$data["height2"] = $data["width"] / $data["display_aspect_ratio"];
-	$data["width2"] = $data["height"] * $data["display_aspect_ratio"];
-
+	if($data["display_aspect_ratio"])
+	{
+		$data["height2"] = $data["width"] / $data["display_aspect_ratio"];
+		$data["width2"] = $data["height"] * $data["display_aspect_ratio"];
+	}
 	$videoBitrate = getConfig("_FFMPEG.convert.video_bitrate");
 	$audioBitrate = getConfig("_FFMPEG.convert.audio_bitrate");
 	$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
@@ -247,30 +249,50 @@ function estimateFileSize($duration, $videoBitrate, $audioBitrate=0)
 	return $bps * $duration;
 }
 
-function convertVideo($relPath, $inputFile, $format, $size)
+function convertVideo($relPath, $inputFile, $to, $size)
 {
 
 //if input is MPEG or MPEG2 : deinterlace with yadif filter?
 	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
 	$prop = getVideoProperties($relPath, $inputFile);
-debug("getVideoProperties", $prop);
+debug("getVideoProperties", $prop, true);
 	$size = min($prop["width"], $size); //resize only if input video is larger than $size
 
 //calculate height from display_aspect_ratio
 
-	$outputFile = getFilename($inputFile, $format);
+	$convert = getConfig("_FFMPEG.convert.$to");
+debug($to, $convert);
+	if(!$convert) return false;
+
+	$outputFile = getFilename($inputFile, $convert["format"]);
 	$outputFile = combine($relPath, $outputFile);	
 	$outputFilename = getFilename($outputFile);	
 	// the input video file
 	$inputFile = combine($relPath, $inputFile);
+
+	debug($inputFile,$outputFile);
+	if(realpath($inputFile) == realpath($outputFile)) 
+		return false;
 
 	if (file_exists($outputFile))
 		unlink($outputFile);
 //use metadata display_aspect_ratio to calculate size
 //round to multiples of 2 or 4
 
-	$cmd = "..\\config\\ffmpeg2mp4.bat [0] [1] [2]";
+//config.convert.scripts.path
+//config.convert.scripts.mp4
+//config.convert.scripts.mp3
+
+	$scriptDir = getConfig("_FFMPEG.scripts");
+debug("scriptDir", $scriptDir);
+	$script = combine(pathToAppRoot(), $scriptDir, $convert["script"]);
+debug("script", $script);
+	$script = realpath($script);
+debug("script", $script);
+
+	$cmd = "$script [0] [1] [2]";
 	$cmd = makeCommand($cmd, $inputFile, $outputFilename, $size);
+debug("command", $cmd);
 	$output = execCommand($cmd, false); //exec in background
 	
 	if(file_exists($outputFile) && filesize($outputFile)==0) 
