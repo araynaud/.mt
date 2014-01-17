@@ -66,8 +66,6 @@ transition.changeMode;queue
 ;file sorting
 SORT.OPTIONS;takenDate;name;type;random;width;height;ratio;title;filename;description;subdir
 .DEFAULT;takenDate
-;..takenDate;date taken
-;.DEFAULT;date taken
 
 ;paginate / count per page
 PAGINATE.OPTIONS;1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all

@@ -247,11 +247,15 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 	foreach($options as $key=>$value)
 	{	
 		$selected=($default===$value) || (!is_numeric($key) && $default===$key);
-		$selected = $selected ? " selected='selected'" : ""; 
-		if(is_numeric($key))
+		$selected = $selected ? " selected='selected'" : "";
+		$title = strtolower(makeTitle($value));
+
+		if(is_numeric($key) && $title === $value)
 			echo	"\t<option$selected>$value</option>\n";
+		else if(is_numeric($key))
+			echo	"\t<option value='$value'$selected>$title</option>\n";
 		else
-			echo	"\t<option value='$key'$selected>$value</option>\n";
+			echo	"\t<option value='$key'$selected>$title</option>\n";
 	}
 	echo "</select>\n";
 }
