@@ -2,8 +2,7 @@
 // media file, 1 per name
 class MediaFile extends BaseObject
 {
-    // private $path;
-    // private $relPath;
+    private $id;
     private $fullPath;
     private $name;
     private $filename;
@@ -28,10 +27,11 @@ class MediaFile extends BaseObject
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
 
-    public function __construct($album, $subdir, $filename, $exts=null)
+    public function __construct($album, $subdir, $filename, $exts=null, $id=null)
 	{
 		$this->_parent=$album;
 		$this->subdir=$subdir;
+		$this->id = $id;
 		//$this->filename=$filename;
 		if(!$exts) 
 		{
@@ -119,7 +119,7 @@ class MediaFile extends BaseObject
 
     public function getTakenDate()
 	{
-		global $dateIndex;
+		$dateIndex = $this->_parent->_dateIndex;
 		if(!$this->takenDate)
 			$this->takenDate=isset($dateIndex[$this->name]) ? $dateIndex[$this->name] : getFileDate($this->_dirPath);
 		return $this->takenDate;

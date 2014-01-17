@@ -7,7 +7,6 @@ function getExifDateTaken($filename, $exif=NULL)
   if(!$exif)  return "";
 
   $date = arrayGetCoalesce($exif, "DateTimeOriginal", "DateTime", "EXIF.DateTimeOriginal", "IFD0.DateTime");
-  debug("getExifDateTaken", $date);
   if(!$date)
       return "";
 
@@ -20,6 +19,7 @@ function getExifDateTaken($filename, $exif=NULL)
   $date[$pos]='-';
   if($pos>7) 
       $date=deleteChars($date,7,$pos);
+  debug("getExifDateTaken", $date);
   return $date;
 }
 

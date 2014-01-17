@@ -2,7 +2,6 @@
 // media file, 1 per name
 class Album extends BaseObject
 {
-//    private $config;
     private $path;
     private $relPath;
     private $urlAbsPath;
@@ -23,8 +22,9 @@ class Album extends BaseObject
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
-	private $_dateIndex = array(); //array of date,filename entries
+	public $_dateIndex = array(); //array of date,filename entries
 	private $dateIndexEnabled;
+    private $config;
 
     public function __construct($path="", $details=false)
 	{
@@ -53,13 +53,14 @@ class Album extends BaseObject
 			if($this->search["sort"])
 				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
 			//$this->mediaFilesById=$this->mediaFiles;
-			$this->mediaFiles=array_values($this->mediaFiles);
+			if($this->search["array"])
+				$this->mediaFiles=array_values($this->mediaFiles);
 
 			$this->oldestDate=getOldestFileDate($this->relPath);
 			$this->newestDate=getNewestFileDate($this->relPath);
 			$this->cDate=$this->oldestDate;
 			$this->mDate=$this->newestDate;
-			if($this->search["conf"])			
+			if($this->search["config"])			
 				$this->config = $config;
 		}
 		//$this->jquery = allowJqueryFX();
@@ -76,7 +77,9 @@ class Album extends BaseObject
 		$this->search["sort"]=getParam("sort");
 		$this->search["depth"]=$this->getDepth();
 		$this->search["metadata"]=getParamBoolean("metadata");
-		$this->search["conf"]=getParamBoolean("conf",true);
+		$this->search["maxCount"]=getParam("count",0);
+		$this->search["config"]=getParamBoolean("config",true);
+		$this->search["array"]=getParamBoolean("array", true);
 
 		return $this->search;
 	}
@@ -144,8 +147,8 @@ class Album extends BaseObject
 
 			if(!isset($distinct[$key]))
 			{
-				$distinct[$key] = new MediaFile($this,$subdir,$name,$ext);
-				$distinct[$key]->id = $key;
+				$distinct[$key] = new MediaFile($this, $subdir, $name, $ext, $key);
+//				$distinct[$key]->setId($key);
 				$this->checkDateRange($distinct[$key]);
 			}
 			else
