@@ -148,7 +148,6 @@ class Album extends BaseObject
 			if(!isset($distinct[$key]))
 			{
 				$distinct[$key] = new MediaFile($this, $subdir, $name, $ext, $key);
-//				$distinct[$key]->setId($key);
 				$this->checkDateRange($distinct[$key]);
 			}
 			else

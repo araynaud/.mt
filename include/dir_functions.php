@@ -279,30 +279,45 @@ function getDistinctNames($files)
 	return $distinct;
 }
 
-function groupByName($relPath,$files,$dateIndex)
+function groupByName($relPath, $files, $byType=false)
 {
 	$distinct=array();
-	$prevDir="";
 	foreach ($files as $file)
 	{
 		//split subdir/file.ext
 		splitFilePath($file,$subdir,$filename);
 		splitFilename($filename,$name,$ext);
-		$key=combine($subdir,$name);
-		if($subdir!=$prevDir) // if file in different dir: load new date index
-			$dateIndex=loadDateIndex(combine($relPath,$subdir));
+		$type = getFileType($file);
+		$key = getFileId(combine($subdir, $name)) ;//, !$byType ? $type : false);
 
-		if(!isset($distinct[$key]))
+		if($byType) 
 		{
-			$distinct[$key] = array();
-			//$distinct[$key]["full"]=combine($relPath,$file);
-			$distinct[$key]["subdir"]=$subdir;
-			$distinct[$key]["name"]=$name;
-			$distinct[$key]["date"]=isset($dateIndex[$filename]) ? $dateIndex[$filename] : getFileDate("$relPath/$file");
-			$distinct[$key]["type"]=getFileType($file);
+			$new = !isset($distinct[$type]);
+			if($new) $distinct[$type] = array();
+
+			$new = !isset($distinct[$type][$key]);
+			if($new) $distinct[$type][$key] = array();
 		}
-		$distinct[$key][]=$ext;
-		$prevDir=$subdir;
+		else
+		{
+			$new = !isset($distinct[$key]);
+			if($new) $distinct[$key] = array();
+		}
+		$element = $byType ? $distinct[$type][$key] : $distinct[$key];
+		if($new)
+		{
+			$element["subdir"] = $subdir;
+			$element["name"] = $name;
+			$element["ext"] = array();
+			if(!$byType)
+				$element["type"] = $type;
+		}
+		$element["ext"][]=$ext;
+
+		if($byType) 
+			$distinct[$type][$key] = $element;
+		else
+			$distinct[$key] = $element;
 	}
 	return $distinct;
 }

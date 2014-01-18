@@ -32,6 +32,8 @@ $site = getParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
 
+$byType = getParamBoolean("bytype");
+
 debug();
 debug("maxSize");
 $maxSize = arrayGet($publish, "image.size");
@@ -158,15 +160,29 @@ debug();
 
 // $cmdOutput=shell_exec("dir ..\\$path");
 // debug("command", $cmdOutput)";
+startTimer();
 $files = listFiles($relPath, $search);
-debugVar("files",true);
+debug("listFiles Time elapsed", getTimer());
+debugVar("files", true);
+
+startTimer();
 $dirs=selectDirs($relPath,$files);
-debugVar("dirs",true);
-$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
-debugVar("indexFiles",true);
-$dateIndex=getRefreshedDateIndex($relPath,$indexFiles);	
-debug("Files from $relPath date index", count($dateIndex));
-debugVar("dateIndex",true);
+debug("selectDirs Time elapsed", getTimer());
+debugVar("dirs", true);
+
+startTimer();
+$groupedFiles = groupByName($relPath, $files, $byType);
+debug("groupByName Time elapsed", getTimer());
+
+startTimer();
+debugVar("groupedFiles", true);
+
+//$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
+//debugVar("indexFiles",true);
+
+//$dateIndex=getRefreshedDateIndex($relPath,$indexFiles);	
+//debug("Files from $relPath date index", count($dateIndex));
+//debugVar("dateIndex",true);
 //debug("Constants: ", get_defined_constants(true), true);
 $tn=getParam("tn");
 if($tn && $dirs)

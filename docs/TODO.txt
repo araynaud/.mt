@@ -29,6 +29,9 @@ breaks date index
 
 date index should only have oldest and newest file. 
 then update parent dirs.
+
+when displaying fitered file list: sortFiles does not apply.
+=> re filter album.mediaFiles after sort
 -----------
 
 File tags

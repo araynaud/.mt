@@ -30,8 +30,6 @@ UI.getGroupTitle = function(mediaFile)
 	if(isNumber(value)) return value;
 	if(album.sort=="takenDate")
 	{
-		//value = value.substringBefore(" ");
-		if(!album.dateRange || !album.dateRange.duration) return false;
 		if(!dateFormat)	return value;
 
 		if(album.reverse)
