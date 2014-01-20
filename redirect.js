@@ -25,16 +25,15 @@ function redirect()
 {
 	var path=trimChar(window.location.pathname,"/");
 	if(DATA_ROOT.length>0)
-	{
 		path=path.substr(DATA_ROOT.length);
-		path=trimChar(path,"/");
-	}
 
 	var APP_PATH="/" + combine(DATA_ROOT, APP_DIR);
 
-	if(path.indexOf(MAPPING_ROOT+"/")==0)
-		path=path.substr(MAPPING_ROOT.length+1);
-	
+	if(path.indexOf(MAPPING_ROOT)==0)
+		path=path.substr(MAPPING_ROOT.length);
+
+	path=trimChar(path,"/");
+		
 	if(path.length>0) 
 		APP_PATH += "?path=" + path;
 	window.location = APP_PATH;
