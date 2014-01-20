@@ -119,16 +119,22 @@ debug("writeDateIndex", count($dateIndex));
 }
 
 
+function fileHasSubdir($f)
+{
+	return !empty($f["subdir"]);
+}
+
+function fileHasNoSubdir($f)
+{
+	return empty($f["subdir"]); 
+}
 
 //TODO check if index up to date, no file missing, no file deleted: load it
 function getRefreshedDateIndex($relPath,$files=array(),$completeIndex=false)
 {
 	//keep only files in current dir
-	$subdirFiles = array_filter($files, function($f) { return !empty($f["subdir"]); } );
-//TODO replace array_diff_key with function
-//	$files keys and values = $filename.$ext, use only $filename
-
-	$files=array_diff_key($files,$subdirFiles);
+	$subdirFiles = array_filter($files, "fileHasSubdir");
+	$files = array_filter($files, "fileHasNoSubdir"); 
 	
 	if(empty($files)) return array();
 	//load existing index

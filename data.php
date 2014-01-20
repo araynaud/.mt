@@ -53,7 +53,6 @@ if($save)
 
 $data["fileDate"] = getFileDate($filePath);
 $data["time"] = getTimer();
-debugVar("data");
 
 switch (strtolower($format))
 {

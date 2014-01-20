@@ -122,8 +122,8 @@ class Album extends BaseObject
     public function getDateIndex()
 	{
 		//TODO use dateIndex.types;IMAGE
-		if(!$this->dateIndex && $this->dateIndexEnabled && isset($this->groupedFiles["IMAGE"]))
-			$this->dateIndex = getRefreshedDateIndex($this->relPath, $this->groupedFiles["IMAGE"], true);
+		if(!$this->dateIndex && $this->dateIndexEnabled)
+			$this->dateIndex = getRefreshedDateIndex($this->relPath, coalesce(@$this->groupedFiles["IMAGE"],array()), true);
 		return $this->dateIndex;
 	}
 
