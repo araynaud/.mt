@@ -135,7 +135,7 @@ debug("_mapping.$path1", $mapping);
 //disk path to /absPath
 //search in mappings for 1st value starting with this path
 //find key
-function resolveMappedPath($path)
+function diskPathToUrl($path)
 {	
 	$mapping = getConfig("_mapping");
 	if(!$mapping) return $path;

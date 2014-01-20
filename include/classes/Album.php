@@ -18,11 +18,12 @@ class Album extends BaseObject
     private $oldestDate;
     private $newestDate;
 	private $description;
-	private $mediaFiles; //array of MediaFile in the directory
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
+	private $groupedFiles; //array of files in the directory
+	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
-	public $_dateIndex = array(); //array of date,filename entries
+	public $dateIndex = array(); //array of date,filename entries
 	private $dateIndexEnabled;
     private $config;
 
@@ -43,16 +44,13 @@ class Album extends BaseObject
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath,$this->search); //TODO : group by name / make MediaFile objects
 			$this->dirs=selectDirs($this->relPath,$allFiles);
-			$this->_allFiles=selectFilesByType($allFiles,"VIDEO|IMAGE");
-			$this->_allFiles=array_merge($this->_allFiles, $this->dirs);
-			//Group by name / make MediaFile objects
+			$this->groupedFiles=groupByName($allFiles, true);
 			$this->dateIndexEnabled = getConfig("dateIndex.enabled");
-			if($this->dateIndexEnabled)
-				$this->_dateIndex = getRefreshedDateIndex($this->relPath, $this->_allFiles, true);
+			$this->getDateIndex();
+			//Group by name / make MediaFile objects
 			$this->mediaFiles = $this->createMediaFiles($allFiles);
 			if($this->search["sort"])
-				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
-			//$this->mediaFilesById=$this->mediaFiles;
+				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->dateIndex);
 			if($this->search["array"])
 				$this->mediaFiles=array_values($this->mediaFiles);
 
@@ -102,9 +100,8 @@ class Album extends BaseObject
 
     public function getAbsPath()
 	{
-//		if(isMappedPath($this->path) && !$this->urlAbsPath)
 		if(!$this->urlAbsPath)
-			$this->urlAbsPath = resolveMappedPath($this->relPath);
+			$this->urlAbsPath = diskPathToUrl($this->relPath);
 		return $this->urlAbsPath;
 	}
 	
@@ -121,7 +118,15 @@ class Album extends BaseObject
 			$this->description = readTextFile(combine($this->relPath, "readme.txt"));
 		return $this->description;
 	}
-	
+
+    public function getDateIndex()
+	{
+		//TODO use dateIndex.types;IMAGE
+		if(!$this->dateIndex && $this->dateIndexEnabled && isset($this->groupedFiles["IMAGE"]))
+			$this->dateIndex = getRefreshedDateIndex($this->relPath, $this->groupedFiles["IMAGE"], true);
+		return $this->dateIndex;
+	}
+
     public function test()
 	{
 		echo $this->path . "  " . $this-> title . "\n";
@@ -132,7 +137,7 @@ class Album extends BaseObject
 	{
 		$distinct=array();
 		$prevDir="";
-		$dateIndex = $this->_dateIndex;
+		$dateIndex = $this->dateIndex;
 		foreach ($files as $file)
 		{
 			//split subdir/file.ext1:ext2

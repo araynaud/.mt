@@ -22,9 +22,8 @@ keyboard;true
 
 ;index options
 depth;0
-dateIndex.enabled;false
-dateIndex.types;IMAGE;VIDEO
-
+dateIndex.enabled;true
+dateIndex.types;IMAGE
 
 ;thumbnail display
 display.types;IMAGE;VIDEO;AUDIO

@@ -182,7 +182,7 @@ if($format=="ajax" && $outputFile)
 	$jsonResponse=array();
 	$jsonResponse["file"]=$file;
 	$jsonResponse["info"]=$imageInfo;
-	$jsonResponse["output"] = resolveMappedPath($outputFile);
+	$jsonResponse["output"] = diskPathToUrl($outputFile);
 	$jsonResponse["filesize"] = filesize($outputFile);
 	$jsonResponse["time"]=getTimer();
 	echo jsValue($jsonResponse);

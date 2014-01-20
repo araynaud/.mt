@@ -119,7 +119,7 @@ class MediaFile extends BaseObject
 
     public function getTakenDate()
 	{
-		$dateIndex = $this->_parent->_dateIndex;
+		$dateIndex = $this->_parent->getDateIndex();
 		if(!$this->takenDate)
 			$this->takenDate=isset($dateIndex[$this->name]) ? $dateIndex[$this->name] : getFileDate($this->_dirPath);
 		return $this->takenDate;

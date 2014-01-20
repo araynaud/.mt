@@ -279,7 +279,7 @@ function getDistinctNames($files)
 	return $distinct;
 }
 
-function groupByName($relPath, $files, $byType=false)
+function groupByName($files, $byType=false)
 {
 	$distinct=array();
 	foreach ($files as $file)
@@ -288,7 +288,7 @@ function groupByName($relPath, $files, $byType=false)
 		splitFilePath($file,$subdir,$filename);
 		splitFilename($filename,$name,$ext);
 		$type = getFileType($file);
-		$key = getFileId(combine($subdir, $name)) ;//, !$byType ? $type : false);
+		$key = combine($subdir, $name);//, !$byType ? $type : false);
 
 		if($byType) 
 		{

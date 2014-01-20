@@ -450,4 +450,12 @@ function arrayGetCoalesce()
 	}
 	return null;
 }
+
+//filter array by keys, not values.
+function arrayFilterKeys($a, $funct)
+{
+	$f = array_filter(array_keys($a), $funct); 
+	$b = array_intersect_key($a, array_flip($f));
+	return $b;
+}
 ?>

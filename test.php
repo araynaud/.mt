@@ -91,7 +91,7 @@ $relPath=getRelPath($path);
 debugVar("relPath");
 $relPath=getDiskPath($path);
 debugVar("relPath");
-$absPath=resolveMappedPath($path);
+$absPath=diskPathToUrl($path);
 debugVar("absPath");
 debug("currentDir",realpath(""));
 debug("relPath $relPath",realpath($relPath));
@@ -171,7 +171,7 @@ debug("selectDirs Time elapsed", getTimer());
 debugVar("dirs", true);
 
 startTimer();
-$groupedFiles = groupByName($relPath, $files, $byType);
+$groupedFiles = groupByName($files, $byType);
 debug("groupByName Time elapsed", getTimer());
 
 startTimer();

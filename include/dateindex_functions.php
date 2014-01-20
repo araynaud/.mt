@@ -1,8 +1,9 @@
 <?php
 
-function getDateIndexFilename($relPath)
+function getDateIndexFilename($relPath, $type="")
 {
-	return "$relPath/.dateIndex.csv";
+	if(!$type)	return "$relPath/.dateIndex.csv";
+	return "$relPath/.dateIndex.$type.csv";
 }
 
 function getOldestFileDate($relPath)
@@ -59,22 +60,23 @@ function getFilesFromDateIndex($relPath)
 
 //make .dateIndex.csv
 //build index entries with $date,$name
-function updateIndex($relPath,$files,&$dateIndex=array())
+function updateIndex($relPath, $files, &$dateIndex=array())
 {
 	global $relPathG;
 	$relPathG=$relPath;
 
-	foreach ($files as $name=>$file)
+	foreach ($files as $name => $file)
 	{
-		splitFilename($file,$key,$exts);
-		if(!is_array($exts))
-			$exts=array($exts);
+//		splitFilename($file, $key, $exts);
+//		if(!is_array($exts))
+//			$exts=array($exts);
 		//take oldest date for this file name
-		foreach($exts as $ext)
+		$key=$file["name"];
+		foreach($file["ext"] as $ext)
 		{
-			$filename = getFilename($key, $ext, true);
+			$filename = getFilename($file["name"], $ext, true);
 			$filedate=getFileDate("$relPath/$filename");
-			debug("updateIndex $key $filename", $filedate);
+debug("updateIndex $key $name $filename", $filedate);
 			if(!isset($dateIndex[$key]) || empty($dateIndex[$key]) || $filedate < $dateIndex[$key])
 			{
 				$dateIndex[$key]=$filedate;
@@ -116,11 +118,13 @@ debug("writeDateIndex", count($dateIndex));
 	return true;
 }
 
+
+
 //TODO check if index up to date, no file missing, no file deleted: load it
 function getRefreshedDateIndex($relPath,$files=array(),$completeIndex=false)
 {
 	//keep only files in current dir
-	$subdirFiles = array_filter($files,"fileIsInSubdir");
+	$subdirFiles = array_filter($files, function($f) { return !empty($f["subdir"]); } );
 //TODO replace array_diff_key with function
 //	$files keys and values = $filename.$ext, use only $filename
 
