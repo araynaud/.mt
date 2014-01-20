@@ -48,6 +48,8 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 	else
 	{
 		global $ignoreList, $relPathG;
+
+		parseWildcards($search);
 		$handle=opendir($dir);	
 		if(!$handle)
 			return $files;
@@ -73,7 +75,7 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 
 //			if(fileHasType($file, "SPECIAL")) continue;
 				
-			if(!fileHasNameAndType($file,@$search["name"],@$search["exts"],@$search["start"],@$search["end"])) continue;
+			if(!fileHasNameAndType($file,@$search["name"],@$search["exts"],@$search["starts"],@$search["ends"])) continue;
 //use name as key
 			$key=combine($subPath,$file);
 //debug("splitFilename", "file=$file / key=$key / ext=$ext");
@@ -138,6 +140,23 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 		}
 	}
 	return $files;
+}
+
+function parseWildcards(&$search)
+{
+	$name = @$search["name"];
+	if(!$name) return;
+
+	$search["starts"]=!startsWith($name, "*");
+	if(!$search["starts"])
+		$name=substr($name, 1);
+	if(!$name) return;
+
+	$search["ends"]=!endsWith($name, "*");
+	if(!$search["ends"])
+		$name=substr($name, 0, strlen($name)-1);
+	$search["name"] = $name;
+debug("parseWildcards",$search);
 }
 
 function sortFiles($files,$sort,$dateIndex=array())
@@ -474,6 +493,7 @@ function fileHasName($file,$name="",$start=false,$end=false)
 	$start = $start ? "^"  : ""; //starts with name
 	$end   = $end   ? "\." : "";  //finishes with name before .extension 
 	$regex="/($start$name$end)/i";
+//debug("fileHasName regex", $regex);
 	return preg_match($regex,$file);
 }
 

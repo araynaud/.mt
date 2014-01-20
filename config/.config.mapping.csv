@@ -1,6 +1,0 @@
-;Multiple separate data roots (have to be mapped with IIS);
-;to put in the site root dir config
-_mapping.pictures;C:/Users/arthur.raynaud/Pictures
-_mapping.photos;E:/Photos
-_mapping.MediaThingy;C:/dev/MediaThingy
-_mapping._root;pictures

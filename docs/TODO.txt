@@ -32,6 +32,9 @@ then update parent dirs.
 
 when displaying fitered file list: sortFiles does not apply.
 => re filter album.mediaFiles after sort
+---------
+data getMediaFile
+
 -----------
 
 File tags

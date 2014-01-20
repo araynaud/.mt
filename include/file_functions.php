@@ -173,23 +173,24 @@ function readArray($filename)
 // in .mp/config, then data root, then subdirs to current path
 function LoadConfiguration($path=null, &$configData = array())
 {
-	$relPath=getDiskPath($path);
-
 	$appRootDir=pathToAppRoot();
 //1 default config in .mp/config
 	$configFilename=combine($appRootDir,"config",".config.csv");
 	$configData=readCsvFile($configFilename, 0, ";", ".");
 
-	$configFilename=combine($appRootDir,"config",".config.mapping.csv");
+//2 site root config: should contain directory mappings.
+	$configFilename=combine(pathToDataRoot(),".config.csv");
 	readCsvFile($configFilename, 0, ";", ".", $configData);
 
-//2 default config by path depth
+//3 default config by path depth
 	$depth=pathDepth($path);
 	$configFilename=combine($appRootDir,"config",".config.$depth.csv");
 	readCsvFile($configFilename, 0, ";", ".", $configData);
 
-//3 supersede values with folder specific config file in $relPath 
+	$relPath=getDiskPath($path);
+//4 supersede values with folder specific config file in $relPath 
 // find in parents and load from root to current dir
+debug("LoadConfiguration", $relPath);	
 	if($relPath)
 		$configFilenames=findFilesInParent($relPath,".config.csv");
 	if($configFilenames) 
@@ -200,7 +201,7 @@ function LoadConfiguration($path=null, &$configData = array())
 	}
 //debug("2: $configFilename", $configData);
 
-//4 supersede values with device specific config file in appRoot 
+//5 supersede values with device specific config file in appRoot 
 	$devices = checkUserAgent();
 	if(is_array($devices))
 		foreach($devices as $dev)
