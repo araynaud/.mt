@@ -3,15 +3,11 @@
 class MediaFile extends BaseObject
 {
     private $id;
-    private $fullPath;
+    private $_dirPath;
     private $name;
     private $filename;
     private $subdir;
 	private $type;
-    protected $format;
-    protected $width;
-    protected $height;
-    protected $ratio;
     private $title;
     private $description;
     private $takenDate;
@@ -26,20 +22,29 @@ class MediaFile extends BaseObject
 	private $_thumbnails=array(); //array of MediaFileVersion thumbnail images in different subdirectories
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
+    protected $format;
+    protected $width;
+    protected $height;
+    protected $ratio;
 
-    public function __construct($album, $subdir, $filename, $exts=null, $id=null)
+    public function __construct($album, $file, $subdir=null, $exts=null, $id=null)
 	{
+		if(is_array($file))
+		{
+			$this->constructFromArray($album,$file);
+			return;
+		}
 		$this->_parent=$album;
 		$this->subdir=$subdir;
 		$this->id = $id;
-		//$this->filename=$filename;
+		//$this->filename=$file;
 		if(!$exts) 
 		{
-			splitFilename($filename,$this->name,$ext);
+			splitFilename($file, $this->name, $ext);
 			$exts=$ext;
 		}
 		else
-			$this->name=$filename;
+			$this->name=$file;
 
 		if(!is_array($exts))
 			$exts=array($exts);
@@ -47,20 +52,19 @@ class MediaFile extends BaseObject
 		foreach($exts as $ext)
 			$this->addVersion("", $ext);
 
-		$this->getFilename();
+//		$this->getFilename();
 			
 		$this->title = makeTitle($this->name);
-		$dirPath=$this->getFilePath();
-		$this->_dirPath=$dirPath;
-		$this->type=getFileType($dirPath);
+		$this->_dirPath = $this->getFilePath();
+		$this->type=getFileType($this->_dirPath);
 		$this->getDescription();
 		$this->getTakenDate();
 		if($this->type=="DIR")
 		{
-			$this->oldestDate=getOldestFileDate($dirPath);
-			$this->newestDate=getNewestFileDate($dirPath);
-			$this->takenDate=$this->newestDate; //getNewestDate($dirPath);
-			$this->thumbnails=subdirThumbs($dirPath,4);
+			$this->oldestDate=getOldestFileDate($this->_dirPath);
+			$this->newestDate=getNewestFileDate($this->_dirPath);
+			$this->takenDate=$this->newestDate; 
+			$this->thumbnails=subdirThumbs($this->_dirPath, 4);
 		}
 		else if($this->type=="IMAGE")
 		{
@@ -82,15 +86,57 @@ class MediaFile extends BaseObject
 				unset($this->tnsizes[1]);
 //				$this->getMetadata();
 		}
-//		else if ($this->type=="AUDIO")
-//				$this->getMetadata();
     }
+
+    public function constructFromArray($album, $file)
+	{
+		$this->_parent=$album;
+		foreach ($file as $key => $value)
+			$this->$key = $value;
+
+		foreach($this->exts as $ext)
+			$this->addVersion("", $ext);
+
+		$this->title = makeTitle($this->name);
+		$this->_dirPath = $this->getFilePath();
+		$this->getDescription();
+		$this->getTakenDate();
+
+		if($this->type=="DIR")
+		{
+			$this->oldestDate=getOldestFileDate($this->_dirPath);
+			$this->newestDate=getNewestFileDate($this->_dirPath);
+			$this->takenDate=$this->newestDate;
+			$this->thumbnails=subdirThumbs($this->_dirPath, 4);
+		}
+		else if($this->type=="IMAGE")
+		{
+			$this->getImageInfo();
+			//thumbnails: image: .tn & .ss, same ext.
+			$this->addImageThumbnails();
+		}
+		else if ($this->type=="VIDEO")
+		{
+			//thumbnails: video: .tn/.jpg
+			$this->addThumbnail("tn","jpg");
+			if($this->_thumbnails[0]->exists)
+			{
+				$tnPath = $this->_thumbnails[0]->getFilePath();
+				$this->getImageInfo($tnPath);
+			}
+			$this->addThumbnail("ss", "jpg");
+			if(!$this->_thumbnails[1]->exists && !isFfmpegEnabled())
+				unset($this->tnsizes[1]);
+//				$this->getMetadata();
+		}
+
+	}
 
     public function addImageThumbnails($ext="")
     {
-	    global $config;
-    	if(!isset($config["thumbnails"]["sizes"])) return;
-    	foreach ($config["thumbnails"]["sizes"] as $subdir => $size)
+    	$tnSizes = getConfig("thumbnails.sizes"); 
+    	if(!$tnSizes) return;
+    	foreach ($tnSizes as $subdir => $size)
     	{
     		if($this->animated && $this->width <= $size && $this->height <= $size) break;
 			debug("addImageThubnails $subdir $size", $this->width . "x" . $this->height);
@@ -121,19 +167,15 @@ class MediaFile extends BaseObject
 	{
 		$dateIndex = $this->_parent->getDateIndex();
 		if(!$this->takenDate)
-			$this->takenDate=isset($dateIndex[$this->name]) ? $dateIndex[$this->name] : getFileDate($this->_dirPath);
+			$this->takenDate = coalesce(@$dateIndex[$this->name], getFileDate($this->_dirPath));
 		return $this->takenDate;
-	}
-
-    public function getFilePath()
-	{
-		return combine($this->getRelPath(), $this->subdir, $this->getFilename());
 	}
 
     public function getExtension($i=0)
 	{
-		if(!$this->exts || !isset($this->exts[$i])) return "";
-		return $this->exts[$i];
+		if($this->exts && isset($this->exts[$i]))
+			return $this->exts[$i];
+		return "";
 	}
 
     public function getFilename($i=0)
@@ -143,12 +185,42 @@ class MediaFile extends BaseObject
 		return $this->filename;
 	}
 
+    public function getFilePath($ext=0)
+	{
+		return combine($this->getRelPath(), $this->subdir, $this->getFilename($ext));
+	}
+
+//return original file names, thubmnails, metadata, description
     public function getFilenames()
 	{
 		$filenames=array();
 		foreach($this->exts as $ext)
-			$filenames[]= $ext ? $this->name.".$ext" : $this->name;
+			$filenames[] = $this->getFilename($ext);
+		$filenames[] = getMetadataFilename($this->name);
+
 		return $filenames;
+	}
+ 
+//return original file name, thubmnails, metadata, description
+    public function getFilePaths()
+	{
+		$filenames=array();
+		if($this->exts)
+			foreach($this->exts as $ext)
+				$filenames[] = $this->getFilePath($ext);
+		else //if no ext: just filename
+			$filenames[] = $this->getFilePath();
+//add metadata
+		$filenames[] = combine($this->getRelPath(), $this->subdir, getMetadataFilename($this->name));
+
+//add thumbnails
+		
+		return $filenames;
+	}
+
+//return original file name, thubmnails, metadata, description + urlPaths
+    public function getFileUrls()
+	{
 	}
 
 	public function getDescriptionFilePath()
@@ -207,12 +279,12 @@ class MediaFile extends BaseObject
 	
     public function addVersion($subdir="",$ext="")
 	{
-		$this->exts[]=$ext;
+//		$this->exts[]=$ext;
 		$mf=new MediaFileVersion($this,$subdir,$ext,true);
-		$this->versions[]= $mf;
+//		$this->versions[]= $mf;
 		$this->vsizes[$ext] = $mf->getSize();
-    }
-
+	}
+	
     public function addThumbnail($subdir="",$ext="")
 	{
 		$mf = new MediaFileVersion($this,$subdir,$ext,true);

@@ -87,8 +87,11 @@
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="nowrap noscroll">{{>title}}</div>
 		<div class="floatR" style="margin-right:10px; width: 22%;">
-			{{for versions tmpl="versionLinkTemplate"/}}
-			{{if !versions}}{{for exts tmpl="extLinkTemplate"/}}{{/if}}
+			{{if versions}}
+				{{for versions tmpl="versionLinkTemplate"/}}
+			{{else}}
+				{{for exts tmpl="extLinkTemplate"/}}
+			{{/if}}
 		</div>
 		{{if description}}
 			<div>{{:description}}</div>
@@ -104,7 +107,7 @@
 
 <!-- template for video download links by extension -->
 <script id="extLinkTemplate" type="text/x-jsrender"> 
-	<a class="download" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
+	<a class="download" title="{{:~formatSize(#parent.parent.data.vsizes[#data])}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
 </script>
 
 <script id="versionLinkTemplate" type="text/x-jsrender"> 

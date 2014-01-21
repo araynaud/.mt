@@ -48,7 +48,8 @@ class Album extends BaseObject
 			$this->dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 			//Group by name / make MediaFile objects
-			$this->mediaFiles = $this->createMediaFiles($allFiles);
+			$this->mediaFiles = $this->createMediaFilesByType($this->groupedFiles);
+//			$this->mediaFiles = $this->createMediaFiles($allFiles);
 			if($this->search["sort"])
 				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->dateIndex);
 			if($this->search["array"])
@@ -152,13 +153,35 @@ class Album extends BaseObject
 
 			if(!isset($distinct[$key]))
 			{
-				$distinct[$key] = new MediaFile($this, $subdir, $name, $ext, $key);
+				$distinct[$key] = new MediaFile($this, $name, $subdir, $ext, $key);
 				$this->checkDateRange($distinct[$key]);
 			}
 			else
 				$distinct[$key]->addVersion("",$ext);
 
 			$prevDir=$subdir;
+		}
+		return $distinct;
+	}
+
+	private function createMediaFilesByType($groupedFiles)
+	{
+		$distinct=array();
+		$prevDir="";
+		$dateIndex = $this->dateIndex;
+		foreach ($groupedFiles as $type => $typeFiles)
+		{
+			foreach ($typeFiles as $name => $file)
+			{
+	 			// if file in different dir: load new date index
+				$fileDir=combine($this->path, @$file["subdir"]);
+	 			if($file["subdir"] != $prevDir && $this->dateIndexEnabled)
+					$dateIndex = loadDateIndex($fileDir);
+				$mf = new MediaFile($this, $file);
+				$this->checkDateRange($mf);
+				$distinct[]=$mf;
+				$prevDir = $file["subdir"];
+			}
 		}
 		return $distinct;
 	}

@@ -11,6 +11,7 @@ function MediaFile(data)
 	else if(isString(data))
 		this.url=data;
 	this.getId();
+	this.filename = this.getFilename();
 	this.selected=false;
 }
 
@@ -36,8 +37,16 @@ MediaFile.prototype.contains = function(key)
 MediaFile.prototype.getId = function()
 {
 	if(!this.id)
-		this.id = this.name.replace(/[\.#\(\)\{\}' ]/g,"_");
+		this.id = this.type +"_" + this.name.replace(/[\.#\(\)\{\}' ]/g,"_");
 	return this.id;
+};
+
+MediaFile.prototype.getFilename = function(ext)
+{
+	ext = valueOrDefault(ext, 0);
+	if(this.exts && this.exts[ext]) 
+		ext=this.exts[ext]; 
+	return ext ? this.name + "." + ext : this.name;
 };
 
 MediaFile.isDir = function(mediaFile)
@@ -259,7 +268,7 @@ MediaFile.getFileSize = function (mediaFile, tn)
 MediaFile.prototype.getFileSize = function (tn)
 {	
 	tn=valueOrDefault(tn, 0);
-	return this.versions[tn].size;
+	return this.vsizes[tn] || this.vsizes[this.exts[tn]];
 };
 
 MediaFile.getTnFileSize = function (mediaFile, tn)

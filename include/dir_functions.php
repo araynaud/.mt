@@ -327,11 +327,11 @@ function groupByName($files, $byType=false)
 		{
 			$element["subdir"] = $subdir;
 			$element["name"] = $name;
-			$element["ext"] = array();
-			if(!$byType)
-				$element["type"] = $type;
+			$element["exts"] = array();
+			//if(!$byType)
+			$element["type"] = $type;
 		}
-		$element["ext"][]=$ext;
+		$element["exts"][]=$ext;
 
 		if($byType) 
 			$distinct[$type][$key] = $element;

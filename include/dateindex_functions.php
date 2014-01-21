@@ -67,12 +67,9 @@ function updateIndex($relPath, $files, &$dateIndex=array())
 
 	foreach ($files as $name => $file)
 	{
-//		splitFilename($file, $key, $exts);
-//		if(!is_array($exts))
-//			$exts=array($exts);
 		//take oldest date for this file name
 		$key=$file["name"];
-		foreach($file["ext"] as $ext)
+		foreach($file["exts"] as $ext)
 		{
 			$filename = getFilename($file["name"], $ext, true);
 			$filedate=getFileDate("$relPath/$filename");
