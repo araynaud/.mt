@@ -8,6 +8,10 @@ require_once("../include/config.php");
 
 $path=getPath();
 $relPath=getDiskPath($path);
+
+//create album with name = filename
+//get MediaFile
+
 $title = makePathTitle($path);
 $file = getParam('file');
 $lastFile = getParam('last');
@@ -53,26 +57,5 @@ else
 	} 
 }
 
-if($format=="ajax")
-{
-	echo $message;
-	return;
-}
-?>
-<html>
-<head>
-	<title><?php echo $title ?></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	<link type="text/css" rel="stylesheet" href="../MediaThingy.css"/>
-	<?php addStylesheet($relPath); ?>
-</head>
-<body>
-	<?php displayBackground($relPath); ?>
-	<?php echo $message;?>
-	<br/>
-	<a href="../?path=<?php echo $path?>">back to index</a>		
-	<?php if($result) { ?>
-	<script type="text/javascript">//window.location = "../?path=<?php echo $path?>";</script>
-	<?php } ?>
-</body>
-</html>
+echo $message;
+return;

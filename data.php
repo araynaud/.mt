@@ -27,7 +27,14 @@ function getFileData(&$getData, $path, $file)
 			$getData="MediaFile";
 			$_GET["name"]=getFilename($file);
 			$album = new Album($path, true);
-			return $album->getMediaFile();
+			$mf = $album->getMediaFile();
+			if($mf)
+			{
+				$mf->files = $mf->getFilenames();
+				$mf->paths = $mf->getFilePaths(true);
+				$mf->urls = $mf->getFilePaths(true, true);
+			}
+			return $mf;
 	}
 }
 
