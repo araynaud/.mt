@@ -20,11 +20,11 @@ class Album extends BaseObject
 	private $description;
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
-	private $groupedFiles; //array of files in the directory
+	private $_groupedFiles; //array of files in the directory
 	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
-	public $dateIndex = array(); //array of date,filename entries
-	private $dateIndexEnabled;
+	private $_dateIndex; // = array(); //array of date,filename entries
+	private $_dateIndexEnabled;
     private $config;
 
     public function __construct($path="", $details=false)
@@ -44,13 +44,13 @@ class Album extends BaseObject
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath,$this->search); //TODO : group by name / make MediaFile objects
 			$this->dirs=selectDirs($this->relPath,$allFiles);
-			$this->groupedFiles=groupByName($allFiles, true);
-			$this->dateIndexEnabled = getConfig("dateIndex.enabled");
+			$this->_groupedFiles=groupByName($allFiles, true);
+			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 			//Group by name / make MediaFile objects
-			$this->mediaFiles = $this->createMediaFiles($this->groupedFiles);
+			$this->mediaFiles = $this->createMediaFiles();
 			if($this->search["sort"])
-				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->dateIndex);
+				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
 			if($this->search["array"])
 				$this->mediaFiles=array_values($this->mediaFiles);
 
@@ -122,9 +122,27 @@ class Album extends BaseObject
     public function getDateIndex()
 	{
 		//TODO use dateIndex.types;IMAGE
-		if(!$this->dateIndex && $this->dateIndexEnabled)
-			$this->dateIndex = getRefreshedDateIndex($this->relPath, coalesce(@$this->groupedFiles["IMAGE"],array()), true);
-		return $this->dateIndex;
+		if(is_null($this->_dateIndex)  && $this->_dateIndexEnabled)
+		{
+			$diFiles = $this->getDateIndexFiles();
+			$this->_dateIndex = getRefreshedDateIndex($this->relPath, $diFiles, true);
+		}
+		return $this->_dateIndex;
+	}
+
+    public function getDateIndexFiles()
+	{
+		//TODO use dateIndex.types;IMAGE;VIDEO
+		$result = array();
+		$types = (array) getConfig("dateIndex.types");
+debug("dateIndex.types", $types);
+		foreach ($this->_groupedFiles as $type => $typeFiles)
+		{
+debug($type, count($typeFiles));
+			if($type == $types || in_array($type, $types))
+				$result = array_merge($result, $typeFiles);
+		}
+		return $result;
 	}
 
     public function test()
@@ -133,18 +151,18 @@ class Album extends BaseObject
     }
 	
 	//create array of MediaFile objects
-	private function createMediaFiles($groupedFiles)
+	private function createMediaFiles()
 	{
 		$distinct=array();
 		$prevDir="";
-		$dateIndex = $this->dateIndex;
-		foreach ($groupedFiles as $type => $typeFiles)
+		$dateIndex = $this->_dateIndex;
+		foreach ($this->_groupedFiles as $type => $typeFiles)
 		{
 			foreach ($typeFiles as $name => $file)
 			{
 	 			// if file in different dir: load new date index
 				$fileDir=combine($this->path, @$file["subdir"]);
-	 			if($file["subdir"] != $prevDir && $this->dateIndexEnabled)
+	 			if($file["subdir"] != $prevDir && $this->_dateIndexEnabled)
 					$dateIndex = loadDateIndex($fileDir);
 				$mf = new MediaFile($this, $file);
 				$this->checkDateRange($mf);
@@ -155,6 +173,8 @@ class Album extends BaseObject
 		return $distinct;
 	}
 
+//TODO store date range
+//propagate to parent dirs.
 	private function checkDateRange($mediaFile)
 	{
 		$takenDate=$mediaFile->getTakenDate();

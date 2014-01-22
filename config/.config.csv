@@ -23,7 +23,7 @@ keyboard;true
 ;index options
 depth;0
 dateIndex.enabled;true
-dateIndex.types;IMAGE
+dateIndex.types;IMAGE;VIDEO
 
 ;thumbnail display
 display.types;IMAGE;VIDEO;AUDIO
