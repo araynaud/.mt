@@ -117,13 +117,13 @@ _FFMPEG.convert.stream.format;mp4
 _FFMPEG.convert.stream.script;ffmpeg2mp4.bat
 _FFMPEG.convert.stream.width;960
 _FFMPEG.convert.stream.height;540
-_FFMPEG.convert.stream.video_bitrate;800k
-_FFMPEG.convert.stream.audio_bitrate;128k
+_FFMPEG.convert.stream.video_bitrate;800
+_FFMPEG.convert.stream.audio_bitrate;128
 
 _FFMPEG.convert.audio.title;extract audio
 _FFMPEG.convert.audio.format;mp3
 _FFMPEG.convert.audio.script;ffmpeg2mp3.bat
-_FFMPEG.convert.audio.convert.audio_bitrate;128k
+_FFMPEG.convert.audio.audio_bitrate;128
 
 ;put bat files in same directory
 

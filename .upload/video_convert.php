@@ -7,16 +7,21 @@ $file=getParam("file");
 $tnDir=getParam("target");
 $size=getParam("size", 960);
 $debug=getParamBoolean("debug");
-$format=getParam("format");
+$format=getParam("format", "ajax");
 $convertTo = getParam("to", "stream");
+$mode = getParam("mode");
 //if metadata / stream[0] is mp4 format 
 //if (fileHasType($file,"mts"))
 //	$outputFile=remuxVideo($relPath, $file, "mp4");
 //else
 
 startTimer();
-
-$outputFile=convertVideo($relPath, $file, $convertTo, $size);
+$outputFile="";
+$progress="";
+if($mode=="progress")
+	$progress=convertVideoProgress($relPath, $file, $convertTo);
+else
+	$outputFile=convertVideo($relPath, $file, $convertTo, $size);
 
 $imgType=getImageTypeFromExt($outputFile);
 
@@ -31,6 +36,7 @@ if($debug)
 //for AJAX: output image file Url when image ready
 if($format=="ajax")
 {
+	setContentType("text", "plain");
 	$jsonResponse=array();
 	$jsonResponse["file"]=$file;
 	if(file_exists($outputFile))
@@ -38,6 +44,7 @@ if($format=="ajax")
 		$jsonResponse["output"]=$outputFile;
 		$jsonResponse["outputSize"]=filesize($outputFile);
 	}
+	$jsonResponse["progress"] =	$progress;
 	$jsonResponse["time"]=getTimer();
 	echo jsValue($jsonResponse);
 	return;

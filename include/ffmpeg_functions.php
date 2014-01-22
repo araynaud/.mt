@@ -82,7 +82,9 @@ function getMediaFileInfo($relPath, $file="")
 	$ffprobe=getExePath("PROBE");
 	$cmd = makeCommand("[0] -i [1] -show_format -show_streams", $ffprobe, $filePath);
 	$output = execCommand($cmd, false, false);	
-	return parseFfprobeMetadata($output);
+	$data = parseFfprobeMetadata($output);
+	saveImageInfo($relPath, $file, $data);
+	return $data;
 }
 
 function getMediaFileInfoFormat($relPath, $file="", $format)
@@ -216,10 +218,10 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 //$cmd = "$ffmpeg -i $video -an -t 00:00:01 -ss 2 -r 1 -y -vf scale=300:-1 $image";
 //$cmd = "$ffmpeg -i $video -vf scale=300:-1 $image";
 
-function getVideoProperties($relPath, $file)
+function getVideoProperties($relPath, $file, $convertTo)
 {
 	$metadata = getMediaFileInfo($relPath, $file);
-debug("getMediaFileInfo", $metadata);
+//debug("getMediaFileInfo", $metadata, true);
 	$data = array();
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
 	$data["width"] = arrayGet($metadata, "STREAM.0.width");
@@ -230,39 +232,41 @@ debug("getMediaFileInfo", $metadata);
 		$data["height2"] = $data["width"] / $data["display_aspect_ratio"];
 		$data["width2"] = $data["height"] * $data["display_aspect_ratio"];
 	}
-	$videoBitrate = getConfig("_FFMPEG.convert.video_bitrate");
-	$audioBitrate = getConfig("_FFMPEG.convert.audio_bitrate");
-	$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
-
+	if($convertTo)
+	{
+		$videoBitrate = getConfig("_FFMPEG.convert.$convertTo.video_bitrate");
+		$audioBitrate = getConfig("_FFMPEG.convert.$convertTo.audio_bitrate");
+		$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
+	}
 	return $data;
 }
 
 function fractionValue($fraction)
 {
 	$fr = explode(":", $fraction);
+	if(count($fr) == 1) return $fr[0];
 	return $fr[0] / $fr[1];
 }
 
 function estimateFileSize($duration, $videoBitrate, $audioBitrate=0)
 {
+debug("estimateFileSize", "($duration, $videoBitrate, $audioBitrate)");	
 	$bps = ($videoBitrate + $audioBitrate) / 8 * 1000; //kbits to bytes / sec
 	return $bps * $duration;
 }
 
 function convertVideo($relPath, $inputFile, $to, $size)
 {
-
-//if input is MPEG or MPEG2 : deinterlace with yadif filter?
-	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
-	$prop = getVideoProperties($relPath, $inputFile);
-debug("getVideoProperties", $prop, true);
-	$size = min($prop["width"], $size); //resize only if input video is larger than $size
-
 //calculate height from display_aspect_ratio
-
 	$convert = getConfig("_FFMPEG.convert.$to");
 debug($to, $convert);
 	if(!$convert) return false;
+
+//if input is MPEG or MPEG2 : deinterlace with yadif filter?
+	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
+	$prop = getVideoProperties($relPath, $inputFile, $to);
+debug("getVideoProperties", $prop, true);
+	$size = min($prop["width"], $size); //resize only if input video is larger than $size
 
 	$outputFile = getFilename($inputFile, $convert["format"]);
 	$outputFile = combine($relPath, $outputFile);	
@@ -298,6 +302,30 @@ debug("command", $cmd);
 	if(file_exists($outputFile) && filesize($outputFile)==0) 
 		unlink($outputFile);
 	return $outputFile;
+}
+
+function convertVideoProgress($relPath, $inputFile, $to)
+{
+	$prop = getVideoProperties($relPath, $inputFile, $to);
+
+	$convert = getConfig("_FFMPEG.convert.$to");
+debug($to, $convert);
+	if(!$convert) return false;
+
+	$prop = getVideoProperties($relPath, $inputFile, $to);
+debug("getVideoProperties", $prop, true);
+
+	$outputFile = getFilename($inputFile, $convert["format"]);
+	$outputFile = combine($relPath, $outputFile);	
+	$tmpFile = getFilename($inputFile) . "_tmp." . $convert["format"];
+	$tmpFile = combine($relPath, $tmpFile);
+	$prop["tmpFile"] = $tmpFile;
+	$prop["outputFile"] = $outputFile;
+	$prop["outputFileSize"] = @filesize($outputFile);
+	if(!$prop["outputFileSize"]) $prop["outputFileSize"] = @filesize($tmpFile);
+	if($prop["estimatedFileSize"])
+		$prop["progress"] = 100 * $prop["outputFileSize"] / $prop["estimatedFileSize"];
+	return $prop;
 }
 
 //mkv or MTS to mp4: if video is H264, remux without re-encoding.

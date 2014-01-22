@@ -42,13 +42,14 @@ class Album extends BaseObject
 		{
 			$this->getSearchParameters();
 			//list files according to search, etc.		
-			$allFiles=listFiles($this->relPath,$this->search); //TODO : group by name / make MediaFile objects
+			$allFiles=listFiles($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
 			$this->dirs=selectDirs($this->relPath,$allFiles);
 			$this->_groupedFiles=groupByName($allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 			//Group by name / make MediaFile objects
 			$this->mediaFiles = $this->createMediaFiles();
+
 			if($this->search["sort"])
 				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
 			if($this->search["array"])
@@ -78,7 +79,7 @@ class Album extends BaseObject
 		$this->search["maxCount"]=getParam("count",0);
 		$this->search["config"]=getParamBoolean("config",true);
 		$this->search["array"]=getParamBoolean("array", true);
-
+debug("getSearchParameters",$this->search);
 		return $this->search;
 	}
 
@@ -135,7 +136,7 @@ class Album extends BaseObject
 		//TODO use dateIndex.types;IMAGE;VIDEO
 		$result = array();
 		$types = (array) getConfig("dateIndex.types");
-debug("dateIndex.types", $types);
+//debug("dateIndex.types", $types);
 		foreach ($this->_groupedFiles as $type => $typeFiles)
 		{
 debug($type, count($typeFiles));
@@ -203,6 +204,11 @@ debug($type, count($typeFiles));
 	public function getMediaFiles()
 	{
 		return $this->mediaFiles;
+	}
+
+	public function countMediaFiles()
+	{
+		return $this->mediaFiles ? count($this->mediaFiles) : 0;
 	}
 
 	public function getMediaFile($index=0)

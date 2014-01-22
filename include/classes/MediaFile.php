@@ -68,7 +68,21 @@ class MediaFile extends BaseObject
 				unset($this->tnsizes[1]);
 //				$this->getMetadata();
 		}
+	}
 
+    public static function getMediaFile()
+    {    	
+		$path=getPath();
+		$file = getParam('file');
+		if($file)
+		{
+			$relPath=getDiskPath($path);
+			$_GET["type"] = getFileType("$relPath/$file");
+			$_GET["name"] = getFilename($file);
+		}
+		$album = new Album($path, true);
+		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : $album->getMediaFiles();
+		return $mf;
 	}
 
     public function addImageThumbnails($ext="")
@@ -151,7 +165,7 @@ class MediaFile extends BaseObject
     	{
     		$i=0;
 	    	foreach ($tnSizes as $subdir => $size)
-	    		if($this->_thumbnails[$i])
+	    		if(isset($this->_thumbnails[$i]))
 					$filenames[] = combine(".$subdir", $this->_thumbnails[$i++]->getFilename());			
 		}
 		return $filenames;

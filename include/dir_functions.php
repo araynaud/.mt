@@ -38,6 +38,8 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 	if(!isset($search["exts"]) && isset($search["type"]))
 		$search["exts"]=getExtensionsForTypes(@$search["type"]);
 
+debug("listFiles", $search);
+
 	//search 1 exact filename
 	if(isset($search["file"]))
 	{
@@ -66,16 +68,14 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 			//pass function with condition to filter file before adding to array		
 
 			if(ignoreFile($file)) continue;
-			if($recurse && fileIsDir($file))
+			if($recurse && fileIsDir("$dir/$file"))
 				$subdirs[$file] = $file;
-
 			splitFilename($file,$key,$ext);
 
 			if(in_array($ext, @$config["TYPES"]["SPECIAL"])) continue;
-
 //			if(fileHasType($file, "SPECIAL")) continue;
 				
-			if(!fileHasNameAndType($file,@$search["name"],@$search["exts"],@$search["starts"],@$search["ends"])) continue;
+			if(!fileHasNameAndType($file, @$search["name"], @$search["exts"], @$search["starts"], @$search["ends"])) continue;
 //use name as key
 			$key=combine($subPath,$file);
 //debug("splitFilename", "file=$file / key=$key / ext=$ext");
@@ -490,11 +490,14 @@ function fileHasName($file,$name="",$start=false,$end=false)
 	global $nameG;
 	setIfEmpty($name,$nameG);
 	if(empty($name)) return true;
+
+	$file=getFilename($file);
+
 	$start = $start ? "^"  : ""; //starts with name
-	$end   = $end   ? "\." : "";  //finishes with name before .extension 
+	$end   = $end   ? "$" : "";  //finishes with name before .extension 
 	$regex="/($start$name$end)/i";
 //debug("fileHasName regex", $regex);
-	return preg_match($regex,$file);
+	return preg_match($regex, $file);
 }
 
 function fileHasNameAndType($file,$name="",$ext="",$start=false,$end=false)
