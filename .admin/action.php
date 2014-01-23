@@ -15,6 +15,8 @@ $action = getParam("action");
 $actions = getConfig("file.actions");
 $to = getParam("to");
 $rename = getParam("rename");
+$indent = getParam("indent", 1);
+$includeEmpty = getParamBoolean("empty");
 
 $mf = MediaFile::getMediaFile();
 debugVar("mf");
@@ -35,38 +37,46 @@ delete: UI.confirmFileAction('delete')
 refresh image: UI.refreshThumbnail(this)
 background: UI.confirmFileAction('background')
 
-TODO: tag, add or remove
+TODO: tag: add or remove
 */
-
+$inputFile = combine($path, $file ? $file : $name);
 $result=false;
 $message="";
-if(!in_array($action, $actions))
-	$message="Invalid action $action.";
 if(!$file && !$name)
 	$message="No file selected.";
 else if(!$mf)
 {
-	$inputFile = combine($path, $file ? $file : $name);
 	$message = "File $inputFile does not exist.";
 }
 else
 	switch ($action)
 	{
+		case "rename":
 		case "move":
 			$result = $mf->move($to, $rename);
 			break;
 		case "delete":
 			$result = $mf->delete();	
 			break;
-		case "refresh":
 		case "background":
-		default:
+			//TODO: apply .bg to other directory (parent or sub?)
+			//copy .ss image file directly if same size exists
+			$result = setBackgroundImage($relPath,$file);
 			break;
+		case "refresh":
+		default:
+			$message="Invalid action $action.";
 	}
+
+if(!$message)
+{
+	$name = $mf->getName();
+	$message =  "$action $name: " . ($result ? "success": "fail");
+}
 
 //JSON response
 $response["result"] = $result;
 $response["message"] = $message;
 $response["file"] = $mf;
 $response["time"] = getTimer();
-echo jsValue($response, true);
+echo jsValue($response, $indent, $includeEmpty);

@@ -232,7 +232,7 @@ $(window).resize(function(event)
 	<img class="icon upload video" id="convertSoundIcon" src="icons/sound.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
 	<img class="icon admin notdir" id="parentIcon" src="icons/parent.gif" onclick="UI.confirmFileAction('move','..')" title="move to parent" alt="move to parent"/>
 	<img class="icon admin notdir" id="bestIcon" src="icons/star.png" onclick="UI.confirmFileAction('move','best')" title="move to best" alt="best"/>
-	<img class="icon admin notdir" id="deleteIcon" src="icons/delete.png" onclick="UI.confirmFileAction('move')" title="delete" alt="delete"/>
+	<img class="icon admin notdir" id="deleteIcon" src="icons/delete.png" onclick="UI.confirmFileAction('delete')" title="delete" alt="delete"/>
 	<img class="icon admin notdir" id="refreshIcon" src="icons/refresh.png" onclick="UI.refreshThumbnail(this)" title="refresh" alt="refresh"/>
 	<img class="icon admin notdir" id="backgroundIcon" src="icons/background.png" onclick="UI.confirmFileAction('background')" title="set as background" alt="background"/>
 </div>

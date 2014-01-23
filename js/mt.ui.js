@@ -288,25 +288,30 @@ UI.confirmFileAction = function(action,target) //,path,filename)
 	var answer = confirm(action + " " + mediaFile.name + " ?");
 	if(!answer)		return false;
 	if(!action)		action="move";
-	//use getScriptUrl or pass data to ajax
-	var link=".admin/" + action + ".php?"
+	//TODO use MediaFile.getScriptUrl(".admin/action.php") or pass data to ajax
+	var link=".admin/action.php?";
 	if(album.path)
-		link += "&path=" + album.path
-
+		link += "&path=" + album.path;
 	if(mediaFile.filename)
 		link += "&file=" + mediaFile.filename;
 	else 
 		return false;
-	
+	if(action)
+		link += "&action=" + action;
 	if(target)
 		link += "&to=" + target;
 	
-	link += "&format=ajax";
 	//call admin script with ajax	
+//	UI.setStatus(link);
    	$.ajax({	
 		url: link,
+		dataType: "json",
+		contentType: "application/json",
+		cache: false,	
 		success: function(response) 
 		{ 
+			UI.setStatus(response.message);
+//			UI.addStatus(response);
 			UI.afterAction(action, mediaFile);
 		},
 		error: UI.ajaxError

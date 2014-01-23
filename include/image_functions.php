@@ -162,7 +162,7 @@ function setBackgroundImage($relPath,$file,$size=0)
 {
 	if(!$size) 
 		$size=getConfig("background.size");
-	createResizedImage($relPath, $file, ".bg.jpg", $size, $size);
+	return createResizedImage($relPath, $file, ".bg.jpg", $size, $size);
 }
 
 //Load image using GD function depending on type

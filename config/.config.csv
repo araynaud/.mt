@@ -160,7 +160,7 @@ _publish.home.path;uploads
 ..video.format;mp4
 
 ;file valid actions
-file.actions;move;delete;rename;descrption;convert
+file.actions;move;delete;background;rename;descrption;convert
 ;delete: move to this directory. if blank: delete files 
 file.delete.to;.bad
 

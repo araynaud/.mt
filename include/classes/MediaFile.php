@@ -159,9 +159,9 @@ class MediaFile extends BaseObject
 		foreach($this->exts as $ext)
 			$filenames[] = $this->getFilename($ext);
 
-//add metadata
+//add description and metadata
+		$filenames[] = $this->getDescriptionFilename();
 		$filenames[] = $this->getMetadataFilename();
-
 //add thumbnails
     	$tnSizes = getConfig("thumbnails.sizes"); 
     	if($tnSizes)
@@ -210,7 +210,8 @@ class MediaFile extends BaseObject
 
     public function getDescription()
 	{
-		$this->description=readTextFile($this->getDescriptionFilename(true));
+		$filename = $this->getDescriptionFilename(true);
+		$this->description = readTextFile($filename);
 		return $this->description;
 	}
 	
@@ -303,12 +304,12 @@ debug("targetDir", $targetDir);
 			$result = rmdir ($filePath);
 
 		$filenames=$this->getFilenames();
-		$dir = $this-getFileDir();
+		$dir = $this->getFileDir();
 		$result=0;
 		foreach ($filenames as $key => $file)
 		{
 debug("deleteFile", "($dir, $file)");
-//			$result += deleteFile(combine($dir, $file);
+			$result += deleteFile(combine($dir, $file));
 		}			
 		return $result;
 	}
