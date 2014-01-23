@@ -11,25 +11,13 @@ $path=getPath();
 $relPath=getDiskPath($path);
 $file = getParam('file');
 $name = getParam("name");
+$action = getParam("action");
+$actions = getConfig("file.actions");
+$to = getParam("to");
+$rename = getParam("rename");
+
 $mf = MediaFile::getMediaFile();
-
-$defaultTarget=".bad";
-$target = getParam('to',$defaultTarget);
-$target=combine($path,$target);
-$relTarget=getDiskPath($target);
-
-$result=false;
-$message="";
-if(!$file && !$name)
-{
-	$message="No file selected.";
-}
-else if(!$mf)
-{
-	$message = "File $path/$name does not exist.";
-}
-
-
+debugVar("mf");
 // Do action
 /*
 
@@ -46,9 +34,39 @@ UI.confirmFileAction('move','best')
 delete: UI.confirmFileAction('delete')
 refresh image: UI.refreshThumbnail(this)
 background: UI.confirmFileAction('background')
+
+TODO: tag, add or remove
 */
 
+$result=false;
+$message="";
+if(!in_array($action, $actions))
+	$message="Invalid action $action.";
+if(!$file && !$name)
+	$message="No file selected.";
+else if(!$mf)
+{
+	$inputFile = combine($path, $file ? $file : $name);
+	$message = "File $inputFile does not exist.";
+}
+else
+	switch ($action)
+	{
+		case "move":
+			$result = $mf->move($to, $rename);
+			break;
+		case "delete":
+			$result = $mf->delete();	
+			break;
+		case "refresh":
+		case "background":
+		default:
+			break;
+	}
+
+//JSON response
+$response["result"] = $result;
 $response["message"] = $message;
-$response["files"] = $mf;
+$response["file"] = $mf;
 $response["time"] = getTimer();
 echo jsValue($response, true);

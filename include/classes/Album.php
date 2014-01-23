@@ -83,6 +83,12 @@ debug("getSearchParameters",$this->search);
 		return $this->search;
 	}
 
+	public function isCompleteIndex()
+	{
+		return !$this->search["type"] && !$this->search["name"] && !$this->search["maxCount"];
+
+	}
+
 	public function getDepth()
 	{
 		global $DEFAULT_DEPTH;
@@ -126,7 +132,7 @@ debug("getSearchParameters",$this->search);
 		if(is_null($this->_dateIndex)  && $this->_dateIndexEnabled)
 		{
 			$diFiles = $this->getDateIndexFiles();
-			$this->_dateIndex = getRefreshedDateIndex($this->relPath, $diFiles, true);
+			$this->_dateIndex = getRefreshedDateIndex($this->relPath, $diFiles, $this->isCompleteIndex());
 		}
 		return $this->_dateIndex;
 	}

@@ -88,7 +88,7 @@ background.fit;stretch
 ;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
 TYPES.IMAGE;jpg;jpeg;png;gif
 TYPES.AUDIO;mp3;wav;m4a;aac;ogg
-TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;m4v;mts;mp4;ogv;ogm
+TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;flv;ogv;ogm
 TYPES.VIDEO.STREAM;mp4;m4v;flv;3gp;ogv
 TYPES.VIDEO.HTML5;mp4;m4v;webm;ogm;ogv
 TYPES.SPECIAL;txt;csv;xml;php;chunk
@@ -158,3 +158,9 @@ _publish.home.path;uploads
 ..upload_max_filesize;2000000
 ;..image.size;1920
 ..video.format;mp4
+
+;file valid actions
+file.actions;move;delete;rename;descrption;convert
+;delete: move to this directory. if blank: delete files 
+file.delete.to;.bad
+

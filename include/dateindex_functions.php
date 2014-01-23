@@ -137,7 +137,7 @@ function getRefreshedDateIndex($relPath,$files=array(),$completeIndex=false)
 	//load existing index
 	$dateIndex=loadDateIndex($relPath);
 debug("files", $files, true);
-debug("loadDateIndex", $dateIndex, true);
+//debug("loadDateIndex", $dateIndex, true);
 
 	//test that every file is in index: add new file entries if new files
 	$addedFiles=array_diff_key($files,$dateIndex);
@@ -150,7 +150,7 @@ debug("addedFiles", $addedFiles, true);
 	}
 
 	//test that all files in index exist: remove deleted file entries
-	$deletedFiles=array(); //array_diff_key($dateIndex,$files);
+	$deletedFiles=array_diff_key($dateIndex,$files);
 	debug("deletedFiles", $deletedFiles, true);
 	//if($deletedFiles)
 	$filteredIndex=array_diff_key($dateIndex, $deletedFiles);

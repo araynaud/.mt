@@ -483,16 +483,23 @@ function formatDate($mtime)
 
 //move file and associated files: other versions .tn, .ss
 // and create target directory if necessary
-function moveFile($relPath,$file,$relTarget,$newName="")
+function moveFile($relPath, $file, $relTarget, $newName="")
 {
-	if(empty($file) || !file_exists("$relPath/$file"))
+	$inputFile = combine($relPath, $file);
+	if(empty($file) || !file_exists("$inputFile"))
 		return false;
 
-	//create target dir if it does not exist
-	if (!is_dir($relTarget))
-		mkdir ($relTarget, 0700);
+	splitFilePath($file, $subdir, $file);
+	splitFilename($file, $name, $ext);
+	$newName = $newName ? getFilename($newName, $ext) : $file;
 
-	return rename("$relPath/$file","$relTarget/$file");
+	//create target dir if it does not exist
+	createDir($relTarget, $subdir);
+	$outputFile = combine($relTarget, $subdir, $file);
+debug("input", $inputFile);
+debug("output", $outputFile);
+debug("moveFile $inputFile to", $outputFile);
+	return rename($inputFile, $outputFile);
 }
 
 
@@ -510,7 +517,6 @@ function moveMediaFile($relPath,$file,$relTarget,$newName="")
 	
 	return $result;
 }
-
 
 function deleteMediaFile($relPath,$file)
 {

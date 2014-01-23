@@ -54,11 +54,10 @@ if(!file_exists($outputFile))
 	return;
 	
 //download video as attachment?
-
 setContentType("video", "$imgType");
 header('Content-Length: ' . filesize($outputFile));
 
-$fp = fopen($outputFile, 'rb'); //stream the image directly from the generated file
+$fp = fopen($outputFile, 'rb'); //stream the file directly from the generated file
 fpassthru($fp);
 fclose($fp);	
 ?>

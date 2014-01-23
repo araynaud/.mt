@@ -18,8 +18,9 @@ class MediaFile extends BaseObject
     private $oldestDate;
     private $newestDate;
 	private $exts=array();		//array of extensions available for this filename
-	private $versions=array(); //array of MediaFileVersion in the same dir with different extensions
+	private $_versions=array(); //array of MediaFileVersion in the same dir with different extensions
 	private $_thumbnails=array(); //array of MediaFileVersion thumbnail images in different subdirectories
+	private $stream;
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
     protected $format;
@@ -56,6 +57,8 @@ class MediaFile extends BaseObject
 		}
 		else if ($this->type=="VIDEO")
 		{
+			$streamTypes = getConfig("TYPES.VIDEO.STREAM");
+			$this->stream = array_intersect($this->exts, $streamTypes);
 			//thumbnails: video: .tn/.jpg
 			$this->addThumbnail("tn","jpg");
 			if($this->_thumbnails[0]->exists)
@@ -202,7 +205,7 @@ class MediaFile extends BaseObject
 	public function getMetadataFilename($withPath=false)
 	{
 		$basePath = $withPath ? $this->getFileDir() : "";
-		$filename = combine($basePath, ".tn", getFilename($this->name, "csv"));
+		return combine($basePath, ".tn", getFilename($this->name, "csv"));
 	}	
 
     public function getDescription()
@@ -273,7 +276,47 @@ class MediaFile extends BaseObject
 		print_r($this->versions[0]);
 		echo $this->path ." ".	$this->filename . " " . $this->takenDate . "\n";
     }
+
+	public function move($targetDir, $newName="")
+	{
+		$filenames=$this->getFilenames();
+		$dir = $this->getFileDir();
+		$targetDir = combine($dir, $targetDir);
+debug("targetDir", $targetDir);
+		$result=0;
+		foreach ($filenames as $key => $file)
+		{
+//debug("moveFile", "($dir, $file, $targetDir)");
+			$result += moveFile($dir, $file, $targetDir, $newName);
+		}
+		return $result;
+	}
+
+	public function delete()
+	{
+		$moveTo=getConfig("file.delete.to");
+		if($moveTo)
+			return $this->move($moveTo);
+
+		$filePath = $this->getFilePath();
+		if(is_dir($filePath))
+			$result = rmdir ($filePath);
+
+		$filenames=$this->getFilenames();
+		$dir = $this-getFileDir();
+		$result=0;
+		foreach ($filenames as $key => $file)
+		{
+debug("deleteFile", "($dir, $file)");
+//			$result += deleteFile(combine($dir, $file);
+		}			
+		return $result;
+	}
+
 }
+
+
+
 
 //1 version of a file: extension or thumbnail
 class MediaFileVersion extends BaseObject
