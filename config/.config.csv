@@ -137,7 +137,7 @@ _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
 _publish.default;free
 _publish.script;.upload/upload.php
 
-_publish.free.url;http://minorart.free.fr/.mp
+_publish.free.url;http://minorart.free.fr/.mt
 _publish.free.name;minorart.free.fr
 _publish.free.username;arthur
 _publish.free.password;4nawak
