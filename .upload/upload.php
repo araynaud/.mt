@@ -5,20 +5,21 @@ define("LAST_CHUNK_SUFFIX", ".last.chunk");
 startTimer();
 
 $user = current_user();
-$format=getParam('format','ajax');
+$format=getParam("format","ajax");
 
 debug("Get request", $_GET);
 debug("Post request", $_POST);
 debug("Post files", $_FILES);
 
-if(isset($_POST['path']))
-	$path=getPath($_POST['path']);
+if(isset($_POST["path"]))
+	$path=getPath($_POST["path"]);
 else
 	$path=$_GET["path"]; //getPath();
 
 $dataRoot = getDiskPath("");
 $relPath=getDiskPath($path);
-$index=@$_POST['index'];
+$index=@$_POST["index"];
+$fileDate=@$_POST["fileDate"];
 
 $response=array();
 addVarToArray($response,"path");
@@ -26,9 +27,9 @@ if($index)
 	addVarToArray($response,"index");
 
 	
-$tmpFile = $_FILES['file']['tmp_name'];
-$fileType = $_FILES['file']['type'];
-$filename= $_FILES['file']['name'];
+$tmpFile = $_FILES["file"]["tmp_name"];
+$fileType = $_FILES["file"]["type"];
+$filename= $_FILES["file"]["name"];
 
 $getcwd=getcwd();
 $freeSpace=disk_free_space("/");
@@ -57,7 +58,7 @@ $target=combine($relPath, $filename);
 $moved=move_uploaded_file($tmpFile, $target);
 $filesize = $moved ? filesize($target) : 0;
 $maxUploadSize = ini_get("upload_max_filesize");
-
+setFileDate($target,$fileDate);
 addVarToArray($response, "target");
 //addVarToArray($response, "moved");
 addVarToArray($response, "filesize");

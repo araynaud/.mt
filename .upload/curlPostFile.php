@@ -5,13 +5,14 @@ function uploadFile($filePath, $destPath, $subdir="")
 {
 	global $publish;
 	global $serviceBaseUrl;
+$debug = BtoS(isDebugMode());
 	if(!file_exists($filePath)) return false;
 
 	$destPath = combine($destPath, $subdir);
-	$qs = http_build_query(array("path" => $destPath));
+	$qs = http_build_query(array("path" => $destPath, "debug" => $debug));
 	$url = "$serviceBaseUrl?$qs";
 	debug("uploading $filePath to", $url);
-	$response["tn"] = curlPostFile($url, $filePath, @$publish["username"], @$publish["password"]);
+	return curlPostFile($url, $filePath, @$publish["username"], @$publish["password"]);
 }
 
 startTimer();
@@ -19,7 +20,6 @@ startTimer();
 $path=getPath();
 $relPath=getDiskPath($path);
 $file=getParam("file");
-$debug = BtoS(isDebugMode());
 $chunk = getParam("chunk",0);
 $nbChunks = getParam("nbChunks",1);
 

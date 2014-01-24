@@ -419,6 +419,12 @@ function copyRedirect($relPath)
 		@copy("redirect.html", "$relPath/index.html");
 }
 
+function setFileDate($file, $date)
+{
+	if($date)
+		touch($file, strtotime($date));
+}
+
 function getFileDate($filename)
 {
 	//Get most recent file for a directory

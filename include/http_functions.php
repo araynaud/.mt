@@ -221,6 +221,8 @@ function curlPostData($url, $data, $username="", $password="")
 function curlPostFile($url, $filePath, $username="", $password="")
 {
 	$data=array();
+    $data["fileDate"] = getFileDate($filePath);
+    $data["filePath"] = $filePath;
     $data["file"] = "@$filePath";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);

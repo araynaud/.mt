@@ -344,8 +344,8 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 	params.format="ajax";
 	var scriptUrl = mediaFile.getScriptUrl(script, params);
 
-//	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
-//	UI.addStatus(link.outerHtml());
+	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
+	UI.addStatus(link.outerHtml());
 
 	var result = false;
    	$.ajax({
