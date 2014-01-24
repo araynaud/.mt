@@ -43,8 +43,10 @@ class Album extends BaseObject
 			$this->getSearchParameters();
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
+//debug("allFiles", $allFiles);
 			$this->dirs=selectDirs($this->relPath,$allFiles);
 			$this->_groupedFiles=groupByName($allFiles, true);
+//debug("_groupedFiles", $this->_groupedFiles);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 			//Group by name / make MediaFile objects

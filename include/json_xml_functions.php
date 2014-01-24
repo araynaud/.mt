@@ -161,7 +161,7 @@ function jsValue($val, $indent=1, $includeEmpty=false, $private=true)
 	if(is_array($val))	return jsArray($val,  $indent, $includeEmpty, $private);	//JSON array []
 	if(is_object($val)) return jsObject($val, $indent, $includeEmpty, $private);
 	if(isJsonString($val)) return $val;
-	if(is_string($val)) return '"' . encodeUtf8(escapeNewLine($val)) . '"';	//string between quotes. utf8_encode
+	if(is_string($val)) return '"' . escapeNewLine(encodeUtf8($val)) . '"';	//string between quotes. utf8_encode
 	return $val;			//number, no quote
 }
 

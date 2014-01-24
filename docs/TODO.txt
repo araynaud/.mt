@@ -34,7 +34,7 @@ OK retest
 when displaying fitered file list: sortFiles does not apply.
 => re filter album.mediaFiles after sort
 
-"11 Créme de la Créme" : name is empty.
+OK "11 Créme de la Créme" : name is empty.
 
 OK date index : when depth > 0
 Warning: strrpos() expects parameter 1 to be string, array given in /mnt/111/sdb/d/b/minorart/.mt/include/file_functions.php on line 24

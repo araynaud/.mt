@@ -175,7 +175,7 @@ function escapeAmp($str)
 	return str_replace("\"", "&quot;", $str);
 }
 
-//remove nono printable control chars
+//remove non printable control chars
 function removeControlChars($str)
 {
 	//remove non printable control chars

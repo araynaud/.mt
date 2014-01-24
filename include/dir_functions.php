@@ -66,6 +66,7 @@ debug("listFiles", $search);
 			// if($first && $file < $first) continue;
 			// if($last && $file > $last && !startsWith($file,$last) ) break; 
 			//pass function with condition to filter file before adding to array		
+debug("listFiles", $file);
 
 			if(ignoreFile($file)) continue;
 			if($recurse && fileIsDir("$dir/$file"))

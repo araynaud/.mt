@@ -402,7 +402,7 @@ debug("writeCsvFile",$data);
 	if(is_string($data)) return	writeTextFile($filename,$data);
 	if(!is_array($data)) return	writeBinaryFile($filename,$data);
 
-	$fh = fopen($filename, 'w');
+	$fh = @fopen($filename, 'w');
 	if(!$fh) return;
 
 	$csv = csvValue($data, $includeEmpty, $separator);
@@ -480,6 +480,7 @@ function formatDate($mtime)
 	return date("Y-m-d H:i:s", $mtime);
 }
 
+/* Old functions use MediaFile methods instead
 
 //move file and associated files: other versions .tn, .ss
 // and create target directory if necessary
@@ -540,6 +541,7 @@ function deleteMediaFile($relPath,$file)
 	
 	return $result;
 }
+*/
 
 function createDir($relPath,$dir="")
 {
@@ -556,4 +558,13 @@ debug("createDir $dir in ",$relPath);
 		createDir($relPath,$dir);
 	return @mkdir($outputDir, 0700);
 }
+
+
+function updateFileMetadata()
+{
+	//load MetaData file
+	setNestedArrayValue($metadata, $key ,$rowData);
+//save file
+}
+
 ?>

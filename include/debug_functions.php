@@ -33,6 +33,8 @@ function debug($text="", $value=null, $indent=0)
 		echo "\n";
 	else if(!isset($value) || $value===null)
 		echo "$text:\n";
+	else if (is_scalar($value))
+		echo "$text: $value\n";
 	else
 		echo "$text: " . jsValue($value, $indent) . "\n";
 }
