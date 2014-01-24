@@ -99,7 +99,7 @@ function writeDateIndex($relPath,$dateIndex)
 		return;
 	}
 	$maxDate="";
-	$fp = fopen($indexFilename, 'w');
+	$fp = @fopen($indexFilename, 'w');
 	if(!$fp) return false;
 
 debug("writeDateIndex", count($dateIndex));
@@ -173,14 +173,17 @@ debug("subdirFiles", count($subdirFiles));
 	foreach ($subdirFiles as $key => $file)
 	{
 		//split subdir/file
-		splitFilePath($file,$subdir,$filename);
-		splitFilename($filename,$name,$exts);
-		if($subdir!=$prevDir) // if file in different dir: load new date index
-			$dateIndex=loadDateIndex(combine($relPath,$subdir));
+		//splitFilePath($file,$subdir,$filename);
+		//splitFilename($filename, $file["name"], $exts);
+		if($file["subdir"] != $prevDir) // if file in different dir: load new date index
+			$dateIndex = loadDateIndex(combine($relPath, $file["subdir"]));
 
-debug("$key $subdir $name", isset($dateIndex[$name]));		
-		$filteredIndex[$key]=isset($dateIndex[$name]) ? $dateIndex[$name] : getFileDate("$relPath/$file");
-		$prevDir=$subdir;
+		if(isset($dateIndex[$file["name"]]))
+		{
+			$filteredIndex[$key] = $dateIndex[$file["name"]];
+			debug($key, $filteredIndex[$key]);		
+		}
+		$prevDir = $file["subdir"];
 	}
 		
 	asort($filteredIndex);

@@ -272,11 +272,18 @@ Album.prototype.sortFiles = function(sortOptions)
 	{
 		this.mediaFiles.shuffle();
 		this.otherFiles.shuffle();
+		if(!isEmpty(this.searchResults))
+			this.searchResults.shuffle();
 	}
 	else
 	{
-		this.otherFiles.sortObjectsBy(sortOptions.sort, sortOptions.reverse);
 		this.mediaFiles.sortObjectsBy(sortOptions.sort, sortOptions.reverse);
+		if(!isEmpty(this.searchResults))
+			this.searchResults.sortObjectsBy(sortOptions.sort, sortOptions.reverse);
+		if(!isEmpty(this.otherFiles))
+			this.otherFiles.sortObjectsBy(sortOptions.sort, sortOptions.reverse);
+		if(!isEmpty(this.musicFiles))
+			this.musicFiles.sortObjectsBy(sortOptions.sort, sortOptions.reverse);
 	}
 	
 	//extract dirs, put them first

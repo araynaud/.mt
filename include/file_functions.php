@@ -416,7 +416,7 @@ function copyRedirect($relPath)
 	//copy redirect.htm to $relPath/index.htm
 	if(!file_exists("$relPath/index.php") && !file_exists("$relPath/index.htm")
 	&& (!file_exists("$relPath/index.html")	|| filemtime("$relPath/index.html") < filemtime("redirect.html") ))
-		copy("redirect.html", "$relPath/index.html");
+		@copy("redirect.html", "$relPath/index.html");
 }
 
 function getFileDate($filename)
@@ -554,6 +554,6 @@ debug("createDir $dir in ",$relPath);
 	$dir = dirname($dir);
 	if($dir && $dir!=".")
 		createDir($relPath,$dir);
-	return mkdir($outputDir, 0700);
+	return @mkdir($outputDir, 0700);
 }
 ?>

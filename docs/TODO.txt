@@ -30,22 +30,36 @@ breaks date index
 date index should only have oldest and newest file. 
 then update parent dirs.
 
+OK retest
 when displaying fitered file list: sortFiles does not apply.
 => re filter album.mediaFiles after sort
----------
-data.php album -> getMediaFile -> wrong file if file has multiple types
 
+"11 Créme de la Créme" : name is empty.
+
+OK date index : when depth > 0
+Warning: strrpos() expects parameter 1 to be string, array given in /mnt/111/sdb/d/b/minorart/.mt/include/file_functions.php on line 24
+Warning: strrpos() expects parameter 1 to be string, array given in /mnt/111/sdb/d/b/minorart/.mt/include/file_functions.php on line 5
+Warning: Illegal offset type in isset or empty in /mnt/111/sdb/d/b/minorart/.mt/include/dateindex_functions.php on line 181
+Warning: Illegal offset type in isset or empty in /mnt/111/sdb/d/b/minorart/.mt/include/dateindex_functions.php on line 182
+
+---------
+
+OK data.php album -> getMediaFile -> wrong file if file has multiple types
+
+OK 
 rewrite
 Album->createMediaFiles($groupedFiles)
 MediaFile constructor with file array
 
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
  render it again.
-
+use action.php ?
 
 curlPostFile: use getFilePaths array
 post takenDate as data. 
 upload.php: touch image with $fileDate
+
+set dir mappings in readonly mode: write no files, create no dirs
 
 -----------
 

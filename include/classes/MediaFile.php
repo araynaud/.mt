@@ -88,15 +88,20 @@ class MediaFile extends BaseObject
 		return $mf;
 	}
 
-    public function addImageThumbnails($ext="")
+    public function addImageThumbnails()
     {
-    	$tnSizes = getConfig("thumbnails.sizes"); 
+    	$tnSizes = getConfig("thumbnails.sizes");
     	if(!$tnSizes) return;
+    	$noThumbTypes = getConfig("TYPES.IMAGE.NOTHUMB");
+		$noThumb = array_intersect($this->exts, $noThumbTypes);
+
+    	if($noThumb) return;
+
     	foreach ($tnSizes as $subdir => $size)
     	{
     		if($this->animated && $this->width <= $size && $this->height <= $size) break;
 			debug("addImageThubnails $subdir $size", $this->width . "x" . $this->height);
- 			$this->addThumbnail($subdir, $ext);
+ 			$this->addThumbnail($subdir);
 //    		if($this->width < $size && $this->height < $size) break;
     	}
     	debug("tnsizes", $this->tnsizes);
