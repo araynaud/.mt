@@ -852,6 +852,7 @@ a.download, .tag
 	padding-right: 2px;
 	line-height: 18px;
 	border-radius: 6px;
+	font-weight: bold;
 }
 
 a.download
@@ -866,6 +867,7 @@ a.tag
 	border: 1px solid yellow;
 	color: yellow;
 	border-radius: 6px;
+	cursor: pointer;
 }
 
 .shadow

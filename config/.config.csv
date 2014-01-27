@@ -46,6 +46,7 @@ DISPLAY.size;0
 .searchOptions;false
 .titleContainer;true
 .downloadFileList;true
+.tagList;true
 
 ;slideshow
 ;slideshow.interval;5000

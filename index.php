@@ -92,8 +92,8 @@ $(document).ready(function()
 	$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
 	$("#playIcon").toggle(album.hasFiles("VIDEO"));
 
+	UI.displayTags();
 	UI.styleCheckboxes("checkButton");
-
 	UI.setupEvents();
 
 	if(search.start)
@@ -196,9 +196,11 @@ $(window).resize(function(event)
 <div id="indexContainer" class="nofloat">
 	<div class="floatR">
 		<div class="right noprint">
-			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="F" title="Files"/>
+			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
+			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
 		</div>
+		<div id="tagList" class="right" direction="right" callback="UI.setContentWidth"></div>
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="UI.setContentWidth"></div>
 	</div>
 	<div id="pagesTop" class="pager centered"></div>

@@ -81,12 +81,6 @@ UI.displayFiles = function(selectedFiles,transition,append)
 	UI.mediaFileDiv = transition ? UI.transition.getNextSlide() : UI.transition.getCurrentSlide();
 	UI.setStatus();
 	UI.getDisplayOptions(album);
-
-	UI.linkTemplate("tnTemplate");
-	UI.linkTemplate("extLinkTemplate");
-	UI.linkTemplate("versionLinkTemplate");
-	UI.linkTemplate("tagTemplate");
-//	$.views.activeViews = false;
 	
 	UI.displayPageLinks(album);
 	if(album.nbPages>1)
@@ -151,6 +145,14 @@ UI.displayFiles = function(selectedFiles,transition,append)
 		
 	return selectedFiles;
 };
+
+//call when initial display, and when tag list changes: new tag word created or removed.
+UI.displayTags = function()
+{
+	if(isEmpty(album.tags)) return;
+	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags));
+	$("input.tagOption").bindReset("click", UI.search);		
+}
 
 //use mediafile.width and height
 //for videos: get image size from thumbnail
@@ -539,23 +541,20 @@ UI.clearSearch = function()
 
 UI.search = function()
 {
-	var searchHidden = $("#searchOptions").is(":hidden");
+/*	var searchHidden = $("#searchOptions").is(":hidden");
 	if(searchHidden)
 	{
 		$("#searchOptions").slideDown("fast");
 		return;
 	}
-	//make search object from UI
+*/
+	//make search object from UI, search existing album.mediaFiles
 	var search = UI.getSearchOptions();
-	//search existing album.mediaFiles
 	Album.searchFiles(album.mediaFiles, search);
 	//or make new Album AJAX request
 	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
-	
-//	return UI.selectPage(1);
 	album.setPageNumber(1);
 	return UI.displaySelectedFiles();
-
 };
 
 //index display methods
@@ -572,6 +571,16 @@ UI.getSearchOptions = function()
 	});
 	if(obj["type"] && obj.type.length==1)
 		obj.type=obj.type[0];
+
+//add tag checkboxes
+//if several: AND / OR : All/any ?
+	$("input.tagOption").each(function()
+	{
+		if(!$(this).is(":checked")) return;
+		if(!obj["tags"]) obj.tags=[];
+		obj.tags.push(this.id.substringAfter("cb_tag_")); 
+	});
+
 	return obj;
 };
 
@@ -625,8 +634,11 @@ UI.setupElements = function()
 	UI.contentFooter=$("#contentFooter");
 	UI.fileContainer = $("div#files");
 	UI.downloadFileDiv = $("div#downloadFileList");
+	UI.tagListDiv = $("div#tagList");
 	UI.pagers = $(".pager");
 	UI.editDiv=$("div#editDiv");
 	UI.rotateIcons = $("div#editDiv img.rotateIcon");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
+
+	UI.setupTemplates();
 };

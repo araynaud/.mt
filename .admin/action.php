@@ -48,6 +48,7 @@ TODO: tag: add or remove
 $inputFile = combine($path, $file ? $file : $name);
 $result=false;
 $message="";
+$parameters=array();
 if(!$file && !$name)
 	$message="No file selected.";
 else if(!$mf)
@@ -71,7 +72,10 @@ else
 			break;
 		case "addtag":
 		case "removetag":
-			$result = $mf->tag($tag, ($action == "addtag"));
+			$state = ($action == "addtag");
+			$result = $mf->tag($tag, $state);
+			$parameters["tag"] = $tag;
+			$parameters["state"] = $state;
 			break;
 		case "refresh":
 		default:
@@ -90,6 +94,8 @@ $mf = MediaFile::getMediaFile();
 debugVar("mf");
 
 //JSON response
+$response["action"] = $action;
+$response["parameters"] = $parameters;
 $response["result"] = $result;
 $response["message"] = $message;
 $response["file"] = $mf;

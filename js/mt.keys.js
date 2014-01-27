@@ -49,7 +49,7 @@ UI.keys =
 		'6': UI.setColumns,
 		'7': UI.setColumns,
 		'8': UI.setColumns,
-		'9': UI.setColumns,
+//		'9': UI.setColumns, conflicts with tab when searching
 		 96: UI.setColumns, //0 numpad
 		 97: UI.setColumns,	//1 numpad
 		 98: UI.setColumns,	//2 numpad

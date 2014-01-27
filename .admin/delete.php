@@ -17,7 +17,7 @@ else if(!file_exists("$relPath/$file"))
 }
 else
 {
-	$result=deleteMediaFile($relPath,$file);
+	$result=deleteFile($relPath,$file);
 	if($result)
 		$message = "File $path/$file deleted.";
 }

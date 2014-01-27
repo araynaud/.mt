@@ -312,7 +312,7 @@ UI.confirmFileAction = function(action,target) //,path,filename)
 		{ 
 			UI.addStatus(response);
 //			UI.addStatus(response.message);
-			UI.afterAction(action, mediaFile);
+			UI.afterAction(action, response, mediaFile);
 		},
 		error: UI.ajaxError
 	});				
@@ -327,25 +327,35 @@ UI.ajaxError = function(xhr, textStatus, errorThrown)
 		UI.setStatus(textStatus +"\n" +errorThrown);
 };
 
-UI.afterAction = function(action, mediaFile)
+//TODO: make separate functions 1 per action
+//pass response, use .action and .parameters
+UI.afterAction = function(action, response, mediaFile)
 {
 	if(!mediaFile) mediaFile=this.currentFile;
 	if(action==="addtag" || action==="removetag")
+	{		
+		mediaFile.setTag(response.parameters.tag, response.parameters.state);
 		return;
+	}
+
 	if(action==="background") 
 	{
 		UI.displayBackground(mediaFile);
 		return false;
 	}
-	//after move/delete : remove from album
-	album.mediaFiles.remove(mediaFile.name, "name");
-	UI.slideshow.remove(mediaFile.name);
-	if(UI.mode==="slideshow")
-		UI.slideshow.showImage();
 
-	var fileDiv=$("div#"+mediaFile.id);
-	fileDiv.hide("slow");
-	return fileDiv.length>0;
+	//after move/delete : remove from album
+	if(action==="move" || action==="delete")
+	{
+		album.mediaFiles.remove(mediaFile.name, "name");
+		UI.slideshow.remove(mediaFile.name);
+		if(UI.mode==="slideshow")
+			UI.slideshow.showImage();
+
+		var fileDiv=$("div#"+mediaFile.id);
+		fileDiv.hide("slow");
+		return fileDiv.length>0;
+	}
 };
 
 UI.resetImageSize = function(img)

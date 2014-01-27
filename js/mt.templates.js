@@ -6,6 +6,42 @@ UI.linkTemplate = function(templateId, targetId, data)
 		$.link[templateId](data, "#" + targetId);
 };
 
+UI.setupTemplates = function()
+{
+	UI.linkTemplate("tnTemplate");
+	UI.linkTemplate("extLinkTemplate");
+	UI.linkTemplate("versionLinkTemplate");
+	UI.linkTemplate("tagTemplate");
+	UI.linkTemplate("descriptionTagTemplate");
+//	$.views.activeViews = false;
+
+if($.views)
+	$.views.helpers({
+		getVar: getVar,
+		config: Album.getConfig,
+		albumVar: Album.get,
+		fileIndex: Album.getFileIndex,
+		combine: String.combine,
+		thumbnailUrl: MediaFile.getThumbnailUrl,
+		filePath: MediaFile.getFilePath,
+		fileUrl: MediaFile.getFileUrl,
+		scriptUrl: MediaFile.getScriptUrl,
+		isVideoStream: MediaFile.isVideoStream,
+		getGroup: UI.getGroup,
+		setGroup: UI.setGroup,
+		dateFormat: dateFormat,
+		dateRange: Date.formatDateRange,
+		formatTime: formatTime,
+		formatSize: formatSize,
+		divClasses: UI.divClasses,
+		divStyles: UI.divStyles,
+		imgClasses: UI.imgClasses,
+		dirImgClasses: UI.dirImgClasses,
+		captionClasses: UI.captionClasses,
+		subtitleClasses: UI.subtitleClasses
+	});
+};
+
 UI.renderTemplate = function(templateId, targetId, data, funct)
 {
 	var target = $(targetId);
@@ -63,33 +99,6 @@ UI.getGroup = function(mediaFile)
 		return group;
 	return false;
 };
-
-if($.views)
-	$.views.helpers({
-		getVar: getVar,
-		config: Album.getConfig,
-		albumVar: Album.get,
-		fileIndex: Album.getFileIndex,
-		combine: String.combine,
-		thumbnailUrl: MediaFile.getThumbnailUrl,
-		filePath: MediaFile.getFilePath,
-		fileUrl: MediaFile.getFileUrl,
-		scriptUrl: MediaFile.getScriptUrl,
-		isVideoStream: MediaFile.isVideoStream,
-		getGroup: UI.getGroup,
-		setGroup: UI.setGroup,
-		dateFormat: dateFormat,
-		dateRange: Date.formatDateRange,
-		formatTime: formatTime,
-		formatSize: formatSize,
-		divClasses: UI.divClasses,
-		divStyles: UI.divStyles,
-		imgClasses: UI.imgClasses,
-		dirImgClasses: UI.dirImgClasses,
-		captionClasses: UI.captionClasses,
-		subtitleClasses: UI.subtitleClasses
-	});
-
 	
 // TO TEST
 function getTemplateAjax(file, templateId, targetDivId)

@@ -126,6 +126,35 @@ MediaFile.hasType = function(mediaFile, type, subType)
 	return false;
 };
 
+MediaFile.prototype.hasTag = function(tag)
+{
+	return MediaFile.hasTag(this, tag);
+};
+
+MediaFile.hasTag = function(mediaFile, tag)
+{
+	if(!mediaFile.tags) return false;
+	return mediaFile.tags.hasOwnProperty(tag);
+};
+
+MediaFile.prototype.setTag = function(tag, state)
+{
+	state=valueOrDefault(state,false);
+	var hasTag = this.hasTag(tag);
+	if(state == hasTag) return;
+	if(isMissing(this.tags))	this.tags={};
+	if(state)
+		this.tags[tag] = tag;
+	else
+		delete this.tags[tag];
+};
+
+MediaFile.prototype.getTags = function()
+{
+	if(isMissing(this.tags))	return [];
+	return Object.keys(this.tags);
+};
+
 MediaFile.getTakenDate = function(mediaFile, includeTime)
 {
 	if(includeTime) return mediaFile.takenDate;
@@ -466,10 +495,9 @@ MediaFile.testProperty = function(element, value, field)
 		return result;
 	}
 
-	if(isString(element[field]))
-		return element[field].containsText(value);
-	if(isArray(element[field]))
-		return element[field].contains(value);
+	if(isString(element[field]))	return element[field].containsText(value);
+	if(isArray(element[field]))		return element[field].contains(value);
+	if(isObject(element[field]))	return element[field].hasOwnProperty(value);
 	return (element[field]==value);  
 }
 

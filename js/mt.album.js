@@ -21,14 +21,7 @@ function Album(data)
 	this.dateRange = this.getDateRange();
 
 	this.loadDisplayOptions();
-/*
-	if(isMissing(this.mediaFiles))
-	{
-		this.mediaFiles=[];
-		this.otherFiles=[];
-		return;
-	}
-*/
+
 	//make MediaFile object instances
 	if(this.groupedFiles && typeof MediaFile !== "undefined")
 		for(var type in this.groupedFiles)
@@ -51,26 +44,6 @@ function Album(data)
 	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.VIDEO));
 
 	this.loadTags();
-	
-/*	
-	if(this.mediaFiles && typeof MediaFile !== "undefined")
-		for (var i=0; i<this.mediaFiles.length; i++)
-		{
-			var mf = new MediaFile(this.mediaFiles[i]);
-			this.mediaFiles[i] = mf;
-			if(mf.id)
-				this.filesById[mf.id]= mf;
-		}
-
-	//Object.values(this.groupedFiles.VIDEO);
-	//this.dirs=this.extractFiles("DIR", "type");
-
-	this.musicFiles= this.extractFiles("AUDIO","type");
-	this.otherFiles= this.extractFiles("FILE","type");
-	this.otherFiles=Album.excludeFiles(this.otherFiles, "txt", "exts");
-	this.otherFiles=Album.excludeFiles(this.otherFiles, "js", "exts");
-	this.otherFiles=Album.excludeFiles(this.otherFiles, "css", "exts");
-*/
 }
 
 Album.serviceUrl = ""; 
@@ -153,12 +126,8 @@ Album.prototype.loadTags = function()
 		var tagList=this.tags[tag];
 		for(var i=0; i<tagList.length;i++)
 		{
-			var name = tagList[i];
-			var mf = this.getMediaFileByName(name);
-			if(!mf) continue;
-
-			if(isMissing(mf.tags))	mf.tags=[];
-			mf.tags.push(tag);
+			var mf = this.getMediaFileByName(tagList[i]);
+			if(mf)	mf.setTag(tag, true);
 		}
 	}
 };
