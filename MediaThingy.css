@@ -846,13 +846,25 @@ ol
 	visibility: hidden;
 }
 
-a.download
+a.download, .tag
 {
-	background-color: #444;
 	padding-left: 2px;
 	padding-right: 2px;
 	line-height: 18px;
+	border-radius: 6px;
+}
+
+a.download
+{
+	background-color: #444;
 	border: 1px solid orange;
+}
+
+a.tag
+{
+	background-color: #666;
+	border: 1px solid yellow;
+	color: yellow;
 	border-radius: 6px;
 }
 
