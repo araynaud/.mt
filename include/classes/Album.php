@@ -54,6 +54,8 @@ class Album extends BaseObject
 			//$this->mediaFiles =
 			$this->createMediaFiles();
 
+			$this->tags = loadTagFiles($this->relPath);
+
 /*			if($this->search["sort"])
 				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
 			if($this->search["array"])
@@ -65,8 +67,6 @@ class Album extends BaseObject
 			$this->mDate=$this->newestDate;
 			if($this->search["config"])			
 				$this->config = $config;
-
-			$this->tags = loadTagFiles($this->relPath);
 		}
 		//$this->jquery = allowJqueryFX();
 		$this->private = isPrivate($path);
@@ -188,6 +188,22 @@ debug($type, count($typeFiles));
 		//return $distinct;
 		return $this->groupedFiles;
 	}
+
+
+	private function setMediaFileTags()
+	{
+		//for each tag file, intersect with typefiles
+		//mediafile -> addtag
+		foreach ($this->groupedFiles as $type => $typeFiles)
+		{
+			foreach ($typeFiles as $name => $file)
+			{
+			}
+		}
+		//return $distinct;
+		return $this->groupedFiles;
+	}
+
 
 //TODO store date range
 //propagate to parent dirs.

@@ -56,9 +56,8 @@
 
 <!-- template for photo caption -->
 <script id="descriptionTagTemplate" type="text/x-jsrender"> 
-	<div>{{:description}}
-		{{for getTags() tmpl="tagTemplate"/}}
-	</div>
+	{{for getTags() tmpl="tagTemplate"/}}
+	{{if description}}{{:description}}{{/if}}
 </script>
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 
@@ -100,8 +99,8 @@
 		</div>
 		{{if description || tags tmpl="descriptionTagTemplate"/}}
 		<div class="floatR" style="margin-right:10px">
-			{{if ~isVideoStream(#data)}}
-				<img class="icon playLink" src="icons/play.png" title="play {{:~isVideoStream(#data)}}" />
+			{{if stream }}
+				<img class="icon playLink" src="icons/play.png" title="play {{:stream}}" />
 			{{/if}}
 		</div>
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
@@ -110,12 +109,16 @@
 
 <!-- template for tags -->
 <script id="tagTemplate" type="text/x-jsrender"> 
+	{{if #data=='best'}}
+	<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"/>
+	{{else}}
 	<a class="tag">{{:#data}}</a>
+	{{/if}}
 </script>
 
 <!-- template for tags search -->
 <script id="tagSelectTemplate" type="text/x-jsrender"> 
-	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:#data}}" title="{{:#data}}"/>
+	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:#data}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
 </script>
 
 <!-- template for video download links by extension -->
