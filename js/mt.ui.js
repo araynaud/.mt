@@ -302,7 +302,7 @@ UI.confirmFileAction = function(action,target) //,path,filename)
 		link += "&to=" + target;
 	
 	//call admin script with ajax	
-//	UI.setStatus(link);
+	UI.setStatus(link);
    	$.ajax({	
 		url: link,
 		dataType: "json",
@@ -310,8 +310,8 @@ UI.confirmFileAction = function(action,target) //,path,filename)
 		cache: false,	
 		success: function(response) 
 		{ 
-			UI.setStatus(response.message);
-//			UI.addStatus(response);
+			UI.addStatus(response);
+//			UI.addStatus(response.message);
 			UI.afterAction(action, mediaFile);
 		},
 		error: UI.ajaxError
@@ -330,6 +330,8 @@ UI.ajaxError = function(xhr, textStatus, errorThrown)
 UI.afterAction = function(action, mediaFile)
 {
 	if(!mediaFile) mediaFile=this.currentFile;
+	if(action==="addtag" || action==="removetag")
+		return;
 	if(action==="background") 
 	{
 		UI.displayBackground(mediaFile);

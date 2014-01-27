@@ -26,13 +26,7 @@ function getFileData(&$getData, $path, $file)
 		default:
 			$getData="MediaFile";
 			$mf = MediaFile::getMediaFile();
-			if($mf && is_array($mf))
-			{
-				$mf["files"] = $mf[0]->getFilenames();
-				$mf["paths"] = $mf[0]->getFilePaths(true);
-				$mf["urls"]  = $mf[0]->getFilePaths(true, true);
-			}
-			else if(is_object($mf))
+			if($mf && is_object($mf))
 			{
 				$mf->files = $mf->getFilenames();
 				$mf->paths = $mf->getFilePaths(true);

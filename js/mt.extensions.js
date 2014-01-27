@@ -908,6 +908,20 @@ Object.getNth = function(obj,key)
 		return obj[key];
 };
 
+//return array of property values from object
+Object.values = function (obj, skipNull)
+{
+    var vals = [];
+    if(!obj) return vals;
+    //if array, return obj
+    if(!isObject(obj)) return obj;
+    //TODO if not object, return [obj]
+    for(var key in obj)
+        if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
+            vals.push(obj[key]);
+    return vals;
+}
+
 //--- OTHER UTILITY FUNCTIONS
 function plural(nb, word, pluralWord)
 {

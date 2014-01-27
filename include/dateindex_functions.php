@@ -1,5 +1,70 @@
 <?php
+//---------------TAG functions ----------
 
+function getTagFilename($relPath, $tag)
+{
+	return "$relPath/.tag/$tag.csv";
+}
+
+//get index csv without trying to refresh
+function listTagFiles($relPath)
+{
+	$search = array("type" => "csv");
+	$tagFiles = listFiles("$relPath/.tag", $search);
+debug("tagFiles", $tagFiles);
+	$tagFiles = groupByName($tagFiles);
+debug("tagFiles grouped", $tagFiles);
+	return $tagFiles;
+}
+
+function loadTagFiles($relPath)
+{
+	$tagFiles = listTagFiles($relPath);
+	$tagData=array();
+	foreach ($tagFiles as $key => $file)
+	{
+		$data = loadTagFile($relPath, $key);
+		if($data)
+			$tagData[$key] = $data;
+	}
+	return $tagData;
+}
+
+function loadTagFile($relPath, $tag)
+{
+	$filename=getTagFilename($relPath, $tag);
+	return readArray($filename);
+}
+
+function saveTagFile($relPath, $tag, $data)
+{
+	$filename=getTagFilename($relPath, $tag);
+	createDir($relPath, ".tag");
+	return writeCSvFile($filename, $data, false, "\n");
+}
+
+function setFileTag($relPath, $name, $tag, $state)
+{
+	if(!$name || !$tag) return false;
+
+	//load tag file .tag/$tag, returns array of names
+	$tagList = loadTagFile($relPath, $tag);
+	$tagList = array_flip($tagList);
+	//if no change, do nothing
+	$alreadySet = (isset($tagList[$name]) == $state);
+	if($alreadySet) return true;
+
+	if($state)
+		$tagList[$name] = count($tagList);
+	else
+		unset($tagList[$name]);
+
+	$tagList = array_flip($tagList);
+	saveTagFile($relPath, $tag, $tagList);
+	return true;
+}
+
+//---------------Date index functions ----------
 function getDateIndexFilename($relPath, $type="")
 {
 	if(!$type)	return "$relPath/.dateIndex.csv";

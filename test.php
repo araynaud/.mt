@@ -161,6 +161,10 @@ debug();
 // $cmdOutput=shell_exec("dir ..\\$path");
 // debug("command", $cmdOutput)";
 startTimer();
+
+$tagData = loadTagFiles($relPath);
+debugVar("tagData", true);
+
 $files = listFiles($relPath, $search);
 debug("listFiles Time elapsed", getTimer());
 debugVar("files", true);

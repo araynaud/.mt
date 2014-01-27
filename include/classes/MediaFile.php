@@ -84,7 +84,10 @@ class MediaFile extends BaseObject
 			$_GET["name"] = getFilename($file);
 		}
 		$album = new Album($path, true);
+//	debug("album", $album);
 		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : $album->getMediaFiles();
+//		$mf = $album->getMediaFile();
+//	debug("getMediaFiles", $mf);
 		return $mf;
 	}
 
@@ -143,8 +146,8 @@ class MediaFile extends BaseObject
     public function getFilename($i=0)
 	{
 		$ext=$this->getExtension($i);
-		$this->filename = $ext ? $this->name.".$ext" : $this->name;
-		return $this->filename;
+		return $ext ? $this->name.".$ext" : $this->name;
+//		return $this->filename;
 	}
 
     public function getFilePath($ext=0)
@@ -319,6 +322,10 @@ debug("deleteFile", "($dir, $file)");
 		return $result;
 	}
 
+	public function tag($tag, $state)
+	{
+		return setFileTag($this->getFileDir(), $this->name, $tag, $state);
+	}
 }
 
 

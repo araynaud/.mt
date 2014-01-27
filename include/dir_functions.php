@@ -38,7 +38,7 @@ function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=nul
 	if(!isset($search["exts"]) && isset($search["type"]))
 		$search["exts"]=getExtensionsForTypes(@$search["type"]);
 
-debug("listFiles", $search);
+debug("listFiles $dir", $search);
 
 	//search 1 exact filename
 	if(isset($search["file"]))
@@ -66,7 +66,7 @@ debug("listFiles", $search);
 			// if($first && $file < $first) continue;
 			// if($last && $file > $last && !startsWith($file,$last) ) break; 
 			//pass function with condition to filter file before adding to array		
-debug("listFiles", $file);
+//debug("listFiles", $file);
 
 			if(ignoreFile($file)) continue;
 			if($recurse && fileIsDir("$dir/$file"))

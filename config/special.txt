@@ -5,6 +5,7 @@
 .hd
 .mp
 .mt
+.tag
 .temp
 .bg.jpg
 .ignore.txt

@@ -59,6 +59,7 @@
 		<a href="?path={{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a>
 		<div class="small">{{:description}}</div>
 		<div class="small">{{:~dateRange(oldestDate,newestDate,false)}}</div>
+		{{if tags}}{{for tags tmpl="tagTemplate"/}}{{/if}}
 	</div>
 </script>
 
@@ -71,8 +72,10 @@
 			</a>
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
-		{{if description}}
-			<div>{{:description}}</div>
+		{{if description || tags}}
+			<div>{{:description}}
+				{{if tags}}{{for tags tmpl="tagTemplate"/}}{{/if}}
+			</div>
 		{{/if}}
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}			
 			{{if transparent}}Tr{{/if}}
@@ -93,8 +96,10 @@
 				{{for exts tmpl="extLinkTemplate"/}}
 			{{/if}}
 		</div>
-		{{if description}}
-			<div>{{:description}}</div>
+		{{if description || tags}}
+			<div>{{:description}}
+				{{if tags}}{{for tags tmpl="tagTemplate"/}}{{/if}}
+			</div>
 		{{/if}}
 		<div class="floatR" style="margin-right:10px">
 			{{if ~isVideoStream(#data)}}
@@ -103,6 +108,11 @@
 		</div>
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
 	</div>
+</script>
+
+<!-- template for tags -->
+<script id="tagTemplate" type="text/x-jsrender"> 
+	<a class="download">{{:#data.toLowerCase()}}</a>
 </script>
 
 <!-- template for video download links by extension -->

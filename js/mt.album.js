@@ -21,17 +21,39 @@ function Album(data)
 	this.dateRange = this.getDateRange();
 
 	this.loadDisplayOptions();
-
+/*
 	if(isMissing(this.mediaFiles))
 	{
 		this.mediaFiles=[];
 		this.otherFiles=[];
 		return;
 	}
-	this.filesById={};
-	
+*/
 	//make MediaFile object instances
-	if(typeof MediaFile !== "undefined")
+	if(this.groupedFiles && typeof MediaFile !== "undefined")
+		for(var type in this.groupedFiles)
+		{
+			var files = this.groupedFiles[type];
+			for(var key in files)
+			{
+				if(!files.hasOwnProperty(key)) continue;
+				var mf = new MediaFile(files[key]);
+				delete files[key];
+				files[mf.id] = mf;
+			}	
+		}
+
+	this.musicFiles = Object.values(this.groupedFiles.AUDIO);
+	this.otherFiles = Object.values(this.groupedFiles.FILE);
+	this.dirs = Object.values(this.groupedFiles.DIR);
+	this.mediaFiles = this.dirs;
+	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.IMAGE));
+	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.VIDEO));
+
+	this.loadTags();
+	
+/*	
+	if(this.mediaFiles && typeof MediaFile !== "undefined")
 		for (var i=0; i<this.mediaFiles.length; i++)
 		{
 			var mf = new MediaFile(this.mediaFiles[i]);
@@ -39,12 +61,16 @@ function Album(data)
 			if(mf.id)
 				this.filesById[mf.id]= mf;
 		}
+
+	//Object.values(this.groupedFiles.VIDEO);
 	//this.dirs=this.extractFiles("DIR", "type");
+
 	this.musicFiles= this.extractFiles("AUDIO","type");
 	this.otherFiles= this.extractFiles("FILE","type");
 	this.otherFiles=Album.excludeFiles(this.otherFiles, "txt", "exts");
 	this.otherFiles=Album.excludeFiles(this.otherFiles, "js", "exts");
 	this.otherFiles=Album.excludeFiles(this.otherFiles, "css", "exts");
+*/
 }
 
 Album.serviceUrl = ""; 
@@ -116,6 +142,28 @@ Album.prototype.get = function(key, default_)
 	return isMissing(value) ? default_ :  value ;
 };
 
+
+Album.prototype.loadTags = function()
+{
+	//for each tag: assign tag to mediaFiles
+	if(!this.tags) return;
+
+	for(tag in this.tags)
+	{
+		var tagList=this.tags[tag];
+		for(var i=0; i<tagList.length;i++)
+		{
+			var name = tagList[i];
+			var mf = this.getMediaFileByName(name);
+			if(!mf) continue;
+
+			if(isMissing(mf.tags))	mf.tags=[];
+			mf.tags.push(tag);
+		}
+	}
+};
+
+
 Album.prototype.contains = function(key)
 {
 	return !isMissing(this[key]);
@@ -158,27 +206,46 @@ Album.prototype.createMissingThumbnails = function(tnIndex, type)
 	}
 };
 
-//get mediafile from currently hover div
-Album.prototype.getMediaFileByName = function(name)
-{  
-	var mediaFile=this.selectFiles(name, "name");
-	if(mediaFile.length) return mediaFile[0];
-	return null;
-};
-
-Album.prototype.getMediaFileById = function(el)
+//getMediaFileBy HTML element id
+Album.prototype.getByAttribute = function(el)
 {
-	if(el instanceof MediaFile)
-		return el;
+	if(el instanceof MediaFile)	return el;
 
-	if(isString(el))
-		return this.filesById[el];
+	if(isString(el))	return this.getMediaFileById(el);
 
 	if(!el.is(".file"))
 		el = el.parents("div.file");
+
 	var id = el.attr("id");
-	var mediaFile=this.filesById[id];
+	var type = this.getMediaFileType(el);
+	var mediaFile = this.getMediaFileById(id, type);
 	return mediaFile;
+};
+
+Album.prototype.getMediaFileType = function(el)
+{
+	for(type in this.groupedFiles)
+		if(el.hasClass(type.toLowerCase()))
+			return type;
+	return "";
+}
+
+Album.prototype.getMediaFileById = function(id, type)
+{
+	if(type && this.groupedFiles[type][id])
+		return this.groupedFiles[type][id];
+
+	for(type in this.groupedFiles)
+		if(this.groupedFiles[type][id])
+			return this.groupedFiles[type][id];
+	return null;
+};
+
+//get mediafile from currently hover div
+Album.prototype.getMediaFileByName = function(name)
+{  
+	var id = MediaFile.getId(name);
+	return this.getMediaFileById(id);
 };
 
 //Filter by json object {name: "a", type: "image", date: "", description: "" }

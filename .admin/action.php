@@ -13,8 +13,14 @@ $file = getParam('file');
 $name = getParam("name");
 $action = getParam("action");
 $actions = getConfig("file.actions");
+//move/rename options
 $to = getParam("to");
 $rename = getParam("rename");
+
+//tag options
+$tag = getParam("tag", $to);
+
+//output options
 $indent = getParam("indent", 1);
 $includeEmpty = getParamBoolean("empty");
 
@@ -56,12 +62,16 @@ else
 			$result = $mf->move($to, $rename);
 			break;
 		case "delete":
-			$result = $mf->delete();	
+			$result = $mf->delete();
 			break;
 		case "background":
 			//TODO: apply .bg to other directory (parent or sub?)
 			//copy .ss image file directly if same size exists
-			$result = setBackgroundImage($relPath,$file);
+			$result = setBackgroundImage($relPath, $file);
+			break;
+		case "addtag":
+		case "removetag":
+			$result = $mf->tag($tag, ($action == "addtag"));
 			break;
 		case "refresh":
 		default:
@@ -73,6 +83,11 @@ if(!$message)
 	$name = $mf->getName();
 	$message =  "$action $name: " . ($result ? "success": "fail");
 }
+
+//return MediaFile after action
+//should be null for delete and move
+$mf = MediaFile::getMediaFile();
+debugVar("mf");
 
 //JSON response
 $response["result"] = $result;

@@ -363,13 +363,6 @@ function readCsvTableFile($filename, $separator=";", &$csvRows = array())
 	return $csvRows;
 }
 
-function deleteFile($filename)
-{
-	if(file_exists($filename))
-		return unlink($filename);
-	return false;
-}
-
 function writeBinaryFile($filename, $data, $append=false)
 {
 	if(!$data && !$append)	return deleteFile($filename);
@@ -486,10 +479,14 @@ function formatDate($mtime)
 	return date("Y-m-d H:i:s", $mtime);
 }
 
-/* Old functions use MediaFile methods instead
+function deleteFile($filename)
+{
+	if(file_exists($filename))
+		return unlink($filename);
+	return false;
+}
 
-//move file and associated files: other versions .tn, .ss
-// and create target directory if necessary
+//move file and create target directory if necessary
 function moveFile($relPath, $file, $relTarget, $newName="")
 {
 	$inputFile = combine($relPath, $file);
@@ -503,12 +500,11 @@ function moveFile($relPath, $file, $relTarget, $newName="")
 	//create target dir if it does not exist
 	createDir($relTarget, $subdir);
 	$outputFile = combine($relTarget, $subdir, $file);
-debug("input", $inputFile);
-debug("output", $outputFile);
 debug("moveFile $inputFile to", $outputFile);
 	return rename($inputFile, $outputFile);
 }
 
+/*  Old functions: use MediaFile methods instead
 
 //move file and associated files: other versions, description, .tn, .ss
 function moveMediaFile($relPath,$file,$relTarget,$newName="")

@@ -37,8 +37,15 @@ MediaFile.prototype.contains = function(key)
 MediaFile.prototype.getId = function()
 {
 	if(!this.id)
-		this.id = this.type +"_" + this.name.replace(/[\.#\(\)\{\}' ]/g,"_");
+		this.id = MediaFile.getId(this.name); //, this.type);
 	return this.id;
+};
+
+MediaFile.getId = function(name, type)
+{
+	var id = name.replace(/[\.#\(\)\{\}' &]/g,"_");
+	if(type)	id = type +"_" + id;
+	return id;
 };
 
 MediaFile.prototype.getFilename = function(ext)
@@ -344,8 +351,8 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 	params.format="ajax";
 	var scriptUrl = mediaFile.getScriptUrl(script, params);
 
-	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
-	UI.addStatus(link.outerHtml());
+//	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
+//	UI.addStatus(link.outerHtml());
 
 	var result = false;
    	$.ajax({
@@ -405,17 +412,6 @@ MediaFile.prototype.setTnExists = function(exists, tnIndex)
 			this.tnsizes[i] = -1;
 	}
 	return true;
-}
-
-MediaFile.getByAttribute = function(img)
-{
-	if(img instanceof MediaFile)
-		return img;
-
-	var index = img.attr("id");
-	var mediaFile=album.filesById[index];
-
-	return mediaFile;
 };
 
 MediaFile.alertFileInfo = function (mediaFile)

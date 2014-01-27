@@ -879,6 +879,10 @@ a.download
 	color:red;
 	font-weight: bold;
 }
+.file .error
+{
+	min-width: 200px;
+}
 
 /*differences between screen and print*/
 @media screen

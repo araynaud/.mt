@@ -358,11 +358,11 @@ function arrayJoinRecursive($array, $sep="|")
 function flattenArray($array)
 {
 	if(!is_array($array))
-		return (array) $array;
+		return array($array);
 
 	$result=array();
 	foreach($array as $key=>$value)
-		$result = array_merge($result,flattenArray($value));
+		$result = array_merge($result, flattenArray($value));
 
 	return $result;
 }

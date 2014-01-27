@@ -85,6 +85,7 @@ UI.displayFiles = function(selectedFiles,transition,append)
 	UI.linkTemplate("tnTemplate");
 	UI.linkTemplate("extLinkTemplate");
 	UI.linkTemplate("versionLinkTemplate");
+	UI.linkTemplate("tagTemplate");
 //	$.views.activeViews = false;
 	
 	UI.displayPageLinks(album);
@@ -144,7 +145,7 @@ UI.displayFiles = function(selectedFiles,transition,append)
 	imgThumbs = UI.pageDiv.find("div.video[page={0}] img.playLink".format(album.pageNum));
 	imgThumbs.click(function()
 	{
-		var mediaFile = album.getMediaFileById($(this));
+		var mediaFile = album.getByAttribute($(this));
 		MediaPlayer.video.loadMediaFile(mediaFile);
 	});
 		
@@ -283,7 +284,7 @@ UI.imageOnError = function()
 {
 	var img=$(this);
 	var filebox=img.parents("div.file");
-	var mediaFile = MediaFile.getByAttribute(filebox);
+	var mediaFile = album.getByAttribute(filebox);
 	mediaFile.tnIndex = img.attr("tn") || album.tnIndex;
 	mediaFile.setTnExists(false, mediaFile.tnIndex);
 
@@ -296,7 +297,6 @@ UI.imageOnError = function()
 	img.show();
 	var caption=filebox.children(".caption, .captionBelow");	
 	caption.show();
-	var filebox=img.parents("div.file");
 	filebox.show();
 };
 	
@@ -304,7 +304,7 @@ UI.imageOnLoad = function()
 {
 	var img=$(this);
 	var filebox=img.parents("div.file");
-	var mediaFile = MediaFile.getByAttribute(filebox);
+	var mediaFile = album.getByAttribute(filebox);
 	mediaFile.tnIndex = img.attr("tn") || album.tnIndex;
 	mediaFile.setTnExists(true, mediaFile.tnIndex);
 
@@ -513,7 +513,7 @@ UI.displayEdit = function(filebox)
 
 	UI.editDiv.appendTo(filebox).show();
 
-	UI.currentFile=MediaFile.getByAttribute(filebox);
+	UI.currentFile=album.getByAttribute(filebox);
 	UI.rotateIcons.toggle(UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
 
