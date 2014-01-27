@@ -56,6 +56,9 @@ upload.php: touch image with $fileDate from MediaFile->getTakenDate();
 
 set dir mappings in readonly mode: write no files, create no dirs
 
+refresh file template after action.php ajax
+render into id.
+
 -----------
 
 File tags
