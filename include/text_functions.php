@@ -355,15 +355,14 @@ function arrayJoinRecursive($array, $sep="|")
 	return implode($sep,$array);
 }
 
-function flattenArray($array)
+function flattenArray($data)
 {
-	if(!is_array($array))
-		return array($array);
-
 	$result=array();
-	foreach($array as $key=>$value)
-		$result = array_merge($result, flattenArray($value));
-
+	if(is_array($data))
+		foreach($data as $key=>$value)
+			$result = array_merge($result, flattenArray($value));
+	else
+		$result[] = $data;
 	return $result;
 }
 

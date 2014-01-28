@@ -23,18 +23,19 @@ function Album(data)
 	this.loadDisplayOptions();
 
 	//make MediaFile object instances
-	if(this.groupedFiles && typeof MediaFile !== "undefined")
-		for(var type in this.groupedFiles)
+	if(!this.groupedFiles) return;
+
+	for(var type in this.groupedFiles)
+	{
+		var files = this.groupedFiles[type];
+		for(var key in files)
 		{
-			var files = this.groupedFiles[type];
-			for(var key in files)
-			{
-				if(!files.hasOwnProperty(key)) continue;
-				var mf = new MediaFile(files[key]);
-				delete files[key];
-				files[mf.id] = mf;
-			}	
-		}
+			if(!files.hasOwnProperty(key)) continue;
+			var mf = new MediaFile(files[key]);
+			delete files[key];
+			files[mf.id] = mf;
+		}	
+	}
 
 	this.musicFiles = Object.values(this.groupedFiles.AUDIO);
 	this.otherFiles = Object.values(this.groupedFiles.FILE);
@@ -42,8 +43,6 @@ function Album(data)
 	this.mediaFiles = this.dirs;
 	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.IMAGE));
 	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.VIDEO));
-
-	this.loadTags();
 }
 
 Album.serviceUrl = ""; 

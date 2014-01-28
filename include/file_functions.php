@@ -154,18 +154,14 @@ function deleteChunks($relPath,$filename)
 }
 
 // Read array of lines
-function readArray($filename)
+function readArray($filename, $valuesAsKeys=false)
 {
 	if(!file_exists($filename) || filesize($filename)==0 || is_dir($filename))
 		return array();
-	$lineArray=file($filename, FILE_SKIP_EMPTY_LINES);
 	//remove windows CR/LF  from each line
-	for($i=0; $i<count($lineArray); $i++)
-	{
-		$lineArray[$i]=rtrim($lineArray[$i]);
-	}
-	//$trim? 
-	//$separators: split words separated by space, \t ?
+	$lineArray=file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+	if($valuesAsKeys)
+		$lineArray = array_combine($lineArray, $lineArray);
 	return $lineArray;
 }
 
@@ -479,10 +475,11 @@ function formatDate($mtime)
 	return date("Y-m-d H:i:s", $mtime);
 }
 
-function deleteFile($filename)
+function deleteFile($relPath, $file="")
 {
-	if(file_exists($filename))
-		return unlink($filename);
+	$file = combine($relPath, $file);
+	if(file_exists($file))
+		return unlink($file);
 	return false;
 }
 
@@ -503,47 +500,6 @@ function moveFile($relPath, $file, $relTarget, $newName="")
 debug("moveFile $inputFile to", $outputFile);
 	return rename($inputFile, $outputFile);
 }
-
-/*  Old functions: use MediaFile methods instead
-
-//move file and associated files: other versions, description, .tn, .ss
-function moveMediaFile($relPath,$file,$relTarget,$newName="")
-{
-	splitFilename($file,$name,$ext);
-	//original file	
-	$result=moveFile("$relPath","$file","$relTarget");
-	//TODO: other versions: use searchFiles("nameStart")
-	moveFile($relPath,"$name.txt",$relTarget);				//description
-	moveFile("$relPath/.ss",$file,"$relTarget/.ss");		//slide show
-	moveFile("$relPath/.tn",$file,"$relTarget/.tn");		//thumbnail
-	moveFile("$relPath/.tn","$name.jpg","$relTarget/.tn");	//thumbnail for video
-	
-	return $result;
-}
-
-function deleteMediaFile($relPath,$file)
-{
-	if(is_dir("$relPath/$file"))
-		return rmdir ("$relPath/$file");
-
-	//for files
-	splitFilename($file,$name,$ext);
-	//original file
-	$result=unlink("$relPath/$file");
-	//TODO: other versions
-
-	//slide show version
-	deleteFile("$relPath/.ss/$file");
-	//TODO: test if other versions
-	//delete thumbnail and description if no other version of the file
-	deleteFile("$relPath/.tn/$file");
-	deleteFile("$relPath/.tn/$name.jpg");
-	deleteFile("$relPath/.tn/$name.csv");
-	deleteFile("$relPath/$name.txt");
-	
-	return $result;
-}
-*/
 
 function createDir($relPath,$dir="")
 {

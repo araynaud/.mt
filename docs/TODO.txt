@@ -60,8 +60,12 @@ set dir mappings in readonly mode: write no files, create no dirs
 refresh file template after action.php ajax
 render into id.
 
-UI for adding new tag
+UI for adding new tag.
+tag icon -> display tag list dialog + type new tag.
+click on tag: removetag, confirm
 
+name and description
+edit icon. click: $("#id .description").contenteditable="true"
 -----------
 
 File tags

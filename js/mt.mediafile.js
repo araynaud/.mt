@@ -151,8 +151,7 @@ MediaFile.prototype.setTag = function(tag, state)
 
 MediaFile.prototype.getTags = function()
 {
-	if(isMissing(this.tags))	return [];
-	return Object.keys(this.tags);
+	return Object.values(this.tags);
 };
 
 MediaFile.getTakenDate = function(mediaFile, includeTime)

@@ -7,6 +7,7 @@ $title = makePathTitle($path);
 $file = getParam('file');
 $format= getParam('format','html');
 $result=false;
+$message="";
 if(empty($file))
 {
 	$message="No file selected.";
@@ -17,9 +18,10 @@ else if(!file_exists("$relPath/$file"))
 }
 else
 {
+	$message = "deleting file $path/$file...";
 	$result=deleteFile($relPath,$file);
 	if($result)
-		$message = "File $path/$file deleted.";
+		$message .= "File $path/$file deleted.";
 }
 
 if($format=="ajax")

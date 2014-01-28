@@ -17,49 +17,52 @@ debug("tagFiles grouped", $tagFiles);
 	return $tagFiles;
 }
 
-function loadTagFiles($relPath)
+function loadTagFiles($relPath, $fileList=null)
 {
 	$tagFiles = listTagFiles($relPath);
 	$tagData=array();
-	foreach ($tagFiles as $key => $file)
+
+	foreach ($tagFiles as $tag => $file)
 	{
-		$data = loadTagFile($relPath, $key);
+		$data = loadTagFile($relPath, $tag, $fileList);
 		if($data)
-			$tagData[$key] = $data;
+			$tagData[$tag] = $data;
 	}
 	return $tagData;
 }
 
-function loadTagFile($relPath, $tag)
+function loadTagFile($relPath, $tag, $fileList=null)
 {
 	$filename=getTagFilename($relPath, $tag);
-	return readArray($filename);
+	$tagList = readArray($filename, true);
+	if($fileList)
+		$tagList = array_intersect_key($tagList, $fileList);
+	return $tagList;
 }
 
 function saveTagFile($relPath, $tag, $data)
 {
 	$filename=getTagFilename($relPath, $tag);
 	createDir($relPath, ".tag");
+	$data = array_values($data);
 	return writeCSvFile($filename, $data, false, "\n");
 }
 
-function setFileTag($relPath, $name, $tag, $state)
+function saveFileTag($relPath, $name, $tag, $state)
 {
 	if(!$name || !$tag) return false;
 
 	//load tag file .tag/$tag, returns array of names
 	$tagList = loadTagFile($relPath, $tag);
-	$tagList = array_flip($tagList);
 	//if no change, do nothing
 	$alreadySet = (isset($tagList[$name]) == $state);
 	if($alreadySet) return true;
 
 	if($state)
-		$tagList[$name] = count($tagList);
+		$tagList[$name] = $name;
 	else
 		unset($tagList[$name]);
 
-	$tagList = array_flip($tagList);
 	saveTagFile($relPath, $tag, $tagList);
 	return true;
 }

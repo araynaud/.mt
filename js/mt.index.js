@@ -541,13 +541,6 @@ UI.clearSearch = function()
 
 UI.search = function()
 {
-/*	var searchHidden = $("#searchOptions").is(":hidden");
-	if(searchHidden)
-	{
-		$("#searchOptions").slideDown("fast");
-		return;
-	}
-*/
 	//make search object from UI, search existing album.mediaFiles
 	var search = UI.getSearchOptions();
 	Album.searchFiles(album.mediaFiles, search);

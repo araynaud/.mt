@@ -23,6 +23,7 @@ class MediaFile extends BaseObject
 	private $stream;
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
+	private $tags=array();
     protected $format;
     protected $width;
     protected $height;
@@ -322,9 +323,15 @@ debug("deleteFile", "($dir, $file)");
 		return $result;
 	}
 
+	public function addTag($tag)
+	{
+		$this->tags[]=$tag;
+debug("addTag " . $this->name, $tag);
+	}
+
 	public function tag($tag, $state)
 	{
-		return setFileTag($this->getFileDir(), $this->name, $tag, $state);
+		return saveFileTag($this->getFileDir(), $this->name, $tag, $state);
 	}
 }
 

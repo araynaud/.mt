@@ -44,23 +44,19 @@ class Album extends BaseObject
 			$this->getSearchParameters();
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
-//debug("allFiles", $allFiles);
+debug("allFiles", $allFiles, true);
 			$this->dirs=selectDirs($this->relPath,$allFiles);
 			$this->groupedFiles=groupByName($allFiles, true);
-//debug("groupedFiles", $this->groupedFiles);
+			$allFiles=groupByName($allFiles);
+debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
+
 			//Group by name / make MediaFile objects
-			//$this->mediaFiles =
+			$this->tags = loadTagFiles($this->relPath, $allFiles);
+
 			$this->createMediaFiles();
 
-			$this->tags = loadTagFiles($this->relPath);
-
-/*			if($this->search["sort"])
-				$this->mediaFiles=sortFiles($this->mediaFiles, $this->search["sort"], $this->_dateIndex);
-			if($this->search["array"])
-				$this->mediaFiles=array_values($this->mediaFiles);
-*/
 			$this->oldestDate=getOldestFileDate($this->relPath);
 			$this->newestDate=getNewestFileDate($this->relPath);
 			$this->cDate=$this->oldestDate;
@@ -79,12 +75,12 @@ class Album extends BaseObject
 		$this->search = Array();		
 		$this->search["type"]=getParam("type");
 		$this->search["name"]=getParam("name");
-		$this->search["sort"]=getParam("sort");
+//		$this->search["sort"]=getParam("sort");
 		$this->search["depth"]=$this->getDepth();
 		$this->search["metadata"]=getParamBoolean("metadata");
 		$this->search["maxCount"]=getParam("count",0);
 		$this->search["config"]=getParamBoolean("config",true);
-		$this->search["array"]=getParamBoolean("array", false);
+//		$this->search["array"]=getParamBoolean("array", false);
 debug("getSearchParameters",$this->search);
 		return $this->search;
 	}
@@ -179,29 +175,24 @@ debug($type, count($typeFiles));
 					$dateIndex = loadDateIndex($fileDir);
 				$mf = new MediaFile($this, $file);
 				$this->checkDateRange($mf);
+				$this->setMediaFileTags($mf);
 				//$distinct[]=$mf;
 				$this->groupedFiles[$type][$name] = $mf;
 				$prevDir = $file["subdir"];
 			}
-
 		}
 		//return $distinct;
 		return $this->groupedFiles;
 	}
 
 
-	private function setMediaFileTags()
+	private function setMediaFileTags($mf)
 	{
-		//for each tag file, intersect with typefiles
-		//mediafile -> addtag
-		foreach ($this->groupedFiles as $type => $typeFiles)
-		{
-			foreach ($typeFiles as $name => $file)
-			{
-			}
-		}
-		//return $distinct;
-		return $this->groupedFiles;
+		//for each tag file, 		//mediafile -> addtag
+		if(!$this->tags) return;
+		foreach ($this->tags as $tag => $tagList)
+			if(isset($tagList[$mf->getName()]))
+				$mf->addTag($tag);
 	}
 
 
@@ -244,7 +235,8 @@ debug($type, count($typeFiles));
 
 	public function getMediaFile($index=0)
 	{
-		return $this->getMediaFiles()[$index];
+		$files=$this->getMediaFiles();
+		return $files[$index];
 	}
 
 }

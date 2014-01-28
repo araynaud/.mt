@@ -148,7 +148,7 @@ UI.keys =
 UI.handleKeys = function(event)
 {
 	var target=$(event.target);
-	if(target.is(":text")) return;
+	if(target.is(":text, .description")) return;
 
 	var keyCode=event.keyCode;
 	if(!keyCode) keyCode=event.which;

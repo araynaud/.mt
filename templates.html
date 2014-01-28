@@ -57,13 +57,13 @@
 <!-- template for photo caption -->
 <script id="descriptionTagTemplate" type="text/x-jsrender"> 
 	{{for getTags() tmpl="tagTemplate"/}}
-	{{if description}}{{:description}}{{/if}}
+	<span id="desc_{{:id}}" class="description">{{:description}}</span>
 </script>
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
-		<a href="?path={{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a>
-		{{if description || tags tmpl="descriptionTagTemplate"/}}
+		<div><a href="?path={{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a></div>
+		{{if true tmpl="descriptionTagTemplate"/}}
 		<div class="small">{{:~dateRange(oldestDate,newestDate,false)}}</div>
 	</div>
 </script>
@@ -77,7 +77,7 @@
 			</a>
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
-		{{if description || tags tmpl="descriptionTagTemplate"/}}
+		{{if true tmpl="descriptionTagTemplate"/}}
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}			
 			{{if transparent}}Tr{{/if}}
 			{{if alpha}}RGBA{{/if}}
@@ -97,12 +97,10 @@
 				{{for exts tmpl="extLinkTemplate"/}}
 			{{/if}}
 		</div>
-		{{if description || tags tmpl="descriptionTagTemplate"/}}
 		<div class="floatR" style="margin-right:10px">
-			{{if stream }}
-				<img class="icon playLink" src="icons/play.png" title="play {{:stream}}" />
-			{{/if}}
+			{{if stream }}<img class="icon playLink" src="icons/play.png" title="play {{:stream}}" />{{/if}}
 		</div>
+		{{if true tmpl="descriptionTagTemplate"/}}
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
 	</div>
 </script>
@@ -110,9 +108,9 @@
 <!-- template for tags -->
 <script id="tagTemplate" type="text/x-jsrender"> 
 	{{if #data=='best'}}
-	<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"/>
+		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png" {{if true}} onclick="UI.confirmFileAction('removetag','{{:#data}}')"{{/if}}/>
 	{{else}}
-	<a class="tag">{{:#data}}</a>
+		<a class="tag" {{if true}} onclick="UI.confirmFileAction('removetag','{{:#data}}')"{{/if}}>{{:#data}}</a>
 	{{/if}}
 </script>
 
