@@ -310,13 +310,15 @@ function setIfSet(&$dst,$src)
 }
 
 //convert if numeric or boolean
-function parseValue($var)
+function parseValue($var, $separator="")
 {
 	$var=trim($var);
 	if(is_numeric($var))
 		return 0+$var;
 	if(!strcasecmp($var,"true") || !strcasecmp($var,"false"))
 		return parseBoolean($var);
+	if($separator && contains($var,$separator))
+		return explode($separator, $var);
 	return parseConstant($var);
 }
 
