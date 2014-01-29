@@ -326,11 +326,10 @@ function groupByName($files, $byType=false)
 		$element = $byType ? $distinct[$type][$key] : $distinct[$key];
 		if($new)
 		{
-			$element["subdir"] = $subdir;
 			$element["name"] = $name;
-			$element["exts"] = array();
-			//if(!$byType)
+			$element["subdir"] = $subdir;
 			$element["type"] = $type;
+			$element["exts"] = array();
 		}
 		$element["exts"][]=$ext;
 

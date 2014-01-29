@@ -75,22 +75,22 @@ function saveFileTag($relPath, $name, $tag, $state)
 //--------------- dir metadata functions ----------
 function getMetadataIndexFilename($relPath, $type="")
 {
-	if(!$type)	return "$relPath/.metadata.csv";
-	return "$relPath/.metadata.$type.csv";
+	if(!$type)	return "$relPath/.tn/.metadata.csv";
+	return "$relPath/.tn/.metadata.$type.csv";
 }
 
 //get index csv without trying to refresh
 function loadMetadataIndex($relPath)
 {
 	$indexFilename=getMetadataIndexFilename($relPath);
-	return readCsvTableFile($indexFilename);
+	return readCsvTableFile($indexFilename,"name", true);
 }
 
 // write date index CSV data to file
 function saveMetadataIndex($relPath, $data)
 {
 	$filename=getMetadataIndexFilename($relPath);
-	return writeCsvTableFile($filename, $data, ";", true);
+	return writeCsvTableFile($filename, $data, true, false);
 }
 
 
