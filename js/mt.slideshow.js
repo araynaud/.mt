@@ -328,6 +328,7 @@ Slideshow.prototype.getPicFilename = function(index)
 
 Slideshow.prototype.showImage = function(index, transitionFunction)
 {	
+	if(isEmpty(this.pics)) return;
 	this.setStart(index);
 	this.setStatus();
 	this.preLoadedImage = this.loadImage();

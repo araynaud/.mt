@@ -1,20 +1,6 @@
 <?php
 require_once("../include/config.php");
 
-function uploadFile($filePath, $destPath, $subdir="")
-{
-	global $publish;
-	global $serviceBaseUrl;
-$debug = BtoS(isDebugMode());
-	if(!file_exists($filePath)) return false;
-
-	$destPath = combine($destPath, $subdir);
-	$qs = http_build_query(array("path" => $destPath, "debug" => $debug));
-	$url = "$serviceBaseUrl?$qs";
-	debug("uploading $filePath to", $url);
-	return curlPostFile($url, $filePath, @$publish["username"], @$publish["password"]);
-}
-
 startTimer();
 
 $path=getPath();
@@ -120,7 +106,7 @@ if($nbChunks>1)
 addVarToArray($response,"chunk"); // == $nbChunks ? 0 : $chunk;
 addVarToArray($response,"nbChunks");
 
-$response["file"] = uploadFile($filePath, $destPath);
+$response["file"] = uploadFile($publish, $filePath, $destPath);
 
 if($nbChunks>1) // delete after upload
 	deleteFile($filePath);
@@ -129,15 +115,15 @@ if($nbChunks>1) // delete after upload
 if($chunk <=1)
 {
 	if(file_exists($descFilePath))
-		$response["description"] = uploadFile($descFilePath, $destPath);
+		$response["description"] = uploadFile($publish, $descFilePath, $destPath);
 
 	if($thumbnails)
 		foreach ($thumbnails as $dir => $tnPath)
 			if($tnPath && ".$dir" != $tndir)
-				$response[$dir] = uploadFile($tnPath, $destPath, ".$dir");
+				$response[$dir] = uploadFile($publish, $tnPath, $destPath, ".$dir");
 
 	//save metadata if not using original image
-	$response["metadata"] = uploadFile($metadataFilename, $destPath, ".tn");
+	$response["metadata"] = uploadFile($publish, $metadataFilename, $destPath, ".tn");
 }
 
 $response["time"] = getTimer();

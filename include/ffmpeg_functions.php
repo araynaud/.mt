@@ -218,19 +218,21 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 //$cmd = "$ffmpeg -i $video -an -t 00:00:01 -ss 2 -r 1 -y -vf scale=300:-1 $image";
 //$cmd = "$ffmpeg -i $video -vf scale=300:-1 $image";
 
-function getVideoProperties($relPath, $file, $convertTo)
+function getVideoProperties($relPath, $file="", $convertTo="")
 {
 	$metadata = getMediaFileInfo($relPath, $file);
 //debug("getMediaFileInfo", $metadata, true);
 	$data = array();
+	$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
 	$data["width"] = arrayGet($metadata, "STREAM.0.width");
 	$data["height"] = arrayGet($metadata, "STREAM.0.height");
-	$data["display_aspect_ratio"] = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
-	if($data["display_aspect_ratio"])
+	$display_aspect_ratio = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
+	if($display_aspect_ratio)
 	{
-		$data["height2"] = $data["width"] / $data["display_aspect_ratio"];
-		$data["width2"] = $data["height"] * $data["display_aspect_ratio"];
+		$data["ratio"] = $display_aspect_ratio;
+		$data["height2"] = $data["width"] / $display_aspect_ratio;
+		$data["width2"] = $data["height"] * $display_aspect_ratio;
 	}
 	if($convertTo)
 	{

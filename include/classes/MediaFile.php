@@ -18,8 +18,6 @@ class MediaFile extends BaseObject
     private $oldestDate;
     private $newestDate;
 	private $exts=array();		//array of extensions available for this filename
-	private $_versions=array(); //array of MediaFileVersion in the same dir with different extensions
-	private $_thumbnails=array(); //array of MediaFileVersion thumbnail images in different subdirectories
 	private $stream;
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
@@ -36,7 +34,7 @@ class MediaFile extends BaseObject
 			$this->$key = $value;
 
 		foreach($this->exts as $ext)
-			$this->addVersion("", $ext);
+			$this->addVersion($ext);
 
 		$this->title = makeTitle($this->name);
 		$this->_filePath = $this->getFilePath();
@@ -50,28 +48,19 @@ class MediaFile extends BaseObject
 			$this->takenDate=$this->newestDate;
 			$this->thumbnails=subdirThumbs($this->_filePath, 4);
 		}
-		else if($this->type=="IMAGE")
+		if($this->type=="IMAGE")
 		{
 			$this->getImageInfo();
 			//thumbnails: image: .tn & .ss, same ext.
-			$this->addImageThumbnails();
 		}
 		else if ($this->type=="VIDEO")
 		{
+			$this->getVideoProperties();
 			$streamTypes = getConfig("TYPES.VIDEO.STREAM");
 			$this->stream = array_intersect($this->exts, $streamTypes);
-			//thumbnails: video: .tn/.jpg
-			$this->addThumbnail("tn","jpg");
-			if($this->_thumbnails[0]->exists)
-			{
-				$tnPath = $this->_thumbnails[0]->getFilePath();
-				$this->getImageInfo($tnPath);
-			}
-			$this->addThumbnail("ss", "jpg");
-			if(!$this->_thumbnails[1]->exists && !isFfmpegEnabled())
-				unset($this->tnsizes[1]);
-//				$this->getMetadata();
 		}
+		$this->addImageThumbnails();
+		//TODO: do same thing for image and video
 	}
 
     public static function getMediaFile()
@@ -85,10 +74,7 @@ class MediaFile extends BaseObject
 			$_GET["name"] = getFilename($file);
 		}
 		$album = new Album($path, true);
-//	debug("album", $album);
 		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : $album->getMediaFiles();
-//		$mf = $album->getMediaFile();
-//	debug("getMediaFiles", $mf);
 		return $mf;
 	}
 
@@ -103,10 +89,10 @@ class MediaFile extends BaseObject
 
     	foreach ($tnSizes as $subdir => $size)
     	{
-    		if($this->animated && $this->width <= $size && $this->height <= $size) break;
+//    		if($this->animated)
 			debug("addImageThubnails $subdir $size", $this->width . "x" . $this->height);
  			$this->addThumbnail($subdir);
-//    		if($this->width < $size && $this->height < $size) break;
+    		if($this->imageIsSmaller($size)) break;
     	}
     	debug("tnsizes", $this->tnsizes);
     }
@@ -148,7 +134,6 @@ class MediaFile extends BaseObject
 	{
 		$ext=$this->getExtension($i);
 		return $ext ? $this->name.".$ext" : $this->name;
-//		return $this->filename;
 	}
 
     public function getFilePath($ext=0)
@@ -156,9 +141,39 @@ class MediaFile extends BaseObject
 		return combine($this->getRelPath(), $this->subdir, $this->getFilename($ext));
 	}
 
+    public function getFilesize($ext=0)
+	{
+		$filePath = $this->getFilePath($ext);
+		return file_exists($filePath) ? filesize($filePath) : -1;
+	}
+
     public function getFileDir()
 	{
 		return combine($this->getRelPath(), $this->subdir);
+	}
+
+    public function getThumbnailExtension()
+	{
+	 	$ext = getConfig("thumbnails." . $this->type . ".ext");
+ 		return coalesce($ext, $this->getExtension());
+	}
+
+    public function getThumbnailFilename($subdir="")
+	{		
+		$filename = $this->name . "." . $this->getThumbnailExtension();
+		if(!$subdir) return $filename;
+		return combine(".$subdir", $filename);
+	}
+
+    public function getThumbnailFilePath($subdir)
+	{
+		return combine($this->getRelPath(), $this->subdir, $this->getThumbnailFilename($subdir));
+	}
+
+    public function getThumbnailFilesize($subdir)
+	{
+		$filePath = $this->getThumbnailFilePath($subdir);
+		return file_exists($filePath) ? filesize($filePath) : -1;
 	}
 
 //return original file names, thubmnails, metadata, description
@@ -166,20 +181,16 @@ class MediaFile extends BaseObject
 	{
 		$filenames=array();
 		foreach($this->exts as $ext)
-			$filenames[] = $this->getFilename($ext);
+			$filenames[$ext] = $this->getFilename($ext);
 
 //add description and metadata
-		$filenames[] = $this->getDescriptionFilename();
-		$filenames[] = $this->getMetadataFilename();
+		$filenames["description"] = $this->getDescriptionFilename();
+		$filenames["metadata"] = $this->getMetadataFilename();
 //add thumbnails
     	$tnSizes = getConfig("thumbnails.sizes"); 
     	if($tnSizes)
-    	{
-    		$i=0;
 	    	foreach ($tnSizes as $subdir => $size)
-	    		if(isset($this->_thumbnails[$i]))
-					$filenames[] = combine(".$subdir", $this->_thumbnails[$i++]->getFilename());			
-		}
+				$filenames[$subdir] = $this->getThumbnailFilename($subdir);			
 		return $filenames;
 	}
  
@@ -226,17 +237,35 @@ class MediaFile extends BaseObject
 	
     public function getMetadata()
 	{
-		$this->metadata=getMediaFileInfo($this->_filePath);
+		$this->metadata=MediaFileInfo($this->_filePath);
 		return $this->metadata;
+	}
+
+    public function getVideoProperties()
+	{
+		$metadata=getVideoProperties($this->_filePath);
+		$this->setMultiple($metadata);
+		return $metadata;
 	}
 
     public function getImageInfo($filePath="")
 	{
 		if(!$filePath) $filePath = $this->_filePath; 
 		$info = getImageInfo($filePath, true);
-		//$this->metadata = $info;
 		$this->setMultiple($info);
 		return $info;
+	}
+
+    public function imageIsLarger($maxSize)
+	{
+		if(!$maxSize || !$this->width) return false;
+		return $this->width > $maxSize || $this->height > $maxSize;
+	}
+
+    public function imageIsSmaller($maxSize)
+	{
+		if(!$maxSize || !$this->width) return true;
+		return $this->width <= $maxSize && $this->height <= $maxSize;
 	}
 
     public function isAnimated($ext)
@@ -265,19 +294,17 @@ class MediaFile extends BaseObject
 		return $this->alpha;
 	}
 	
-    public function addVersion($subdir="",$ext="")
+    public function addVersion($ext="")
 	{
-//		$this->exts[]=$ext;
-		$mf=new MediaFileVersion($this,$subdir,$ext,true);
-//		$this->versions[]= $mf;
-		$this->vsizes[$ext] = $mf->getSize();
+		$this->vsizes[$ext] = $this->getFilesize($ext);
 	}
 	
-    public function addThumbnail($subdir="",$ext="")
+    public function addThumbnail($subdir="")
 	{
-		$mf = new MediaFileVersion($this,$subdir,$ext,true);
-		$this->_thumbnails[] = $mf;
-		$this->tnsizes[] = $mf->getSize();
+		$size = $this->getThumbnailFilesize($subdir);
+		//if thumb does not exist and video and no FFMPEG: do not add
+		if($size > 0 || $this->type == "IMAGE" || isFfmpegEnabled())
+			$this->tnsizes[] = $size;
     }
 	
     public function test()
@@ -333,69 +360,6 @@ debug("addTag " . $this->name, $tag);
 	{
 		return saveFileTag($this->getFileDir(), $this->name, $tag, $state);
 	}
-}
-
-
-
-
-//1 version of a file: extension or thumbnail
-class MediaFileVersion extends BaseObject
-{
-	private $mediaFile;
-	private $ext="";
-	private $subdir="";
-    public $exists=false;
-    private $cDate;
-    private $mDate;
-    private $size;
-	
-	public function __construct($mediaFile, $subdir, $ext="", $details=false)
-	{
-debug("new MediaFileVersion $subdir", $ext);
-		$this->_parent=$mediaFile;
-
-		if($subdir)	$this->subdir=$subdir;
-		if($ext)	$this->ext=$ext;
-
-debug("getExtension", $this->getExtension());
-debug("getExtension parent", $this->_parent->getExtension());
-debug("getFilename", $this->getFilename());
-
-		$filePath=$this->getFilePath();
-		$this->_filePath=$filePath;
-		$this->exists=file_exists($filePath);
-		$this->getSize();
-		if($this->exists && $details)
-		{
-			$this->size=filesize($filePath);
-			$this->mDate=formatDate(filemtime($filePath));
-			$this->cDate=formatDate(filectime($filePath));
-		}
-	}
-
-    public function getFilename()
-	{
-		return $this->_parent->getName() . "." . $this->getExtension();
-	}
-
-    public function getSize()
-	{
-		if(!$this->size)
-			$this->size = file_exists($this->_filePath) ? filesize($this->_filePath) : -1;
-		return $this->size;
-	}
-
-    public function getExtension()
-	{
-		if($this->ext) return $this->ext;
-		return $this->_parent->getExtension();
-	}
-
-    public function getFilePath()
-	{
-		return combine($this->_parent->getRelPath(), $this->_parent->getSubdir(), "." . $this->subdir, $this->getFilename());
-	}
-	
 }
 
 ?>

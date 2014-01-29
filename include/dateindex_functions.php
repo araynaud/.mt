@@ -43,6 +43,11 @@ function loadTagFile($relPath, $tag, $fileList=null)
 function saveTagFile($relPath, $tag, $data)
 {
 	$filename=getTagFilename($relPath, $tag);
+	if(empty($data))
+	{	
+		deleteFile($filename);
+		return;
+	}
 	createDir($relPath, ".tag");
 	$data = array_values($data);
 	return writeCSvFile($filename, $data, false, "\n");
@@ -66,6 +71,28 @@ function saveFileTag($relPath, $name, $tag, $state)
 	saveTagFile($relPath, $tag, $tagList);
 	return true;
 }
+
+//--------------- dir metadata functions ----------
+function getMetadataIndexFilename($relPath, $type="")
+{
+	if(!$type)	return "$relPath/.metadata.csv";
+	return "$relPath/.metadata.$type.csv";
+}
+
+//get index csv without trying to refresh
+function loadMetadataIndex($relPath)
+{
+	$indexFilename=getMetadataIndexFilename($relPath);
+	return readCsvTableFile($indexFilename);
+}
+
+// write date index CSV data to file
+function saveMetadataIndex($relPath, $data)
+{
+	$filename=getMetadataIndexFilename($relPath);
+	return writeCsvTableFile($filename, $data, ";", true);
+}
+
 
 //---------------Date index functions ----------
 function getDateIndexFilename($relPath, $type="")
@@ -158,12 +185,10 @@ debug("updateIndex $key $name $filename", $filedate);
 // write date index CSV data to file
 function writeDateIndex($relPath,$dateIndex)
 {
-	global $config;
 	$indexFilename=getDateIndexFilename($relPath);
-
 	if(empty($dateIndex))
 	{	
-		@unlink($indexFilename);
+		deleteFile($indexFilename);
 		return;
 	}
 	$maxDate="";
@@ -178,8 +203,7 @@ debug("writeDateIndex", count($dateIndex));
 		$maxDate=$date;
 	}
 	fclose($fp);
-	if($maxDate)
-		touch($indexFilename,strtotime($maxDate));
+	setFileDate($indexFilename, $maxDate);
 	return true;
 }
 

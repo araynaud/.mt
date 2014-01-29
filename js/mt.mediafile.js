@@ -239,8 +239,9 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 	if(mediaFile.thumbnailExists(tnIndex))
 	{
 		var filename = mediaFile.filename;
-		if(mediaFile.type=="VIDEO")
-			filename = mediaFile.name + "." + config.thumbnails.VIDEO.ext;
+		var ext = config.thumbnails[mediaFile.type].ext;
+		if(ext)
+			filename = mediaFile.name + "." + ext;
 		return String.combine(album.relPath, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex], filename);
 	}
 

@@ -218,9 +218,8 @@ function curlPostData($url, $data, $username="", $password="")
     return $response;
 }
 
-function curlPostFile($url, $filePath, $username="", $password="")
+function curlPostFile($url, $filePath, $username="", $password="", 	$data=array())
 {
-	$data=array();
     $data["fileDate"] = getFileDate($filePath);
     $data["filePath"] = $filePath;
     $data["file"] = "@$filePath";
@@ -237,6 +236,18 @@ function curlPostFile($url, $filePath, $username="", $password="")
     $response = curl_exec($ch);
     curl_close($ch);
     return $response;
+}
+
+
+function uploadFile($publish, $filePath, $destPath, $subdir="")
+{
+	if(!file_exists($filePath)) return false;
+
+	$destPath = combine($destPath, $subdir);
+	$postData = array("path" => $destPath, "debug" => BtoS(isDebugMode()) );
+	$url = combine($publish["url"], getConfig("_publish.script"));
+	debug("uploadFile $filePath to", $url);
+	return curlPostFile($url, $filePath, @$publish["username"], @$publish["password"], $postData);
 }
 
 // send headers to prevent caching

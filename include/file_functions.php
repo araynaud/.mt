@@ -400,6 +400,31 @@ debug("writeCsvFile",$data);
 	return;
 }
 
+//write table data
+//$data must be 2 dimensional array
+function writeCsvTableFile($filename, $data, $separator=";", $keys=false)
+{
+	debug("writeCsvTableFile",$data);
+	if(!$data) return deleteFile($filename);
+	$fh = @fopen($filename, 'w');
+	if(!$fh) return;
+	foreach ($data as $key => $row)
+	{
+		if($keys)
+		{
+			$k = array_keys($row);
+			array_unshift($k, "key");
+			fputcsv($fh, $k, $separator);
+			$keys=false;
+		}
+		array_unshift($row, $key);
+		fputcsv($fh, $row, $separator);
+	}
+	fclose($fh);
+	return;
+}
+
+
 function copyRedirect($relPath)
 {
 	//copy redirect.htm to $relPath/index.htm
