@@ -178,6 +178,8 @@ startTimer();
 $groupedFiles = groupByName($files, $byType);
 debug("groupByName Time elapsed", getTimer());
 
+saveMetadataIndex($relPath, $groupedFiles);
+
 startTimer();
 debugVar("groupedFiles", true);
 

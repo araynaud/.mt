@@ -153,11 +153,6 @@ debug($type, count($typeFiles));
 		}
 		return $result;
 	}
-
-    public function test()
-	{
-		echo $this->path . "  " . $this-> title . "\n";
-    }
 	
 	//create array of MediaFile objects
 	private function createMediaFiles()
