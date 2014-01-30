@@ -20,6 +20,7 @@ class Album extends BaseObject
 	private $description;
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
+	private $metadataIndex = array();
 	private $groupedFiles; //array of files in the directory
 	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
@@ -51,6 +52,9 @@ debug("allFiles", $allFiles, true);
 debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
+
+			//$this->getMetadataIndex("IMAGE");
+			//$this->getMetadataIndex("VIDEO");
 
 			//Group by name / make MediaFile objects
 			$this->tags = loadTagFiles($this->relPath, $allFiles);
@@ -137,6 +141,27 @@ debug("getSearchParameters",$this->search);
 			$this->_dateIndex = getRefreshedDateIndex($this->relPath, $diFiles, $this->isCompleteIndex());
 		}
 		return $this->_dateIndex;
+	}
+
+//image: load width, height, animated, alpha, etc.
+//image: load exts, width, height, duration, codec
+    public function getMetadataIndex($type)
+	{
+		//TODO use dateIndex.types;IMAGE		
+		$diFiles = $this->groupedFiles[$type];
+		if(!$diFiles) return;
+		$index = loadMetadataIndex($this->relPath, $type);
+		foreach ($this->groupedFiles[$type] as $name => $file)
+		{
+			if(isset($index[$name])) continue;
+			$filePath = combine($this->relPath, $file["subdir"], getFilename($file["name"], $file["exts"][0]));
+debug("getMetadataIndex $name", $filePath);
+			$index[$name] = $type=="IMAGE" ? getImageInfo($filePath, true)	
+				: getVideoProperties($filePath);
+		}
+		saveMetadataIndex($this->relPath, $index, $type);
+		$this->metadataIndex[$type] = $index;
+		return $index;
 	}
 
     public function getDateIndexFiles()

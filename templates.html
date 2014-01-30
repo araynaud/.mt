@@ -30,8 +30,8 @@
 					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else type=="VIDEO" && tnsizes && ~isVideoStream(#data)}}
-				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:~isVideoStream(#data)}}"/>
+		{{else type=="VIDEO" && tnsizes && stream}}
+				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:stream}}"/>
 		{{else type=="VIDEO" && tnsizes}}
 			<a href="{{:~fileUrl(#data)}}" target="fileDownload">
 				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{>filename}}"/>
@@ -72,7 +72,7 @@
 <script id="imageCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="floatR">
-			<a {{if versions && versions[0]}} title="{{:width}}x{{:height}} {{:~formatSize(versions[0].size)}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
+			<a {{if vsizes}} title="{{:width}}x{{:height}} {{:~formatSize(vsizes[exts[0]])}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
 				<img class="icon" src="icons/download.gif" alt="download {{>filename}}"/>
 			</a>
 		</div>
@@ -91,11 +91,7 @@
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="nowrap noscroll">{{>title}}</div>
 		<div class="floatR" style="margin-right:10px; width: 22%;">
-			{{if versions}}
-				{{for versions tmpl="versionLinkTemplate"/}}
-			{{else}}
-				{{for exts tmpl="extLinkTemplate"/}}
-			{{/if}}
+			{{for exts tmpl="extLinkTemplate"/}}
 		</div>
 		<div class="floatR" style="margin-right:10px">
 			{{if stream }}<img class="icon playLink" src="icons/play.png" title="play {{:stream}}" />{{/if}}
@@ -124,10 +120,6 @@
 	<a class="download" title="{{:~formatSize(#parent.parent.data.vsizes[#data])}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
 </script>
 
-<script id="versionLinkTemplate" type="text/x-jsrender"> 
-	<a class="download" title="{{:~formatSize(size)}}" href="{{:~fileUrl(#parent.parent.data, ext)}}">{{:ext.toUpperCase()}}</a>
-</script>
-
 <!-- template for playlist items -->
 <script id="playlistItemTemplate" type="text/x-jsrender">
 	<li id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
@@ -142,7 +134,7 @@
 		<div class="duration small floatR">{{if metadata}}{{:~formatTime(metadata.duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
 		{{if tnsizes }}
-			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:~isVideoStream(#data)}}" 
+			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" 
 			onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
 		{{/if}}
 		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>

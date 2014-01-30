@@ -181,7 +181,7 @@ debug("groupByName Time elapsed", getTimer());
 startTimer();
 debugVar("groupedFiles", true);
 
-saveMetadataIndex($relPath, $groupedFiles);
+//saveMetadataIndex($relPath, $groupedFiles);
 
 $metadataIndex = loadMetadataIndex($relPath);
 debugVar("metadataIndex", true);

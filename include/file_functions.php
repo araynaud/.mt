@@ -366,7 +366,9 @@ debug("row", $row);
 		else
 		{
 			$key = is_string($keyColumn) ? $row[$keyColumn] : $rowData[$keyColumn];
+			unset($row[$keyColumn]);
 			$csvRows[$key] = $row;
+debug("key", $key);
 		}
 	}
 	fclose($handle);
@@ -440,14 +442,14 @@ function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey=false
 
 //write key names from 1st row
 //TODO: union of keys in all rows
-function csvHeaderRow($data, $writeKey)
+function csvHeaderRow($data, $writeKey="")
 {
 	$separator=";";
 	foreach ($data as $key => $row)
 	{
 		$k = array_keys($row);
 		if($writeKey)
-			array_unshift($k, "key");
+			array_unshift($k, $writeKey);
 		return implode($separator, $k);
 	}
 }

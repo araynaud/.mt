@@ -80,17 +80,17 @@ function getMetadataIndexFilename($relPath, $type="")
 }
 
 //get index csv without trying to refresh
-function loadMetadataIndex($relPath)
+function loadMetadataIndex($relPath, $type="")
 {
-	$indexFilename=getMetadataIndexFilename($relPath);
-	return readCsvTableFile($indexFilename,"name", true);
+	$indexFilename=getMetadataIndexFilename($relPath, $type);
+	return readCsvTableFile($indexFilename, 0, true);
 }
 
 // write date index CSV data to file
-function saveMetadataIndex($relPath, $data)
+function saveMetadataIndex($relPath, $data, $type="")
 {
-	$filename=getMetadataIndexFilename($relPath);
-	return writeCsvTableFile($filename, $data, true, false);
+	$indexFilename=getMetadataIndexFilename($relPath, $type);
+	return writeCsvTableFile($indexFilename, $data, true, "name");
 }
 
 
@@ -167,10 +167,10 @@ function updateIndex($relPath, $files, &$dateIndex=array())
 		foreach($file["exts"] as $ext)
 		{
 			$filename = getFilename($file["name"], $ext, true);
-			$filedate=getFileDate("$relPath/$filename");
-debug("updateIndex $key $name $filename", $filedate);
+			$filedate = getFileDate("$relPath/$filename");
 			if(!isset($dateIndex[$key]) || empty($dateIndex[$key]) || $filedate < $dateIndex[$key])
 			{
+debug("updateIndex $key $name $filename", $filedate);
 				$dateIndex[$key]=$filedate;
 			}
 		}

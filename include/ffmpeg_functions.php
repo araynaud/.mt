@@ -223,7 +223,7 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 	$metadata = getMediaFileInfo($relPath, $file);
 //debug("getMediaFileInfo", $metadata, true);
 	$data = array();
-	$data["source"] = arrayGet($metadata, "source");
+	//$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
 	$data["width"] = arrayGet($metadata, "STREAM.0.width");
 	$data["height"] = arrayGet($metadata, "STREAM.0.height");
