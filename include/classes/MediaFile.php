@@ -4,34 +4,36 @@ class MediaFile extends BaseObject
 {
     private $id;
     private $_filePath;
-    private $name;
-    private $filename;
-    private $subdir;
-	private $type;
+    protected $name;
+    protected $subdir;
+	protected $type;
+	protected $exts=array();		//array of extensions available for this filename
     private $title;
     private $description;
     private $takenDate;
     private $cDate;
-    protected $animated;
     private $mDate;
     private $metadata;
     private $oldestDate;
     private $newestDate;
-	private $exts=array();		//array of extensions available for this filename
 	private $stream;
-	private $tnsizes=array(); //array of thumbnail file sizes
-	private $vsizes=array(); //array of thumbnail file sizes
-	private $tags=array();
     protected $format;
     protected $width;
     protected $height;
     protected $ratio;
+    protected $animated;
+    protected $alpha;
+	private $tnsizes=array(); //array of thumbnail file sizes
+	private $vsizes=array(); //array of thumbnail file sizes
+	private $tags=array();
 
     public function __construct($album, $file)
 	{
 		$this->_parent=$album;
 		foreach ($file as $key => $value)
 			$this->$key = $value;
+
+		$this->setMultiple($file);
 
 		foreach($this->exts as $ext)
 			$this->addVersion($ext);
@@ -48,19 +50,12 @@ class MediaFile extends BaseObject
 			$this->takenDate=$this->newestDate;
 			$this->thumbnails=subdirThumbs($this->_filePath, 4);
 		}
-		if($this->type=="IMAGE")
-		{
-			$this->getImageInfo();
-			//thumbnails: image: .tn & .ss, same ext.
-		}
-		else if ($this->type=="VIDEO")
-		{
-			$this->getVideoProperties();
-			$streamTypes = getConfig("TYPES.VIDEO.STREAM");
-			$this->stream = array_intersect($this->exts, $streamTypes);
-		}
+
+		$this->getMetadata();
+		$streamTypes = getConfig("TYPES.VIDEO.STREAM");
+		$this->stream = array_intersect($this->exts, $streamTypes);
+		//thumbnails: image: .tn & .ss, same ext.
 		$this->addImageThumbnails();
-		//TODO: do same thing for image and video
 	}
 
     public static function getMediaFile()
@@ -237,10 +232,11 @@ class MediaFile extends BaseObject
 	
     public function getMetadata()
 	{
-		$this->metadata=MediaFileInfo($this->_filePath);
-		return $this->metadata;
+		$index = $this->_parent->getMetadataIndex($this->type);
+		$this->setMultiple(@$index[$this->name]);
 	}
 
+/*
     public function getVideoProperties()
 	{
 		$metadata=getVideoProperties($this->_filePath);
@@ -248,13 +244,13 @@ class MediaFile extends BaseObject
 		return $metadata;
 	}
 
-    public function getImageInfo($filePath="")
+    public function getImageInfo()
 	{
-		if(!$filePath) $filePath = $this->_filePath; 
-		$info = getImageInfo($filePath, true);
+		$info = getImageInfo($this->_filePath, true);
 		$this->setMultiple($info);
 		return $info;
 	}
+*/
 
     public function imageIsLarger($maxSize)
 	{
@@ -307,13 +303,6 @@ class MediaFile extends BaseObject
 			$this->tnsizes[] = $size;
     }
 	
-    public function test()
-	{
-		print_r($this);
-		print_r($this->versions[0]);
-		echo $this->path ." ".	$this->filename . " " . $this->takenDate . "\n";
-    }
-
 	public function move($targetDir, $newName="")
 	{
 		$filenames=$this->getFilenames();

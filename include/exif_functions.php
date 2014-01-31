@@ -41,8 +41,8 @@ function getExifData($filename, $arrays=false)
   $exif = @exif_read_data($filename, null, $arrays, false);
 
   //if no exif in the image, get it from csv file
-  if(!arrayGetCoalesce($exif, "DateTimeOriginal", "DateTime", "EXIF.DateTimeOriginal", "IFD0.DateTime"))
-    $exif=loadImageInfo($filename);
+//  if(!arrayGetCoalesce($exif, "DateTimeOriginal", "DateTime", "EXIF.DateTimeOriginal", "IFD0.DateTime"))
+//    $exif=loadImageInfo($filename);
 
   unset($exif["COMPUTED"]);
   return $exif;

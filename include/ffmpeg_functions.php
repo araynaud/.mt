@@ -73,17 +73,18 @@ function getMediaFileInfo($relPath, $file="")
 		return $data;
 	}
 
-	$metadata = loadImageInfo($relPath, $file);
+/*	$metadata = loadImageInfo($relPath, $file);
 	if($metadata) 
 	{
 		$metadata["source"] = getMetadataFilename($relPath, $file);
 		return $metadata;	
 	}
+*/
 	$ffprobe=getExePath("PROBE");
 	$cmd = makeCommand("[0] -i [1] -show_format -show_streams", $ffprobe, $filePath);
 	$output = execCommand($cmd, false, false);	
 	$data = parseFfprobeMetadata($output);
-	saveImageInfo($relPath, $file, $data);
+//	saveImageInfo($relPath, $file, $data);
 	return $data;
 }
 
@@ -225,21 +226,21 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 	$data = array();
 	//$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
-	$data["width"] = arrayGet($metadata, "STREAM.0.width");
-	$data["height"] = arrayGet($metadata, "STREAM.0.height");
+	$data["width"] = arrayGetCoalesce($metadata, "STREAM.0.width","STREAM.1.width");
+	$data["height"] = arrayGetCoalesce($metadata, "STREAM.0.height", "STREAM.1.height");
 	$display_aspect_ratio = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
+	$data["ratio"] = $display_aspect_ratio;
+
+	if(!$convertTo) return $data;
+
 	if($display_aspect_ratio)
 	{
-		$data["ratio"] = $display_aspect_ratio;
 		$data["height2"] = $data["width"] / $display_aspect_ratio;
 		$data["width2"] = $data["height"] * $display_aspect_ratio;
 	}
-	if($convertTo)
-	{
-		$videoBitrate = getConfig("_FFMPEG.convert.$convertTo.video_bitrate");
-		$audioBitrate = getConfig("_FFMPEG.convert.$convertTo.audio_bitrate");
-		$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
-	}
+	$videoBitrate = getConfig("_FFMPEG.convert.$convertTo.video_bitrate");
+	$audioBitrate = getConfig("_FFMPEG.convert.$convertTo.audio_bitrate");
+	$data["estimatedFileSize"] = estimateFileSize($data["duration"], $videoBitrate, $audioBitrate);
 	return $data;
 }
 

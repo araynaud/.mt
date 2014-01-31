@@ -431,28 +431,21 @@ function getImageInfo($file, $img=null, &$imageInfo=array())
 	if(!file_exists($file)) return array();
 
 	getImageSizeInfo($file, $imageInfo);
-	if(isTransparentType($imageInfo))
-		loadImageInfo($file, "", $imageInfo);
-debug("loadImageInfo", $imageInfo);
+//	if(isTransparentType($imageInfo))
+//		loadImageInfo($file, "", $imageInfo);
 
 //do not return if GIF or PNG
 	if($imageInfo && isset($imageInfo["width"]) && !isTransparentType($imageInfo))
 	 	return $imageInfo;
 
-	getImageSizeInfo($file, $imageInfo);
-debug("getImageSizeInfo", $imageInfo);
 	if(!$imageInfo || !isTransparentType($imageInfo)) 
 		return $imageInfo;
 
 	getImageAnimInfo($file, $imageInfo);
 
 //$img true: force load
-debug("img", $img);
 	getImageTransparencyInfo($file, $img, $imageInfo);
-debug("saveImageInfo",$imageInfo);
-	saveImageInfo($file, "", $imageInfo);
-
-debug("getImageInfo return", $imageInfo);
+//	saveImageInfo($file, "", $imageInfo);
 	return $imageInfo;
 }
 
@@ -462,6 +455,7 @@ function getImageAnimInfo($file, &$imageInfo=array())
 	//Animated GIF
 	if(isset($imageInfo["animated"])) return $imageInfo;
 	$imageInfo["animated"] = isAnimatedGif($file, $imageInfo);
+	$imageInfo["frames"] = false;
 	if($imageInfo["animated"])
 		$imageInfo["frames"] = countAnimatedGifFrames($file,$imageInfo);
 	debug("getImageAnimInfo", $imageInfo);
@@ -482,17 +476,19 @@ function getImageTransparencyInfo($file, $loadImg, &$imageInfo=array())
 	if(!isset($imageInfo["transparent"]))
 	{
 		$imageInfo["transparent"] = hasTransparentColor($img, $imageInfo);
-debug("transparentColor", $imageInfo["transparent"]);
+		$imageInfo["transparentPixels"] = false;
 		if($imageInfo["transparent"])
 			$imageInfo["transparentPixels"] = hasColorPixels($img, $imageInfo["transparent"]-1 , $imageInfo);
-debug("transparentPixels", @$imageInfo["transparentPixels"]);
+
+		debug("transparentColor", $imageInfo["transparent"]);
+		debug("transparentPixels", @$imageInfo["transparentPixels"]);
 	}
 
 	//PNG with alpha channnel
 	if(!isset($imageInfo["alpha"]))
 	{
 		$imageInfo["alpha"] = hasAlphaPixels($img, $imageInfo);
-debug("alpha", @$imageInfo["alpha"]);
+		debug("alpha", @$imageInfo["alpha"]);
 	}
 	if($loadImg===true)
 		imagedestroy($img); 
@@ -524,12 +520,8 @@ function resetMedadata($relPath, $file)
 
 function getMetadataFilename($relPath, $filename="", $createDir=false)
 {
-	debug("getMetadataFilename", "($relPath, $filename)");
 	if(!$filename)
-	{
 		splitFilePath($relPath, $relPath, $filename);
-		debug("splitFilePath", "($relPath, $filename)");
-	}
 	if(!file_exists($relPath) && !$createDir) return false;
 	createDir($relPath,".tn");
 	$filename = getFilename($filename, "csv");

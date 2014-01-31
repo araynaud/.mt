@@ -32,7 +32,7 @@ $site = getParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
 
-$byType = getParamBoolean("bytype");
+$byType = getParamBoolean("bytype",true);
 
 debug();
 debug("maxSize");
@@ -167,7 +167,7 @@ debugVar("tagData", true);
 
 $files = listFiles($relPath, $search);
 debug("listFiles Time elapsed", getTimer());
-debugVar("files", true);
+//debugVar("files", true);
 
 startTimer();
 $dirs=selectDirs($relPath,$files);
@@ -179,11 +179,12 @@ $groupedFiles = groupByName($files, $byType);
 debug("groupByName Time elapsed", getTimer());
 
 startTimer();
-debugVar("groupedFiles", true);
+//debugVar("groupedFiles", true);
 
-//saveMetadataIndex($relPath, $groupedFiles);
+$metadataIndex = getMetadataIndex($relPath, "VIDEO", @$groupedFiles["VIDEO"],true);
+debugVar("metadataIndex", true);
 
-$metadataIndex = loadMetadataIndex($relPath);
+$metadataIndex = getMetadataIndex($relPath, "IMAGE", @$groupedFiles["IMAGE"],true);
 debugVar("metadataIndex", true);
 
 //$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");

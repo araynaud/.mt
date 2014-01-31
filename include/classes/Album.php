@@ -20,7 +20,7 @@ class Album extends BaseObject
 	private $description;
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
-	private $metadataIndex = array();
+	private $_metadataIndex = array();
 	private $groupedFiles; //array of files in the directory
 	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
@@ -53,8 +53,8 @@ debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 
-			//$this->getMetadataIndex("IMAGE");
-			//$this->getMetadataIndex("VIDEO");
+			$this->getMetadataIndex("IMAGE");
+			$this->getMetadataIndex("VIDEO");
 
 			//Group by name / make MediaFile objects
 			$this->tags = loadTagFiles($this->relPath, $allFiles);
@@ -148,20 +148,9 @@ debug("getSearchParameters",$this->search);
     public function getMetadataIndex($type)
 	{
 		//TODO use dateIndex.types;IMAGE		
-		$diFiles = $this->groupedFiles[$type];
-		if(!$diFiles) return;
-		$index = loadMetadataIndex($this->relPath, $type);
-		foreach ($this->groupedFiles[$type] as $name => $file)
-		{
-			if(isset($index[$name])) continue;
-			$filePath = combine($this->relPath, $file["subdir"], getFilename($file["name"], $file["exts"][0]));
-debug("getMetadataIndex $name", $filePath);
-			$index[$name] = $type=="IMAGE" ? getImageInfo($filePath, true)	
-				: getVideoProperties($filePath);
-		}
-		saveMetadataIndex($this->relPath, $index, $type);
-		$this->metadataIndex[$type] = $index;
-		return $index;
+		if(!isset($this->_metadataIndex[$type]))
+			$this->_metadataIndex[$type] = getMetadataIndex($this->relPath, $type, $this->groupedFiles[$type]);
+		return $this->_metadataIndex[$type];
 	}
 
     public function getDateIndexFiles()
@@ -196,7 +185,6 @@ debug($type, count($typeFiles));
 				$mf = new MediaFile($this, $file);
 				$this->checkDateRange($mf);
 				$this->setMediaFileTags($mf);
-				//$distinct[]=$mf;
 				$this->groupedFiles[$type][$name] = $mf;
 				$prevDir = $file["subdir"];
 			}

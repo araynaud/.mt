@@ -333,12 +333,11 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 	$separator=";";
 	$separator2=":";
 	debug("readCsvTableFile", $filename);
-	if(!file_exists($filename))
-		return $csvRows;
-	if (($handle = fopen($filename, "r")) == FALSE)
-		return $csvRows;
+	if(!file_exists($filename))		return $csvRows;
+	if (($handle = fopen($filename, "r")) == FALSE)		return $csvRows;
 
 	$header=array();
+	$key="";
 	if($columnNames)
 	{
 		$header = fgetcsv($handle, 0, $separator);
@@ -347,29 +346,32 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 			fclose($handle);
 			return $csvRows;
 		}
+		if($keyColumn!==false)
+		{
+			$key = $header[$keyColumn];
+			unset($header[$keyColumn]);
+		}
 	}
-debug("header " . count($header), $header);		
-
 	while (($rowData = fgetcsv($handle, 0, $separator)) !== FALSE)  
 	{
 		$row = array();
-debug("rowData", $rowData);
-		for($i=0;$i<count($rowData);$i++)
+		$key="";
+		if($keyColumn!==false)
 		{
-			$key = isset($header[$i]) ? $header[$i] : $i;
-			$value = parseValue($rowData[$i], $separator2);
-			$row[$key]= $value;
+			$key = $rowData[$keyColumn];
+			unset($rowData[$keyColumn]);
+		}
+		foreach($rowData as $i => $column)
+		{
+			$ckey = isset($header[$i]) ? $header[$i] : $i;
+			$value = parseValue($column, $separator2);
+			$row[$ckey]= $value;
 		}
 debug("row", $row);
-		if($keyColumn===false || !$header)
+		if(!$key)
 			$csvRows[] = $row;
 		else
-		{
-			$key = is_string($keyColumn) ? $row[$keyColumn] : $rowData[$keyColumn];
-			unset($row[$keyColumn]);
 			$csvRows[$key] = $row;
-debug("key", $key);
-		}
 	}
 	fclose($handle);
 	return $csvRows;
@@ -418,7 +420,7 @@ debug("writeCsvFile",$data);
 
 //write table data
 //$data must be 2 dimensional array
-function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey=false)
+function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey="")
 {
 	$separator=";";
 //	debug("writeCsvTableFile",$data);
@@ -445,29 +447,27 @@ function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey=false
 function csvHeaderRow($data, $writeKey="")
 {
 	$separator=";";
+	$columns=array();
+	//get union of keys in all rows
 	foreach ($data as $key => $row)
-	{
-		$k = array_keys($row);
-		if($writeKey)
-			array_unshift($k, $writeKey);
-		return implode($separator, $k);
-	}
+		$columns = array_merge($columns, $row);
+
+	$k = array_keys($columns);
+	if($writeKey)
+		array_unshift($k, $writeKey);
+	return implode($separator, $k);
 }
 
 function csvDataRow($row, $key)
 {
 	$separator=";";
 	$separator2=":";
-	if($key)
-		array_unshift($row, $key);
+	if($key)	array_unshift($row, $key);
+
 	foreach ($row as $key => $value)
-	{
-		if(is_array($value))
-			$row[$key] = implode($separator2, $value);
-	}
+		$row[$key] = csvValue($value, false, $separator2);
 	return implode($separator, $row);
 }
-
 
 function copyRedirect($relPath)
 {

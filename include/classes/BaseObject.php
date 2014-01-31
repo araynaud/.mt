@@ -25,13 +25,11 @@ class BaseObject
 	}
 
 //merge properties from array
-	public function setMultiple($array)
+	public function setMultiple($data)
 	{
-		foreach ($array as $key => $value)
-		{
-			debug($key,$value);
+		if(!$data) return false;
+		foreach ($data as $key => $value)
 			$this->$key = $value;
-		}
 	}
 	
 	//Serialize to XML. output private variables?

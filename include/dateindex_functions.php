@@ -93,6 +93,39 @@ function saveMetadataIndex($relPath, $data, $type="")
 	return writeCsvTableFile($indexFilename, $data, true, "name");
 }
 
+function getMetadataIndex($relPath, $type, $fileList, $completeIndex=false)
+{
+	//TODO use dateIndex.types;IMAGE		
+	$index = loadMetadataIndex($relPath, $type);
+	if(!$fileList)	 return $index;
+	//$index = array_intersect_key($index, $fileList);
+	$addedFiles = 0;
+	foreach ($fileList as $name => $file)
+	{
+		if(isset($index[$name])) continue;
+		$filename= getFilename($file["name"], $file["exts"][0], true);
+		$filePath = combine($relPath, $file["subdir"], $filename);
+debug("getMetadataIndex $name", $filePath);
+		$index[$name] = $type=="IMAGE" ? getImageInfo($filePath, true)	
+			: getVideoProperties($filePath);
+		$addedFiles++;
+	}
+
+	debug("Added Files", $addedFiles);
+
+	//test that all files in index exist: remove deleted file entries
+	$deletedFiles=array_diff_key($index, $fileList);
+	debug("Deleted Files", count($deletedFiles));
+	$filteredIndex=array_diff_key($index, $deletedFiles);
+	//write all rows or only the remaining rows
+	if($completeIndex)
+		$dateIndex=$filteredIndex;
+	//if any change: rewrite file	
+	if($addedFiles || $deletedFiles && $completeIndex)
+		saveMetadataIndex($relPath, $index, $type);
+
+	return $index;
+}
 
 //---------------Date index functions ----------
 function getDateIndexFilename($relPath, $type="")
@@ -233,7 +266,7 @@ debug("files", $files, true);
 
 	//test that every file is in index: add new file entries if new files
 	$addedFiles=array_diff_key($files,$dateIndex);
-debug("addedFiles", $addedFiles, true);
+debug("addedFiles", count($addedFiles));
 	if($addedFiles)
 	{
 		updateIndex($relPath,$addedFiles,$dateIndex);
@@ -243,8 +276,7 @@ debug("addedFiles", $addedFiles, true);
 
 	//test that all files in index exist: remove deleted file entries
 	$deletedFiles=array_diff_key($dateIndex,$files);
-	debug("deletedFiles", $deletedFiles, true);
-	//if($deletedFiles)
+	debug("deletedFiles", count($deletedFiles));
 	$filteredIndex=array_diff_key($dateIndex, $deletedFiles);
 	//write all rows or only the remaining rows
 	if($completeIndex)
