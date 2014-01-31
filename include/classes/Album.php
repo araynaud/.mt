@@ -149,7 +149,7 @@ debug("getSearchParameters",$this->search);
 	{
 		//TODO use dateIndex.types;IMAGE		
 		if(!isset($this->_metadataIndex[$type]))
-			$this->_metadataIndex[$type] = getMetadataIndex($this->relPath, $type, $this->groupedFiles[$type]);
+			$this->_metadataIndex[$type] = getMetadataIndex($this->relPath, $type, @$this->groupedFiles[$type], $this->isCompleteIndex());
 		return $this->_metadataIndex[$type];
 	}
 
