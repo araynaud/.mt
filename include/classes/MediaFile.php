@@ -50,12 +50,18 @@ class MediaFile extends BaseObject
 			$this->takenDate=$this->newestDate;
 			$this->thumbnails=subdirThumbs($this->_filePath, 4);
 		}
-
-		$this->getMetadata();
-		$streamTypes = getConfig("TYPES.VIDEO.STREAM");
-		$this->stream = array_intersect($this->exts, $streamTypes);
-		//thumbnails: image: .tn & .ss, same ext.
-		$this->addImageThumbnails();
+		else
+		{
+			$this->getMetadata();
+			if($this->type=="VIDEO")
+			{
+				$streamTypes = getConfig("TYPES.VIDEO.STREAM");
+				$this->stream = array_intersect($this->exts, $streamTypes);
+				$this->animated = true;
+			}
+			//thumbnails: image: .tn & .ss, same ext.
+			$this->addImageThumbnails();
+		}
 	}
 
     public static function getMediaFile()
@@ -79,17 +85,29 @@ class MediaFile extends BaseObject
     	if(!$tnSizes) return;
     	$noThumbTypes = getConfig("TYPES.IMAGE.NOTHUMB");
 		$noThumb = array_intersect($this->exts, $noThumbTypes);
-
     	if($noThumb) return;
 
     	foreach ($tnSizes as $subdir => $size)
     	{
-//    		if($this->animated)
+    		if(!$this->animated && $this->imageIsSmaller($size)) break;
 			debug("addImageThubnails $subdir $size", $this->width . "x" . $this->height);
  			$this->addThumbnail($subdir);
     		if($this->imageIsSmaller($size)) break;
     	}
     	debug("tnsizes", $this->tnsizes);
+    }
+
+    public function addVersion($ext="")
+	{
+		$this->vsizes[$ext] = $this->getFilesize($ext);
+	}
+	
+    public function addThumbnail($subdir="")
+	{
+		$size = $this->getThumbnailFilesize($subdir);
+		//if thumb does not exist and video and no FFMPEG: do not add
+		if($size > 0 || $this->type == "IMAGE" || isFfmpegEnabled())
+			$this->tnsizes[] = $size;
     }
 
 	public function getName()
@@ -180,7 +198,7 @@ class MediaFile extends BaseObject
 
 //add description and metadata
 		$filenames["description"] = $this->getDescriptionFilename();
-		$filenames["metadata"] = $this->getMetadataFilename();
+//		$filenames["metadata"] = $this->getMetadataFilename();
 //add thumbnails
     	$tnSizes = getConfig("thumbnails.sizes"); 
     	if($tnSizes)
@@ -289,19 +307,6 @@ class MediaFile extends BaseObject
 //debug($this->name . " is transparent", $this->transparent);
 		return $this->alpha;
 	}
-	
-    public function addVersion($ext="")
-	{
-		$this->vsizes[$ext] = $this->getFilesize($ext);
-	}
-	
-    public function addThumbnail($subdir="")
-	{
-		$size = $this->getThumbnailFilesize($subdir);
-		//if thumb does not exist and video and no FFMPEG: do not add
-		if($size > 0 || $this->type == "IMAGE" || isFfmpegEnabled())
-			$this->tnsizes[] = $size;
-    }
 	
 	public function move($targetDir, $newName="")
 	{

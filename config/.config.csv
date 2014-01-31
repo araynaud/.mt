@@ -152,7 +152,7 @@ _publish.local.url;http://localhost/mt
 _publish.local.name;Local
 _publish.local.path;uploads
 ..upload_max_filesize;2000000
-;..image.size;1920
+..image.size;1920
 ..video.format;mp4
 
 _publish.home.url;http://192.168.1.102/mt

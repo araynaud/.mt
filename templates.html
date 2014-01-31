@@ -89,13 +89,12 @@
 <!-- template for video caption -->
 <script id="videoCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
-		<div class="nowrap noscroll">{{>title}}</div>
-		<div class="floatR" style="margin-right:10px; width: 22%;">
+		<div class="floatR" style="margin-left:5px; margin-right:5px; max-width:25%;">
+			{{if duration}}{{:~formatTime(duration)}}{{/if}}
+			{{if stream}}<img class="playLink" src="icons/play.png" title="play {{:stream}}" /><br/>{{/if}}
 			{{for exts tmpl="extLinkTemplate"/}}
 		</div>
-		<div class="floatR" style="margin-right:10px">
-			{{if stream }}<img class="icon playLink" src="icons/play.png" title="play {{:stream}}" />{{/if}}
-		</div>
+		<div class="nowrap noscroll">{{>title}}</div>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
 	</div>
@@ -131,7 +130,7 @@
 				<img class="floatR" src="icons/info.png" height="12px" style="margin: 2px;" title="info {{>filename}}"/>
 			</a>
 		{{/if}}
-		<div class="duration small floatR">{{if metadata}}{{:~formatTime(metadata.duration)}}{{/if}}</div> 
+		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
 		{{if tnsizes }}
 			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" 

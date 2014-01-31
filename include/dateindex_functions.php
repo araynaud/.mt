@@ -106,8 +106,10 @@ function getMetadataIndex($relPath, $type, $fileList, $completeIndex=false)
 		$filename= getFilename($file["name"], $file["exts"][0], true);
 		$filePath = combine($relPath, $file["subdir"], $filename);
 debug("getMetadataIndex $name", $filePath);
-		$index[$name] = $type=="IMAGE" ? getImageInfo($filePath, true)	
-			: getVideoProperties($filePath);
+		if($type=="IMAGE")
+			$index[$name] = getImageInfo($filePath, true);
+		else if($type=="VIDEO")
+			$index[$name] = getVideoProperties($filePath);
 		$addedFiles++;
 	}
 
