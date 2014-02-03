@@ -5,18 +5,11 @@ window.UI = window.UI || {};
 var preventedKeys=[32,39]; //prevent space:page down , left: scroll right
 UI.preventKeys = function(event)
 {	
+	if(target.is(":text, .description")) return;
 	var keyCode=event.keyCode;
 	if(!keyCode) keyCode=event.which;
 	if(!preventedKeys.contains(keyCode)) return;
 //	UI.setStatus("preventKeys:  k:{0} {1} w:{2} c:{3} => {4}".format(event.keyCode, event.key, event.which, event.charCode, keyCode));
-	event.preventDefault();
-};
-
-UI.preventKeyEvent = function(event)
-{	
-	var keyCode=event.keyCode;
-	if(!keyCode) keyCode=event.which;
-	UI.setStatus("preventKeys:  k:{0} {1} w:{2} c:{3} => {4}".format(event.keyCode, event.key, event.which, event.charCode, keyCode));
 	event.preventDefault();
 };
 

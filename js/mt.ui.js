@@ -209,21 +209,6 @@ UI.makeBackgroundGradients = function(step)
 	}
 };
 
-UI.displayBackground = function(mediaFile, hidden)
-{
-	var background = { url: mediaFile.getThumbnailUrl(1), hidden: hidden ? " hidden" : "" };
-	var imgbg=$("#imgbg");
-	if(!imgbg.length)
-	{
-		UI.renderTemplate("backgroundTemplate","body", background, "prepend");
-		UI.makeBackgroundGradients();
-	}
-	else
-		imgbg.attr("src", background.url);
-
-	return background;
-};
-
 UI.setStatus = function(text)
 {
 	text=text || "";
@@ -276,48 +261,88 @@ UI.confirmChoice = function(link,message)
 	return answer;
 };
 
-UI.confirmFileAction = function(action,target) //,path,filename)
+UI.confirmFileAction = function(action, target, windowName)
 {
-	//path=valueOrDefault(path, album.path);
-	//if(!filename && this.currentFile)	filename=this.currentFile.filename;
-	var mediaFile=this.currentFile;
-	if(UI.mode==="slideshow")
-		mediaFile=UI.slideshow.currentFile;
-
-//	UI.setStatus(mediaFile.name);
-	var answer = confirm(action + " " + mediaFile.name + " ?");
-	if(!answer)		return false;
-	if(!action)		action="move";
-	//TODO use MediaFile.getScriptUrl(".admin/action.php") or pass data to ajax
-	var link=".admin/action.php?";
-	if(album.path)
-		link += "&path=" + album.path;
-	if(mediaFile.filename)
-		link += "&file=" + mediaFile.filename;
-	else 
-		return false;
-	if(action)
-		link += "&action=" + action;
-	if(target)
-		link += "&to=" + target;
-	
-	//call admin script with ajax	
-	UI.setStatus(link);
-   	$.ajax({	
-		url: link,
-		dataType: "json",
-		contentType: "application/json",
-		cache: false,	
-		success: function(response) 
-		{ 
-			UI.addStatus(response);
-//			UI.addStatus(response.message);
-			UI.afterAction(action, response, mediaFile);
-		},
-		error: UI.ajaxError
-	});				
-	return answer;
+	var params = {action: action, to: target };
+	return UI.fileAction(params, windowName, true);
 };
+
+//edit name, description
+UI.inputAction = function(params, field)
+{
+	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
+	if(!params) params = {};
+	UI.okInput = function()
+	{
+		$("#editFieldDiv").hide();
+		var value=$("#tb_editField").val();
+		mediaFile.set(field,value);
+		params.to = value;
+		UI.fileActionAjax(params);
+	};
+
+	//show edit field
+	$("#editFieldDiv").show();
+	$("#editFieldLabel").html(field);
+
+	var value = mediaFile[field];
+	if(isString(value))
+		$("#tb_editField").val(value.toString());
+	$("#tb_editField").focus();
+	$("#btn_OK").bindReset("click", UI.okInput);
+	$("#btn_Cancel").bindReset("click", UI.cancelInput);
+};
+
+UI.cancelInput = function()
+{
+	$("#editFieldLabel").html("");
+	$("#tb_editField").val("");
+	$("#editFieldDiv").hide();
+};
+
+UI.fileActionAjax = function(params, showConfirm)
+{
+	return UI.fileAction(params, null, showConfirm)
+}
+
+UI.fileAction = function(params, windowName, showConfirm)
+{
+	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
+	if(!mediaFile) return false;
+
+	var answer=true;
+	if(showConfirm)
+		answer = confirm(params.action + " " + mediaFile.name + " ?");
+	if(!answer)		return false;
+
+	var scriptName=".admin/action"; //default action page
+	if(params && params.script)
+	{
+		scriptName = params.script;
+		delete params.scriptName;
+	}
+	if(isMissing(windowName))
+	{
+		var callbacks = {success: UI.afterAction };
+		mediaFile.scriptAjax(scriptName + ".php", params, false, callbacks);
+	}
+	else
+		UI.goToPage(scriptName, params, windowName);
+	//call admin script with ajax	
+	return true;
+};
+
+UI.goToPage = function(scriptName, params, windowName)
+{
+	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
+	if(!mediaFile) return false;
+	var link=mediaFile.getScriptUrl(scriptName +".php", params);
+	
+	if(windowName)	window.open(link, windowName);
+	else	location=link;
+	return true;
+};
+
 
 UI.ajaxError = function(xhr, textStatus, errorThrown)
 { 
@@ -329,33 +354,64 @@ UI.ajaxError = function(xhr, textStatus, errorThrown)
 
 //TODO: make separate functions 1 per action
 //pass response, use .action and .parameters
-UI.afterAction = function(action, response, mediaFile)
+UI.afterAction = function(response, mediaFile, params)
 {
-	if(!mediaFile) mediaFile=this.currentFile;
-	if(action==="addtag" || action==="removetag")
-	{		
-		mediaFile.setTag(response.parameters.tag, response.parameters.state);
-		return;
-	}
+	if(!mediaFile) return false;
+	if(!params || !params.action) return false;
 
-	if(action==="background") 
+	switch(params.action)
 	{
-		UI.displayBackground(mediaFile);
-		return false;
+		case "addtag":
+		case "removetag":
+			mediaFile.setTag(response.parameters.tag, response.parameters.state);
+		case "description":
+			return UI.refreshMediaFile(mediaFile);
+		case "background":
+			return UI.displayBackground(mediaFile);
+		//after move/delete : remove from album
+		case "move":
+		case "delete":
+			return UI.removeMediaFile(mediaFile);
+		default:
+			return false;
 	}
+};
 
-	//after move/delete : remove from album
-	if(action==="move" || action==="delete")
+UI.removeMediaFile = function(mediaFile)
+{
+	album.mediaFiles.remove(mediaFile.name, "name");
+	UI.slideshow.remove(mediaFile.name);
+	if(UI.mode==="slideshow")
+		UI.slideshow.showImage();
+
+	var fileDiv=$("div#"+mediaFile.id);
+	fileDiv.hide("slow", UI.displaySelectedFiles);
+	return fileDiv.length>0;
+};
+
+UI.refreshMediaFile = function(mediaFile)
+{
+	//render template in this file div id
+	var fileDiv = $("div#" + mediaFile.id);
+//	UI.renderTemplate("fileboxTemplate", UI.pageDiv, mediaFile, "append");
+//	UI.addStatus("refreshMediaFile " + mediaFile.id);
+	UI.displaySelectedFiles(true);
+	return true;
+};
+
+UI.displayBackground = function(mediaFile, hidden)
+{
+	var background = { url: mediaFile.getThumbnailUrl(1), hidden: hidden ? " hidden" : "" };
+	var imgbg=$("#imgbg");
+	if(!imgbg.length)
 	{
-		album.mediaFiles.remove(mediaFile.name, "name");
-		UI.slideshow.remove(mediaFile.name);
-		if(UI.mode==="slideshow")
-			UI.slideshow.showImage();
-
-		var fileDiv=$("div#"+mediaFile.id);
-		fileDiv.hide("slow");
-		return fileDiv.length>0;
+		UI.renderTemplate("backgroundTemplate","body", background, "prepend");
+		UI.makeBackgroundGradients();
 	}
+	else
+		imgbg.attr("src", background.url);
+
+	return background;
 };
 
 UI.resetImageSize = function(img)
@@ -496,19 +552,6 @@ UI.setContentWidth = function(el)
 	if(UI.downloadFileDiv.is(":visible"))
 		w = UI.getContentWidth(el); 
 	el.width(w);
-};
-
-
-UI.goToActionPage = function(scriptName, params, windowName, showConfirm)
-{
-	var mediaFile=UI.currentFile;
-	var link=mediaFile.getScriptUrl(scriptName +".php", params);
-	
-	answer=true;
-	if(showConfirm)	answer = confirm(mediaFile.name + " ?");
-	if(answer && windowName)	window.open(link, windowName);
-	else if(answer)		location=link;
-	return answer;
 };
 
 UI.displayFileCounts = function (fileList,divId,clear)

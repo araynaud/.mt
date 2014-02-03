@@ -120,10 +120,11 @@ $(window).resize(function(event)
 </script>
 
 <?php include("templates.html");?>
-
 </head>
 <body class="<?php echo isMobile() && !isIpad() ? "mobile" : "desktop"; ?>">
 <?php $background=displayBackground($relPath, false);?>
+
+<?php // include(".admin/dialog.html");?>
 
 <div id="titleContainer" direction="down" callback="UI.setColumnWidths">
 	<div id="userDiv" class="floatR right noprint">
@@ -194,16 +195,19 @@ $(window).resize(function(event)
 </div>
 
 <div id="indexContainer" class="nofloat">
+	<div class="nofloat">
+		<div id="tagList" class="floatR" direction="right" callback="UI.setContentWidth"></div>
+		<div id="pagesTop" class="pager centered"></div>
+	</div><br/>
 	<div class="floatR">
-		<div class="right noprint">
+		<div class="right noprint controls">
 			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
 		</div>
-		<div id="tagList" class="right" direction="right" callback="UI.setContentWidth"></div>
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="UI.setContentWidth"></div>
 	</div>
-	<div id="pagesTop" class="pager centered"></div>
+
 	<div id="files" class="container margin">
 		<div id="mediaFileList0" class="mediaFileList"></div>
 		<div id="mediaFileList1" class="mediaFileList"></div>
@@ -220,28 +224,9 @@ $(window).resize(function(event)
 	<div id="musicPlayer"></div>
 </div>
 
-<div id="editDiv" class="hidden edit">
-	<img class="icon upload floatL rotateIcon" id="rotateIcon_left" src="icons/rotate-left.png" alt="L" title="Rotate Left"/>
-	<img class="icon upload floatR rotateIcon" id="rotateIcon_right" src="icons/rotate-right.png" alt="R" title="Rotate Right"/>
-
-	<input class="notdir" id="cb_selected" type="checkbox" label="X" title="Select"/>
-
-	<img class="" id="dataIcon" src="icons/info.png" alt="convert" onclick="UI.goToActionPage('data', null, 'data')"/>
-
-	<img class="icon upload notdir" id="editIcon" src="icons/edit.gif" alt="edit" onclick="UI.goToActionPage('.upload/imageEdit')"/>
-	<img class="icon upload" id="commentIcon" src="icons/comment.gif" alt="description" onclick="UI.goToActionPage('.upload/description')"/>
-	<img class="icon upload video" id="convertIcon" src="icons/step_next.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, to:'stream'}, 'convert')"/>
-	<img class="icon upload video" id="convertSoundIcon" src="icons/sound.png" alt="convert" onclick="UI.goToActionPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
-	<img class="icon admin notdir" id="parentIcon" src="icons/parent.gif" onclick="UI.confirmFileAction('move','..')" title="move to parent" alt="move to parent"/>
-	<img class="icon admin notdir" id="bestIcon" src="icons/star.png" onclick="UI.confirmFileAction('addtag','best')" title="set as best" alt="best"/>
-	<img class="icon admin notdir" id="bestIcon" src="icons/addtag.png" onclick="UI.addTag('addtag')" title="add tag" alt="tag"/>
-	<img class="icon admin notdir" id="deleteIcon" src="icons/delete.png" onclick="UI.confirmFileAction('delete')" title="delete" alt="delete"/>
-	<img class="icon admin notdir" id="refreshIcon" src="icons/refresh.png" onclick="UI.refreshThumbnail(this)" title="refresh" alt="refresh"/>
-	<img class="icon admin notdir" id="backgroundIcon" src="icons/background.png" onclick="UI.confirmFileAction('background')" title="set as background" alt="background"/>
-</div>
-
 <?php include("slideshow.html");?>
 <?php include("options.php");?>
+<?php include("edit.html");?>
 
 </body>
 </html>

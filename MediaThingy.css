@@ -1041,7 +1041,7 @@ body.mobile
 	font-size: .6cm;
 }
 
-.translucent select, .translucent input
+.translucent select, .translucent input, .edit input[type=text], .edit select
 {
 	background-color: rgba(0, 0, 0, 0.3);
 	color: white;

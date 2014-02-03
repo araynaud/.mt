@@ -12,6 +12,9 @@ function MediaFile(data)
 		this.url=data;
 	this.getId();
 	this.filename = this.getFilename();
+
+	this.initTags();
+
 	this.selected=false;
 }
 
@@ -19,6 +22,16 @@ MediaFile.prototype.get = function(key, default_)
 {
 	var value=this[key];
 	return isMissing(value) ? default_ :  value ;
+};
+
+MediaFile.prototype.set = function(key, value)
+{
+	if(isArray(this[key]))
+		this[key].push(value);
+	else if(isObject(this[key]))
+		this[key][value]=value;
+	else
+		this[key] = value;
 };
 
 MediaFile.prototype.contains = function(key)
@@ -55,6 +68,20 @@ MediaFile.prototype.getFilename = function(ext)
 		ext=this.exts[ext]; 
 	return ext ? this.name + "." + ext : this.name;
 };
+
+MediaFile.prototype.initTags = function()
+{
+	// array to object.
+	if(!this.tags) return;
+//	if(isObject(this.tags)) return;
+	var tags = {};
+	for(var i=0; i < this.tags.length; i++)
+	{
+		tags[this.tags[i]]=this.tags[i];
+	}
+	this.tags=tags;
+};
+
 
 MediaFile.isDir = function(mediaFile)
 {
@@ -134,6 +161,8 @@ MediaFile.prototype.hasTag = function(tag)
 MediaFile.hasTag = function(mediaFile, tag)
 {
 	if(!mediaFile.tags) return false;
+	if(isArray(mediaFile.tags))
+		return mediaFile.tags.contains(tag);
 	return mediaFile.tags.hasOwnProperty(tag);
 };
 
@@ -380,8 +409,8 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 	params.format="ajax";
 	var scriptUrl = mediaFile.getScriptUrl(script, params);
 
-//	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
-//	UI.addStatus(link.outerHtml());
+	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
+	UI.addStatus(link.outerHtml());
 
 	var result = false;
    	$.ajax({
@@ -394,7 +423,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 		{ 
 			result=response;
 			if(callbacks && callbacks.success)
-				callbacks.success(response, mediaFile);
+				callbacks.success(response, mediaFile, params);
 			if(callbacks && callbacks.next)
 				callbacks.next(response, script, params, callbacks);
 		},
@@ -414,7 +443,7 @@ MediaFile.prototype.scriptAjax = function (script, params, async, callbacks)
 	return MediaFile.scriptAjax(this, script, params, async, callbacks);
 };
 
-MediaFile.imageSuccess = function(response, mediaFile)
+MediaFile.imageSuccess = function(response, mediaFile, params)
 {  
 	if(response.tnIndex && response.filesize)
 		mediaFile.tnsizes[response.tnIndex] = response.filesize;

@@ -57,7 +57,7 @@
 <!-- template for photo caption -->
 <script id="descriptionTagTemplate" type="text/x-jsrender"> 
 	{{for getTags() tmpl="tagTemplate"/}}
-	<span id="desc_{{:id}}" class="description">{{:description}}</span>
+	<span id="desc_{{:id}}" class="description" contenteditable="false">{{:description}}</span>
 </script>
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 
@@ -103,9 +103,9 @@
 <!-- template for tags -->
 <script id="tagTemplate" type="text/x-jsrender"> 
 	{{if #data=='best'}}
-		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png" {{if true}} onclick="UI.confirmFileAction('removetag','{{:#data}}')"{{/if}}/>
+		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png" {{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}/>
 	{{else}}
-		<a class="tag" {{if true}} onclick="UI.confirmFileAction('removetag','{{:#data}}')"{{/if}}>{{:#data}}</a>
+		<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}>{{:#data}}</a>
 	{{/if}}
 </script>
 

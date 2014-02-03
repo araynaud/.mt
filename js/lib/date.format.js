@@ -271,10 +271,10 @@ Date.formatDateRange = function(from, to, dateOnly)
 	var dateRange= Date.dateRange(from, to, dateOnly);
 	var from;
 	if(dateRange.dFrom)
-		from=dateFormat(dateRange.dFrom, "longDate", false);
+		from=dateFormat(dateRange.dFrom, "longDate", dateOnly);
 	if(!dateRange.duration)
 		return from;
-	var to=dateFormat(dateRange.dTo, "longDate", false);
+	var to=dateFormat(dateRange.dTo, "longDate", dateOnly);
 
 	if(to == from) return to;
 

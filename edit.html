@@ -1,0 +1,55 @@
+<div id="editDiv" class="hidden edit">
+	<span id="uploadIcons" class="upload">
+		<img class="icon floatL rotateIcon" id="rotateIcon_left" src="icons/rotate-left.png" alt="L" title="Rotate Left"/>
+		<img class="icon floatR rotateIcon" id="rotateIcon_right" src="icons/rotate-right.png" alt="R" title="Rotate Right"/>
+
+		<input class="notdir" id="cb_selected" type="checkbox" label="X" title="Select"/>
+
+		<img class="" id="dataIcon" src="icons/info.png" alt="convert"
+		onclick="UI.goToPage('data', null, 'data')"/>
+
+		<img class="icon notdir" id="editIcon" src="icons/editor16.png" alt="edit"
+		onclick="UI.goToPage('.upload/imageEdit')"/>
+		
+		<img class="icon" id="commentIcon" src="icons/comment.gif" alt="description"
+		onclick="UI.goToPage('.upload/description')"/>
+		
+		<img class="icon video" id="convertIcon" src="icons/step_next.png" alt="convert"
+		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'stream'}, 'convert')"/>
+		
+		<img class="icon video" id="convertSoundIcon" src="icons/sound.png" alt="convert" 
+		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
+	</span>	
+	<span id="adminIcons" class="admin">		
+		<img class="icon notdir" id="bestIcon" src="icons/edit.gif"
+		title="add tag" alt="tag" 
+		onclick="UI.inputAction({action:'description'}, 'description')" />
+
+
+		<img class="icon notdir" id="bestIcon" src="icons/star.png"
+		title="set as best" alt="best"
+		onclick="UI.fileActionAjax({action:'addtag', to:'best'})" />
+		
+		<img class="icon notdir" id="bestIcon" src="icons/addtag.png"
+		title="add tag" alt="tag" 
+		onclick="UI.inputAction({action:'addtag'}, 'tags')" />
+
+		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" title="move to parent" alt="move to parent"
+		onclick="UI.fileActionAjax({action:'move', to:'..'}, true)" />
+		
+		<img class="icon notdir" id="deleteIcon" src="icons/delete.png" title="delete" alt="delete"
+		onclick="UI.fileActionAjax({action:'delete'}, true)" />
+		
+		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" title="set as background" alt="background"
+		onclick="UI.fileActionAjax({action:'background'}, true)" />
+
+		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png" title="refresh" alt="refresh" 
+		onclick="UI.refreshThumbnail(this)" />
+	</span>
+	<div id="editFieldDiv" class="hidden small">
+		<span id="editFieldLabel" class="bold"></span>
+		<input id="tb_editField" type="text" style="width:80px"/>
+		<input id="btn_OK" type="button" value="OK"/>
+		<input id="btn_Cancel" type="button" value="X"/>
+	</div>
+</div>

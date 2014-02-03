@@ -39,7 +39,7 @@ var User = new function()
 	{ 
 		if(User.getUsername() && User.getRole())
 			return "{0} ({1})".format(User.getUsername(), User.getRole()); 
-		return User.getUsername();
+		return User.getUsername() || User.getRole();
 	}
 	
 	//try getting login page with ajax, asks for authentication

@@ -67,7 +67,7 @@ class MediaFile extends BaseObject
     public static function getMediaFile()
     {    	
 		$path=getPath();
-		$file = getParam('file');
+		$file = getParam("file");
 		if($file)
 		{
 			$relPath=getDiskPath($path);
@@ -247,6 +247,13 @@ class MediaFile extends BaseObject
 		$this->description = readTextFile($filename);
 		return $this->description;
 	}
+
+    public function setDescription($desc)
+	{
+		$filename = $this->getDescriptionFilename(true);
+		$this->description = $desc;
+		return writeTextFile($filename, $desc);
+	}
 	
     public function getMetadata()
 	{
@@ -350,7 +357,7 @@ debug("deleteFile", "($dir, $file)");
 debug("addTag " . $this->name, $tag);
 	}
 
-	public function tag($tag, $state)
+	public function setTag($tag, $state)
 	{
 		return saveFileTag($this->getFileDir(), $this->name, $tag, $state);
 	}

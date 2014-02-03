@@ -367,7 +367,7 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 			$value = parseValue($column, $separator2);
 			$row[$ckey]= $value;
 		}
-debug("row", $row);
+//debug("row", $row);
 		if(!$key)
 			$csvRows[] = $row;
 		else

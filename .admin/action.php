@@ -8,8 +8,7 @@ setContentType("text", "plain");
 // AJAX response: new MediaFile after action + error or confirmation message
 
 $path=getPath();
-$relPath=getDiskPath($path);
-$file = getParam('file');
+$file = getParam("file");
 $name = getParam("name");
 $action = getParam("action");
 $actions = getConfig("file.actions");
@@ -27,24 +26,6 @@ $includeEmpty = getParamBoolean("empty");
 $mf = MediaFile::getMediaFile();
 debugVar("mf");
 // Do action
-/*
-
-//pages
-UI.goToActionPage('.upload/imageEdit')
-UI.goToActionPage('.upload/description')
-
-//action
-convert to audio: '.upload/video_convert', {debug:true, to:'stream'}, 'convert'
-convert to video: '.upload/video_convert', {debug:true, to:'audio'}, 'convert'
-
-move: UI.confirmFileAction('move','..')
-UI.confirmFileAction('move','best')
-delete: UI.confirmFileAction('delete')
-refresh image: UI.refreshThumbnail(this)
-background: UI.confirmFileAction('background')
-
-TODO: tag: add or remove
-*/
 $inputFile = combine($path, $file ? $file : $name);
 $result=false;
 $message="";
@@ -61,9 +42,13 @@ else
 		case "rename":
 		case "move":
 			$result = $mf->move($to, $rename);
+//			$_GET["path"] = combine($path,$to);
 			break;
 		case "delete":
 			$result = $mf->delete();
+			break;
+		case "description":
+			$result = $mf->setDescription($to);
 			break;
 		case "background":
 			//TODO: apply .bg to other directory (parent or sub?)
@@ -73,7 +58,7 @@ else
 		case "addtag":
 		case "removetag":
 			$state = ($action == "addtag");
-			$result = $mf->tag($tag, $state);
+			$result = $mf->setTag($tag, $state);
 			$parameters["tag"] = $tag;
 			$parameters["state"] = $state;
 			break;
@@ -89,7 +74,8 @@ if(!$message)
 }
 
 //return MediaFile after action
-//should be null for delete and move
+//should be null for delete and new file for move
+
 $mf = MediaFile::getMediaFile();
 debugVar("mf");
 
