@@ -328,6 +328,7 @@ Album.prototype.sortFiles = function(sortOptions)
 		this.mediaFiles = dirs.concat(this.mediaFiles); 
 	}	
 //		this.mediaFiles.sortObjectsBy(MediaFile.isDir,true); //put dirs first
+	this.pageNum=1;
  	return this.mediaFiles;
 };
 

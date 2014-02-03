@@ -57,6 +57,7 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.ui.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>
 <script type="text/javascript" src="js/mt.index.js"></script>
+<script type="text/javascript" src="js/mt.actions.js"></script>
 <script type="text/javascript" src="js/mt.templates.js"></script>
 <script type="text/javascript" src="js/mt.downloads.js"></script>
 <script type="text/javascript" src="js/mt.progressbar.js"></script>

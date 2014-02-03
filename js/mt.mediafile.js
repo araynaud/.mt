@@ -82,7 +82,6 @@ MediaFile.prototype.initTags = function()
 	this.tags=tags;
 };
 
-
 MediaFile.isDir = function(mediaFile)
 {
 	return mediaFile.type==="DIR" ? 1 : 0;
@@ -584,4 +583,33 @@ MediaFile.prototype.resizeBeforeUpload = function()
 	this.tnDir = config.thumbnails.dirs[this.tnIndex];
 	this.tnUrl = this.getThumbnailUrlAjax(this.tnIndex);
 	return this.tnDir;
+};
+
+MediaFile.prototype.getDiv = function()
+{
+	return $("div#" + this.id);
+}
+
+MediaFile.getDiv = function(mediaFile)
+{
+	return $("div#" + mediaFile.id);
+}
+
+MediaFile.play = function(el)
+{
+	mediaFile = album.getByAttribute(el);
+	return mediaFile.play();
+};
+
+MediaFile.prototype.play = function()
+{
+	switch(this.type)
+	{
+		case "IMAGE":
+			return UI.slideshow.display(mediaFile);
+		case "VIDEO":
+			return MediaPlayer.video.loadMediaFile(mediaFile);
+		case "AUDIO":
+			return MediaPlayer.audio.loadMediaFile(mediaFile);
+	}
 };

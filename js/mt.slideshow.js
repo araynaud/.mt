@@ -175,7 +175,7 @@ Slideshow.prototype.getPicPosition = function(input)
 {
 //object: search by name
 	if(isObject(input))
-		input = input.name  || input.filename;
+		input = input.id || input.name  || input.filename;
 //string: search by name
 	if(isString(input))
 	{

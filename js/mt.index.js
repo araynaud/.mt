@@ -124,26 +124,27 @@ UI.displayFiles = function(selectedFiles,transition,append)
 
 	UI.transition.setType("crossFade"); // reset for next time.
 
+	UI.setupFileEvents();
+		
+	return selectedFiles;
+};
+
+//if mediafile: setup events after refreshing single mediaFile
+//else: setup events for current page
+UI.setupFileEvents = function(mediaFile)
+{
 	UI.displayEditEvent();
-	var imgThumbs=UI.pageDiv.find("div[page={0}] img.thumbnail".format(album.pageNum));
+	var div = mediaFile ? mediaFile.getDiv() : UI.pageDiv;
+
+	var imgThumbs = div.find("img.thumbnail");
 	imgThumbs.load(UI.imageOnLoad);
 	imgThumbs.error(UI.imageOnError);
 
-	imgThumbs = UI.pageDiv.find("div.image[page={0}] img.thumbnail".format(album.pageNum));
+	imgThumbs = div.find("img.playLink, img.thumbnail");
 	imgThumbs.click(function()
 	{
-		var id = UI.getFileIdFromElement($(this));
-		UI.slideshow.display(id);
+		MediaFile.play($(this));
 	});
-
-	imgThumbs = UI.pageDiv.find("div.video[page={0}] img.playLink".format(album.pageNum));
-	imgThumbs.click(function()
-	{
-		var mediaFile = album.getByAttribute($(this));
-		MediaPlayer.video.loadMediaFile(mediaFile);
-	});
-		
-	return selectedFiles;
 };
 
 //call when initial display, and when tag list changes: new tag word created or removed.
@@ -295,8 +296,7 @@ UI.imageOnError = function()
 	var src= img.attr("src");
 	var imageLink = $.makeElement("a", {href: src.appendQueryString({debug: true}), target: "image"}).html(src);
 	UI.addStatus(imageLink.outerHtml());
-//	img.attr("src","icons/delete128.png");
-	img.show();
+	img.attr("src","icons/delete128.png").show();
 	var caption=filebox.children(".caption, .captionBelow");	
 	caption.show();
 	filebox.show();
@@ -471,64 +471,6 @@ UI.displayPageLinks = function()
 		UI.selectPage(num);
 	});
 	return album.nbPages;
-};
-
-UI.displayUser = function(div)
-{
-	if(!div) div=$('#userLabel');
-
-	var role=User.get("role");
-	if(role)
-		div.html(User.toString());
-	else
-		div.html("");
-		
-	$(".upload").toggle(User.isUploader());
-	$(".notupload").toggle(!User.isUploader());
-	$(".admin").toggle(User.isAdmin());
-	$(".notadmin").toggle(!User.isAdmin());
-};
-
-UI.displayEditEvent = function()
-{
-	//do that if user.upload or admin
-	if(!User.getRole()) return;
-
-	UI.rotateIcons.bindReset("click", UI.rotateImage);
-	UI.fileboxes=$("div.file");
-	if(UI.clientIs("mobile"))
-		UI.fileboxes.bindReset("click", function() { UI.displayEdit($(this)); });	
-	else
-	{
-		UI.fileboxes.bindReset("mouseenter", function() { UI.displayEdit($(this)); });	
-		UI.fileboxes.bindReset("mouseleave", function() { UI.displayEdit(); });
-	}
-};
-
-UI.displayEdit = function(filebox)
-{
-	if(!filebox || !User.getRole())
-	{
-		UI.editDiv.hide().appendTo(UI.body); //to avoid losing it when refreshing index
-		return;
-	}
-
-	UI.editDiv.appendTo(filebox).show();
-
-	UI.currentFile=album.getByAttribute(filebox);
-	UI.rotateIcons.toggle(UI.currentFile.isImage());
-//	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
-
-	$("#cb_selected").toggleChecked(UI.currentFile.selected);
-//	UI.setStatus(UI.currentFile.id + " " + UI.currentFile.selected);
-
-	$("#cb_selected").bindReset("change", function() 
-	{
-//		UI.addStatus(UI.currentFile.id);
-		UI.currentFile.selected = $(this).isChecked();
-		$("div#" + UI.currentFile.id).toggleClass("selected", UI.currentFile.selected);
-	});
-
 };
 
 //perform search

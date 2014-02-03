@@ -5,6 +5,7 @@ window.UI = window.UI || {};
 var preventedKeys=[32,39]; //prevent space:page down , left: scroll right
 UI.preventKeys = function(event)
 {	
+	var target=$(event.target);
 	if(target.is(":text, .description")) return;
 	var keyCode=event.keyCode;
 	if(!keyCode) keyCode=event.which;
