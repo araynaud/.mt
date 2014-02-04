@@ -141,7 +141,7 @@ UI.setupFileEvents = function(mediaFile)
 	imgThumbs.error(UI.imageOnError);
 
 	imgThumbs = div.find("img.playLink, img.thumbnail");
-	imgThumbs.click(function()
+	imgThumbs.bindReset("click", function()
 	{
 		MediaFile.play($(this));
 	});
