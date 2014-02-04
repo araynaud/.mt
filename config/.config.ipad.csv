@@ -1,28 +1,18 @@
 ;app global default config
-TITLE;(ipad)
+TITLE;iPad Thingy
 DEBUG.OUTPUT;false
 
 ;thumbnail display
-DISPLAY.maxTnIndex;1
 DISPLAY.rotate;false
-.shadow;true
-.caption;true
-.columns;0
-.displayOptions;true
-.searchOptions;false
+DISPLAY.reverse;false
 
-transition.changeMode;queue
-slideshow.changeMode;queue
 slideshow.zoomFunction;crossFade
 
 ;paginate / count per page
-PAGINATE.OPTIONS;3;4;6;10;15;20;all
 
 ;file types // different files depending on device?
-TYPES.IMAGE;jpg;jpeg;png;gif
-TYPES.AUDIO;mp3;m4a;aac
-TYPES.VIDEO;mp4;m4v
-TYPES.VIDEO.STREAM;mp4;m4v;3gp
+;TYPES.AUDIO;mp3;m4a;aac
+;TYPES.VIDEO;mp4;m4v
 
 ;JW Player options
 JWPLAYER.allowHtml5;true
