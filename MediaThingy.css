@@ -988,7 +988,7 @@ input.numericField
 }
 
 /* Checkbox Styles */
-label.checkboxLabel
+label.checkboxLabel, label.tagLabel
 {
 	margin: 2px;
 	min-width: 16px;
@@ -1003,7 +1003,7 @@ label.checkboxLabel
 	-ms-transition: all .5s ease;
 	transition: all .5s ease;
 	cursor: pointer;
-	background: #522;
+	background-color: #522;
 
 	box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: 1px 2px 3px rgba(0,0,0,0.5);
@@ -1013,19 +1013,30 @@ label.checkboxLabel
 	border-radius: 100px;
 }
 
+label.tagLabel
+{
+	background-color: #531;
+}
+
 .checkButton img
 {
 	height: 14px;
 }
 
 /* Create the checked state */
-input[type=checkbox]:checked + label.checkboxLabel
+input[type=checkbox]:checked + label.checkboxLabel,
+input[type=checkbox]:checked + label.tagLabel
 {
-	background: #26ca28;
+	background-color: #3c3;
 	font-weight: bold;
 	box-shadow:inset 1px 2px 3px rgba(0,0,0,0.5);
 	-webkit-box-shadow: inset 1px 2px 3px rgba(0,0,0,0.5);
 	border: 4px solid #AEA;
+}
+
+input[type=checkbox]:checked + label.tagLabel
+{
+	background-color: #e83;
 }
 
 /*========= MOBILE ==============*/

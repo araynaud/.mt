@@ -12,6 +12,16 @@ UI.displayUser = function(div)
 	$(".notupload").toggle(!User.isUploader());
 	$(".admin").toggle(User.isAdmin());
 	$(".notadmin").toggle(!User.isAdmin());
+
+	UI.displayUserElements();
+};
+
+UI.displayUserElements = function()
+{
+	$(".upload").toggle(User.isUploader());
+	$(".notupload").toggle(!User.isUploader());
+	$(".admin").toggle(User.isAdmin());
+	$(".notadmin").toggle(!User.isAdmin());
 };
 
 UI.displayEditEvent = function()
@@ -75,38 +85,56 @@ UI.confirmFileAction = function(action, target, windowName)
 };
 
 //edit name, description
-UI.inputAction = function(params, field)
+UI.inputAction = function(params)
 {
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
-	if(!params) params = {};
+	if(!params|| !mediaFile) return;
 
-	okInput = function()
-	{
-		$("#editFieldDiv").hide();
-		var value=$("#tb_editField").val();
-		mediaFile.set(field, value);
-		params.to = value;
-		UI.fileActionAjax(params);
-	};
+	var fieldValue = mediaFile[params.field];
 
-	cancelInput = function()
+	if(params.choices)
 	{
-		$("#editFieldLabel").html("");
-		$("#tb_editField").val("");
-		$("#editFieldDiv").hide();
-	};
+		choices = params.choices;
+		if(isObject(choices) && isObject(fieldValue))
+			choices = Object.keyDiff(choices, fieldValue);
+		choices = Object.keys(choices);
+		//look how to pass parameters to template?
+		UI.renderTemplate("addTagTemplate", "#choicesList", choices);
+		delete params.choices;
+	}
 
 	//show edit field
-	$("#editFieldDiv").show();
-	$("#editFieldLabel").html(field);
+	UI.editUploadIcons.hide();
+	UI.editAdminIcons.hide();
+	UI.editFieldDiv.show();
+	UI.editFieldLabel.html(params.field);
+	UI.editParams=params;
 
-	var value = mediaFile[field];
-	$("#tb_editField").val("");
-	if(isString(value))
-		$("#tb_editField").val(value.toString());
-	$("#tb_editField").focus();
-	$("#btn_OK").bindReset("click", okInput);
-	$("#btn_Cancel").bindReset("click", cancelInput);
+//	UI.editField.val("");
+	if(isString(fieldValue))
+		$(UI.editField).val(fieldValue);
+	UI.editField.focus();
+};
+
+UI.okInput = function()
+{
+	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
+	var value = UI.editField.val();
+	if(!mediaFile || !UI.editParams) return;
+	mediaFile.set(UI.editParams.field, value);
+	UI.editParams.to = value;
+	UI.fileActionAjax(UI.editParams);
+	UI.resetInput();
+};
+
+UI.resetInput = function()
+{
+	UI.editFieldLabel.html("");
+	UI.editField.val("");
+	UI.editFieldDiv.hide();
+
+	UI.displayUserElements();
+
 };
 
 UI.fileActionAjax = function(params, showConfirm)
@@ -172,6 +200,8 @@ UI.afterAction = function(response, mediaFile, params)
 		case "addtag":
 		case "removetag":
 			mediaFile.setTag(response.parameters.tag, response.parameters.state);
+			album.setTag(response.parameters.tag, mediaFile.name, params.action=="addtag");
+			UI.displayTags();
 		case "description":
 			return UI.refreshMediaFile(mediaFile);
 		case "background":
@@ -202,6 +232,10 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 {
 	//render template in this file div id
 //	UI.addStatus("refreshMediaFile " + mediaFile.id);
+
+	UI.editDiv.hide().appendTo(UI.body);
+	//to avoid losing it when refreshing index
+
 	if(refreshPage)
 		return UI.displaySelectedFiles(true);
 

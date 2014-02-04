@@ -94,7 +94,7 @@ $(document).ready(function()
 	$("#playIcon").toggle(album.hasFiles("VIDEO"));
 
 	UI.displayTags();
-	UI.styleCheckboxes("checkButton");
+	UI.styleCheckboxes();
 	UI.setupEvents();
 
 	if(search.start)
@@ -124,8 +124,6 @@ $(window).resize(function(event)
 </head>
 <body class="<?php echo isMobile() && !isIpad() ? "mobile" : "desktop"; ?>">
 <?php $background=displayBackground($relPath, false);?>
-
-<?php // include(".admin/dialog.html");?>
 
 <div id="titleContainer" direction="down" callback="UI.setColumnWidths">
 	<div id="userDiv" class="floatR right noprint">

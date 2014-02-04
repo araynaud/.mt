@@ -43,6 +43,8 @@ function Album(data)
 	this.mediaFiles = this.dirs;
 	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.IMAGE));
 	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.VIDEO));
+
+	this.initTags();
 }
 
 Album.serviceUrl = ""; 
@@ -115,6 +117,33 @@ Album.prototype.get = function(key, default_)
 };
 
 
+Album.prototype.initTags = function()
+{
+	if(!this.tags) return;
+	for(tag in this.tags)
+	{
+		var tagList=this.tags[tag];
+		if(!isArray(tagList)) continue;
+		this.tags[tag] = tagList.toMap();
+	}
+}
+
+
+Album.prototype.setTag = function(tag, file, state)
+{
+	if(!state)
+	{
+		delete this.tags[tag][file];
+		if(isEmpty(this.tags[tag]))
+			delete this.tags[tag];
+		return;
+	}
+
+	if(!this.tags[tag])
+		this.tags[tag]= {};
+	this.tags[tag][file]= file;
+};
+
 Album.prototype.loadTags = function()
 {
 	//for each tag: assign tag to mediaFiles
@@ -123,6 +152,8 @@ Album.prototype.loadTags = function()
 	for(tag in this.tags)
 	{
 		var tagList=this.tags[tag];
+		if(!isArray(tagList)) continue;
+
 		for(var i=0; i<tagList.length;i++)
 		{
 			var mf = this.getMediaFileByName(tagList[i]);

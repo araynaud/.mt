@@ -153,6 +153,7 @@ UI.displayTags = function()
 	if(isEmpty(album.tags)) return;
 	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags));
 	$("input.tagOption").bindReset("click", UI.search);		
+	UI.styleCheckboxes("", "tagOption", "tagLabel");
 }
 
 //use mediafile.width and height
@@ -527,6 +528,32 @@ UI.toggleLayoutOption = function()
 	$('#'+id).toggleEffect($(this).isChecked());
 };
 
+//get main elements on the page
+UI.setupElements = function()
+{
+	UI.body=$("body");
+	UI.contentFooter=$("#contentFooter");
+	UI.fileContainer = $("div#files");
+	UI.downloadFileDiv = $("div#downloadFileList");
+	UI.tagListDiv = $("div#tagList");
+	UI.pagers = $(".pager");
+	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
+
+//edit div elements
+	UI.editDiv=$("div#editDiv");
+	UI.rotateIcons 		= $("img.rotateIcon", UI.editDiv);
+	UI.editUploadIcons 	= $("#uploadIcons", UI.editDiv);
+	UI.editAdminIcons 	= $("#adminIcons", UI.editDiv);
+	UI.editFieldDiv 	= $("#editFieldDiv", UI.editDiv);
+	UI.editFieldLabel 	= $("#editFieldLabel", UI.editDiv);
+	UI.editField 		= $("#tb_editField", UI.editDiv);
+
+	UI.editOKButton		= $("#btn_OK", UI.editDiv);
+	UI.editCancelButton = $("#btn_Cancel", UI.editDiv);
+	
+	UI.setupTemplates();
+};
+
 UI.setupEvents = function()
 {
 	$(".sOption").change(UI.sortFiles);	
@@ -541,6 +568,10 @@ UI.setupEvents = function()
 
 	$("img#downloadAllIcon").click(UI.downloadMultipleFiles);
 	$("img#uploadAllIcon").click(UI.uploadSelectedFiles);
+
+	//UI.editOKButton.click(UI.okInput);
+	//UI.editCancelButton.click(UI.resetInput);
+
 
 	if(window.UI && UI.setupKeyboard && config.keyboard)
 		UI.setupKeyboard();
@@ -560,20 +591,4 @@ UI.setupEvents = function()
 
 	if(config.MediaPlayer.video.enabled)
 		new MediaPlayer("video");
-};
-
-//get main elements on the page
-UI.setupElements = function()
-{
-	UI.body=$("body");
-	UI.contentFooter=$("#contentFooter");
-	UI.fileContainer = $("div#files");
-	UI.downloadFileDiv = $("div#downloadFileList");
-	UI.tagListDiv = $("div#tagList");
-	UI.pagers = $(".pager");
-	UI.editDiv=$("div#editDiv");
-	UI.rotateIcons = $("div#editDiv img.rotateIcon");
-	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
-
-	UI.setupTemplates();
 };

@@ -400,9 +400,17 @@ UI.displayFileCounts = function (fileList,divId,clear)
 		$(divId).append(" " + plural(counts[k],k.toLowerCase()));
 };
 
-UI.styleCheckboxes = function(cssClass)
+UI.styleCheckboxes = function(container, cssClass, labelClass)
 {	
-	$("input:checkbox").each(function()
+	var selector = "input:checkbox";
+	if(container)
+		selector= selector +" " + selector;
+	if(cssClass)
+		selector += "." + cssClass;
+
+	labelClass = valueOrDefault(labelClass,"checkboxLabel");
+
+	$(selector).each(function()
 	{
 		var cb=$(this);
 		var label = $("label[for={0}]".format(this.id));
@@ -416,7 +424,7 @@ UI.styleCheckboxes = function(cssClass)
 			label.append(text);
 		}
 		label.attr("title", cb.attr("title")); //tooltip
-		label.addClass("checkboxLabel");
+		label.addClass(labelClass);
 		cb.after(label);
 		if(!$.isOldIE(8) && !UI.clientIs("ipad")) 
 			cb.hide();

@@ -21,6 +21,7 @@ class MediaFile extends BaseObject
     protected $width;
     protected $height;
     protected $ratio;
+    protected $duration;
     protected $animated;
     protected $alpha;
 	private $tnsizes=array(); //array of thumbnail file sizes

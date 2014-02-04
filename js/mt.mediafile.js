@@ -72,14 +72,8 @@ MediaFile.prototype.getFilename = function(ext)
 MediaFile.prototype.initTags = function()
 {
 	// array to object.
-	if(!this.tags) return;
-//	if(isObject(this.tags)) return;
-	var tags = {};
-	for(var i=0; i < this.tags.length; i++)
-	{
-		tags[this.tags[i]]=this.tags[i];
-	}
-	this.tags=tags;
+	if(isArray(this.tags))
+		this.tags=this.tags.toMap();
 };
 
 MediaFile.isDir = function(mediaFile)
@@ -409,7 +403,6 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 	var scriptUrl = mediaFile.getScriptUrl(script, params);
 
 	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
-	UI.addStatus(link.outerHtml());
 
 	var result = false;
    	$.ajax({
@@ -430,6 +423,8 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 		{ 
 			result = false;
 			UI.setStatus(textStatus + " " + errorThrown);
+			UI.addStatus(link.outerHtml());
+			UI.addStatus(xhr.responseText);
  			if(callbacks && callbacks.error)
 				callbacks.error(xhr, mediaFile);
 		}

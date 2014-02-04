@@ -7,7 +7,18 @@ function isMissing(variable)
 //for string or array
 function isEmpty(variable)
 {
-	return isMissing(variable) || variable.length == 0;
+	if(isMissing(variable)) return true;
+
+//	if(isArray(variable) || isString(variable) || 
+	if(variable.hasOwnProperty("length"))
+		return variable.length == 0;
+
+	if(isObject(variable))
+	{
+		variable = Object.keys(variable);
+		return variable.length == 0;
+	}
+	return false;
 }
 
 function valueOrDefault(variable,defaultValue)
@@ -256,7 +267,6 @@ if (!Array.prototype.indexOf) Array.prototype.indexOf = function(element)
 	return -1;
 };
 
-
 // For IE array.filter
 if (!Array.prototype.filter) Array.prototype.filter = function(fun /*, thisp*/)
 {
@@ -353,6 +363,14 @@ Array.prototype.diff = function(array2)
 	});
 };
 
+//turn values into keys
+Array.prototype.toMap = function()
+{
+	var map = {};
+	for(var i=0; i < this.length; i++)
+		map[this[i]]=this[i];
+	return map;
+};
 
 Array.prototype.getHalfElements = function(alt)
 {
@@ -831,6 +849,34 @@ Object.merge = function (o1, o2, addNew, includeFunctions)
 	}
 	return o1;
 };
+
+//difference by keys
+Object.keyDiff = function (o1, o2)
+{
+	if(!o2) return o1;
+	var result= {};
+	for(var key in o1)
+	{
+		if(o1.hasOwnProperty(key) && !o2.hasOwnProperty(key))
+			result[key] = o1[key];
+	}
+	return result;
+};
+
+//intersection by keys
+Object.keyIntersect = function (o1, o2)
+{
+	if(!o2) return o1;
+	var result= {};
+	for(var key in o1)
+	{
+		if(o1.hasOwnProperty(key) && o2.hasOwnProperty(key))
+			result[key] = o1[key];
+	}
+	return result;
+};
+
+
 	
 //TODO add browser info function
 Object.toText = function (obj, separator, includeFunctions)

@@ -40,9 +40,13 @@ else
 	switch ($action)
 	{
 		case "rename":
+			$result = $mf->move($to, $rename);
+			$_GET["name"] = $rename;
+			unset($_GET["file"]);
+			break;
 		case "move":
 			$result = $mf->move($to, $rename);
-//			$_GET["path"] = combine($path,$to);
+			$_GET["path"] = combine($path,$to);
 			break;
 		case "delete":
 			$result = $mf->delete();
@@ -53,7 +57,7 @@ else
 		case "background":
 			//TODO: apply .bg to other directory (parent or sub?)
 			//copy .ss image file directly if same size exists
-			$result = setBackgroundImage($relPath, $file);
+			$result = setBackgroundImage($mf->getRelPath(), $file);
 			break;
 		case "addtag":
 		case "removetag":
