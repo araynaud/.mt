@@ -99,9 +99,11 @@ UI.inputAction = function(params)
 			choices = Object.keyDiff(choices, fieldValue);
 		choices = Object.keys(choices);
 		//look how to pass parameters to template?
-		UI.renderTemplate("addTagTemplate", "#choicesList", choices);
+		UI.renderTemplate("addTagTemplate", UI.editChoicesList, choices);
 		delete params.choices;
 	}
+	else
+		UI.editChoicesList.html("");
 
 	//show edit field
 	UI.editUploadIcons.hide();
@@ -120,7 +122,8 @@ UI.okInput = function()
 {
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
 	var value = UI.editField.val();
-	if(!mediaFile || !UI.editParams) return;
+	if(!mediaFile || !UI.editParams || !value) return;
+
 	mediaFile.set(UI.editParams.field, value);
 	UI.editParams.to = value;
 	UI.fileActionAjax(UI.editParams);

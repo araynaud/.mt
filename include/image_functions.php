@@ -93,6 +93,9 @@ function findThumbnail($dir, $file, $tnDir, $appendPath=true)
 
 function createThumbnail($relPath, $file, $tndir, $size)
 {
+	if(!$tndir) return false;
+	if(!startsWith($tndir, ".")) $tndir = ".$tndir";
+	createDir($relPath, $tndir);
 	$tnPath=combine($relPath, $tndir, $file);
 	return createResizedImage($relPath, $file, $tnPath, $size, $size);
 }

@@ -73,10 +73,22 @@ function checkUserAgent()
 }
 
 
-//get request parameter
-function getParam($name,$default="")
+//get request parameter from query string
+function getParam($name, $default="")
 {	
 	return isset($_GET[$name]) && (@$_GET[$name]!="") ? $_GET[$name] : $default;
+}
+
+//get request parameter from GET or POST
+function reqParam($name, $default="")
+{	
+	return isset($_REQUEST[$name]) && (@$_REQUEST[$name]!="") ? $_REQUEST[$name] : $default;
+}
+
+//get request parameter from POST body only
+function postParam($name, $default="")
+{	
+	return isset($_POST[$name]) && (@$_POST[$name]!="") ? $_POST[$name] : $default;
 }
 
 //get request parameter
@@ -220,7 +232,6 @@ function curlPostData($url, $data, $username="", $password="")
 
 function curlPostFile($url, $filePath, $username="", $password="", 	$data=array())
 {
-    $data["fileDate"] = getFileDate($filePath);
     $data["filePath"] = $filePath;
     $data["file"] = "@$filePath";
     $ch = curl_init();
@@ -239,14 +250,16 @@ function curlPostFile($url, $filePath, $username="", $password="", 	$data=array(
 }
 
 
-function uploadFile($publish, $filePath, $destPath, $subdir="")
+function uploadFile($publish, $filePath, $destPath, $postData = array())
 {
+debug("uploadFile", $filePath);
 	if(!file_exists($filePath)) return false;
 
-	$destPath = combine($destPath, $subdir);
-	$postData = array("path" => $destPath, "debug" => BtoS(isDebugMode()) );
+	$postData["path"] = $destPath;
+	$postData["debug"] = BtoS(isDebugMode());
+debug("POST data",$postData);
 	$url = combine($publish["url"], getConfig("_publish.script"));
-	debug("uploadFile $filePath to", $url);
+	debug("uploadFile to $destPath", $url);
 	return curlPostFile($url, $filePath, @$publish["username"], @$publish["password"], $postData);
 }
 

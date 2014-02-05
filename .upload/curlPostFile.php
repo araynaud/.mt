@@ -67,7 +67,6 @@ if($useResizedImage)
 	//if tnpath does not exists, create dir and resized image
 	if(!file_exists($tnPath))
 	{
-		createDir($relPath, $tndir);
 		createThumbnail($relPath, $file, $tndir, $maxSize);
 //		createResizedImage($relPath, $file, $tnPath, $maxSize, $maxSize);
 		debug("created $tnPath");
@@ -120,7 +119,7 @@ if($chunk <=1)
 	if($thumbnails)
 		foreach ($thumbnails as $dir => $tnPath)
 			if($tnPath && ".$dir" != $tndir)
-				$response[$dir] = uploadFile($publish, $tnPath, $destPath, ".$dir");
+				$response[$dir] = uploadFile($publish, $tnPath, "$destPath/.$dir");
 
 	//save metadata if not using original image
 	$response["metadata"] = uploadFile($publish, $metadataFilename, $destPath, ".tn");

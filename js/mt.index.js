@@ -547,7 +547,7 @@ UI.setupElements = function()
 	UI.editFieldDiv 	= $("#editFieldDiv", UI.editDiv);
 	UI.editFieldLabel 	= $("#editFieldLabel", UI.editDiv);
 	UI.editField 		= $("#tb_editField", UI.editDiv);
-
+	UI.editChoicesList	= $("#choicesList", UI.editDiv);
 	UI.editOKButton		= $("#btn_OK", UI.editDiv);
 	UI.editCancelButton = $("#btn_Cancel", UI.editDiv);
 	

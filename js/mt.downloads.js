@@ -56,7 +56,7 @@ UI.uploadSelectedFiles = function()
 
 	var callbacks = {success: MediaFile.imageSuccess, error: MediaFile.imageError, next: UI.uploadNextFile};
 	var params = {target: album.path };
-	UI.multipleAjaxAsync(".upload/curlpostfile.php", params, callbacks);
+	UI.multipleAjaxAsync(".upload/curlPostMediaFile.php", params, callbacks);
 };
 
 UI.doSelectedFiles = function(script, params)

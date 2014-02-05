@@ -44,7 +44,7 @@ class MediaFile extends BaseObject
 		$this->getDescription();
 		$this->getTakenDate();
 
-		if($this->type=="DIR")
+		if($this->isDir())
 		{
 			$this->oldestDate=getOldestFileDate($this->_filePath);
 			$this->newestDate=getNewestFileDate($this->_filePath);
@@ -54,7 +54,7 @@ class MediaFile extends BaseObject
 		else
 		{
 			$this->getMetadata();
-			if($this->type=="VIDEO")
+			if($this->isVideo())
 			{
 				$streamTypes = getConfig("TYPES.VIDEO.STREAM");
 				$this->stream = array_intersect($this->exts, $streamTypes);
@@ -102,7 +102,7 @@ class MediaFile extends BaseObject
 	{
 		$this->vsizes[$ext] = $this->getFilesize($ext);
 	}
-	
+
     public function addThumbnail($subdir="")
 	{
 		$size = $this->getThumbnailFilesize($subdir);
@@ -111,6 +111,29 @@ class MediaFile extends BaseObject
 			$this->tnsizes[] = $size;
     }
 
+//select largest thubnail <= $maxSize
+//if none, return false: use original
+    public function selectThumbnail($maxSize)
+	{
+		if(!$maxSize) return false;
+
+		$sizes = getConfig("thumbnails.sizes");
+//		rsort($sizes);
+		$sizes = array_reverse($sizes);
+		debug("thumbnails.sizes", $sizes);
+	
+		//use original file
+		if(!$sizes || $this->imageIsSmaller($maxSize))
+			return false;
+
+		$tnIndex = 0;
+		foreach($sizes as $dir => $size)
+		{
+			if($size <= $maxSize)
+			 return $dir;
+		}
+	}
+	
 	public function getName()
 	{
 		return $this->name;
@@ -190,29 +213,42 @@ class MediaFile extends BaseObject
 		return file_exists($filePath) ? filesize($filePath) : -1;
 	}
 
+    public function createThumbnail($tndir)
+	{
+		if(!$tndir) return false;
+		$size = getConfig("thumbnails.sizes.$tndir");
+		return createThumbnail($this->getFileDir(), $this->getFilename(), $tndir, $size);
+	}
+
 //return original file names, thubmnails, metadata, description
-    public function getFilenames()
+    public function getFilenames($versions=true, $thumbnails=true, $other=true)
 	{
 		$filenames=array();
-		foreach($this->exts as $ext)
-			$filenames[$ext] = $this->getFilename($ext);
-
-//add description and metadata
-		$filenames["description"] = $this->getDescriptionFilename();
-//		$filenames["metadata"] = $this->getMetadataFilename();
-//add thumbnails
-    	$tnSizes = getConfig("thumbnails.sizes"); 
-    	if($tnSizes)
-	    	foreach ($tnSizes as $subdir => $size)
-				$filenames[$subdir] = $this->getThumbnailFilename($subdir);			
+		if($versions)
+			foreach($this->exts as $ext)
+				$filenames[$ext] = $this->getFilename($ext);
+		
+		if($thumbnails) //add thumbnails
+		{
+	    	$tnSizes = getConfig("thumbnails.sizes"); 
+	    	if($tnSizes)
+		    	foreach ($tnSizes as $subdir => $size)
+					$filenames[$subdir] = $this->getThumbnailFilename($subdir);			
+		}
+		
+		if($other) //add description and metadata
+		{
+			$filenames["description"] = $this->getDescriptionFilename();
+			$filenames["metadata"] = $this->getMetadataFilename();
+		}
 		return $filenames;
 	}
  
 //return original file name, thubmnails, metadata, description 
 //disk paths or urlPaths
-    public function getFilePaths($exist=false, $urls=false)
+    public function getFilePaths($exist=false, $urls=false, $versions=true, $thumbnails=true, $other=true)
 	{
-		$filenames = $this->getFilenames($exist);
+		$filenames = $this->getFilenames($versions, $thumbnails, $other);
 		$basePath = $this->getFileDir();
 
 		foreach ($filenames as $key => $file)
@@ -262,21 +298,36 @@ class MediaFile extends BaseObject
 		$this->setMultiple(@$index[$this->name]);
 	}
 
-/*
-    public function getVideoProperties()
+    public function isImage()
 	{
-		$metadata=getVideoProperties($this->_filePath);
-		$this->setMultiple($metadata);
-		return $metadata;
+		return $this->type=="IMAGE";
 	}
 
-    public function getImageInfo()
+    public function isVideo()
 	{
-		$info = getImageInfo($this->_filePath, true);
-		$this->setMultiple($info);
-		return $info;
+		return $this->type=="VIDEO";
 	}
-*/
+
+    public function isAudio()
+	{
+		return $this->type=="AUDIO";
+	}
+
+    public function isDir()
+	{
+		return $this->type=="DIR";
+	}
+
+    public function isFile()
+	{
+		return $this->type=="DIR";
+	}
+
+
+    public function isVideoStream()
+	{
+		return $this->stream;
+	}
 
     public function imageIsLarger($maxSize)
 	{

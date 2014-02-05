@@ -1,5 +1,6 @@
 <?php
 require_once("../include/config.php");
+setContentType("text", "plain");
 
 startTimer();
 
@@ -35,7 +36,24 @@ debugVar("publish");
 $maxSize = arrayGet($publish, "image.size");
 debugVar("maxSize");
 $maxUpload = isset($publish["upload_max_filesize"]) ? $publish["upload_max_filesize"] : 0;
-$useResizedImage = false;
+$tndir = false;
+
+//find the right size. largest < max size
+if($mf->isImage())
+{
+	$tndir = $mf->selectThumbnail($maxSize);
+	if($tndir)
+	{
+		if($mf->getThumbnailFilesize($tndir) < 0)
+		{
+			$tnPath = $mf->createThumbnail($tndir);
+			debug("created thumbnail $tnPath");
+		}
+		$filePath = $mf->getThumbnailFilePath($tndir);
+		$relPath = dirname($filePath);
+		debug("using thumbnail $tndir", $filePath);
+	}
+}
 
 //1st time: split file if necessary
 if(!$chunk)
@@ -48,31 +66,34 @@ if($nbChunks>1)
 	$filePath = combine($relPath, $chunkName);
 }
 
+addVarToArray($response,"mf");
 addVarToArray($response,"chunk");
 addVarToArray($response,"nbChunks");
 
-$response["file"] = uploadFile($publish, $filePath, $destPath);
+$postData = array();
+$postData["fileDate"] = $mf->getTakenDate();
+$response["file"] = uploadFile($publish, $filePath, $destPath, $postData);
 
 if($nbChunks>1) // delete after upload
 	deleteFile($filePath);
 
-//upload thumbnails if they exist. only with 1st chunk
+
+//upload thumbnails if they exist and if config enables it.
+// only with 1st chunk. or last?
 if($chunk <=1)
 {
-	$filePaths = $mf->getFilePaths(true);
-	if($filePaths)
+	$descPath = $mf->getDescriptionFilename(true);
+	$response["desc"] = uploadFile($publish, $descPath, $destPath, $postData);
+
+	$filePaths = $mf->getFilePaths(true, false, false, true, false);
 	foreach ($filePaths as $key => $value) 
-	{
-		$response[$key] = uploadFile($publish, $value, $destPath);
-	}
+		if($filePath!=$value)
+			$response[$key] = uploadFile($publish, $value, "$destPath/.$key");
 }
 
+
+//send metadata row as data, upload.php appends it to index file
 $response["time"] = getTimer();
 echo jsValue($response);
 
-//response:
-//no file: { "path": "demo", "getcwd": "/mnt/111/sdb/d/b/minorart/.mp/.upload", "freeSpace": 10000000, "target": "../../demo" }
-//file uploaded: { "path": "demo", "getcwd": "/mnt/111/sdb/d/b/minorart/.mp/.upload", "freeSpace": 10000000, 
-//"tmpFile": "/mnt/111/sdb/d/b/minorart/phpQPlW8Z", "fileType": "image/jpeg", "target": "../../demo/original_upload.jpg", "moved": true }
-//echo "[" . implode(",", $response) . "\n]";
 ?>

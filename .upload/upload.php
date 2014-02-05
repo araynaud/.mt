@@ -7,26 +7,23 @@ startTimer();
 $user = current_user();
 $format=getParam("format","ajax");
 
-debug("Get request", $_GET);
-debug("Post request", $_POST);
-debug("Post files", $_FILES);
+debug("Request", $_REQUEST);
+debug("GET request", $_GET);
+debug("POST request", $_POST);
+debug("POST files", $_FILES);
 
-if(isset($_POST["path"]))
-	$path=getPath($_POST["path"]);
-else
-	$path=$_GET["path"]; //getPath();
-
+$path = reqParam("path");
 $dataRoot = getDiskPath("");
-$relPath=getDiskPath($path);
-$index=@$_POST["index"];
-$fileDate=@$_POST["fileDate"];
+$relPath = getDiskPath($path);
+
+$index = postParam("index");
+$fileDate = postParam("fileDate");
 
 $response=array();
 addVarToArray($response,"path");
 if($index)
 	addVarToArray($response,"index");
 
-	
 $tmpFile = $_FILES["file"]["tmp_name"];
 $fileType = $_FILES["file"]["type"];
 $filename= $_FILES["file"]["name"];
@@ -58,7 +55,7 @@ $target=combine($relPath, $filename);
 $moved=move_uploaded_file($tmpFile, $target);
 $filesize = $moved ? filesize($target) : 0;
 $maxUploadSize = ini_get("upload_max_filesize");
-setFileDate($target,$fileDate);
+setFileDate($target, $fileDate);
 addVarToArray($response, "target");
 //addVarToArray($response, "moved");
 addVarToArray($response, "filesize");
@@ -74,6 +71,7 @@ if(endsWith($filename, LAST_CHUNK_SUFFIX))
 {
 	$joinedFilename = substringBefore($filename, LAST_CHUNK_SUFFIX);
 	$nbChunks = joinChunks($relPath, $joinedFilename);
+	setFileDate($joinedFilename, $fileDate);
 	addVarToArray($response, "joinedFilename");
 	addVarToArray($response, "nbChunks");	
 }	
