@@ -54,6 +54,21 @@ if($mf->isImage())
 		debug("using thumbnail $tndir", $filePath);
 	}
 }
+else if($mf->isVideo())
+{
+	$stream=$mf->isVideoStream();
+	if(!$stream)
+	{
+		$response["time"] = getTimer();
+		$response["message"] = "$file is not a streamable video. convert file first.";
+		echo jsValue($response);
+		return;
+	}
+	$stream=$stream[0];
+	$file = $mf->getFilename($stream);
+	$filePath = $mf->getFilePath($stream);
+	debug("using $stream $file", $filePath);
+}
 
 //1st time: split file if necessary
 if(!$chunk)

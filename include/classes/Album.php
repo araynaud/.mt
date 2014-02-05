@@ -26,6 +26,7 @@ class Album extends BaseObject
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
 	private $_dateIndex; // = array(); //array of date,filename entries
 	private $_dateIndexEnabled;
+	private $isCompleteIndex;
     private $config;
 	private $tags;
 
@@ -91,8 +92,8 @@ debug("getSearchParameters",$this->search);
 
 	public function isCompleteIndex()
 	{
-		return !$this->search["type"] && !$this->search["name"] && !$this->search["maxCount"];
-
+		$this->isCompleteIndex = !$this->search["type"] && !$this->search["name"] && !$this->search["maxCount"];
+		return $this->isCompleteIndex;
 	}
 
 	public function getDepth()
@@ -158,12 +159,12 @@ debug("getSearchParameters",$this->search);
 		//TODO use dateIndex.types;IMAGE;VIDEO
 		$result = array();
 		$types = (array) getConfig("dateIndex.types");
-//debug("dateIndex.types", $types);
+debug("dateIndex.types", $types);
 		foreach ($this->groupedFiles as $type => $typeFiles)
 		{
 debug($type, count($typeFiles));
 			if($type == $types || in_array($type, $types))
-				$result = array_merge($result, $typeFiles);
+				$result = arrayReplace($result, $typeFiles);
 		}
 		return $result;
 	}
@@ -188,6 +189,7 @@ debug($type, count($typeFiles));
 				$this->groupedFiles[$type][$name] = $mf;
 				$prevDir = $file["subdir"];
 			}
+			debug("createMediaFiles $type", array_keys($this->groupedFiles[$type]));
 		}
 		//return $distinct;
 		return $this->groupedFiles;

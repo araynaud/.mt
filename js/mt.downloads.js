@@ -5,8 +5,8 @@ UI.downloadScript= "download.php";
 UI.downloadMultipleFiles = function()
 {
 	UI.downloadFileList = album.selectFiles(true, "selected");
-	if(isEmpty(UI.downloadFileList)) 
-		UI.downloadFileList = album.mediaFiles;
+	if(isEmpty(UI.downloadFileList))
+		UI.downloadFileList = album.activeFileList();
 	UI.fileIndex = 0;
 	UI.downloadFile();
 	UI.interval = setInterval(UI.downloadFile, config.downloads.interval);
@@ -47,7 +47,7 @@ UI.uploadSelectedFiles = function()
 {
 	album.selectedFiles = album.selectFiles(true, "selected");
 	if(isEmpty(album.selectedFiles)) 
-		album.selectedFiles = album.mediaFiles;
+		album.selectedFiles = album.activeFileList();
 
 	UI.progressBar.displayFunction = null;
 	UI.progressBar.setMax(album.selectedFiles.length);
@@ -63,7 +63,7 @@ UI.doSelectedFiles = function(script, params)
 {
 	album.selectedFiles = album.selectFiles(true, "selected");
 	if(isEmpty(album.selectedFiles)) 
-		album.selectedFiles = album.mediaFiles;
+		album.selectedFiles = album.activeFileList();
 	UI.multipleAjaxAsync(script, params);
 };
 
@@ -97,8 +97,8 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 
 	var totalSize = album.selectedFiles.sum(MediaFile.getFileSize);
 	UI.setStatus("{0}, {1}".format(plural(album.selectedFiles.length,"file"), formatSize(totalSize)));
-//	UI.progressBar.setMax(totalSize);
-	UI.progressBar.setMax(album.selectedFiles.length);
+	UI.progressBar.setMax(totalSize);
+//	UI.progressBar.setMax(album.selectedFiles.length);
 	UI.progressBar.reset();
 	UI.progressBar.show();
 
@@ -115,19 +115,23 @@ UI.uploadNextFile = function(response, script, params, callbacks)
 //	UI.addStatus(response);
 	//same file, next chunk 	//response.file.filesize;
 	
-	UI.progressBar.setProgress(UI.fileIndex);
+//	UI.progressBar.setProgress(UI.fileIndex);
 	if(response.nbChunks>1 && response.chunk < response.nbChunks)
 	{
 		album.selectedFiles[UI.fileIndex].nbChunks = response.nbChunks;
 		params.chunk=response.chunk;
 		params.nbChunks=response.nbChunks;
-		UI.progressBar.addProgress(params.chunk / params.nbChunks);
+//		UI.progressBar.addProgress(params.chunk / params.nbChunks);
+		UI.progressBar.addProgress(response.file.filesize);
 		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, callbacks);
 		return;
 	}
 
+	var filesize=MediaFile.getFileSize(album.selectedFiles[UI.fileIndex]);
+	UI.progressBar.addProgress(filesize);
 	++UI.fileIndex;
-	UI.progressBar.addProgress(1);
+//	UI.progressBar.addProgress(response.file.filesize);
+//	UI.progressBar.addProgress(1);
 	//finished
 	if(UI.fileIndex == album.selectedFiles.length)
 	{

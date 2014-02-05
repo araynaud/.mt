@@ -459,4 +459,16 @@ function arrayFilterKeys($a, $funct)
 	$b = array_intersect_key($a, array_flip($f));
 	return $b;
 }
+
+//array_replace not available in PHP < 5.3.0
+function arrayReplace()
+{
+	$args = func_get_args();
+	$ar1 = array();
+	foreach($args as $ar)
+		foreach ($ar as $key => $value)
+			$ar1[$key] = $value;
+
+	return $ar1;
+}
 ?>

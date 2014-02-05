@@ -92,9 +92,9 @@ function isAssociativeArray($array)
 
 function isAssociativePair($key,$value)
 {
-	if(is_string($value) && contains($value,$key))
+	if(is_string($value) && contains($value, $key))
 		return false;
-	return !is_numeric($key);
+	return !is_int($key);
 }
 
 //determine if value should be output to JSON / XML
