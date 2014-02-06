@@ -28,13 +28,14 @@ function Album(data)
 	for(var type in this.groupedFiles)
 	{
 		var files = this.groupedFiles[type];
+		var typeFiles={};
 		for(var key in files)
 		{
 			if(!files.hasOwnProperty(key)) continue;
 			var mf = new MediaFile(files[key]);
-			delete files[key];
-			files[mf.id] = mf;
-		}	
+			typeFiles[mf.id] = mf;
+		}
+		this.groupedFiles[type] = typeFiles;	
 	}
 
 	this.musicFiles = Object.values(this.groupedFiles.AUDIO);

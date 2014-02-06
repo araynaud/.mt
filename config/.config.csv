@@ -94,7 +94,7 @@ TYPES.AUDIO;mp3;wav;m4a;aac;ogg
 TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;flv;ogv;ogm
 TYPES.VIDEO.STREAM;mp4;m4v;flv;3gp;ogv
 TYPES.VIDEO.HTML5;mp4;m4v;webm;ogm;ogv
-TYPES.SPECIAL;txt;xml;php;chunk
+TYPES.SPECIAL;txt;xml;php;chunk;js;css
 
 ;JW Player options
 JWPLAYER.allowHtml5;true
@@ -143,7 +143,7 @@ _publish.free.url;http://minorart.free.fr/.mt
 _publish.free.name;minorart.free.fr
 _publish.free.username;arthur
 _publish.free.password;4nawak
-;_publish.free.path;uploads
+;_publish.free.path;.test
 ..upload_max_filesize;500000
 ..image.size;1920
 ..video.format;mp4

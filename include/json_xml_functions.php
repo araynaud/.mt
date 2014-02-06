@@ -92,6 +92,7 @@ function isAssociativeArray($array)
 
 function isAssociativePair($key,$value)
 {
+//	debug("isAssociativePair is_int($key)", is_int($key));
 	if(is_string($value) && contains($value, $key))
 		return false;
 	return !is_int($key);

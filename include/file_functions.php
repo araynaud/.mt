@@ -258,18 +258,23 @@ function readCsvFile($filename, $keyColumn=false, $separator=",", $keySeparator=
 	$prevKey=null;
 	while (($rowData = fgetcsv($handle, 0, $separator)) !== FALSE)  
 	{
-		for($i=0;$i<count($rowData);$i++)
-			$rowData[$i]=parseValue($rowData[$i]);
 		if($keyColumn===false)
 		{
+			for($i=0;$i<count($rowData);$i++)
+				$rowData[$i]=parseValue($rowData[$i]);
 			$csvRows[] = $rowData;
 			continue;
 		}
+
+		//key: always a string
 		$key=trim($rowData[$keyColumn]);
-		if($key==="")
-			continue;
+		if($key==="")	continue;
+		//parse other columns
 		unset($rowData[$keyColumn]);
 		$rowData=array_values($rowData);
+		foreach($rowData as $i => $column)
+			$rowData[$i]=parseValue($rowData[$i]);
+
 		//value = single value or array?
 		if(is_array($rowData) && count($rowData)==1)
 			$rowData = $rowData[0];

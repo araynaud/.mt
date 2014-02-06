@@ -295,7 +295,9 @@ class MediaFile extends BaseObject
     public function getMetadata()
 	{
 		$index = $this->_parent->getMetadataIndex($this->type);
-		$this->setMultiple(@$index[$this->name]);
+		$metadata = @$index[$this->name];
+		$this->setMultiple($metadata);
+		return $metadata;
 	}
 
     public function isImage()
