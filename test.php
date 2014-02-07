@@ -44,6 +44,9 @@ debugVar("maxSize");
 $notfound = getConfig("_publish.$site.ima.size");
 debug("notfound", is_null($notfound));
 
+$sizeOptions = getConfig("SIZE");
+debugVar("sizeOptions");
+
 //splitChunks("../2013", "197642876.mp4", 2000000, $chunks);
 //debugVar("chunks");
 //joinChunks("../2013", "197642876.mp4", false);

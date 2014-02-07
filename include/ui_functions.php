@@ -228,20 +228,20 @@ function html5playlist($relPath,$files)
 }
 
 
-function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $reverse=false)
+function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $reverse=false, $keysAsValues=false)
 {
-	global $config;
 	if($cssClass) $cssClass = " class='$cssClass'";
 	echo "\n<select id='$ddId'$cssClass >\n";
 	//add default if not already in options
 	if(!in_array($default,$options))
 		$options[]=$default;
 	//sort options
-	if($sort && $reverse)
-		arsort($options);
+	if($sort = "key")
+		ksort($options);
 	else if($sort)
 		asort($options);
-	else if ($reverse)
+
+	if ($reverse)
 		$options=array_reverse($options);
 
 	foreach($options as $key=>$value)
@@ -250,12 +250,12 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 		$selected = $selected ? " selected='selected'" : "";
 		$title = strtolower(makeTitle($value));
 
-		if(is_numeric($key) && $title === $value)
+		if($keysAsValues || !is_numeric($key))
+			echo "\t<option value='$key'$selected>$title</option>\n";
+		else if($title === $value)
 			echo	"\t<option$selected>$value</option>\n";
-		else if(is_numeric($key))
-			echo	"\t<option value='$value'$selected>$title</option>\n";
 		else
-			echo	"\t<option value='$key'$selected>$title</option>\n";
+			echo	"\t<option value='$value'$selected>$title</option>\n";
 	}
 	echo "</select>\n";
 }
@@ -264,6 +264,13 @@ function displayPaginateOptions($cssClass="")
 {
 	global $config;
 	displayDropDown("dd_page", $cssClass, $config["PAGINATE"]["OPTIONS"], $config["PAGINATE"]["DEFAULT"], true);
+}
+
+function displaySizeOptions($cssClass="")
+{
+	global $config;
+	displayDropDown("dd_size", $cssClass, $config["SIZE"]["OPTIONS"], $config["SIZE"]["DEFAULT"]);
+	//, "key", false, true);
 }
 
 function displaySortOptions($cssClass="")

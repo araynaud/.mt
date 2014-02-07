@@ -32,12 +32,12 @@ UI.modes=
 1: "mediumImage"
 2: "largeImage"
 */
-UI.sizes = [];
-UI.sizes[-1] = {"divClasses": "tinyImage", tnIndex: 0, fixedHeight: true};
-UI.sizes[0]  = {"divClasses": "smallImage", tnIndex: 0};
-UI.sizes[1]  = {"divClasses": "mediumImage", tnIndex: 0, fixedHeight: true};
-UI.sizes[2]  = {"divClasses": "largeImage", tnIndex: 1, fixedHeight: true};
-UI.sizes[3]  = {"divClasses": "fullImage", tnIndex: 1};
+UI.sizes = {};
+UI.sizes.tiny = {"divClasses": "tinyImage", tnIndex: 0, fixedHeight: true};
+UI.sizes.small  = {"divClasses": "smallImage", tnIndex: 0};
+UI.sizes.medium  = {"divClasses": "mediumImage", tnIndex: 0, fixedHeight: true};
+UI.sizes.large  = {"divClasses": "largeImage", tnIndex: 1, fixedHeight: true};
+UI.sizes.full  = {"divClasses": "fullImage", tnIndex: 1};
 
 UI.mode="index";
 UI.statusBar=".status";
@@ -331,7 +331,7 @@ UI.captionClasses = function(mediaFile)
 	var classes= "caption";
 	//if(album.columns<1 && mediaFile.type!="DIR") classes+= "Below";
 	if(album.fadeIn && mediaFile.tnsizes) classes+=" hidden";
-	if(mediaFile.type!="DIR" && (album.size<=1 || album.columns>1))
+	if(mediaFile.type!="DIR" && ( album.tnIndex == 0 || album.columns>1))
 		classes+=" small";
 
 	return classes;

@@ -62,13 +62,7 @@
 				<input class="dOption" id="cb_transpose" type="checkbox" label="T" title="Transpose"/>
 			</span>
 			<span id="rowOptions" class="spaceLeft">
-				<select class="dOption" id="dd_size">
-					<option value="-1">tiny</option>
-					<option value="0">small</option>
-					<option value="1">medium</option>
-					<option value="2">large</option>
-					<option value="3">full</option>
-				</select>
+				<?php displaySizeOptions("dOption");?>
 			</span>
 		</div>
 		<div class="inlineBlock nowrap">

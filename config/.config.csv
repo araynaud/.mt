@@ -25,9 +25,13 @@ depth;0
 dateIndex.enabled;true
 dateIndex.types;IMAGE;VIDEO;DIR
 
+;display sizes
+SIZE.OPTIONS;tiny;small;medium;large;full
+SIZE.DEFAULT;small
+
 ;thumbnail display
 display.types;IMAGE;VIDEO;AUDIO
-DISPLAY.size;0
+DISPLAY.size;small
 .reverse;false
 .dirsFirst;true
 .group;false

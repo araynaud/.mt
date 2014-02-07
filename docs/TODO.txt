@@ -45,9 +45,19 @@ Album->createMediaFiles($groupedFiles)
 MediaFile constructor with file array
 return mediaFiles grouped by type.
 
+---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
- render it again.
+render it again.
+update or reset file metadata, swap height and width, update ratio
 use action.php ?
+
+--------
+put UI.sizes properties in config 
+
+Slideshow only for current search results
+use album.activeFileList();
+when search cleared: reset pics
+
 
 --------------
 1 edit div: rotate, select, actions.

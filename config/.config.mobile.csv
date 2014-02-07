@@ -5,6 +5,9 @@ DISPLAY.fadeIn;false
 DISPLAY.displayOptions;false
 DISPLAY.searchOptions;false
 
+SIZE.OPTIONS;small;full
+SIZE.DEFAULT;small
+
 PAGINATE.DEFAULT;10
 
 keyboard;false
