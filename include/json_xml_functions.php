@@ -310,7 +310,7 @@ debug("xmlObject vars", $vars);
 	$attributes="";
 	foreach($vars as $key=>$value)
 	{
-		if(is_numeric($key))
+		if(is_numeric($key) || is_object($value))
 			$elementName=getVarType($value);
 		else
 			$elementName=$key;

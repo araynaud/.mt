@@ -338,27 +338,27 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 	$separator=";";
 	$separator2=":";
 	debug("readCsvTableFile", $filename);
-	if(!file_exists($filename))		return $csvRows;
-	if (($handle = fopen($filename, "r")) == FALSE)		return $csvRows;
 
+	if(!file_exists($filename))		return $csvRows;
+	$lines = readArray($filename);
+	if(!$lines)		return $csvRows;
 	$header=array();
 	$key="";
 	if($columnNames)
 	{
-		$header = fgetcsv($handle, 0, $separator);
-		if ($header === FALSE)
-		{
-			fclose($handle);
-			return $csvRows;
-		}
+		if (!$lines[0])	return $csvRows;
+		$header = explode($separator, $lines[0]);
 		if($keyColumn!==false)
 		{
 			$key = $header[$keyColumn];
 			unset($header[$keyColumn]);
 		}
+		array_shift($lines);
 	}
-	while (($rowData = fgetcsv($handle, 0, $separator)) !== FALSE)  
+
+	foreach ($lines as $n => $line)
 	{
+		$rowData = explode($separator, $line);
 		$row = array();
 		$key="";
 		if($keyColumn!==false)
@@ -372,79 +372,70 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 			$value = parseValue($column, $separator2);
 			$row[$ckey]= $value;
 		}
-//debug("row", $row);
+debug("row $key", $row);
 		if(!$key)
 			$csvRows[] = $row;
 		else
 			$csvRows[$key] = $row;
 	}
-	fclose($handle);
 	return $csvRows;
 }
 
 function writeBinaryFile($filename, $data, $append=false)
 {
 	if(!$data && !$append)	return deleteFile($filename);
+	if(!$data)	return false;
 	debug("writeBinaryFile file",$filename);
 	debug("writeBinaryFile length",count($data));
 	$mode = $append ? "ab" : "w";
 	$fh = fopen($filename, $mode);
-	if(!$fh) return;
+	if(!$fh) return false;
 	fwrite($fh, $data);
 	fclose($fh);
 	debug("exists",file_exists($filename));
+	return true;
 }
 
 function writeTextFile($filename, $text, $append=false)
 {
-	if(!$text) 	return deleteFile($filename);
-
-	$mode = $append ? "ab" : "w";
-	$fh = fopen($filename, $mode); 
-	if(!$fh) return;
-	$text = str_replace("\'", "'", $text);
-	fwrite($fh, $text);
-	fclose($fh);
+	if($text)
+		$text = str_replace("\\'", "'", $text);
+	return writeBinaryFile($filename, $text, $append);
 }
 
 function writeCsvFile($filename, $data, $includeEmpty=false, $separator=";")
 {
-debug("writeCsvFile",$data);
+	debug("writeCsvFile",$data);
 	if(!$data) return deleteFile($filename);
 	if(is_string($data)) return	writeTextFile($filename,$data);
 	if(!is_array($data)) return	writeBinaryFile($filename,$data);
 
-	$fh = @fopen($filename, 'w');
-	if(!$fh) return;
-
 	$csv = csvValue($data, $includeEmpty, $separator);
-	fwrite($fh, $csv);
-	fclose($fh);
-	return;
+	return writeTextFile($filename, $csv);
 }
 
 //write table data
 //$data must be 2 dimensional array
 function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey="")
 {
-	$separator=";";
 //	debug("writeCsvTableFile",$data);
 	if(!$data) return deleteFile($filename);
-	$fh = @fopen($filename, 'w');
-	if(!$fh) return;
 
+	$csv = "";
 	if($columnNames)
-	{
-		$line=csvHeaderRow($data, $writeKey);
-		fwrite($fh, "$line\n");
-	}
+		$csv .= csvHeaderRow($data, $writeKey) . "\n";
+
 	foreach ($data as $key => $row)
-	{
-		$line = csvDataRow($row, $writeKey ? $key : null);
-		fwrite($fh, "$line\n");
-	}
-	fclose($fh);
-	return;
+		$csv .= csvDataRow($row, $writeKey ? $key : null) . "\n";
+
+	return writeTextFile($filename, $csv);
+}
+
+function mergeCsv($filename, $data)
+{
+	//1 read CSV data
+	//add/replace data rows by key
+	//write csv.
 }
 
 //write key names from 1st row
