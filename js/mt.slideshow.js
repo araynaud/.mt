@@ -171,6 +171,11 @@ Slideshow.prototype.setStart = function(start)
 	return this.currentIndex;
 };
 
+Slideshow.prototype.setPics = function(mediaFiles)
+{
+	this.pics = mediaFiles;
+};
+
 Slideshow.prototype.getPicPosition = function(input)
 {
 //object: search by name

@@ -480,6 +480,8 @@ UI.clearSearch = function()
 	$("#searchOptions input:checkbox").toggleChecked(false);
 	$("#searchOptions input:text").val("");
 	$("#searchOptions select").val("");
+
+	UI.search();
 }
 
 UI.search = function()
@@ -490,6 +492,9 @@ UI.search = function()
 	//or make new Album AJAX request
 	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
 	album.setPageNumber(1);
+
+	var pics = Album.selectFiles(album.activeFileList(), "IMAGE");
+	UI.slideshow.setPics(pics);
 	return UI.displaySelectedFiles();
 };
 

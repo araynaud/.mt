@@ -12,7 +12,7 @@ $path=getPath();
 	<title>Image upload</title>
 	<link type="text/css" rel="stylesheet" href="../MediaThingy.css"/>
 	<link type="text/css" rel="stylesheet" href="upload.css"/>
-	<script src="../js/jquery-1.8.3.min.js"></script>
+	<script src="../js/lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../js/multiupload.js"></script>
 	<script type="text/javascript">
 	var uploadConfig = {
@@ -20,7 +20,6 @@ $path=getPath();
 		form: "demoFiler",					// Form ID
 		dragArea: "dragAndDropFiles",		// Upload Area ID
 		uploadUrl: "upload.php"				// Server side upload url
-//		uploadUrl: "fileupload.php"				// Server side upload url
 	};
 	$(document).ready(function()
 	{

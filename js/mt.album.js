@@ -140,8 +140,8 @@ Album.prototype.setTag = function(tag, file, state)
 		return;
 	}
 
-	if(!this.tags[tag])
-		this.tags[tag]= {};
+	if(!this.tags)		this.tags = {};
+	if(!this.tags[tag])	this.tags[tag]= {};
 	this.tags[tag][file]= file;
 };
 
@@ -254,10 +254,7 @@ Album.searchFiles = function(fileList, search)
 	//loop through object and restrict selection
 	if(isEmpty(fileList) || isEmpty(search)) return fileList;
 	album.searchResults = Album.selectFiles(fileList, search);
-	
-	UI.slideshow.pics = Album.selectFiles(album.activeFileList(), "IMAGE", "type");
 	return album.searchResults;
-	
 };
 
 Album.selectFiles = function(fileList, filterValue, filterField)
