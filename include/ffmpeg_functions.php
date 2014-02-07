@@ -226,8 +226,8 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 	$data = array();
 	//$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
-	$data["width"] = arrayGetCoalesce($metadata, "STREAM.0.width","STREAM.1.width");
-	$data["height"] = arrayGetCoalesce($metadata, "STREAM.0.height", "STREAM.1.height");
+	$data["width"] = arrayGetCoalesce($metadata, "STREAM.0.width","STREAM.1.width", "STREAM.width");
+	$data["height"] = arrayGetCoalesce($metadata, "STREAM.0.height", "STREAM.1.height", "STREAM.height");
 	$display_aspect_ratio = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
 	$data["ratio"] = $display_aspect_ratio;
 

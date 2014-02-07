@@ -138,6 +138,12 @@ class MediaFile extends BaseObject
 	{
 		return $this->name;
 	}
+
+	public function getFileType()
+	{
+		return $this->type;
+	}
+	
 	
 	public function getSubdir()
 	{

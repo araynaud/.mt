@@ -187,6 +187,22 @@ debugVar("metadataIndex", true);
 $metadataIndex = getMetadataIndex($relPath, "IMAGE", @$groupedFiles["IMAGE"],true);
 debugVar("metadataIndex", true);
 
+if($metadataIndex)
+{
+	$metadataIndex = getMetadataIndex($relPath, "IMAGE");
+	$metadata = array_shift($metadataIndex);
+	debug("metadata", $metadata);
+	addToMetadataIndex($relPath, "IMAGE", "test", $metadata);
+
+	debug("AFTER");
+	debug("readTextFile");
+	debug(readTextFile(getMetadataIndexFilename($relPath, "IMAGE")));
+
+	$metadataIndex = getMetadataIndex($relPath, "IMAGE", @$groupedFiles["IMAGE"],true);
+	debugVar("metadataIndex", true);
+
+}
+
 //$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
 //debugVar("indexFiles",true);
 

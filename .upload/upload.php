@@ -1,5 +1,6 @@
 <?php session_start(); 
 require_once("../include/config.php");
+define("CHUNK_SUFFIX", ".chunk");
 define("LAST_CHUNK_SUFFIX", ".last.chunk");
 
 startTimer();
@@ -25,8 +26,12 @@ if($index)
 	addVarToArray($response,"index");
 
 $tmpFile = $_FILES["file"]["tmp_name"];
-$fileType = $_FILES["file"]["type"];
+$mimeType = $_FILES["file"]["type"];
 $filename= $_FILES["file"]["name"];
+
+$name = getFilename($filename);
+$fileType = postParam("type");
+$metadata = postParam("metadata");
 
 $getcwd=getcwd();
 $freeSpace=disk_free_space("/");
@@ -35,7 +40,7 @@ $freeSpace=disk_free_space("/");
 //addVarToArray($response,"freeSpace");
 
 //addVarToArray($response,"tmpFile");
-addVarToArray($response,"fileType");
+addVarToArray($response,"mimeType");
 
 $uploaded=is_uploaded_file($tmpFile);
 $message="OK";
@@ -43,7 +48,7 @@ if(!$uploaded)
 	$message = "File not found";
 
 //verify file type
-if(!is_admin() && strstr($fileType, "image")==false)
+if(!is_admin() && strstr($mimeType, "image")==false)
 	$message="Uploaded file is not an image";
 
 //cleanup file name
@@ -74,7 +79,19 @@ if(endsWith($filename, LAST_CHUNK_SUFFIX))
 	setFileDate($joinedFilename, $fileDate);
 	addVarToArray($response, "joinedFilename");
 	addVarToArray($response, "nbChunks");	
+	$name = getFilename($joinedFilename);
 }	
+
+$isLastChunk = endsWith($filename, LAST_CHUNK_SUFFIX) || ! endsWith($filename, CHUNK_SUFFIX);
+
+//add metadata from posted file to local index
+if($metadata && $isLastChunk)
+{
+	$metadata = parseCsvTable($metadata, 0);
+	debugVar("metadata");
+	addVarToArray($response, "metadata");
+	addToMetadataIndex($relPath, $fileType, $name, $metadata);
+}
 
 if($format=="ajax")
 {

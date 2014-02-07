@@ -93,10 +93,12 @@ function saveMetadataIndex($relPath, $data, $type="")
 	return writeCsvTableFile($indexFilename, $data, true, "name");
 }
 
-function getMetadataIndex($relPath, $type, $fileList, $completeIndex=false)
+function getMetadataIndex($relPath, $type, $fileList=array(), $completeIndex=false)
 {
 	//TODO use dateIndex.types;IMAGE		
 	$index = loadMetadataIndex($relPath, $type);
+debug("loadMetadataIndex keys", array_keys($index));
+
 	if(!$fileList)	 return $index;
 	//$index = array_intersect_key($index, $fileList);
 	$addedFiles = 0;
@@ -127,6 +129,15 @@ debug("getMetadataIndex $name", $filePath);
 		saveMetadataIndex($relPath, $index, $type);
 
 	return $index;
+}
+
+function addToMetadataIndex($relPath, $type, $name, $metadata)
+{
+	$index=getMetadataIndex($relPath, $type);
+	$index[$name] = $metadata;
+debug("addToMetadataIndex $name", $metadata);
+debug("keys", array_keys($index));
+	saveMetadataIndex($relPath, $index, $type);
 }
 
 //---------------Date index functions ----------

@@ -335,12 +335,18 @@ function setNestedArrayValue(&$csvRows, $key, $value)
 //read table with key names as first row
 function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csvRows = array())
 {
+	$text = readTextFile($filename);
+	if(!$text)		return $csvRows;
+debug("readCsvTableFile", $filename);
+	return parseCsvTable($text, $keyColumn, $columnNames, $csvRows);
+}
+
+function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = array())
+{
 	$separator=";";
 	$separator2=":";
-	debug("readCsvTableFile", $filename);
-
-	if(!file_exists($filename))		return $csvRows;
-	$lines = readArray($filename);
+	if(!$text)		return $csvRows;
+	$lines = explode("\n", $text);
 	if(!$lines)		return $csvRows;
 	$header=array();
 	$key="";
@@ -358,12 +364,13 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 
 	foreach ($lines as $n => $line)
 	{
+		if(!$line) continue;
 		$rowData = explode($separator, $line);
 		$row = array();
 		$key="";
 		if($keyColumn!==false)
 		{
-			$key = $rowData[$keyColumn];
+			$key = $rowData[$keyColumn];			
 			unset($rowData[$keyColumn]);
 		}
 		foreach($rowData as $i => $column)
@@ -372,6 +379,11 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 			$value = parseValue($column, $separator2);
 			$row[$ckey]= $value;
 		}
+
+		//value = single value or array?
+		if(is_array($row) && count($row)==1)
+			$row = array_shift($row);
+
 debug("row $key", $row);
 		if(!$key)
 			$csvRows[] = $row;
@@ -418,24 +430,22 @@ function writeCsvFile($filename, $data, $includeEmpty=false, $separator=";")
 //$data must be 2 dimensional array
 function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey="")
 {
-//	debug("writeCsvTableFile",$data);
 	if(!$data) return deleteFile($filename);
-
-	$csv = "";
-	if($columnNames)
-		$csv .= csvHeaderRow($data, $writeKey) . "\n";
-
-	foreach ($data as $key => $row)
-		$csv .= csvDataRow($row, $writeKey ? $key : null) . "\n";
-
+	$csv = toCsvTable($data, $columnNames, $writeKey);
 	return writeTextFile($filename, $csv);
 }
 
-function mergeCsv($filename, $data)
+function toCsvTable($data, $columnNames=false, $writeKey="")
 {
-	//1 read CSV data
-	//add/replace data rows by key
-	//write csv.
+	$csv = "";
+	if($columnNames)
+		$csv .= csvHeaderRow($data, $writeKey) . "\n";
+	foreach ($data as $key => $row)
+	{
+		debug($key, $row);
+		$csv .= csvDataRow($row, $writeKey ? $key : null) . "\n";
+	}
+	return $csv;
 }
 
 //write key names from 1st row
@@ -461,8 +471,18 @@ function csvDataRow($row, $key)
 	if($key)	array_unshift($row, $key);
 
 	foreach ($row as $key => $value)
+	{
 		$row[$key] = csvValue($value, false, $separator2);
+	}
+//	debug("csvDataRow", $row);
 	return implode($separator, $row);
+}
+
+function mergeCsv($filename, $data)
+{
+	//1 read CSV data
+	//2 add/replace data rows by key
+	//3 write csv.
 }
 
 function copyRedirect($relPath)
