@@ -136,7 +136,7 @@ _IRFANVIEW.EXE;i_view32.exe
 _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
 
 ;Publish, Upload
-_publish.default;local
+_publish.default;free
 _publish.script;.upload/upload.php
 
 _publish.free.url;http://minorart.free.fr/.mt
