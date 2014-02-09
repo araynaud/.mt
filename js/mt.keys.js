@@ -33,6 +33,8 @@ UI.keys =
 		'S': function() { $('#cb_searchOptions').toggleChecked(); }, //search options
 		'X': function() { $('#dd_sort').selectNextOption(); },
 		'Z': function() { $('#dd_fit').selectNextOption(); },
+		'P': function() { UI.rotatePages(); },
+
 		' ': function() { UI.slideshow.display();  },	 //SPACE: slideshow
 		'0': UI.setColumns,
 		'1': UI.setColumns,

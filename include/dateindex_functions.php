@@ -90,6 +90,7 @@ function loadMetadataIndex($relPath, $type="")
 function saveMetadataIndex($relPath, $data, $type="")
 {
 	$indexFilename=getMetadataIndexFilename($relPath, $type);
+	createDir("$relPath",".tn");
 	return writeCsvTableFile($indexFilename, $data, true, "name");
 }
 

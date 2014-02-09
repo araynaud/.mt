@@ -280,8 +280,9 @@ UI.appendNextPage = function()
 	}
 
    	var more = !UI.renderedPages[next];
-//   	$("img#loadMoreIcon").before(" "+next + ":" + more);
-	$("img#loadMoreIcon").toggle(more);
+// 	$("img#loadMoreIcon").before(" "+next + ":" + more);
+//	$("img#loadMoreIcon").toggle(more);
+	return more;
 };
 
 UI.imageOnError = function()
@@ -390,20 +391,19 @@ UI.selectThumbnailSize = function(img, mediaFile, caption)
 
 UI.getHeights = function(jq)
 {
-	var heights=[];
+	return UI.getJQueryValues(jq, "outerHeight", true);
+};
 
+UI.getJQueryValues = function(jq, method, arg)
+{
+	jq=$(jq);
+	var values=[];
 	jq.each(function()
 	{
-		var col=$(this);
-		//calculate total border and margin height of images
-		var h  = col.outerHeight(true);
-		//var nbImages=col.children().length;
-		//h -= nbImages * 30;
-		heights.push(h);
+		var h = $(this)[method](arg);
+		values.push(h);
 	});
-	//UI.setStatus(heights);
-
-	return heights;
+	return values;
 };
 
 //set page from number or current link text
@@ -474,7 +474,7 @@ UI.displayPageLinks = function()
 	return album.nbPages;
 };
 
-//perform search
+// ---- perform search
 UI.clearSearch = function()
 {
 	$("#searchOptions input:checkbox").toggleChecked(false);
@@ -482,7 +482,7 @@ UI.clearSearch = function()
 	$("#searchOptions select").val("");
 
 	UI.search();
-}
+};
 
 UI.search = function()
 {
@@ -563,7 +563,7 @@ UI.setupEvents = function()
 {
 	$(".sOption").change(UI.sortFiles);	
 	$("#dd_page").change(UI.selectCountPerPage);
-	$(".dOption").change(function() { UI.displaySelectedFiles(true); } );
+	$(".dOption").change(function() { if(!UI.noRefresh) UI.displaySelectedFiles(true); } );
 	$(".lOption").change(UI.toggleLayoutOption);
 
 	$("div#searchOptions input:checkbox, div#searchOptions select").change(UI.search);
@@ -576,7 +576,6 @@ UI.setupEvents = function()
 
 	//UI.editOKButton.click(UI.okInput);
 	//UI.editCancelButton.click(UI.resetInput);
-
 
 	if(window.UI && UI.setupKeyboard && config.keyboard)
 		UI.setupKeyboard();
@@ -597,3 +596,55 @@ UI.setupEvents = function()
 	if(config.MediaPlayer.video.enabled)
 		new MediaPlayer("video");
 };
+
+
+UI.scrollPages = function()
+{	
+	//UI.scrollPageNumber = 
+	UI.scrollPageDiv = UI.pageDiv;
+	var more= UI.appendNextPage();
+
+/*
+	if(!UI.scrollPageNumber) 
+		UI.scrollPageNumber=1;
+	UI.scrollPageDiv = $("div#mediaFilePage_" + UI.scrollPageNumber);
+*/
+	var top = UI.scrollPageDiv.offset().top;
+	top += UI.scrollPageDiv.outerHeight(true);
+//	alert("scrollPages: {0} {1}".format(album.pageNum, top));
+	var options = {duration: 2* UI.slideshow.interval }
+	if(more)
+		options.complete = UI.scrollPages;
+	$("html,body").animate({scrollTop: top}, options); 
+
+};
+
+// page rotator
+UI.rotatePages = function()
+{	
+	if(album.nbPages<=1) return;
+
+	if(!UI.rotateInterval)
+	{
+		UI.noRefresh=true;
+		UI.setOption("page",3);
+		UI.setOption("columns", 2);
+		UI.setOption("fit", "height");
+		UI.setOption("displayOptions", false);
+		UI.setOption("searchOptions", false);
+		UI.setOption("titleContainer", false);
+		UI.noRefresh=false;
+		UI.selectNextPage(0);
+		UI.rotateInterval = setInterval(UI.selectNextPage, UI.slideshow.interval);
+	}
+	else
+	{
+		clearInterval(UI.rotateInterval);
+		UI.rotateInterval=null;
+	}
+
+	var icon = UI.rotateInterval ? "pause64.png" : "play64.png";
+	$("#rotatorIcon").attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
+
+};
+

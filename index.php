@@ -211,9 +211,9 @@ $(window).resize(function(event)
 		<div id="mediaFileList0" class="mediaFileList"></div>
 		<div id="mediaFileList1" class="mediaFileList"></div>
 	</div>
-	<div id="contentFooter" class="wrapper">
-		<img class="icon" id="loadMoreIcon" alt="load more" title="load more" src="icons/media-next.png" href="#" onclick="UI.appendNextPage();"/>
-	</div>
+	<!--div id="contentFooter" class="wrapper">
+		<img class="icon" id="loadMoreIcon" alt="load more" title="load more" src="icons/media-next.png" onclick="UI.appendNextPage();"/>
+	</div-->
 </div>
 
 <div id="audioContainer" class="footerRightCorner right noprint">

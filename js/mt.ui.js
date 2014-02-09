@@ -91,14 +91,22 @@ UI.setColumns = function(keyCode)
 	return nbSelect;
 };
 
-UI.toggleOption = function(option,state)
+UI.setOption = function(option, value, noEvent)
 {
-	if(isMissing(state))
-		album[option] = !album[option];
-	else 
-		album[option] = state;
-	UI.slideshow.showImage(null,"crossFade");
-	$("#cb_" + option).toggleChecked(state);
+	UI.setStatus("UI.setOption " + option + " = " + value);
+
+	var dd = $("#dd_" + option);
+	if(!isEmpty(dd))
+		return dd.selectOption(value, noEvent);
+	return UI.toggleOption(option, value, noEvent);
+}
+
+UI.toggleOption = function(option, state, noEvent)
+{
+	album[option] = !isMissing(state) ? state : !album[option];
+	if(UI.mode=="slideshow")
+		UI.slideshow.showImage(null,"crossFade");
+	$("#cb_" + option).toggleChecked(state, noEvent);
 }
 
 UI.playAllVideos = function()

@@ -8,10 +8,7 @@ function isMissing(variable)
 function isEmpty(variable)
 {
 	if(isMissing(variable)) return true;
-
-//	if(isArray(variable) || isString(variable) || 
-	if(variable.hasOwnProperty("length"))
-		return variable.length == 0;
+	if(variable.length === 0) return true;
 
 	if(isObject(variable))
 	{
@@ -720,11 +717,13 @@ $.fn.slideToggleLeft = function (duration)
 };
 
 //set or toggle checkbox + trigger change event
-$.fn.toggleChecked = function(checked)
+$.fn.toggleChecked = function(checked, noEvent)
 {
 	if(isMissing(checked))
 		checked=!this.prop("checked");
-	return this.prop("checked", checked).change();	
+	this.prop("checked", checked);
+	if(!noEvent) this.change();	
+	return this;
 };
 
 //get checkbox checked state
@@ -734,13 +733,22 @@ $.fn.isChecked = function(checked)
 };
 
 //toggle / cycle selected index
-$.fn.selectNextOption = function(increment) 
+$.fn.selectNextOption = function(increment, noEvent) 
 {	//toggle / cycle selected index
 	if(!this.length || !this[0].options || this[0].options.length <=1) return;
 	var nbOptions=this[0].options.length;
 	if(!increment) increment=1;
 	this[0].selectedIndex = (this[0].selectedIndex + increment + nbOptions) % nbOptions;
-	return this.change();
+	if(!noEvent) this.change();	
+	return this;
+};
+
+$.fn.selectOption = function(value, noEvent) 
+{	//toggle / cycle selected index
+	if(!this.length || !this[0].options || this[0].options.length <=1) return;
+	this.val(value);
+	if(!noEvent) this.change();	
+	return this;
 };
 
 //set only 1 callback, reset previous bound callbacks

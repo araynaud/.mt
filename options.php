@@ -1,6 +1,17 @@
-<div id="optionsContainer" class="noprint stretchW0 footerLeftCorner">
-	<img class="fixedLeft" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
-	<img class="fixedRight" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
+<div id="optionsContainer" class="noprint footerLeftCorner">
+	<div class="fixedLeft left">
+		<!--img class="iconTrans" id="scrollerIcon" src="icons/media-up.png" alt="play" title="play (space)" onclick="UI.scrollPages()"/>
+		<br/-->
+		<img class="iconTrans" id="scrollerIcon" src="icons/media-down.png" alt="play" title="play (space)" onclick="UI.scrollPages()"/>
+		<br/>
+		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
+	</div>
+
+	<div class="fixedRight right">
+		<img class="iconTrans" id="rotatorIcon" src="icons/media-play64.png" alt="play" title="rotate pages (P)" onclick="UI.rotatePages()"/>
+	<br/>
+		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
+	</div>
 	<div class="floatL toolbar">
 		<input id="cb_searchOptions" type="checkbox" class="lOption" label="S" title="Search" icon="icons/search16.png"/>
 		<input id="cb_displayOptions" type="checkbox" class="lOption" label="O" title="Options"/>
