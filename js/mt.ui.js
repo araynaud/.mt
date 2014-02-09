@@ -331,7 +331,7 @@ UI.captionClasses = function(mediaFile)
 	var classes= "caption";
 	//if(album.columns<1 && mediaFile.type!="DIR") classes+= "Below";
 	if(album.fadeIn && mediaFile.tnsizes) classes+=" hidden";
-	if(mediaFile.type!="DIR" && ( album.tnIndex == 0 || album.columns>1))
+	if(album.tnIndex == 0 || album.columns>1)
 		classes+=" small";
 
 	return classes;
