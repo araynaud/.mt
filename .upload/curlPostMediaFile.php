@@ -88,7 +88,8 @@ addVarToArray($response,"nbChunks");
 $postData = array();
 $postData["type"] = $mf->getFileType();
 $postData["fileDate"] = $mf->getTakenDate();
-$postData["metadata"] = csvValue($mf->getMetadata());	
+if($mf->isVideo())
+	$postData["metadata"] = csvValue($mf->getMetadata());	
 $postData["tags"] = csvValue($mf->getTags());	
 $response["file"] = uploadFile($publish, $filePath, $destPath, $postData);
 

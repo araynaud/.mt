@@ -563,7 +563,7 @@ MediaFile.selectThumbnailSize = function(imageSize)
 
 MediaFile.prototype.selectThumbnailSize = function(imageSize)
 {
-	var tnIndex= MediaFile.selectThumbnailSize(this);
+	var tnIndex= MediaFile.selectThumbnailSize(imageSize);
 	return Math.min(tnIndex, this.tnsizes.length-1);
 };
 
@@ -574,7 +574,7 @@ MediaFile.prototype.resizeBeforeUpload = function()
 	var maxSize = (config.publish && config.publish.image) ? config.publish.image.size : 0;
 	if(!maxSize) return this.getFileUrl();
 	//select Thumbnail Size , create resized if needed
-	this.tnIndex = MediaFile.selectThumbnailSize(maxSize);
+	this.tnIndex = this.selectThumbnailSize(maxSize);
 	this.tnDir = config.thumbnails.dirs[this.tnIndex];
 	this.tnUrl = this.getThumbnailUrlAjax(this.tnIndex);
 	return this.tnDir;
