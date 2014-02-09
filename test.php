@@ -206,6 +206,17 @@ if($metadataIndex)
 
 }
 
+$mf = MediaFile::getMediaFile();
+debugVar("mf",true);
+$tags = $mf->getTags();
+debugVar("tags");
+$tagsCsv = csvValue($tags);
+debugVar("tagsCsv");
+$tags = parseCsvTable($tagsCsv);
+//$tags = explode(";", $tagsCsv);
+debugVar("tags");
+
+
 //$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
 //debugVar("indexFiles",true);
 

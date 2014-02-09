@@ -86,10 +86,10 @@ addVarToArray($response,"chunk");
 addVarToArray($response,"nbChunks");
 
 $postData = array();
-$postData["fileDate"] = $mf->getTakenDate();
 $postData["type"] = $mf->getFileType();
-$postData["version"] = "file";
+$postData["fileDate"] = $mf->getTakenDate();
 $postData["metadata"] = csvValue($mf->getMetadata());	
+$postData["tags"] = csvValue($mf->getTags());	
 $response["file"] = uploadFile($publish, $filePath, $destPath, $postData);
 
 if($nbChunks>1) // delete after upload

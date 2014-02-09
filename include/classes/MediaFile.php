@@ -421,6 +421,12 @@ debug("addTag " . $this->name, $tag);
 	{
 		return saveFileTag($this->getFileDir(), $this->name, $tag, $state);
 	}
+
+	public function getTags()
+	{
+		return $this->tags;
+	}
+
 }
 
 ?>

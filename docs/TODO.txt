@@ -45,6 +45,12 @@ Album->createMediaFiles($groupedFiles)
 MediaFile constructor with file array
 return mediaFiles grouped by type.
 
+OK upload/post file : Send metadata + send file date
++ send tags as a;b;c string , upload saves them.
+
+Description with & cut.
+use POST for action.php ajax
+
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
 render it again.

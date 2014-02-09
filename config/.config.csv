@@ -139,33 +139,6 @@ _IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
 _IRFANVIEW.EXE;i_view32.exe
 _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
 
-;Publish, Upload
-_publish.default;free
-_publish.script;.upload/upload.php
-
-_publish.free.url;http://minorart.free.fr/.mt
-_publish.free.name;minorart.free.fr
-_publish.free.username;arthur
-_publish.free.password;4nawak
-;_publish.free.path;.test
-..upload_max_filesize;500000
-..image.size;1920
-..video.format;mp4
-
-_publish.local.url;http://localhost/mt
-_publish.local.name;Local
-_publish.local.path;uploads
-..upload_max_filesize;2000000
-..image.size;1920
-..video.format;mp4
-
-_publish.home.url;http://192.168.1.102/mt
-_publish.home.name;Home Desktop Computer
-_publish.home.path;uploads
-..upload_max_filesize;2000000
-;..image.size;1920
-..video.format;mp4
-
 ;file valid actions
 file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
 ;delete: move to this directory. if blank: delete files 

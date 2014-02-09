@@ -32,6 +32,7 @@ $filename= $_FILES["file"]["name"];
 $name = getFilename($filename);
 $fileType = postParam("type");
 $metadata = postParam("metadata");
+$tags = postParam("tags");	
 
 $getcwd=getcwd();
 $freeSpace=disk_free_space("/");
@@ -82,15 +83,23 @@ if(endsWith($filename, LAST_CHUNK_SUFFIX))
 	$name = getFilename($joinedFilename);
 }	
 
-$isLastChunk = endsWith($filename, LAST_CHUNK_SUFFIX) || ! endsWith($filename, CHUNK_SUFFIX);
+$isFileComplete = endsWith($filename, LAST_CHUNK_SUFFIX) || ! endsWith($filename, CHUNK_SUFFIX);
 
 //add metadata from posted file to local index
-if($metadata && $isLastChunk)
+if($isFileComplete)
 {
-	$metadata = parseCsvTable($metadata, 0);
-	debugVar("metadata");
-	addVarToArray($response, "metadata");
-	addToMetadataIndex($relPath, $fileType, $name, $metadata);
+	if($metadata)
+	{
+		$metadata = parseCsvTable($metadata, 0);
+		addToMetadataIndex($relPath, $fileType, $name, $metadata);
+	}	
+
+	if($tags)
+	{
+		$tags = explode(";", $tags);
+		foreach ($tags as $tag) 
+			saveFileTag($relPath, $name, $tag, true);
+	}	
 }
 
 if($format=="ajax")

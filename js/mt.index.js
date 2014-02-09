@@ -376,7 +376,7 @@ UI.selectThumbnailSize = function(img, mediaFile, caption)
 	//find right size: take last tn smaller than img or first tn larger than img
 
 	var src=img.attr("src");
-	var tnIndex=MediaFile.selectThumbnailSize(imageSize);
+	var tnIndex=mediaFile.selectThumbnailSize(imageSize);
 	var src2 = mediaFile.getThumbnailUrl(tnIndex, true);
 	if(src2 == src || tnIndex == mediaFile.tnIndex) return;
 	mediaFile.tnIndex=tnIndex;
