@@ -9,7 +9,7 @@
 
 	<div class="fixedRight right">
 		<img class="iconTrans" id="rotatorIcon" src="icons/media-play64.png" alt="play" title="rotate pages (P)" onclick="UI.rotatePages()"/>
-	<br/>
+		<br/>
 		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
 	</div>
 	<div class="floatL toolbar">

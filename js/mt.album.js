@@ -369,7 +369,12 @@ Album.prototype.setCountPerPage = function(countPerPage)
 {	
 	this.countPerPage=countPerPage;
 	if(isNaN(this.countPerPage)) this.countPerPage=0;
-	this.pageNum = this.countPerPage==0 ? 0 : parseInt(this.startFileIndex / this.countPerPage)+1;
+	this.pageNum = this.countPerPage==0 ? 0 :
+		parseInt(this.startFileIndex / this.countPerPage)+1;
+
+	this.nbPages = (this.countPerPage == 0) ? 1 :
+		parseInt((this.activeFileList().length + this.countPerPage - 1) / this.countPerPage);
+
 	return this.countPerPage;
 };
 
@@ -426,8 +431,6 @@ Album.prototype.activeFileList = function()
 //depending on countPerPage and pageNumber
 Album.prototype.selectCurrentPageFiles = function()
 {
-//	this.countPerPage=parseInt(this.countPerPage);
-//	if(isNaN(this.countPerPage)) this.countPerPage=0;
 	this.startFileIndex=this.countPerPage*(this.pageNum-1); //to keep same page and avoid out of range
 	if(!this.pageNum || !this.countPerPage) return this.mediaFiles;
 

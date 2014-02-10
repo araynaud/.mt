@@ -280,9 +280,21 @@ UI.appendNextPage = function()
 	}
 
    	var more = !UI.renderedPages[next];
+
+   	UI._allPagesDisplayed = !more;
 // 	$("img#loadMoreIcon").before(" "+next + ":" + more);
 //	$("img#loadMoreIcon").toggle(more);
 	return more;
+};
+
+UI.isPageVisible = function(pageNum)
+{
+	return UI.renderedPages[pageNum];
+};
+
+UI.allPagesVisible = function()
+{
+	return UI._allPagesDisplayed;
 };
 
 UI.imageOnError = function()
@@ -441,10 +453,6 @@ UI.selectCountPerPage = function()
 
 UI.displayPageLinks = function()
 {
-	album.nbPages = 1;
-	if(album.countPerPage > 0)
-		album.nbPages = parseInt((album.activeFileList().length + album.countPerPage - 1) / album.countPerPage);
-
 	UI.pagers.html("");
 	$("#pagesBottom").toggle(album.fit == "width" || album.columns<=1);
 	if(album.nbPages<=1)
@@ -598,31 +606,30 @@ UI.setupEvents = function()
 };
 
 
-UI.scrollPages = function()
+UI.scrollPages = function(page)
 {	
-	//UI.scrollPageNumber = 
-	UI.scrollPageDiv = UI.pageDiv;
-	var more= UI.appendNextPage();
+	page = valueOrDefault(page, album.pageNum);
+//	UI.scrollPageDiv = UI.pageDiv;
+//is next page visible?
+	var nextPage = album.getPageNumber(page+1);
+	if(!UI.isPageVisible(nextPage))
+		more = UI.appendNextPage();
 
-/*
-	if(!UI.scrollPageNumber) 
-		UI.scrollPageNumber=1;
-	UI.scrollPageDiv = $("div#mediaFilePage_" + UI.scrollPageNumber);
-*/
+	UI.scrollPageDiv = $("div.file[page={0}]".format(page)).last();
+//	UI.scrollPageDiv = $("div.file[page={0}]".format(nextPage)).eq(0);
 	var top = UI.scrollPageDiv.offset().top;
-	top += UI.scrollPageDiv.outerHeight(true);
+//	top += UI.scrollPageDiv.outerHeight(true);
 //	alert("scrollPages: {0} {1}".format(album.pageNum, top));
-	var options = {duration: 2* UI.slideshow.interval }
-	if(more)
-		options.complete = UI.scrollPages;
-	$("html,body").animate({scrollTop: top}, options); 
-
+	var options = {duration: UI.slideshow.interval };
+	if(!UI.allPagesVisible())
+		options.complete =  function () { UI.scrollPages(nextPage) };
+	$("html,body").animate({scrollTop: top}, options);
 };
 
 // page rotator
 UI.rotatePages = function()
 {	
-	if(album.nbPages<=1) return;
+	//if(album.nbPages<=1) return;
 
 	if(!UI.rotateInterval)
 	{
@@ -635,6 +642,7 @@ UI.rotatePages = function()
 		UI.setOption("titleContainer", false);
 		UI.noRefresh=false;
 		UI.selectNextPage(0);
+		if(album.nbPages<=1) return;
 		UI.rotateInterval = setInterval(UI.selectNextPage, UI.slideshow.interval);
 	}
 	else
