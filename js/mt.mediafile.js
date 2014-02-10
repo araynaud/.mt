@@ -563,6 +563,7 @@ MediaFile.selectThumbnailSize = function(imageSize)
 
 MediaFile.prototype.selectThumbnailSize = function(imageSize)
 {
+	if(isEmpty(this.tnsizes)) return -1;
 	var tnIndex= MediaFile.selectThumbnailSize(imageSize);
 	return Math.min(tnIndex, this.tnsizes.length-1);
 };

@@ -91,6 +91,35 @@ UI.setColumns = function(keyCode)
 	return nbSelect;
 };
 
+//display options
+
+//get options from UI
+UI.getDisplayOptions = function(obj)
+{
+	if(!obj) obj={};
+	$("select.dOption, select.sOption").each(function()
+	{
+		obj[this.id.substringAfter("dd_")]=$(this).val();
+	});
+	
+	$("input.dOption, input.sOption").each(function()
+	{
+		obj[this.id.substringAfter("cb_")]=$(this).is(":checked");
+	});
+
+	obj.tnIndex = obj.columns>1 ? 0 : Math.min(obj.maxTnIndex, UI.sizes[obj.size].tnIndex);
+	return obj;
+};
+
+UI.setDisplayOptions = function(obj)
+{
+	if(isMissing(obj) || !isObject(obj)) return;
+	UI.noRefresh=true;
+	for(key in obj)
+		UI.setOption(key, obj[key]);
+	UI.noRefresh=false;
+};
+
 UI.setOption = function(option, value, noEvent)
 {
 	UI.setStatus("UI.setOption " + option + " = " + value);

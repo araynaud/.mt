@@ -18,26 +18,6 @@ UI.sortFiles = function(refreshDisplay)
 		return UI.displaySelectedFiles();
 };
 
-//display options
-
-//get options from UI
-UI.getDisplayOptions = function(obj)
-{
-	if(!obj) obj={};
-	$("select.dOption, select.sOption").each(function()
-	{
-		obj[this.id.substringAfter("dd_")]=$(this).val();
-	});
-	
-	$("input.dOption, input.sOption").each(function()
-	{
-		obj[this.id.substringAfter("cb_")]=$(this).is(":checked");
-	});
-
-	obj.tnIndex = obj.columns>1 ? 0 : Math.min(obj.maxTnIndex, UI.sizes[obj.size].tnIndex);
-	return obj;
-};
-
 //Zoom in or out
 UI.zoom = function(increment)
 {
@@ -627,20 +607,12 @@ UI.scrollPages = function(page)
 };
 
 // page rotator
+
 UI.rotatePages = function()
 {	
-	//if(album.nbPages<=1) return;
-
 	if(!UI.rotateInterval)
 	{
-		UI.noRefresh=true;
-		UI.setOption("page",3);
-		UI.setOption("columns", 2);
-		UI.setOption("fit", "height");
-		UI.setOption("displayOptions", false);
-		UI.setOption("searchOptions", false);
-		UI.setOption("titleContainer", false);
-		UI.noRefresh=false;
+		UI.setDisplayOptions({page:3, columns:2, fit:"height", displayOptions:false, searchOptions:false, titleContainer:false});
 		UI.selectNextPage(0);
 		if(album.nbPages<=1) return;
 		UI.rotateInterval = setInterval(UI.selectNextPage, UI.slideshow.interval);
