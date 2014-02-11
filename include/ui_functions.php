@@ -231,7 +231,7 @@ function html5playlist($relPath,$files)
 function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $reverse=false, $keysAsValues=false)
 {
 	if($cssClass) $cssClass = " class='$cssClass'";
-	echo "\n<select id='$ddId'$cssClass >\n";
+	echo "\n<select id='$ddId'$cssClass>\n";
 	//add default if not already in options
 	if(!in_array($default,$options))
 		$options[]=$default;
@@ -252,8 +252,8 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 
 		if($keysAsValues || !is_numeric($key))
 			echo "\t<option value='$key'$selected>$title</option>\n";
-		else if($title === $value)
-			echo	"\t<option$selected>$value</option>\n";
+//		else if($title === $value)
+//			echo	"\t<option$selected>$value</option>\n";
 		else
 			echo	"\t<option value='$value'$selected>$title</option>\n";
 	}

@@ -228,6 +228,7 @@ debug("LoadConfiguration", $relPath);
 //config for the current dir only
 function getDirConfig($path, $key=null)
 {
+debug("getDirConfig");
 	$relPath=getDiskPath($path);
 	$depth=pathDepth($path);
 
@@ -240,6 +241,8 @@ function getDirConfig($path, $key=null)
 	$configFilename=combine($relPath,".config.csv");
 	readCsvFile($configFilename, 0, ";", ".", $configData);
 	if(!isset($key)) return $configData;
+
+debug("getDirConfig", $configData);
 	
 	return isset($configData[$key]) ? $configData[$key] : "";
 }
@@ -386,7 +389,7 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 		if(is_array($row) && count($row)==1)
 			$row = array_shift($row);
 
-debug("row $key", $row);
+//debug("row $key", $row);
 		if(!$key)
 			$csvRows[] = $row;
 		else

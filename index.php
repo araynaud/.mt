@@ -87,8 +87,14 @@ $(document).ready(function()
 		return;
 	}
 
-	UI.selectCountPerPage(false);
-	UI.sortFiles(!search.start);
+	try{
+		UI.selectCountPerPage(false);
+		UI.sortFiles(!search.start);
+	}
+	catch(err)
+	{
+		alert(Object.toText(err,"\n"));
+	}
 	UI.displayFileCounts(album.mediaFiles,"#counts");	
 	$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
 	$("#playIcon").toggle(album.hasFiles("VIDEO"));
@@ -135,7 +141,11 @@ $(window).resize(function(event)
 		<img class="icon" src="icons/info.png" id="browserInfoIcon" alt="info" onclick="UI.displayBrowserInfo();"/>
 		<a class="spaceLeft upload" href=".upload/multiupload.php<?php echo qsParameters("path")?>">M<img class="upload" id="multiUploadIcon" src="icons/upload.png"/></a>
 		<a class="spaceLeft upload" href=".upload/upload_form.php<?php echo qsParameters("path")?>"><img class="upload" id="multiUploadIcon" src="icons/upload.png"/></a>
+
 		<a class="spaceLeft admin" target="csv" title="view date index" href="download.php?file=.dateIndex.csv<?php echo qsParameters("path",false)?>&type=text/plain">DI</a>
+		<a class="spaceLeft admin" target="csv" title="view date index" href="download.php?file=.tn/.metadata.IMAGE.csv<?php echo qsParameters("path",false)?>&type=text/plain">MI</a>
+		<a class="spaceLeft admin" target="csv" title="view date index" href="download.php?file=.tn/.metadata.VIDEO.csv<?php echo qsParameters("path",false)?>&type=text/plain">MV</a>
+
 		<a class="admin" title="reset date index" href=".admin/delete.php?file=.dateIndex.csv<?php echo qsParameters("path",false)?>"><img src="icons/refresh.png" alt="description"/></a>
 		<a class="spaceLeft admin" title="delete background" href=".admin/delete.php?file=.bg.jpg<?php echo qsParameters("path",false)?>"><img class="admin" src="icons/delete.png"  alt="delete"/><img class="admin" src="icons/background.png" alt="background"/></a>
 

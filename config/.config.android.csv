@@ -1,12 +1,12 @@
-;TITLE;(android)
+TITLE;(android)
 DISPLAY.group;false
-DISPLAY.maxTnIndex;0
 DISPLAY.border;true
 DISPLAY.fadeIn;false
 DISPLAY.displayOptions;false
 DISPLAY.searchOptions;false
+;DISPLAY.titleContainer;false
 
-PAGINATE.DEFAULT;10
+PAGINATE.DEFAULT;5
 
 transition.changeMode;false
 slideshow.changeMode;false

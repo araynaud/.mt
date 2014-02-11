@@ -8,11 +8,15 @@ window.UI = window.UI || {};
 UI.modes=
 {
 	index: { scrollable: true, show: ["#titleContainer", "#indexContainer", "#optionsContainer"], 
-		onShow: function () 
+		onShow: function() 
 		{
 			var alt = UI.transition.getNextSlide();
 			alt.html("");
 			alt.hide();
+		},
+		onHide: function()
+		{
+			UI.rotatePages(false);
 		}
 	},
 	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"] },
@@ -100,14 +104,21 @@ UI.getDisplayOptions = function(obj)
 	$("select.dOption, select.sOption").each(function()
 	{
 		obj[this.id.substringAfter("dd_")]=$(this).val();
+//		UI.addStatus(this.id + ": " + this.value + " / " + $(this).val());
 	});
 	
 	$("input.dOption, input.sOption").each(function()
 	{
 		obj[this.id.substringAfter("cb_")]=$(this).is(":checked");
 	});
-
-	obj.tnIndex = obj.columns>1 ? 0 : Math.min(obj.maxTnIndex, UI.sizes[obj.size].tnIndex);
+	obj.tnIndex = 0;
+	if(obj.columns <=1) 
+	{
+		obj.tnIndex = obj.maxTnIndex;
+		var uiSize = UI.sizes[obj.size];
+		if(uiSize)
+			obj.tnIndex = Math.min(obj.maxTnIndex, uiSize.tnIndex);
+	}
 	return obj;
 };
 

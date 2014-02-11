@@ -1,4 +1,5 @@
-;DISPLAY.size;medium
+;TITLE;(one)
+SIZE.DEFAULT;medium
 DISPLAY.reverse;true
 DISPLAY.group;true
 

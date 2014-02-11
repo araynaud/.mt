@@ -31,8 +31,7 @@ SIZE.DEFAULT;small
 
 ;thumbnail display
 display.types;IMAGE;VIDEO;AUDIO
-DISPLAY.size;small
-.reverse;false
+DISPLAY.reverse;false
 .dirsFirst;true
 .group;false
 .border;true

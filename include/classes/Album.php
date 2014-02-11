@@ -46,7 +46,7 @@ class Album extends BaseObject
 			$this->getSearchParameters();
 			//list files according to search, etc.		
 			$allFiles=listFiles($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
-debug("allFiles", $allFiles, true);
+//debug("allFiles", $allFiles, true);
 			$this->dirs=selectDirs($this->relPath,$allFiles);
 			$this->groupedFiles=groupByName($allFiles, true);
 			$allFiles=groupByName($allFiles);

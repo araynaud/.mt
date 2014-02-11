@@ -607,12 +607,15 @@ UI.scrollPages = function(page)
 };
 
 // page rotator
-
-UI.rotatePages = function()
+UI.rotatePages = function(state)
 {	
-	if(!UI.rotateInterval)
+	state = valueOrDefault(state, !UI.rotateInterval);
+	if(state)
 	{
-		UI.setDisplayOptions({page:3, columns:2, fit:"height", displayOptions:false, searchOptions:false, titleContainer:false});
+		var opts = {page:3, columns:2, fit:"height", displayOptions:false, searchOptions:false, titleContainer:false};
+		if(UI.clientIs("mobile")) opts.columns=0;
+
+		UI.setDisplayOptions();
 		UI.selectNextPage(0);
 		if(album.nbPages<=1) return;
 		UI.rotateInterval = setInterval(UI.selectNextPage, UI.slideshow.interval);
@@ -623,7 +626,7 @@ UI.rotatePages = function()
 		UI.rotateInterval=null;
 	}
 
-	var icon = UI.rotateInterval ? "pause64.png" : "play64.png";
+	var icon = state ? "pause64.png" : "play64.png";
 	$("#rotatorIcon").attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
 };
