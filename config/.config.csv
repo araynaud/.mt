@@ -3,7 +3,7 @@ TITLE;Media Thingy
 DEBUG.OUTPUT;false
 
 USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;playstation;opera
-;USER_AGENT.FORCE;mobile
+;USER_AGENT.FORCE;mobile android
 
 ;relative path from app root dir to data files root
 DATA_ROOT;..
@@ -31,7 +31,8 @@ SIZE.DEFAULT;small
 
 ;thumbnail display
 display.types;IMAGE;VIDEO;AUDIO
-DISPLAY.reverse;false
+DISPLAY.size;small
+.reverse;false
 .dirsFirst;true
 .group;false
 .border;true

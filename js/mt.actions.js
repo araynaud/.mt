@@ -30,13 +30,16 @@ UI.displayEditEvent = function()
 	if(!User.getRole()) return;
 
 	UI.rotateIcons.bindReset("click", UI.rotateImage);
-	UI.fileboxes=$("div.file");
+	var fileboxes=$("div.file");
 	if(UI.clientIs("mobile"))
-		UI.fileboxes.bindReset("click", function() { UI.displayEdit($(this)); });	
+	{
+		var captions = fileboxes.find(".caption, captionBelow");
+		captions.bindReset("click", function() { UI.displayEdit($(this)); });
+	}
 	else
 	{
-		UI.fileboxes.bindReset("mouseenter", function() { UI.displayEdit($(this)); });	
-		UI.fileboxes.bindReset("mouseleave", function() { UI.displayEdit(); });
+		fileboxes.bindReset("mouseenter", function() { UI.displayEdit($(this)); });	
+		fileboxes.bindReset("mouseleave", function() { UI.displayEdit(); });
 	}
 };
 

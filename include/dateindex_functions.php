@@ -100,6 +100,13 @@ function getMetadataIndex($relPath, $type, $fileList=array(), $completeIndex=fal
 	$index = loadMetadataIndex($relPath, $type);
 debug("loadMetadataIndex keys", array_keys($index));
 
+	$subdirFiles=array();
+	if($fileList)
+	{
+		$subdirFiles = array_filter($fileList, "fileHasSubdir"); 
+		$fileList = array_filter($fileList, "fileHasNoSubdir"); 
+	}
+
 	if(!$fileList)	 return $index;
 	//$index = array_intersect_key($index, $fileList);
 	$addedFiles = 0;
@@ -128,6 +135,37 @@ debug("getMetadataIndex $name", $filePath);
 	//if any change: rewrite file	
 	if($addedFiles || $deletedFiles && $completeIndex)
 		saveMetadataIndex($relPath, $index, $type);
+
+	if(!$subdirFiles)	return $index;
+	
+debug("subdirFiles", count($subdirFiles));
+	
+//for subdir files: load subdir/.dateIndex.csv 
+//then asort, as in groupByName
+	$prevDir="";
+	foreach ($subdirFiles as $key => $file)
+	{
+		//split subdir/file
+		//splitFilePath($file,$subdir,$filename);
+		//splitFilename($filename, $file["name"], $exts);
+		if($file["subdir"] != $prevDir) // if file in different dir: load new date index
+		{
+			$subdir = combine($relPath, $file["subdir"]);
+debug("loadMetadataIndex", $subdir);
+			$dirIndex = loadMetadataIndex($subdir, $type);
+//debug("loadMetadataIndex", $dirIndex);
+		}
+
+		if(isset($dirIndex[$file["name"]]))
+		{
+			$index[$key] = $dirIndex[$file["name"]];
+//			debug($key, $index[$key]);		
+		}
+		$prevDir = $file["subdir"];
+	}
+debug();
+debug("getMetadataIndex $type", $index, true);
+debug();
 
 	return $index;
 }
@@ -275,7 +313,7 @@ function getRefreshedDateIndex($relPath,$files=array(),$completeIndex=false)
 	if(empty($files)) return array();
 	//load existing index
 	$dateIndex=loadDateIndex($relPath);
-debug("files", $files, true);
+//debug("files", $files, true);
 //debug("loadDateIndex", $dateIndex, true);
 
 	//test that every file is in index: add new file entries if new files
@@ -319,7 +357,7 @@ debug("subdirFiles", count($subdirFiles));
 		if(isset($dateIndex[$file["name"]]))
 		{
 			$filteredIndex[$key] = $dateIndex[$file["name"]];
-			debug($key, $filteredIndex[$key]);		
+//			debug($key, $filteredIndex[$key]);		
 		}
 		$prevDir = $file["subdir"];
 	}

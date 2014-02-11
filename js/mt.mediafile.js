@@ -257,6 +257,8 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 	if(mediaFile.type=="IMAGE" && !mediaFile.hasThumbnail(tnIndex))
 		return mediaFile.getFileUrl();
 
+	if(!mediaFile.hasThumbnail(tnIndex))
+		tnIndex=0;
 //if already exists => existing image url
 	if(mediaFile.thumbnailExists(tnIndex))
 	{

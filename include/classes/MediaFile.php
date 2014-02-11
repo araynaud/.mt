@@ -301,8 +301,9 @@ class MediaFile extends BaseObject
     public function getMetadata()
 	{
 		$index = $this->_parent->getMetadataIndex($this->type);
-		$key = combine($this->name,$this->subdir);
+		$key = combine($this->subdir, $this->name);
 		$metadata = @$index[$key];
+debug("getMetadata $key", $metadata);		
 		$this->setMultiple($metadata);
 		return $metadata;
 	}

@@ -1,4 +1,5 @@
 TITLE;(mobile)
+DISPLAY.size;small
 DISPLAY.maxTnIndex;1
 DISPLAY.border;true
 DISPLAY.fadeIn;false

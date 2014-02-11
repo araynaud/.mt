@@ -612,10 +612,10 @@ UI.rotatePages = function(state)
 	state = valueOrDefault(state, !UI.rotateInterval);
 	if(state)
 	{
-		var opts = {page:3, columns:2, fit:"height", displayOptions:false, searchOptions:false, titleContainer:false};
+		var opts = {page:3, columns:2, fit:"height", displayOptions:false, searchOptions:false, titleContainer:false, downloadFileList:false};
 		if(UI.clientIs("mobile")) opts.columns=0;
 
-		UI.setDisplayOptions();
+		UI.setDisplayOptions(opts);
 		UI.selectNextPage(0);
 		if(album.nbPages<=1) return;
 		UI.rotateInterval = setInterval(UI.selectNextPage, UI.slideshow.interval);

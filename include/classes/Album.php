@@ -50,7 +50,7 @@ class Album extends BaseObject
 			$this->dirs=selectDirs($this->relPath,$allFiles);
 			$this->groupedFiles=groupByName($allFiles, true);
 			$allFiles=groupByName($allFiles);
-debug("allFiles", $allFiles, true);
+//debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
 

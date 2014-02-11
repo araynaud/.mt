@@ -1,5 +1,6 @@
 ;TITLE;(root)
 SIZE.DEFAULT;large
+DISPLAY.size;large
 DISPLAY.reverse;true
 DISPLAY.group;true
 DISPLAY.dirsFirst;true
