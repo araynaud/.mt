@@ -216,10 +216,12 @@ debug("LoadConfiguration", $relPath);
 
 
 //output config for default site
-	$publish = $configData["_publish"];
-   	$site = $publish["default"];
-	$configData["publish"] = $publish[$site];
-
+	$publish = getConfig("_publish");
+	if($publish)
+	{
+		$site = $publish["default"];
+		$configData["publish"] = $publish[$site];
+	}
 	return $configData;
 }
 
