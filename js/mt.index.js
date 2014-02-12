@@ -290,6 +290,7 @@ UI.imageOnError = function()
 	var src= img.attr("src");
 	var imageLink = $.makeElement("a", {href: src.appendQueryString({debug: true}), target: "image"}).html(src);
 	UI.addStatus(imageLink.outerHtml());
+	this.unbind("error"); //to avoid infinite loop
 	img.attr("src","icons/delete128.png").show();
 	var caption=filebox.children(".caption, .captionBelow");	
 	caption.show();

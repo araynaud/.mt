@@ -12,7 +12,6 @@ session_start();
 
 debug();
 
-
 $string = "deleteChars(string, start, end=null)";
 debug("deleteChars", $string);
 debug($string, deleteChars($string, 4));
@@ -169,8 +168,17 @@ $tagData = loadTagFiles($relPath);
 debugVar("tagData", true);
 
 $files = listFiles($relPath, $search);
-debug("listFiles Time elapsed", getTimer());
-//debugVar("files", true);
+debug("listFiles $relPath Time elapsed", getTimer());
+$files = array_values($files);
+debugVar("files", true);
+$fileDate = getFileDate(combine("$relPath", $files[0]));
+$mtm = strtotime($fileDate);
+debugVar("fileDate");
+debugVar("mtm");
+$now=microtime(true);
+debugVar("now");
+$since = $now - $mtm;
+debugVar("since");
 
 startTimer();
 $dirs=selectDirs($relPath,$files);
