@@ -598,14 +598,14 @@ UI.scrollPages = function(page)
 	if(!UI.isPageVisible(nextPage))
 		more = UI.appendNextPage();
 
-	UI.scrollPageDiv = $("div.file[page={0}]".format(page)).last();
-//	UI.scrollPageDiv = $("div.file[page={0}]".format(nextPage)).eq(0);
+//	UI.scrollPageDiv = $("div.file[page={0}]".format(page)).last();
+	UI.scrollPageDiv = $("div.file[page={0}]".format(nextPage)).eq(0);
 	var top = UI.scrollPageDiv.offset().top;
 //	top += UI.scrollPageDiv.outerHeight(true);
 //	alert("scrollPages: {0} {1}".format(album.pageNum, top));
 	var options = {duration: UI.slideshow.interval };
-	if(!UI.allPagesVisible())
-		options.complete =  function () { UI.scrollPages(nextPage) };
+	//if(!UI.allPagesVisible())
+	//	options.complete =  function () { UI.scrollPages(nextPage) };
 	$("html,body").animate({scrollTop: top}, options);
 };
 
