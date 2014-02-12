@@ -34,7 +34,7 @@ UI.displayEditEvent = function()
 	if(UI.clientIs("mobile"))
 	{
 		var captions = fileboxes.find(".caption, captionBelow");
-		captions.bindReset("click", function() { UI.displayEdit($(this)); });
+		captions.bindReset("click", function() { UI.displayEdit($(this).parent()); });
 	}
 	else
 	{
