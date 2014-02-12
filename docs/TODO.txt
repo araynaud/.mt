@@ -53,7 +53,12 @@ use POST for action.php ajax
 
 when depth>1:
 OK load metadata for dir.
-search by name: in all subdirs
+1 search by name: in all subdirs
+
+2 load tags from subdirs
+3: search by tag in subdirs.
+
+
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height

@@ -72,8 +72,8 @@ class MediaFile extends BaseObject
 		if($file)
 		{
 			$relPath=getDiskPath($path);
-			$_GET["type"] = getFileType("$relPath/$file");
-			$_GET["name"] = getFilename($file);
+			$_REQUEST["type"] = getFileType("$relPath/$file");
+			$_REQUEST["name"] = getFilename($file);
 		}
 		$album = new Album($path, true);
 		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : $album->getMediaFiles();

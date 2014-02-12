@@ -8,8 +8,16 @@ function getFileData(&$getData, $path, $file)
 	$arrays=getParamBoolean("arrays");
 	$relPath=getDiskPath($path);
 	$filePath=combine($relPath, $file);
-	switch (strtolower($getData))
+	$getData = strtolower($getData);
+	switch ($getData)
 	{
+		case "groupedfiles":
+		case "files":
+			$search = getSearchParameters();
+			$files = listFiles($relPath, $search); 
+			if($getData == "groupedfiles")
+				$files = groupByName($files, true);
+			return $files;
 		case "config":
 			return $config;
 		case "size":
@@ -55,9 +63,11 @@ $data=objToArray($data, true, true);
 $save=getParamBoolean("save");
 if($save)
 	saveImageInfo($relPath, $file, $data);
-
-$data["fileDate"] = getFileDate($filePath);
-$data["time"] = getTimer();
+if(isAssociativeArray($data))
+{
+	$data["time"] = getTimer();
+	$data["count"] = count($data);
+}
 
 switch (strtolower($format))
 {
@@ -73,4 +83,5 @@ switch (strtolower($format))
 		setContentType("text", "plain");
 		echo jsValue($data, $indent, $includeEmpty);
 }
+
 ?>

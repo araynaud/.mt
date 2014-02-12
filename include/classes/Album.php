@@ -77,16 +77,7 @@ class Album extends BaseObject
 	//init search parameters from request
     public function getSearchParameters()
 	{
-		$this->search = Array();		
-		$this->search["type"]=getParam("type");
-		$this->search["name"]=getParam("name");
-//		$this->search["sort"]=getParam("sort");
-		$this->search["depth"]=$this->getDepth();
-		$this->search["metadata"]=getParamBoolean("metadata");
-		$this->search["maxCount"]=getParam("count",0);
-		$this->search["config"]=getParamBoolean("config",true);
-//		$this->search["array"]=getParamBoolean("array", false);
-debug("getSearchParameters",$this->search);
+		$this->search = getSearchParameters();	
 		return $this->search;
 	}
 
@@ -98,9 +89,8 @@ debug("getSearchParameters",$this->search);
 
 	public function getDepth()
 	{
-		global $DEFAULT_DEPTH;
 		if($this->depth==null)
-			$this->depth=getParamNumOrBool("depth", $DEFAULT_DEPTH);
+			$this->depth=getParamNumOrBool("depth", 0);
 		return $this->depth;
 	}
 	

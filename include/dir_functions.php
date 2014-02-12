@@ -143,6 +143,20 @@ debug("listFiles $dir", $search);
 	return $files;
 }
 
+function getSearchParameters()
+{
+	$search = Array();		
+	$search["type"]=reqParam("type");
+	$search["name"]=reqParam("name");
+	$search["sort"]=reqParam("sort");
+	$search["depth"]=reqParam("depth");
+	$search["metadata"]=reqParamBoolean("metadata");
+	$search["maxCount"]=reqParam("count",0);
+	$search["config"]=reqParamBoolean("config",true);
+debug("getSearchParameters",$search);
+	return $search;
+}
+
 function parseWildcards(&$search)
 {
 	$name = @$search["name"];

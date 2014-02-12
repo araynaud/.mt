@@ -94,9 +94,20 @@ function postParam($name, $default="")
 //get request parameter
 function getParamBoolean($name,$default=false)
 {	
-	if(!isset($_GET[$name]))
-		return $default;
+	if(!isset($_GET[$name]))	return $default;
 	return parseBoolean($_GET[$name],$default);
+}
+
+function reqParamBoolean($name,$default=false)
+{	
+	if(!isset($_REQUEST[$name]))	return $default;
+	return parseBoolean($_REQUEST[$name],$default);
+}
+
+function postParamBoolean($name,$default=false)
+{	
+	if(!isset($_POST[$name]))	return $default;
+	return parseBoolean($_POST[$name],$default);
 }
 
 function parseBoolean($var,$default=false)
