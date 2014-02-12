@@ -434,6 +434,8 @@ UI.selectCountPerPage = function()
 
 UI.displayPageLinks = function()
 {
+	var nbPages = album.getNumberOfPages();
+
 	UI.pagers.html("");
 	$("#pagesBottom").toggle(album.fit == "width" || album.columns<=1);
 	if(album.nbPages<=1)

@@ -372,10 +372,15 @@ Album.prototype.setCountPerPage = function(countPerPage)
 	this.pageNum = this.countPerPage==0 ? 0 :
 		parseInt(this.startFileIndex / this.countPerPage)+1;
 
+	this.getNumberOfPages();
+	return this.countPerPage;
+};
+
+Album.prototype.getNumberOfPages = function()
+{
 	this.nbPages = (this.countPerPage == 0) ? 1 :
 		parseInt((this.activeFileList().length + this.countPerPage - 1) / this.countPerPage);
-
-	return this.countPerPage;
+	return this.nbPages;
 };
 
 
