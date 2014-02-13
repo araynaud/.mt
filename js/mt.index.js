@@ -134,7 +134,7 @@ UI.displayTags = function()
 	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags));
 	$("input.tagOption").bindReset("click", UI.search);		
 	UI.styleCheckboxes("", "tagOption", "tagLabel");
-}
+};
 
 //use mediafile.width and height
 //for videos: get image size from thumbnail

@@ -405,7 +405,10 @@ Slideshow.prototype.autoShowNextImage = function()
 
 Slideshow.prototype.showComments = function(pic,divId)
 {
-	$('#'+divId).html(pic.description||"");
+	var div=$('#'+divId);
+	div.html(pic.description||"");
+	if(pic.tags)
+		UI.renderTemplate("tagTemplate", div, Object.keys(pic.tags), "append");
 }
 
 // ---- IMAGE display functions -------

@@ -79,8 +79,8 @@ UI.keys =
 		35: function() { UI.slideshow.showImage(-1); },	//end: last
 		27: function() { UI.setMode(); },		// ESC key: close slideshow
 		32: function() { UI.slideshow.togglePlay(); },	 //SPACE: play/pause
-		45: function() { UI.confirmFileAction("move","best"); },		// Insert key: move to best
-		46: function() { UI.confirmFileAction("move"); },	 //Delete: delete /.bad
+		45: function() { UI.confirmFileAction("addtag","best"); },		// Insert key: move to best
+		46: function() { UI.confirmFileAction("delete"); },	 //Delete: delete /.bad
 		'P': function() { UI.confirmFileAction("move",".."); },	 //P: move to parent
 		'T': function() { UI.slideshow.nextTransition(); },	//T: next transition
 		'C': function() { UI.slideshow.toggleControls(); },	//C: controls
