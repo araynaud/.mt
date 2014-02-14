@@ -7,12 +7,13 @@ function getTagFilename($relPath, $tag)
 }
 
 //get index csv without trying to refresh
-function listTagFiles($relPath)
+function listTagFiles($relPath, $grouped=true)
 {
 	$search = array("type" => "csv");
 	$tagFiles = listFiles("$relPath/.tag", $search);
 debug("tagFiles", $tagFiles);
-	$tagFiles = groupByName($tagFiles);
+	if($grouped)
+		$tagFiles = groupByName($tagFiles);
 debug("tagFiles grouped", $tagFiles);
 	return $tagFiles;
 }

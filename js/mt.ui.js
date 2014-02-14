@@ -195,7 +195,7 @@ UI.changeMode = function(oldMode, newMode, fade)
 	if(newMode.onShow) 	newMode.onShow();
 };
 
-UI.makeBackgroundGradients = function(step)
+UI.makeBackgroundGradients = function()
 {
 	var divbg=$('div#divbg');
 	if(isEmpty(divbg)) return;

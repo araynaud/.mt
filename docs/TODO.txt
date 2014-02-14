@@ -58,6 +58,8 @@ OK load metadata for dir.
 2 load tags from subdirs
 3: search by tag in subdirs.
 
+Upload: vsizes is null. exclude dirs.
+upload .bg.jpg and readme.txt
 
 
 ---------------

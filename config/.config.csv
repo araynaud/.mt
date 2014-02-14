@@ -145,3 +145,4 @@ file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
 ;delete: move to this directory. if blank: delete files 
 file.delete.to;.bad
 
+fb.app_id;159679107375436

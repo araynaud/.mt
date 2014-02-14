@@ -205,6 +205,79 @@ function facebookFacepile($path, $width=320)
 	<fb:facepile href="<?php echo getAbsoluteUrl($path)?>" max_rows="2" width="<?php echo $width?>"></fb:facepile>
 <?php }
 
+
+//generate meta tags based on album data
+/*
+<meta property="og:site_name" content="Le Gorafi.fr Gorafi News Network" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="fb:app_id" content="142787252530222" />
+<meta property="og:url" content="http://www.legorafi.fr/2013/07/22/quest-ce-que-va-changer-la-naissance-du-royal-baby-pour-nous/" />
+<meta property="og:title" content="Qu&rsquo;est-ce que va changer la naissance du Royal Baby pour nous?" />
+<meta property="og:description" content="." />
+<meta property="og:image" content="http://www.legorafi.fr/wp-content/uploads/2013/07/katewilliam.jpg" />
+<meta property="og:image:width" content="500" />
+<meta property="og:image:height" content="372" />
+
+<meta property="article:published_time" content="2013-07-22T19:47:40+00:00" />
+<meta property="article:modified_time" content="2013-07-23T18:54:31+00:00" />
+<meta property="article:author" content="http://www.legorafi.fr/author/admin/" />
+<meta property="article:section" content="Monde Libre" />
+<meta property="article:tag" content="Angleterre" />
+<meta property="article:tag" content="Kate" />
+<meta property="article:tag" content="Royal Baby" />
+<meta property="article:tag" content="William" />
+<meta property="article:tag" content="Windsor" />
+
+<meta name="description" content="<?php echo $description?>"/>
+
+*/
+
+function metaTags($album)
+{
+	$path = $album->getPath();
+	$relPath= $album->getRelPath();
+
+	$meta=array();
+	$meta["og:site_name"] = "MinorArt"; //getDirConfig("", "TITLE"); //get root dir title	
+	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
+	$meta["og:url"] = getAbsoluteUrl($path);
+	$meta["og:title"] = $album->getTitle();		 //get current dir title	
+	$meta["og:description"] = $album->getDescription();
+
+//TODO: image: 1st best, or 1st image, use maxcount ?
+	$image = findFirstImage($relPath);
+	//if(is_array($image))	$image=array_shift($image);
+	$is = getimagesize(combine($relPath,$image));
+	$meta["og:image"] = combine(getServerRoot(), $album->getAbsPath(), $image);
+	$meta["og:image:width"]  = $is[0];
+	$meta["og:image:height"] = $is[1];
+
+	$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
+	$meta["article:modified_time"]  = formatDate(filemtime($relPath), true);	//dir modified date?
+	$meta["article:author"] = "MinorArt"; //uploader username ?
+
+//list album tags
+	$meta["article:tag"] = array_keys(listTagFiles($relPath));
+
+	foreach ($meta as $key => $value) 
+		echo metaTag($key, $value);
+
+	return $meta;
+}
+
+function metaTag($key, $value)
+{
+	if(!is_array($value))
+		return "\t<meta property='$key' content='$value' />\n";
+
+	$result="";
+	foreach ($value as $k => $element)
+		$result .= metaTag($key, $element);
+	return $result;
+}
+
+
 // HTML list for the HTML5 player
 function html5playlist($relPath,$files)
 {?>

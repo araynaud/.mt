@@ -228,8 +228,8 @@ debug("LoadConfiguration", $relPath);
 //config for the current dir only
 function getDirConfig($path, $key=null)
 {
-debug("getDirConfig");
 	$relPath=getDiskPath($path);
+debug("getDirConfig", $relPath);
 	$depth=pathDepth($path);
 
 //1 default config by path depth
@@ -559,10 +559,13 @@ function formatFilemtime($filename)
 	return formatDate(filemtime($filename));
 }
 
-function formatDate($mtime)
+function formatDate($mtime,$xml=false)
 {
 	if(!$mtime) return "";
-	return date("Y-m-d H:i:s", $mtime);
+	$date = date("Y-m-d H:i:s", $mtime);
+	if($xml)
+		$date = str_replace(" ", "T", $date);
+	return $date;
 }
 
 function deleteFile($relPath, $file="")

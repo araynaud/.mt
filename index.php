@@ -28,6 +28,10 @@ $allowFacebook=allowFacebook($path);
 if(!empty($description)) {?>
 	<meta name="description" content="<?php echo $description?>"/>
 <?php }
+
+metaTags($album);
+//debug("meta", xmlValue("meta", metaTags($album)), true);
+
 //prevent scaling on mobile browser
 // iOS <meta name="viewport" content="width=1165, user-scalable=no">
 if(isMobile()) {?>

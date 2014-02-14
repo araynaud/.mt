@@ -93,6 +93,11 @@ class Album extends BaseObject
 			$this->depth=getParamNumOrBool("depth", 0);
 		return $this->depth;
 	}
+
+    public function getPath()
+	{
+		return $this->path;
+	}
 	
     public function getRelPath()
 	{
@@ -105,13 +110,13 @@ class Album extends BaseObject
     public function getAbsPath()
 	{
 		if(!$this->urlAbsPath)
-			$this->urlAbsPath = diskPathToUrl($this->relPath);
+			$this->urlAbsPath = diskPathToUrl($this->getRelPath());
 		return $this->urlAbsPath;
 	}
 	
     public function getTitle()
 	{
-		if(!$this->title)	$this->title = GetDirConfig($this->path,"TITLE");
+		if(!$this->title)	$this->title = getDirConfig($this->path,"TITLE");
 		if(!$this->title)	$this->title = makePathTitle($this->path);
 		return $this->title;
 	}

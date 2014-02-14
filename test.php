@@ -12,12 +12,16 @@ session_start();
 
 debug();
 
+/*
 $string = "deleteChars(string, start, end=null)";
 debug("deleteChars", $string);
 debug($string, deleteChars($string, 4));
 debug($string, deleteChars($string, 6, 10));
 debug($string, deleteChars($string, 4, 10));
+*/
 
+$meta = metaTags($path);
+echo jsValue($meta, true, true);
 
 //debug("arrayGet", arrayGet($config,"TYPES.VIDEO"));
 
