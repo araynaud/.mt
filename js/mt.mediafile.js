@@ -327,6 +327,7 @@ MediaFile.getFileSize = function (mediaFile, tn)
 
 MediaFile.prototype.getFileSize = function (tn)
 {	
+	if(!this.vsizes) return 0;
 	tn=valueOrDefault(tn, 0);
 	return this.vsizes[tn] || this.vsizes[this.exts[tn]];
 };

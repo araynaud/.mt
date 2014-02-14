@@ -65,8 +65,8 @@ if($save)
 	saveImageInfo($relPath, $file, $data);
 if(isAssociativeArray($data))
 {
-	$data["time"] = getTimer();
 	$data["count"] = count($data);
+	$data["time"] = getTimer();
 }
 
 switch (strtolower($format))

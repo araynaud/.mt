@@ -239,7 +239,7 @@ function metaTags($album)
 	$relPath= $album->getRelPath();
 
 	$meta=array();
-	$meta["og:site_name"] = "MinorArt"; //getDirConfig("", "TITLE"); //get root dir title	
+	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
 	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
 	$meta["og:url"] = getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
@@ -247,12 +247,14 @@ function metaTags($album)
 
 //TODO: image: 1st best, or 1st image, use maxcount ?
 	$image = findFirstImage($relPath);
-	//if(is_array($image))	$image=array_shift($image);
-	$is = getimagesize(combine($relPath,$image));
-	$meta["og:image"] = combine(getServerRoot(), $album->getAbsPath(), $image);
-	$meta["og:image:width"]  = $is[0];
-	$meta["og:image:height"] = $is[1];
-
+	if($image)
+	{
+		//if(is_array($image))	$image=array_shift($image);
+		$is = getimagesize(combine($relPath,$image));
+		$meta["og:image"] = combine(getServerRoot(), $album->getAbsPath(), $image);
+		$meta["og:image:width"]  = $is[0];
+		$meta["og:image:height"] = $is[1];
+	}
 	$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
 	$meta["article:modified_time"]  = formatDate(filemtime($relPath), true);	//dir modified date?
 	$meta["article:author"] = "MinorArt"; //uploader username ?
@@ -269,7 +271,7 @@ function metaTags($album)
 function metaTag($key, $value)
 {
 	if(!is_array($value))
-		return "\t<meta property='$key' content='$value' />\n";
+		return "\t<meta property=\"$key\" content=\"$value\" />\n";
 
 	$result="";
 	foreach ($value as $k => $element)
