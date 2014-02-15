@@ -100,7 +100,8 @@ function getMetadataIndex($relPath, $type, $fileList=array(), $completeIndex=fal
 	//TODO use dateIndex.types;IMAGE		
 	$index = loadMetadataIndex($relPath, $type);
 debug("loadMetadataIndex keys", array_keys($index));
-
+if(!$fileList) $fileList=array();
+debug("fileList", $fileList);
 	$subdirFiles=array();
 	if($fileList)
 	{
@@ -108,8 +109,6 @@ debug("loadMetadataIndex keys", array_keys($index));
 		$fileList = array_filter($fileList, "fileHasNoSubdir"); 
 	}
 
-	if(!$fileList)	 return $index;
-	//$index = array_intersect_key($index, $fileList);
 	$addedFiles = 0;
 	foreach ($fileList as $name => $file)
 	{
@@ -146,9 +145,6 @@ debug("subdirFiles", count($subdirFiles));
 	$prevDir="";
 	foreach ($subdirFiles as $key => $file)
 	{
-		//split subdir/file
-		//splitFilePath($file,$subdir,$filename);
-		//splitFilename($filename, $file["name"], $exts);
 		if($file["subdir"] != $prevDir) // if file in different dir: load new date index
 		{
 			$subdir = combine($relPath, $file["subdir"]);
