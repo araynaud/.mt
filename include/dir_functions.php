@@ -50,8 +50,6 @@ debug("listFiles $dir", $search);
 	else
 	{
 		global $ignoreList, $relPathG;
-
-		parseWildcards($search);
 		$handle=opendir($dir);	
 		if(!$handle)
 			return $files;
@@ -69,6 +67,7 @@ debug("listFiles $dir", $search);
 //debug("listFiles", $file);
 
 			if(ignoreFile($file)) continue;
+
 			if($recurse && fileIsDir("$dir/$file"))
 				$subdirs[$file] = $file;
 			splitFilename($file,$key,$ext);
@@ -95,7 +94,8 @@ debug("listFiles $dir", $search);
 	}
 	$relPathG=null;
 //debug("keys", array_keys($files));
-	
+debug("recurse",$recurse);	
+debug("subdirs",$subdirs);	
 	if($recurse==0 || $remaining>0 && count($files)==$remaining)
 		return $files;
 
@@ -145,7 +145,7 @@ debug("listFiles $dir", $search);
 
 function getSearchParameters()
 {
-	$search = Array();		
+	$search = array();		
 	$search["type"]=reqParam("type");
 	$search["name"]=reqParam("name");
 	$search["sort"]=reqParam("sort");
@@ -153,6 +153,8 @@ function getSearchParameters()
 	$search["metadata"]=reqParamBoolean("metadata");
 	$search["maxCount"]=reqParam("count",0);
 	$search["config"]=reqParamBoolean("config",true);
+	parseWildcards($search);
+
 debug("getSearchParameters",$search);
 	return $search;
 }
