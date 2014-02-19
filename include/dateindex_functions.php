@@ -118,7 +118,7 @@ debug("fileList", $fileList);
 debug("getMetadataIndex $name", $filePath);
 		if($type=="IMAGE")
 			$index[$name] = getImageInfo($filePath, true);
-		else if($type=="VIDEO")
+		else if($type=="VIDEO" && getConfig("ENABLE_FFMPEG"))
 			$index[$name] = getVideoProperties($filePath);
 		$addedFiles++;
 	}
@@ -136,10 +136,19 @@ debug("getMetadataIndex $name", $filePath);
 	if($addedFiles || $deletedFiles && $completeIndex)
 		saveMetadataIndex($relPath, $index, $type);
 
-	if(!$subdirFiles)	return $index;
-	
+	if($subdirFiles)
+		loadSubdirData($index, $relPath, $subdirFiles, $type);
+
+debug();
+debug("getMetadataIndex $type", $index, true);
+debug();
+	return $index;
+}
+
+function loadSubdirData(&$index, $relPath, $subdirFiles, $type="")
+{
 debug("subdirFiles", count($subdirFiles));
-	
+debug("subdirFiles", $subdirFiles);
 //for subdir files: load subdir/.dateIndex.csv 
 //then asort, as in groupByName
 	$prevDir="";
@@ -148,24 +157,22 @@ debug("subdirFiles", count($subdirFiles));
 		if($file["subdir"] != $prevDir) // if file in different dir: load new date index
 		{
 			$subdir = combine($relPath, $file["subdir"]);
-debug("loadMetadataIndex", $subdir);
-			$dirIndex = loadMetadataIndex($subdir, $type);
-//debug("loadMetadataIndex", $dirIndex);
+			debug("loadSubdirData", $subdir);
+			if($type)
+				$dirIndex = loadMetadataIndex($subdir, $type);
+			else
+				$dirIndex = loadDateIndex($subdir);
+debug("loadSubdirData", $dirIndex);
 		}
 
 		if(isset($dirIndex[$file["name"]]))
-		{
 			$index[$key] = $dirIndex[$file["name"]];
-//			debug($key, $index[$key]);		
-		}
 		$prevDir = $file["subdir"];
 	}
-debug();
-debug("getMetadataIndex $type", $index, true);
-debug();
-
 	return $index;
+
 }
+
 
 function addToMetadataIndex($relPath, $type, $name, $metadata)
 {
@@ -334,33 +341,12 @@ debug("addedFiles", count($addedFiles));
 	if($addedFiles || $deletedFiles && $completeIndex)
 		writeDateIndex($relPath,$dateIndex);
 	
-	if(!$subdirFiles)
-		return $filteredIndex;
-	
-debug("subdirFiles", count($subdirFiles));
+	if($subdirFiles)
+		loadSubdirData($filteredIndex, $relPath, $subdirFiles);
 
-	
-//for subdir files: load subdir/.dateIndex.csv 
-//then asort, as in groupByName
-	$prevDir="";
-	foreach ($subdirFiles as $key => $file)
-	{
-		//split subdir/file
-		//splitFilePath($file,$subdir,$filename);
-		//splitFilename($filename, $file["name"], $exts);
-		if($file["subdir"] != $prevDir) // if file in different dir: load new date index
-			$dateIndex = loadDateIndex(combine($relPath, $file["subdir"]));
-
-		if(isset($dateIndex[$file["name"]]))
-		{
-			$filteredIndex[$key] = $dateIndex[$file["name"]];
-//			debug($key, $filteredIndex[$key]);		
-		}
-		$prevDir = $file["subdir"];
-	}
-		
 	asort($filteredIndex);
 	
+debug("getRefreshedDateIndex", $filteredIndex, true);
 	return $filteredIndex;
 }
 ?>

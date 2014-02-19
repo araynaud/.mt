@@ -225,25 +225,24 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 //debug("getMediaFileInfo", $metadata, true);
 	$data = array();
 
-//TODO find video stream: 0 or 1: with codec_type": "video", width and height > 0
-$streams= array();
-$codecType=arrayGet($metadata, "STREAM.0.codec_type");
-if($codecType) $streams[$codecType]=0;
+	//Find video stream: 0 or 1: with codec_type": "video", width and height > 0
+	$streams= array();
+	$codecType=arrayGet($metadata, "STREAM.0.codec_type");
+	if($codecType) $streams[$codecType]=0;
 
-$codecType=arrayGet($metadata, "STREAM.1.codec_type");
-if($codecType) $streams[$codecType]=1;
-
-$audio=$streams["audio"];
-$video=$streams["video"];
+	$codecType=arrayGet($metadata, "STREAM.1.codec_type");
+	if($codecType) $streams[$codecType]=1;
+	$audio=$streams["audio"];
+	$video=$streams["video"];
 
 	//$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");
-	$data["width"] = arrayGetCoalesce($metadata, "STREAM.0.width","STREAM.1.width", "STREAM.width");
-	$data["height"] = arrayGetCoalesce($metadata, "STREAM.0.height", "STREAM.1.height", "STREAM.height");
+	$data["width"] = arrayGetCoalesce($metadata, "STREAM.$video.width", "STREAM.width");
+	$data["height"] = arrayGetCoalesce($metadata, "STREAM.$video.height", "STREAM.height");
 	$display_aspect_ratio = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
 	$data["ratio"] = $display_aspect_ratio;
 
-	$data["streams"] = $streams;
+	//$data["streams"] = $streams;
 	$data["frameRate"] = fractionValue(arrayGet($metadata, "STREAM.$video.avg_frame_rate"));
 	$data["frameRateInt"] = round($data["frameRate"]);
 

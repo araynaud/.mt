@@ -443,13 +443,19 @@ function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey="")
 function toCsvTable($data, $columnNames=false, $writeKey="")
 {
 	$csv = "";
+	$end="";
 	if($columnNames)
-		$csv .= csvHeaderRow($data, $writeKey) . "\n";
-	foreach ($data as $key => $row)
 	{
-		debug($key, $row);
-		$csv .= csvDataRow($row, $writeKey ? $key : null) . "\n";
+		$csv .= csvHeaderRow($data, $writeKey);
+		$end = "\n";
 	}
+
+	foreach ($data as $key => $row)
+		if($row)
+		{
+			$csv .= $end . csvDataRow($row, $writeKey ? $key : null);
+			$end = "\n";
+		}
 	return $csv;
 }
 
@@ -459,9 +465,11 @@ function csvHeaderRow($data, $writeKey="")
 {
 	$separator=";";
 	$columns=array();
+	if(!$data) return "";
 	//get union of keys in all rows
 	foreach ($data as $key => $row)
-		$columns = array_merge($columns, $row);
+		if($row)
+			$columns = array_merge($columns, $row);
 
 	$k = array_keys($columns);
 	if($writeKey)
@@ -473,12 +481,11 @@ function csvDataRow($row, $key)
 {
 	$separator=";";
 	$separator2=":";
+	if(!$row) return "";
 	if($key)	array_unshift($row, $key);
 
 	foreach ($row as $key => $value)
-	{
 		$row[$key] = csvValue($value, false, $separator2);
-	}
 //	debug("csvDataRow", $row);
 	return implode($separator, $row);
 }
