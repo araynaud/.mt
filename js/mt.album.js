@@ -471,10 +471,6 @@ Album.prototype.isMediaFileExcluded = function(element, index, array)
 Album.prototype.loadDisplayOptions = function()
 {
 	config = this.config; //global config
-
-//	if(config.thumbnails.sizes && !config.thumbnails.dirs)
-//		config.thumbnails.dirs=Object.keys(config.thumbnails.sizes);
-
 	if(!config.DISPLAY) return;
 	config.DISPLAY.size=valueOrDefault(config.DISPLAY.size,0);
 	for(var key in config.DISPLAY)

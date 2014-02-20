@@ -167,7 +167,7 @@ UI.fileAction = function(params, windowName, showConfirm)
 	if(isMissing(windowName))
 	{
 		var callbacks = {success: UI.afterAction };
-		mediaFile.scriptAjax(scriptName + ".php", params, false, callbacks);
+		mediaFile.scriptAjax(scriptName + ".php", params, false, true, callbacks);
 	}
 	else
 		UI.goToPage(scriptName, params, windowName);

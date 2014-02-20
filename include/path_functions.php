@@ -65,6 +65,16 @@ function combine()
 //test if each level exists is_dir
 //if not, toggle .
 
+function postPath($path="")
+{	
+	return postPath($_POST["path"]);
+}
+
+function reqPath($path="")
+{	
+	return getPath($_REQUEST["path"]);
+}
+
 function getPath($path="")
 {	
 	if(empty($path))

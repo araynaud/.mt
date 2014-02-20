@@ -106,7 +106,7 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 	UI.fileIndex=0;
 	chunkIndex=1;
 	//upload file
-	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, callbacks);
+	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 };
 
 UI.uploadNextFile = function(response, script, params, callbacks)
@@ -123,7 +123,7 @@ UI.uploadNextFile = function(response, script, params, callbacks)
 		params.nbChunks=response.nbChunks;
 //		UI.progressBar.addProgress(params.chunk / params.nbChunks);
 		UI.progressBar.addProgress(response.file.filesize);
-		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, callbacks);
+		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 		return;
 	}
 
@@ -147,7 +147,7 @@ UI.uploadNextFile = function(response, script, params, callbacks)
 		delete params.nbChunks;
 		delete params.chunk;
 	}
-	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, callbacks);
+	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 };
 
 
@@ -157,7 +157,7 @@ UI.doNextFile = function(response, script, params, callbacks)
 	if(++UI.fileIndex < album.selectedFiles.length)
 	{
 		params.tn = album.selectedFiles[UI.fileIndex].resizeBeforeUpload();
-		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, callbacks);
+		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, false, callbacks);
 	}
 	else
 	{

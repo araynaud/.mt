@@ -239,6 +239,20 @@ MediaFile.prototype.getScriptUrl = function (scriptName, params)
 	return MediaFile.getScriptUrl(this, scriptName, params);
 };
 
+MediaFile.makePostData = function(mediaFile, params)
+{
+	if(!params) params={};
+	params.path = String.combine(album.path, mediaFile.subdir);
+	params.name = mediaFile.name;
+//	params.file = mediaFile.filename;
+	return params;
+};
+
+MediaFile.prototype.makePostData = function (params)
+{
+	return MediaFile.makePostData(this, params);
+};
+
 MediaFile.getThumbnailDir = function(mediaFile, tnIndex)
 {
 	if(isMissing(tnIndex) || isEmpty(mediaFile.tnsizes) || isMissing(mediaFile.tnsizes[tnIndex]))
@@ -348,7 +362,7 @@ MediaFile.prototype.getTnFileSize = function (tn)
 };
 
 //run image script via ajax request
-MediaFile.imageScriptAjax = function (mediaFile,params)
+MediaFile.imageScriptAjax = function (mediaFile, params)
 {	
 	return MediaFile.scriptAjax(mediaFile, "image.php", params);
 };
@@ -398,22 +412,24 @@ MediaFile.prototype.getThumbnailUrlAjax = function (tnIndex)
 };
 
 //run image script via ajax request
-MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
+MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbacks)
 {	
 	if(!script || !mediaFile) return false;
 
 	async = valueOrDefault(async, false);
 	params = valueOrDefault(params, {});
 	params.format="ajax";
-	var scriptUrl = mediaFile.getScriptUrl(script, params);
-
+	var scriptUrl = mediaFile.getScriptUrl(script); //, params);
+	var method= post ? "POST" : "GET";
 	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
 
 	var result = false;
    	$.ajax({
 		url: scriptUrl,
+	    type: method,
+	    data: params,
 		dataType: "json",
-	    contentType: "application/json",
+	    //contentType: "application/json",
 		cache: false,
 		async: async,
 		success: function(response)
@@ -437,9 +453,9 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, callbacks)
 	return result;
 };
 
-MediaFile.prototype.scriptAjax = function (script, params, async, callbacks)
+MediaFile.prototype.scriptAjax = function (script, params, async, post, callbacks)
 {	
-	return MediaFile.scriptAjax(this, script, params, async, callbacks);
+	return MediaFile.scriptAjax(this, script, params, async, post, callbacks);
 };
 
 MediaFile.imageSuccess = function(response, mediaFile, params)

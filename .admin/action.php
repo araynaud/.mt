@@ -7,21 +7,21 @@ setContentType("text", "plain");
 // create MediaFile by name
 // AJAX response: new MediaFile after action + error or confirmation message
 
-$path=getPath();
-$file = getParam("file");
-$name = getParam("name");
-$action = getParam("action");
+$path=reqPath();
+$file = reqParam("file");
+$name = reqParam("name");
+$action = reqParam("action");
 $actions = getConfig("file.actions");
 //move/rename options
-$to = getParam("to");
-$rename = getParam("rename");
+$to = reqParam("to");
+$rename = reqParam("rename");
 
 //tag options
-$tag = getParam("tag", $to);
+$tag = reqParam("tag", $to);
 
 //output options
-$indent = getParam("indent", 1);
-$includeEmpty = getParamBoolean("empty");
+$indent = reqParam("indent", 1);
+$includeEmpty = reqParamBoolean("empty",true);
 
 $mf = MediaFile::getMediaFile();
 debugVar("mf");
