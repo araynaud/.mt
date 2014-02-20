@@ -128,7 +128,8 @@ debug("subdirs",$subdirs);
 		foreach($subdirs as $subdir)
 		{
 			$newDir=combine($dir,$subdir);
-			$subdirFiles=listFiles($newDir,$search,combine($subPath,$subdir),$remaining,$recurse);
+			$nb = max(floor($remaining/$nbDirs), 1);
+			$subdirFiles=listFiles($newDir,$search,combine($subPath,$subdir),$nb,$recurse);
 			if(!$subdirFiles) continue;
 			
 			$files=array_merge($files,$subdirFiles); //1 array
