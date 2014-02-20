@@ -30,11 +30,11 @@
 					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else type=="VIDEO" && tnsizes && stream}}
+		{{else type=="VIDEO" && tnsizes && stream && ~albumVar('config').MediaPlayer.video.enabled}}
 				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:stream}}"/>
 		{{else type=="VIDEO" && tnsizes}}
-			<a href="{{:~fileUrl(#data)}}" target="fileDownload">
-				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{>filename}}"/>
+			<a href="{{:~fileUrl(#data,stream)}}" target="fileDownload">
+				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{:stream}}"/>
 			</a>
 		{{else type=="IMAGE"}}
 			<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}"/>

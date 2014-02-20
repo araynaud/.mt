@@ -192,9 +192,9 @@ MediaFile.getFilePath = function (mediaFile)
 	return String.combine(album.path, mediaFile.subdir, mediaFile.filename);
 };
 
-MediaFile.prototype.getFilePath = function()
+MediaFile.prototype.getFilePath = function(ext)
 {
-	return MediaFile.getFilePath(this);
+	return MediaFile.getFilePath(this, ext);
 };
 
 MediaFile.getFileUrl = function (mediaFile, ext)
@@ -202,6 +202,8 @@ MediaFile.getFileUrl = function (mediaFile, ext)
 	var filename=mediaFile.filename;
 	if(isMissing(ext))
 		ext="";
+	if(isArray(ext))
+		ext=ext[0];
 	if(!isString(ext) && mediaFile.exts)
 		ext=mediaFile.exts[ext];
 	if(ext)
@@ -609,6 +611,7 @@ MediaFile.prototype.play = function()
 		case "IMAGE":
 			return UI.slideshow.display(mediaFile);
 		case "VIDEO":
+			if(!MediaPlayer.video) return false;
 			return MediaPlayer.video.loadMediaFile(mediaFile);
 		case "AUDIO":
 			return MediaPlayer.audio.loadMediaFile(mediaFile);

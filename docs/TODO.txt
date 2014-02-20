@@ -35,6 +35,7 @@ when displaying fitered file list: sortFiles does not apply.
 => re filter album.mediaFiles after sort
 
 OK "11 Créme de la Créme" : name is empty.
+accent name not passed correctly in URL
 
 OK date index : when depth > 0
 
@@ -48,19 +49,21 @@ return mediaFiles grouped by type.
 OK upload/post file : Send metadata + send file date
 + send tags as a;b;c string , upload saves them.
 
-Description with & cut.
+OK load metadata for subdirs  when depth>0
+OK search by name: in all subdirs
+
+1 Description with & cut.
 use POST for action.php ajax
 
-when depth>1:
-OK load metadata for dir.
-1 search by name: in all subdirs
-
 2 load tags from subdirs
-3: search by tag in subdirs.
+3 search by tag in subdirs.
 
-Upload: vsizes is null. exclude dirs.
-upload .bg.jpg and readme.txt
+OK Upload: vsizes is null. exclude dirs.
+5 upload .bg.jpg and readme.txt.
 
+2 display: use paginate.min_pages and min_last_page
+
+if mediaplayer disabled: video.click => download mp4
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
