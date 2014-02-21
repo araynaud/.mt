@@ -108,7 +108,11 @@ $(document).ready(function()
 	UI.setupEvents();
 
 	if(search.start)
-		UI.slideshow.display(search.start);
+	{
+		var mf=album.getMediaFileByName(search.start);
+		if(mf) mf.play();
+//		UI.slideshow.display(search.start);
+	}
 });
 
 //show all thumbnail images if in cache

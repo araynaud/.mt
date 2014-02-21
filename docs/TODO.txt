@@ -52,8 +52,9 @@ OK upload/post file : Send metadata + send file date
 OK load metadata for subdirs  when depth>0
 OK search by name: in all subdirs
 
-1 Description with & cut.
+OK 1 Description with & cut.
 use POST for action.php ajax
+retest multiple ajax
 
 2 load tags from subdirs
 3 search by tag in subdirs.
