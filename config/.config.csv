@@ -68,7 +68,7 @@ transition.clear;true
 transition.changeMode;queue
 
 ;file sorting
-SORT.OPTIONS;takenDate;name;type;random;width;height;ratio;title;filename;description;subdir
+SORT.OPTIONS;takenDate;name;type;random;duration;width;height;ratio;title;filename;description;subdir
 .DEFAULT;takenDate
 
 ;paginate / count per page

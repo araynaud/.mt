@@ -67,8 +67,8 @@ class MediaFile extends BaseObject
 
     public static function getMediaFile()
     {    	
-		$path=getPath();
-		$file = getParam("file");
+		$path=reqPath();
+		$file = reqParam("file");
 		if($file)
 		{
 			$relPath=getDiskPath($path);
