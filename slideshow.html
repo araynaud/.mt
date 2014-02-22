@@ -1,18 +1,22 @@
-<div id="slideshowContainer" class="hidden">
+<div id="slideshowContainer" class="wrapper hidden">
 	<div class="floatL controls" id="prevDiv">
 		<img  id="indexButtonBig" class="iconTrans" src="icons/close128.png" onclick="UI.setMode()" title="back to thumbnails (Esc)" alt="back to thumbnails"/>
-		<!--br/>
-		<img  id="prevButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-previous.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow.showNextImage(-1)"/-->
+		<br/>
+		<img  id="prevButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-previous.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow.showNextImage(-1)"/>
 	</div>
 	<div class="floatR controls right" id="nextDiv">
 		<img id="playButtonBig" class="iconTrans" src="icons/media-play.png" alt="play" title="play (space)" onclick="UI.slideshow.togglePlay()"/>
-		<!--br/>
-		<img id="nextButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-next.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/-->
+		<br/>
+		<img id="nextButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-next.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
 	</div>
 
 	<img id="slide0" class="slide bottom left hidden" alt="" src="icons/blank1px.png" />
 	<img id="slide1" class="slide top right hidden" alt="" src="icons/blank1px.png" />
-	
+
+	<div class="inlineBlock centered photoBorder shadow">
+		<div id="slidePlayer" class="slide"></div>
+	<div>
+
 	<div class="footerLeftCorner">
 		<div id="slideshowControls">
 			<span class="translucent small status" id="slideshowStatus"></span>		

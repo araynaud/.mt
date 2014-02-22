@@ -13,7 +13,7 @@ UI.sortFiles = function(refreshDisplay)
 
 	//album.onSort callback
 	//for slideshow
-	UI.slideshow.pics=album.selectFiles("IMAGE", "type");
+	UI.slideshow.pics=album.selectFiles({type:["IMAGE","VIDEO"]});
 	if(refreshDisplay)
 		return UI.displaySelectedFiles();
 };
@@ -585,7 +585,10 @@ UI.setupEvents = function()
 	}
 
 	if(config.MediaPlayer.video.enabled)
+	{
 		new MediaPlayer("video");
+		new MediaPlayer("slide");
+	}
 };
 
 

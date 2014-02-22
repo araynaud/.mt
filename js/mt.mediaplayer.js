@@ -32,8 +32,23 @@ var playerSettings=
 		"playlist.display": "html",
 		"playlist.position": "right",
 		"playlist.showAllItems": true,
-		"playlist.size": 300
+		"playlist.size": 300,
+		uiMode: "video"
+	},
+	slide:
+	{
+		id:"slidePlayer",
+	//	skinName: "five",
+		allowHtml5: true,
+		allowFlash: true,
+		size: 1,
+		autostart: false,
+		item: 0,
+		repeat: "list",
+		controlbar: "over",
+		uiMode: "slideshow"
 	}
+
 };
 
 // constructor for player instance
@@ -143,7 +158,8 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 //TODO: remove player if it already exists. or load new file and change settings?
 	this.player=jwplayer(this.settings.id).setup(this.settings);
 	this.setupEvents();
-	UI.setMode("video");
+	if(this.settings.uiMode)
+		UI.setMode(this.settings.uiMode);
 
 	return this;
 };
@@ -153,7 +169,8 @@ MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
 	//select only VIDEO.STREAM types
 	var videoFiles=mediaFiles.filter(MediaFile.isVideoStream); 
 	this.loadPlaylist(videoFiles);
-	UI.setMode("video");
+	if(this.settings.uiMode)
+		UI.setMode(this.settings.uiMode);
 	return this;
 };
 
@@ -484,7 +501,12 @@ MediaPlayer.prototype.setupEvents = function()
 	});
 
 	this.player.onPause(function(event) { mp.setMessage("paused"); });
-	this.player.onComplete(function(event) { mp.setMessage("finished playing."); });
+	this.player.onComplete(function(event)
+	{
+		mp.setMessage("finished playing."); 
+		if(this.settings.uiMode=="slideshow")
+			UI.slideshow.showNextImage(-1);
+	});
 	this.player.onIdle(function(event) { mp.setMessage(); });
 	this.player.onSeek(function(event) { mp.setMessage(); });
 //	this.player.onBuffer(function(event)	{ mp.setMessage("buffering...", item); });

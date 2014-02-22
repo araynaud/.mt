@@ -9,9 +9,19 @@ $file=reqParam("file");
 $relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
 
+$response = array();
 if(!$mf)
 {	
 	$response["message"] = "file $path/$file does not exist.";
+	echo jsValue($response);
+	return;	
+}
+
+
+$publish = getConfig("_publish");
+if(!$publish)
+{	
+	$response["message"] = "publishing from that site is disabled.";
 	echo jsValue($response);
 	return;	
 }
@@ -20,7 +30,6 @@ $chunk = reqParam("chunk",0);
 $nbChunks = reqParam("nbChunks",1);
 
 //publish.url, .username, .password, path, upload_max_filesize from config file 
-$publish = getConfig("_publish");
 $site = reqParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
@@ -28,8 +37,6 @@ $destPath = combine(@$publish["path"], reqParam("target"));
 
 $filePath = combine($relPath, $file);
 debugVar("filePath");
-
-$response = array();
 
 //if file is image, check if width or height > max dimension
 debugVar("publish");
