@@ -627,11 +627,13 @@ MediaFile.prototype.play = function()
 		case "IMAGE":
 			return UI.slideshow.display(this);
 		case "VIDEO":
-			if(MediaPlayer.video)
-				return MediaPlayer.video.loadMediaFile(this);
+			if(MediaPlayer.slide)
+				return MediaPlayer.slide.loadMediaFile(this);
+			break;
 		case "AUDIO":
 			if(MediaPlayer.audio)
 				return MediaPlayer.audio.loadMediaFile(this);
+			break;
 	}
 	return false;
 };

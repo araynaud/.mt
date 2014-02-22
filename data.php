@@ -5,7 +5,6 @@ function getFileData(&$getData, $path, $file)
 {
 	global $config;
 
-	$arrays=getParamBoolean("arrays");
 	$relPath=getDiskPath($path);
 	$filePath=combine($relPath, $file);
 	$getData = strtolower($getData);
@@ -46,11 +45,11 @@ function getFileData(&$getData, $path, $file)
 
 startTimer();
 
-$getData = getParam("data", "MediaFile");
+$getData = reqParam("data", "MediaFile");
 //output options
-$format=getParam("format", "json");
-$indent=getParam("indent", 1);
-$includeEmpty=getParamBoolean("empty");
+$format=reqParam("format", "json");
+$indent=reqParam("indent", 1);
+$includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 
 $path=getPath();

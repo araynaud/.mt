@@ -4,8 +4,8 @@ setContentType("text", "plain");
 
 startTimer();
 
-$path=getPath();
-$file=getParam("file");
+$path=reqPath();
+$file=reqParam("file");
 $relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
 
@@ -16,15 +16,15 @@ if(!$mf)
 	return;	
 }
 
-$chunk = getParam("chunk",0);
-$nbChunks = getParam("nbChunks",1);
+$chunk = reqParam("chunk",0);
+$nbChunks = reqParam("nbChunks",1);
 
 //publish.url, .username, .password, path, upload_max_filesize from config file 
 $publish = getConfig("_publish");
-$site = getParam("site", $publish["default"]);
+$site = reqParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
-$destPath = combine(@$publish["path"], getParam("target"));
+$destPath = combine(@$publish["path"], reqParam("target"));
 
 $filePath = combine($relPath, $file);
 debugVar("filePath");

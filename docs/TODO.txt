@@ -64,7 +64,15 @@ OK Upload: vsizes is null. exclude dirs.
 
 2 display: use paginate.min_pages and min_last_page
 
-if mediaplayer disabled: video.click => download mp4
+OK if mediaplayer disabled: video.click => download mp4
+
+
+video convert progress
+every N seconds: refresh mediafile with data.php / ajax
+
+mobile: display edit as dialog/overlay with big icons.
+
+actions: apply to selection. mutlple ajax or pass multiple names
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
