@@ -353,11 +353,16 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 	{
 		this.hideImage();
 		MediaPlayer.slide.loadMediaFile(this.currentFile);
-		MediaPlayer.slide.show(2*this.transition.duration);
+		MediaPlayer.slide.show(this.transition.duration);
+		this.transition.inProgress=false;
+//		if(this.play)
+			MediaPlayer.slide.play();
 	}
 	else
 	{
-		MediaPlayer.slide.hide(2*this.transition.duration);
+		MediaPlayer.slide.pause();
+		MediaPlayer.slide.hide(this.transition.duration);
+
 		this.fitImage();
 		this.transition.execute(transitionFunction);
 
