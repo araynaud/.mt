@@ -13,7 +13,7 @@ UI.sortFiles = function(refreshDisplay)
 
 	//album.onSort callback
 	//for slideshow
-	UI.slideshow.pics=album.selectFiles({type:["IMAGE","VIDEO"]});
+	UI.slideshow.pics = Album.selectFiles(album.activeFileList(), {type:["IMAGE","VIDEO"]});
 	if(refreshDisplay)
 		return UI.displaySelectedFiles();
 };
@@ -484,8 +484,7 @@ UI.search = function()
 	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
 	album.setPageNumber(1);
 
-	var pics = Album.selectFiles(album.activeFileList(), "IMAGE");
-	UI.slideshow.setPics(pics);
+	UI.slideshow.pics = Album.selectFiles(album.activeFileList(), {type:["IMAGE","VIDEO"]});
 	return UI.displaySelectedFiles();
 };
 

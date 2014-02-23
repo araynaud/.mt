@@ -47,7 +47,7 @@ DISPLAY.size;small
 .transpose;false
 .maxTnIndex;2
 .displayOptions;true
-.searchOptions;false
+.searchOptions;true
 .titleContainer;true
 .downloadFileList;true
 .tagList;true

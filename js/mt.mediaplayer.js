@@ -38,11 +38,12 @@ var playerSettings=
 	slide:
 	{
 		id:"slidePlayer",
+		container: "videoSlide",
 	//	skinName: "five",
 		allowHtml5: true,
-		allowFlash: true,
-		size: 1,
-		autostart: false,
+		allowFlash: false,
+		size: 2,
+		autostart: true,
 		item: 0,
 		repeat: "list",
 		controlbar: "over",
@@ -142,7 +143,7 @@ MediaPlayer.prototype.getModes = function()
 MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 {
 	if(!mediaFile) return;
-	return this.loadPlayer(mediaFile.getFileUrl(mediaFile.isVideoStream()), mediaFile.getThumbnailUrl());
+	return this.loadPlayer(mediaFile.getFileUrl(mediaFile.isVideoStream()), mediaFile.getThumbnailUrl(1));
 };
 //if player.isplaying / is active
 MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
@@ -267,11 +268,24 @@ MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
 
 //call upon player onplay event
 //jwplayer mapped function
+MediaPlayer.prototype.play = function()
+{
+	if(this.player && !this.isPlaying())
+		this.player.play();
+};
+
+MediaPlayer.prototype.pause = function()
+{
+	if(this.player && this.isPlaying())
+		this.player.play();
+};
+
 MediaPlayer.prototype.togglePlay = function()
 {
 	if(this.player)
 		this.player.play();
 };
+
 
 MediaPlayer.prototype.remove = function()
 {
@@ -473,7 +487,6 @@ MediaPlayer.prototype.setSize = function()
 	return this.player.resize(size[1], size[2]);
 };
 
-
 MediaPlayer.prototype.resize = function(width,height)
 {
 	return this.player.resize(width,height);
@@ -504,8 +517,8 @@ MediaPlayer.prototype.setupEvents = function()
 	this.player.onComplete(function(event)
 	{
 		mp.setMessage("finished playing."); 
-		if(this.settings.uiMode=="slideshow")
-			UI.slideshow.showNextImage(-1);
+		if(mp.settings.uiMode=="slideshow" && UI.slideshow.play)
+			UI.slideshow.showNextImage();
 	});
 	this.player.onIdle(function(event) { mp.setMessage(); });
 	this.player.onSeek(function(event) { mp.setMessage(); });
@@ -607,4 +620,26 @@ MediaPlayer.prototype.onLoad = function ()
 MediaPlayer.prototype.onClose = function()
 { 
 };
+
+MediaPlayer.prototype.getElement = function()
+{
+	var el  = this.settings.container || this.settings.id;
+	return $("#"+el);
+};
+
+MediaPlayer.prototype.show = function(options)
+{
+	return this.getElement().show(options);
+};
+
+MediaPlayer.prototype.hide = function(options)
+{ 
+	return this.getElement().hide(options);
+};
+
+MediaPlayer.prototype.toggle = function(options)
+{ 
+	return this.getElement().toggle(options);
+};
+
 

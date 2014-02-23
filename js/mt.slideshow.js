@@ -1,6 +1,5 @@
 function Slideshow(options)
 {
-	this.allowJquery=true;
 	this.allowFacebook=false;
 	this.currentFile=null;
 	// Duration of image (in milliseconds)
@@ -18,7 +17,6 @@ function Slideshow(options)
 	this.play=false;
 	this.timer=null;
 	this.tnIndex=1;
-//	this.subdir=".ss";
 	this.depth=0;
 	this.preLoadedImage=null;
 	this.container=null;
@@ -112,11 +110,6 @@ Slideshow.prototype.setContainer = function(container)
 	if(isEmpty(this.container)) 
 		this.container = $(window);
 	return this.container;
-};
-
-Slideshow.prototype.setSubdir = function(subdir)
-{
-	this.subdir=subdir;
 };
 
 Slideshow.prototype.setDepth = function(depth)
@@ -296,8 +289,8 @@ Slideshow.prototype.getPicUrl = function(index)
 	var pic=this.pics[index];
 
 //if image smaller than slideshow or animated, use original
-	if(pic.animated || !pic.tnsizes || this.tnIndex >= pic.tnsizes.length)
-		return MediaFile.getFileUrl(pic);
+	if(pic.isImage() && (pic.animated || !pic.tnsizes || this.tnIndex >= pic.tnsizes.length))
+		return pic.getFileUrl();
 
 //otherwise get or generate thumbnail
 
@@ -310,7 +303,7 @@ Slideshow.prototype.getPicUrl = function(index)
 		this.setStatus();
 		return url;
 	}
-	return MediaFile.getThumbnailUrl(pic, tnIndex);
+	return pic.getThumbnailUrl(tnIndex);
 };
 
 Slideshow.prototype.getMediaFile = function(index)
@@ -336,8 +329,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	if(isEmpty(this.pics)) return;
 	this.setStart(index);
 	this.setStatus();
-	this.preLoadedImage = this.loadImage();
 	this.currentFile=this.pics[this.currentIndex];
+	this.preLoadedImage = this.loadImage();
 	this.currentImg = this.transition.getNextSlide();
 	this.currentImg.toggleClass("margin", album.margin);
 	this.currentImg.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
@@ -356,28 +349,26 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 {
-//	try	{
+	if(this.currentFile.isVideo())
+	{
+		this.hideImage();
+		MediaPlayer.slide.loadMediaFile(this.currentFile);
+		MediaPlayer.slide.show(2*this.transition.duration);
+	}
+	else
+	{
+		MediaPlayer.slide.hide(2*this.transition.duration);
 		this.fitImage();
-		if(!this.allowJquery)
-			this.type=0;
-
 		this.transition.execute(transitionFunction);
 
-		$("#ImageText").html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
-		//save as currentFile	
-		this.currentFile=this.pics[this.currentIndex];
-		this.setImageLink(MediaFile.getFileUrl(this.currentFile), this.currentFile.filename);
-		this.showComments(this.currentFile,"comments");
-		
 		if(this.play)
 			this.autoShowNextImage();
+	}	
 
-/*	}
-	catch(err)
-	{
-		alert(Object.toText(err,"\n"));
-	}
-*/
+	$("#ImageText").html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
+	//save as currentFile	
+	this.setImageLink(MediaFile.getFileUrl(this.currentFile), this.currentFile.filename);
+	this.showComments(this.currentFile,"comments");
 };
 
 
@@ -495,7 +486,7 @@ Slideshow.prototype.toFullScreen = function(image,container)
 
 	var imgPos=image.offset();
 	$("#fullImg").remove();
-	var ssrc=image.attr("src").replace("/.tn/","/"+this.subdir+"/");
+	var ssrc=image.attr("src");
 	var fullImg=$.makeElement("img", {id: "fullImg", src: ssrc});
 	fullImg.css("position","absolute");
 	fullImg.css("z-index",10);

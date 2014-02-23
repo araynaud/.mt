@@ -108,22 +108,24 @@ MediaFile.prototype.isAudio = function()
 
 MediaFile.isVideo = function(mediaFile)
 {
-	return MediaFile.hasType(mediaFile, "VIDEO");
+	return mediaFile.isVideo();
 };
 
 MediaFile.prototype.isVideo = function()
 {
-	return MediaFile.hasType(this, "VIDEO");
+	return this.type=="VIDEO";
+//	return MediaFile.hasType(this, "VIDEO");
 };
 
 MediaFile.isVideoStream = function(mediaFile)
 {
-	return MediaFile.hasType(mediaFile,"VIDEO", "STREAM");
+	return mediaFile.isVideoStream();
 };
 
 MediaFile.prototype.isVideoStream = function(mediaFile)
 {
-	return MediaFile.hasType(this, "VIDEO", "STREAM");
+	return this.type=="VIDEO" && !isEmpty(this.stream);
+//	return MediaFile.hasType(this, "VIDEO", "STREAM");
 };
 
 MediaFile.prototype.hasType = function(type, subType)
@@ -624,12 +626,12 @@ MediaFile.prototype.play = function()
 {
 	switch(this.type)
 	{
+		case "VIDEO":
+//			if(MediaPlayer.slide)
+//				return MediaPlayer.slide.loadMediaFile(this);
+//			break;
 		case "IMAGE":
 			return UI.slideshow.display(this);
-		case "VIDEO":
-			if(MediaPlayer.slide)
-				return MediaPlayer.slide.loadMediaFile(this);
-			break;
 		case "AUDIO":
 			if(MediaPlayer.audio)
 				return MediaPlayer.audio.loadMediaFile(this);
