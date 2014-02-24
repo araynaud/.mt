@@ -42,7 +42,7 @@ var playerSettings=
 	//	skinName: "five",
 		allowHtml5: true,
 		allowFlash: true,
-		size: 2,
+		size: 1,
 		autostart: false,
 		item: 0,
 		repeat: "list",
@@ -280,10 +280,15 @@ MediaPlayer.prototype.pause = function()
 		this.player.play();
 };
 
-MediaPlayer.prototype.togglePlay = function()
+MediaPlayer.prototype.togglePlay = function(state)
 {
-	if(this.player)
+	if(!this.player) return;
+	if(isMissing(state))
 		this.player.play();
+	if(state===true)
+		this.play();
+	if(state===false)
+		this.pause();
 };
 
 

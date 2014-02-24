@@ -5,6 +5,7 @@ DISPLAY.border;true
 DISPLAY.fadeIn;false
 DISPLAY.displayOptions;false
 DISPLAY.searchOptions;false
+DISPLAY.downloadFileList;false
 
 SIZE.OPTIONS;small;full
 SIZE.DEFAULT;small

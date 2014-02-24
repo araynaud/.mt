@@ -5,14 +5,17 @@ DEBUG.OUTPUT;false
 ;thumbnail display
 DISPLAY.rotate;false
 DISPLAY.reverse;false
+DISPLAY.downloadFileList;false
+DISPLAY.searchOptions;true
 
 slideshow.zoomFunction;crossFade
 
 ;paginate / count per page
 
 ;file types // different files depending on device?
-;TYPES.AUDIO;mp3;m4a;aac
-;TYPES.VIDEO;mp4;m4v
+TYPES.AUDIO;mp3;m4a;aac
+TYPES.VIDEO;mp4;m4v;mov;3gp
+TYPES.VIDEO.STREAM;mp4;m4v;mov;3gp
 
 ;JW Player options
 JWPLAYER.allowHtml5;true

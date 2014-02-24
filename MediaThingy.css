@@ -248,19 +248,20 @@ img.icontr, img.iconTrans
 	margin-left: 10px;
 }
 
-
 .fixedLeft
 {
 	position: fixed;
-	bottom: 50%;
+	bottom: 40%;
 	left: 20px;
+	text-align: left;
 }
 
 .fixedRight
 {
 	position: fixed;
-	bottom: 50%;
+	bottom: 40%;
 	right: 20px;
+	text-align: right;
 }
 
 
@@ -283,6 +284,15 @@ img.icontr, img.iconTrans
 	position: fixed;
 	top: 0px;
 	left: 0px;
+	text-align: left;
+}
+
+.headerRightCorner
+{
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	text-align: right;
 }
 
 .footerRight50

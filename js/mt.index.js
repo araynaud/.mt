@@ -586,8 +586,8 @@ UI.setupEvents = function()
 	if(config.MediaPlayer.video.enabled)
 	{
 		new MediaPlayer("video");
-		new MediaPlayer("slide");
 	}
+	new MediaPlayer("slide");
 };
 
 

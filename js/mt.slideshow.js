@@ -349,19 +349,25 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 {
+try{
 	if(this.currentFile.isVideo())
 	{
 		this.hideImage();
-		MediaPlayer.slide.loadMediaFile(this.currentFile);
-		MediaPlayer.slide.show(this.transition.duration);
 		this.transition.inProgress=false;
-//		if(this.play)
-			MediaPlayer.slide.play();
+		if(MediaPlayer.slide)
+		{
+			MediaPlayer.slide.loadMediaFile(this.currentFile);
+			MediaPlayer.slide.show(this.transition.duration);
+			MediaPlayer.slide.togglePlay(this.play);
+		}
 	}
 	else
 	{
-		MediaPlayer.slide.pause();
-		MediaPlayer.slide.hide(this.transition.duration);
+		if(MediaPlayer.slide)
+		{
+			MediaPlayer.slide.pause();
+			MediaPlayer.slide.hide(this.transition.duration);
+		}
 
 		this.fitImage();
 		this.transition.execute(transitionFunction);
@@ -369,6 +375,8 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 		if(this.play)
 			this.autoShowNextImage();
 	}	
+
+}catch(err) { alert(Object.toText(err,"\n")); }
 
 	$("#ImageText").html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
 	//save as currentFile	
