@@ -41,9 +41,9 @@ var playerSettings=
 		container: "videoSlide",
 	//	skinName: "five",
 		allowHtml5: true,
-		allowFlash: true,
+	//	allowFlash: true,
 		size: 1,
-		autostart: false,
+		autostart: true,
 		item: 0,
 		repeat: "list",
 		controlbar: "over",
@@ -143,8 +143,11 @@ MediaPlayer.prototype.getModes = function()
 MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 {
 	if(!mediaFile) return;
-	return this.loadPlayer(mediaFile.getFileUrl(mediaFile.isVideoStream()), mediaFile.getThumbnailUrl(1));
+	var fileUrl = mediaFile.getFileUrl(mediaFile.isVideoStream());
+	var imageUrl = mediaFile.getThumbnailUrl(1); //add tnIndex to settings
+	return this.loadPlayer(fileUrl, imageUrl);
 };
+
 //if player.isplaying / is active
 MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 {

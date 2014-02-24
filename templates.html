@@ -89,7 +89,7 @@
 <!-- template for video caption -->
 <script id="videoCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
-		<div class="floatR" style="margin-left:5px; margin-right:5px; max-width:25%;">
+		<div class="floatR" style="margin-left:5px; margin-right:5px; max-width:35%;">
 			{{if duration}}{{:~formatTime(duration)}}{{/if}}
 			{{if stream}}<img class="playLink" src="icons/play.png" title="play {{:stream}}" /><br/>{{/if}}
 			{{for exts tmpl="extLinkTemplate"/}}

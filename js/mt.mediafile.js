@@ -124,7 +124,9 @@ MediaFile.isVideoStream = function(mediaFile)
 
 MediaFile.prototype.isVideoStream = function(mediaFile)
 {
-	return this.type=="VIDEO" && !isEmpty(this.stream);
+	if(this.type=="VIDEO" && !isEmpty(this.stream))
+		return this.stream[0];
+	return false;
 //	return MediaFile.hasType(this, "VIDEO", "STREAM");
 };
 

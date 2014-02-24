@@ -77,7 +77,8 @@ if(endsWith($filename, LAST_CHUNK_SUFFIX))
 {
 	$joinedFilename = substringBefore($filename, LAST_CHUNK_SUFFIX);
 	$nbChunks = joinChunks($relPath, $joinedFilename);
-	setFileDate($joinedFilename, $fileDate);
+	$joinedFilePath=combine($relPath, $joinedFilename);
+	setFileDate($joinedFilePath, $fileDate);
 	addVarToArray($response, "joinedFilename");
 	addVarToArray($response, "nbChunks");	
 	$name = getFilename($joinedFilename);
