@@ -194,24 +194,8 @@ $(window).resize(function(event)
 	<div id="pageCounts" class="floatR small bold"></div>
 </div>
 	
-<div id="videoContainer" class="wrapper hidden">
-	<div class="floatL controls" id="videoBackDiv">
-		<img class="iconTrans" id="indexButtonBig" src="icons/close128.png" onclick="UI.setMode()" title="back to thumbnails (Esc)" alt="back to thumbnails"/>
-	</div>
+<?php include("video.html");?>
 
-	<div class="inlineBlock">
-		<div class="translucent right">
-			<span id="videoPlayerMessage" class="text"></span>
-		</div>
-		<div id="videoPlayer"></div>
-	</div>
-	<div class="inlineBlock left">
-		<div class="translucent right">
-			<span id="videoPlayerControls"></span>
-		</div>
-		<ul id="videoPlayerPlaylist" class="playlist scrollY"></ul>
-	</div>
-</div>
 
 <div id="indexContainer" class="nofloat">
 	<div class="nofloat">

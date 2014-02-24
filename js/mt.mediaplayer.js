@@ -158,6 +158,8 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 
 //TODO: remove player if it already exists. or load new file and change settings?
 	this.player=jwplayer(this.settings.id).setup(this.settings);
+
+	this.setupIcons();
 	this.setupEvents();
 	if(this.settings.uiMode)
 		UI.setMode(this.settings.uiMode);
