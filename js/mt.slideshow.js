@@ -349,8 +349,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 {
-try{
-	if(this.currentFile.isVideo())
+//try{
+	if(this.currentFile.isVideoStream())
 	{
 		this.hideImage();
 		this.transition.inProgress=false;
@@ -361,7 +361,7 @@ try{
 			MediaPlayer.slide.onReady(function()
 			{
 				MediaPlayer.slide.togglePlay(this.play);				
-			}
+			});
 		}
 	}
 	else
@@ -379,7 +379,7 @@ try{
 			this.autoShowNextImage();
 	}	
 
-}catch(err) { alert(Object.toText(err,"\n")); }
+//}catch(err) { alert(Object.toText(err,"\n")); }
 
 	$("#ImageText").html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
 	//save as currentFile	
