@@ -56,8 +56,8 @@
 
 <!-- template for photo caption -->
 <script id="descriptionTagTemplate" type="text/x-jsrender"> 
-	{{for getTags() tmpl="tagTemplate"/}}
 	<span id="desc_{{:id}}" class="description" contenteditable="false">{{:description}}</span>
+	{{for getTags() tmpl="tagTemplate"/}}
 </script>
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 

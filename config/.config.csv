@@ -110,6 +110,7 @@ JWPLAYER.MODES.2.type;download
 
 MediaPlayer.video.enabled;true
 MediaPlayer.audio.enabled;true
+MediaPlayer.slide.enabled;true
 
 ;FFMPEG scripts
 _FFMPEG.PATH;C:\Program Files\ffmpeg\bin

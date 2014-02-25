@@ -63,10 +63,7 @@ UI.displayFiles = function(selectedFiles,transition,append)
 	UI.getDisplayOptions(album);
 	
 	UI.displayPageLinks(album);
-	if(album.nbPages>1)
-		UI.displayFileCounts(selectedFiles,"#pageCounts",true);
-	else 
-		$("#pageCounts").html("");
+	UI.displayFileCounts(album.activeFileList(),"#pageCounts",true);
 	
 	total=0;
 
@@ -584,10 +581,9 @@ UI.setupEvents = function()
 	}
 
 	if(config.MediaPlayer.video.enabled)
-	{
 		new MediaPlayer("video");
-	}
-	new MediaPlayer("slide");
+	if(config.MediaPlayer.slide.enabled)
+		new MediaPlayer("slide");
 };
 
 
