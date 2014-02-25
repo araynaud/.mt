@@ -358,7 +358,10 @@ try{
 		{
 			MediaPlayer.slide.loadMediaFile(this.currentFile);
 			MediaPlayer.slide.show(this.transition.duration);
-			MediaPlayer.slide.togglePlay(this.play);
+			MediaPlayer.slide.onReady(function()
+			{
+				MediaPlayer.slide.togglePlay(this.play);				
+			}
 		}
 	}
 	else
