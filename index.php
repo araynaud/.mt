@@ -196,7 +196,6 @@ $(window).resize(function(event)
 	
 <?php include("video.html");?>
 
-
 <div id="indexContainer" class="nofloat">
 	<div class="nofloat">
 		<div id="tagList" class="floatR" direction="right" callback="UI.setContentWidth"></div>
