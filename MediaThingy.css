@@ -277,6 +277,7 @@ img.icontr, img.iconTrans
 	position: fixed;
 	bottom: 0px;
 	left: 0px;
+	text-align: left;
 }
 
 .headerLeftCorner
@@ -307,6 +308,7 @@ img.icontr, img.iconTrans
 	position: fixed;
 	bottom: 0px;
 	right: 0px;
+	text-align: right;
 }
 
 .musicplayer

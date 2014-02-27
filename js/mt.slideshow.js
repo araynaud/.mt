@@ -358,10 +358,8 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 		{
 			MediaPlayer.slide.loadMediaFile(this.currentFile);
 			MediaPlayer.slide.show(this.transition.duration);
-			MediaPlayer.slide.onReady(function()
-			{
-				MediaPlayer.slide.togglePlay(this.play);				
-			});
+			if(this.play)
+				MediaPlayer.slide.play();				
 		}
 	}
 	else

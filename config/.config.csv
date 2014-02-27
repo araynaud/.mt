@@ -93,11 +93,10 @@ background.fit;stretch
 
 ;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
 TYPES.IMAGE;jpg;jpeg;png;gif;bmp;svg
-TYPES.IMAGE.NOTHUMB;bmp;svg
+TYPES.IMAGE_NOTHUMB;bmp;svg
 TYPES.AUDIO;mp3;wav;m4a;aac;ogg
-TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;flv;ogv;ogm
-TYPES.VIDEO.STREAM;mp4;m4v;flv;3gp;ogv
-TYPES.VIDEO.HTML5;mp4;m4v;webm;ogm;ogv
+TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm
+TYPES.VIDEO_STREAM;mp4;m4v;flv;3gp;webm;ogm;ogv
 TYPES.SPECIAL;txt;xml;php;chunk;js;css
 
 ;JW Player options

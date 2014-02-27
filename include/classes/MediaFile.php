@@ -56,8 +56,8 @@ class MediaFile extends BaseObject
 			$this->getMetadata();
 			if($this->isVideo())
 			{
-				$streamTypes = getConfig("TYPES.VIDEO.STREAM");
-				$this->stream = array_intersect($this->exts, $streamTypes);
+				$streamTypes = getConfig("TYPES.VIDEO_STREAM");
+				$this->stream = array_intersect($streamTypes, $this->exts);
 				$this->animated = true;
 			}
 			//thumbnails: image: .tn & .ss, same ext.
@@ -84,7 +84,7 @@ class MediaFile extends BaseObject
     {
     	$tnSizes = getConfig("thumbnails.sizes");
     	if(!$tnSizes) return;
-    	$noThumbTypes = getConfig("TYPES.IMAGE.NOTHUMB");
+    	$noThumbTypes = getConfig("TYPES.IMAGE_NOTHUMB");
 		$noThumb = array_intersect($this->exts, $noThumbTypes);
     	if($noThumb) return;
 

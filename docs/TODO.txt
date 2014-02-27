@@ -1116,18 +1116,12 @@ parse every column value right after readcsv.
 parse booleans and numbers
 trim strings?
 
-select by type: VIDEO.HTML5
-extension array to regex recursive join '|'
 add UI functions for index.php dropdowns
 apply default sort and count per page from config
 
 
 TODO
-
 ---------
-
-select by type: VIDEO.HTML5
--------------
 
 DONE
 refactor handleKeys
@@ -1999,4 +1993,19 @@ if (typeof KeyEvent == "undefined") var KeyEvent =
 	DOM_VK_CLOSE_BRACKET: 221,
 	DOM_VK_QUOTE: 222,
 	DOM_VK_META: 224
+};
+
+MediaPlayer.prototype.setupPlayer = function()
+{
+	this.initSize();
+	this.settings.modes=this.getModes();
+	this.settings.skin=this.getSkin();
+	this.settings["playlist.position"]="none";
+
+//TODO: remove player if it already exists. or load new file and change settings?
+	this.getPlayer();
+	this.player.setup(this.settings);
+	this.setupIcons();
+	this.setupEvents();
+	return this;
 };

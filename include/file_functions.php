@@ -307,9 +307,8 @@ function getKeyArray($key, $prevKey=null, $keySeparator=".")
 }
 
 //create array values within CSV data
-// TYPES.VIDEO.STREAM;flv;mp4	=> $csv["TYPES"]["VIDEO"]["STREAM"] = ["flv", "mp4"]
-// TODO: keep previous key
-// ..STREAM;flv;mp4	=> $csv["TYPES"]["VIDEO"]["STREAM"] = ["flv", "mp4"]
+// TYPES.VIDEO;flv;mp4	=> $csv["TYPES"]["VIDEO"] = ["flv", "mp4"]
+// keep previous key: .STREAM;flv;mp4	=> $csv["TYPES"]["STREAM"] = ["flv", "mp4"]
 function setNestedArrayValue(&$csvRows, $key, $value)
 {
 	if(!is_array($key))

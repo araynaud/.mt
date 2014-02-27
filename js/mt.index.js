@@ -32,19 +32,14 @@ UI.zoom = function(increment)
 
 
 //refresh method
-UI.displaySelectedFiles = function(transition,append)
+UI.displaySelectedFiles = function(transition, append)
 {
-	UI.selectedFiles=album.selectCurrentPageFiles();
-	UI.displayFiles(UI.selectedFiles, transition, append);
-};
-
-UI.displaySearchResults = function()
-{
-	UI.displayFiles(album.searchResults);
+	var selectedFiles = album.selectCurrentPageFiles();
+	UI.displayFiles(selectedFiles, transition, append);
 };
 	
 //refresh method
-UI.displayFiles = function(selectedFiles,transition,append)
+UI.displayFiles = function(selectedFiles, transition, append)
 {
 	UI.setGroup();
 
@@ -571,6 +566,15 @@ UI.setupEvents = function()
 	{
 		if($(window).scrollTop() + $(window).height() < $(document).height() - 1) return;
 		UI.appendNextPage();
+	});
+
+	$("#cb_selected").bindReset("change", function() 
+	{
+//		UI.addStatus(UI.currentFile.id);
+		UI.currentFile.selected = $(this).isChecked();
+		//$("div#" + UI.currentFile.id);
+		UI.currentFile.getDiv().toggleClass("selected", UI.currentFile.selected);
+		UI.displaySelection();
 	});
 
 	$("#playMusicIcon").toggle(album.musicFiles);	

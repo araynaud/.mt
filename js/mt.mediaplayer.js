@@ -39,7 +39,6 @@ var playerSettings=
 	{
 		id:"slidePlayer",
 		container: "videoSlide",
-	//	skinName: "five",
 		allowHtml5: true,
 		allowFlash: true,
 		size: 1,
@@ -101,8 +100,9 @@ MediaPlayer.getPlayer = function(key)
 
 MediaPlayer.prototype.getPlayer = function()
 {
-	var player=jwplayer(this.settings.id);
-	return player;
+//	if(!this.player)
+		this.player=jwplayer(this.settings.id);
+	return this.player;
 };
 
 //get skin absolute URL
@@ -139,16 +139,31 @@ MediaPlayer.prototype.getModes = function()
 	return modes;
 };
 
+MediaPlayer.prototype.setupPlayer = function()
+{
+	this.initSize();
+	this.settings.modes=this.getModes();
+	this.settings.skin=this.getSkin();
+	this.settings["playlist.position"]="none";
+
+//TODO: remove player if it already exists. or load new file and change settings?
+	this.getPlayer();
+	this.player.setup(this.settings);
+	this.setupIcons();
+	this.setupEvents();
+	return this;
+};
+
 //load single file
 MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 {
 	if(!mediaFile) return;
 	var fileUrl = mediaFile.getFileUrl(mediaFile.isVideoStream());
 	var imageUrl = mediaFile.getThumbnailUrl(1); //add tnIndex to settings
-	return this.loadPlayer(fileUrl, imageUrl);
+
+	return this.loadPlayer(fileUrl, imageUrl, mediaFile.duration);
 };
 
-//if player.isplaying / is active
 MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 {
 	this.initSize();
@@ -161,10 +176,27 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 
 //TODO: remove player if it already exists. or load new file and change settings?
 	this.player=jwplayer(this.settings.id).setup(this.settings);
-
 	this.setupIcons();
 	this.setupEvents();
-	if(this.settings.uiMode)
+
+	if(fileUrl && this.settings.uiMode)
+		UI.setMode(this.settings.uiMode);
+
+	return this;
+};
+
+//load single file
+MediaPlayer.prototype.loadPlayer2 = function(fileUrl, imageUrl, duration)
+{
+//TODO: remove player if it already exists. or load new file and change settings?
+//	this.player.load({file: fileUrl, image: imageUrl, duration: duration});
+
+	this.settings.file=fileUrl;
+	this.settings.image=imageUrl;
+	this.setupPlayer();
+//	this.player.setup(this.settings);
+//this.play();
+	if(fileUrl && this.settings.uiMode)
 		UI.setMode(this.settings.uiMode);
 
 	return this;
@@ -172,7 +204,7 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 
 MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
 {
-	//select only VIDEO.STREAM types
+	//select only VIDEO_STREAM types
 	var videoFiles=mediaFiles.filter(MediaFile.isVideoStream); 
 	this.loadPlaylist(videoFiles);
 	if(this.settings.uiMode)
@@ -210,14 +242,14 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 		else if(["left","right"].contains(this.settings["playlist.position"]))
 			this.settings.width+=this.settings["playlist.size"];
 	}
-	else if(showPlaylist && UI)
+	else if(showPlaylist && window.UI)
 	{
 		//var playlistDiv=$("#{0}Playlist".format(this.settings.id));
 		if(["top","bottom"].contains(this.settings["playlist.position"]))
 		{
 			this.playlistDiv.width(this.settings.width);
-			//if(this.settings["playlist.size"])
-			//	this.playlistDiv.height(this.settings["playlist.size"]);
+			if(this.settings["playlist.size"])
+				this.playlistDiv.height(this.settings["playlist.size"]);
 		}
 		else if(["left","right"].contains(this.settings["playlist.position"]))
 		{
@@ -238,7 +270,8 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 	this.settings.skin=this.getSkin();
 	this.settings.playlist=playlist;
 
-	this.player=jwplayer(this.settings.id).setup(this.settings);
+	this.getPlayer();
+	this.player.setup(this.settings);
 	
 	//playlist buttons
 	if(playlist.length>1)
@@ -275,32 +308,24 @@ MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
 //jwplayer mapped function
 MediaPlayer.prototype.play = function()
 {
-	if(this.player && !this.isPlaying())
-		this.player.play();
+	if(this.player)
+		this.player.play(true);
 };
 
 MediaPlayer.prototype.pause = function()
 {
-	if(this.player && this.isPlaying())
-		this.player.play();
+	if(this.player)
+		this.player.play(false);
 };
 
 MediaPlayer.prototype.togglePlay = function(state)
 {
-	if(!this.player) return;
-	if(isMissing(state))
-		this.player.play();
-	if(state===true)
-		this.play();
-	if(state===false)
-		this.pause();
+	if(this.player)	this.player.play(state);
 };
-
 
 MediaPlayer.prototype.remove = function()
 {
-	if(this.player)
-		this.player.remove();
+	if(this.player)	this.player.remove();
 };
 
 MediaPlayer.prototype.refreshPlayPauseIcon = function()
@@ -322,6 +347,7 @@ MediaPlayer.prototype.getPlayPauseIcon = function()
 	return MediaPlayer.getPlayPauseIcon(this.player);
 };
 
+//if player.isplaying / is active
 MediaPlayer.prototype.isPlaying = function()
 {
 	if(!this.player) return false;
@@ -514,13 +540,13 @@ MediaPlayer.prototype.setupEvents = function()
 	var mp=this; //reference to this MediaPlayer used from jwplayer event callbacks
 	this.player.onPlay(function(event)
 	{
-		mp.setMessage(); 
+		mp.setMessage("playing"); 
 		mp.displayItemDuration();		
 	});
 
 	this.player.onBufferFull(function(event)
 	{
-		mp.displayItemDuration(this.settings.id);
+		mp.displayItemDuration();
 	});
 
 	this.player.onPause(function(event) { mp.setMessage("paused"); });
@@ -536,7 +562,7 @@ MediaPlayer.prototype.setupEvents = function()
 	this.player.onMeta(function(event)
 	{	
 //		this.setMessage("", event.metadata);	
-		mp.displayItemDuration(this.settings.id, event.metadata.duration)
+		mp.displayItemDuration(event.metadata.duration);
 	});
 
 	this.player.onPlaylistItem(function(event) 

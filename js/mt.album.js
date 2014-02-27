@@ -432,6 +432,14 @@ Album.prototype.activeFileList = function()
 	return [];
 }
 
+Album.prototype.getSelection = function()
+{
+	var selectedFiles = album.selectFiles({selected: true});
+	if(isEmpty(selectedFiles)) 
+		selectedFiles = album.activeFileList();
+	return selectedFiles;
+};
+
 //get files for current page
 //depending on countPerPage and pageNumber
 Album.prototype.selectCurrentPageFiles = function()

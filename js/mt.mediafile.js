@@ -340,6 +340,21 @@ MediaFile.prototype.isTransparent = function()
 	return this.alpha || this.transparent && this.transparentPixels; // && !this.hasType("DIR");
 }
 
+MediaFile.getUploadFileSize = function (mediaFile)
+{	
+	return mediaFile.getUploadFileSize();
+};
+
+MediaFile.prototype.getUploadFileSize = function()
+{	
+	var stream = this.isVideoStream() 
+	if(stream)	return this.getFileSize(stream);
+
+//	if(this.isImage())	return this.tnsizes[this.tnsizes.length-1];
+
+	return this.getFileSize();
+}
+
 MediaFile.getFileSize = function (mediaFile, tn)
 {	
 	return mediaFile.getFileSize(tn);

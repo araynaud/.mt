@@ -719,8 +719,10 @@ $.fn.slideToggleLeft = function (duration)
 //set or toggle checkbox + trigger change event
 $.fn.toggleChecked = function(checked, noEvent)
 {
-	if(isMissing(checked))
-		checked=!this.prop("checked");
+	var state = this.prop("checked");
+	if(isMissing(checked))	checked=!state;
+	if(checked===state) return this;
+
 	this.prop("checked", checked);
 	if(!noEvent) this.change();	
 	return this;

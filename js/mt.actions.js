@@ -60,14 +60,6 @@ UI.displayEdit = function(filebox)
 	$("#cb_selected").toggleChecked(UI.currentFile.selected);
 //	UI.setStatus(UI.currentFile.id + " " + UI.currentFile.selected);
 
-	$("#cb_selected").bindReset("change", function() 
-	{
-//		UI.addStatus(UI.currentFile.id);
-		UI.currentFile.selected = $(this).isChecked();
-		//$("div#" + UI.currentFile.id);
-		UI.currentFile.getDiv().toggleClass("selected", UI.currentFile.selected);
-	});
-
 };
 
 //--------- FILE manipulation functions

@@ -4,9 +4,7 @@ UI.downloadScript= "download.php";
 
 UI.downloadMultipleFiles = function()
 {
-	UI.downloadFileList = album.selectFiles(true, "selected");
-	if(isEmpty(UI.downloadFileList))
-		UI.downloadFileList = album.activeFileList();
+	UI.selectedFileList = album.getSelection();
 	UI.fileIndex = 0;
 	UI.downloadFile();
 	UI.interval = setInterval(UI.downloadFile, config.downloads.interval);
@@ -14,14 +12,14 @@ UI.downloadMultipleFiles = function()
 
 UI.downloadFile = function()
 {
-	if(UI.fileIndex >= UI.downloadFileList.length)
+	if(UI.fileIndex >= UI.selectedFileList.length)
 	{
 		clearInterval(UI.interval);
 		return;
 	}
 
 	UI.getIframe();	
-	var mediaFile = UI.downloadFileList[UI.fileIndex];
+	var mediaFile = UI.selectedFileList[UI.fileIndex];
 	var downloadScriptUrl = UI.downloadScript ? mediaFile.getScriptUrl(UI.downloadScript) : mediaFile.getFileUrl(); //getThumbnailUrl(1);
 // use image.php ?
 	//use UI.downloadIframe.load() event?
@@ -45,12 +43,10 @@ UI.getIframe = function()
 //call ajax script for all selected files
 UI.uploadSelectedFiles = function()
 {
-	album.selectedFiles = album.selectFiles(true, "selected");
-	if(isEmpty(album.selectedFiles)) 
-		album.selectedFiles = album.activeFileList();
+	UI.selectedFileList = album.getSelection();
 
 	UI.progressBar.displayFunction = null;
-	UI.progressBar.setMax(album.selectedFiles.length);
+	UI.progressBar.setMax(UI.selectedFileList.length);
 	UI.progressBar.reset();
 	UI.progressBar.show();
 
@@ -61,30 +57,38 @@ UI.uploadSelectedFiles = function()
 
 UI.doSelectedFiles = function(script, params)
 {
-	album.selectedFiles = album.selectFiles(true, "selected");
-	if(isEmpty(album.selectedFiles)) 
-		album.selectedFiles = album.activeFileList();
+	UI.selectedFileList = album.getSelection();
 	UI.multipleAjaxAsync(script, params);
 };
 
+UI.displaySelection = function(fileList)
+{
+	if(isEmpty(fileList))
+		fileList = album.getSelection();
+	if(isEmpty(fileList))
+		return UI.setStatus();
+
+	var totalSize = fileList.sum(MediaFile.getUploadFileSize);
+	var str = "{0}, {1}".format(plural(fileList.length,"file"), formatSize(totalSize));
+	UI.setStatus(str);
+}
+
 UI.multipleAjaxSync = function(script, params)
 {
-	if(isEmpty(album.selectedFiles)) return false;	
-	var totalSize = album.selectedFiles.sum(MediaFile.getFileSize);
-	UI.setStatus("{0}, {1}".format(plural(album.selectedFiles.length,"file"), formatSize(totalSize)));
+	if(isEmpty(UI.selectedFileList)) return false;	
 	UI.progressBar.displayFunction = formatSize;
 	UI.progressBar.setMax(totalSize);
 	UI.progressBar.reset();
 	UI.progressBar.show();
 
 	//simple loop, call script 1 after the other
-	for(var k=0; k < album.selectedFiles.length; k++)
+	for(var k=0; k < UI.selectedFileList.length; k++)
 	{	
 		var startTime = new Date();
-		var response = album.selectedFiles[k].scriptAjax(script, params, true);
+		var response = UI.selectedFileList[k].scriptAjax(script, params, true);
 		var endTime = new Date();
 		var responseTime = ProgressBar.formatSeconds(endTime - startTime);
-//		UI.addStatus("{0}/{1} {2} {3}:".format(k, album.selectedFiles.length, responseTime, album.selectedFiles[k].name));
+//		UI.addStatus("{0}/{1} {2} {3}:".format(k, UI.selectedFileList.length, responseTime, UI.selectedFileList[k].name));
 //		UI.addStatus(response);
 	}
 	UI.addStatus("Finished.");
@@ -92,13 +96,13 @@ UI.multipleAjaxSync = function(script, params)
 
 UI.multipleAjaxAsync = function(script, params, callbacks)
 {
-	if(isEmpty(album.selectedFiles)) return false;	
+	if(isEmpty(UI.selectedFileList)) return false;	
 	if(!callbacks) callbacks = { next: UI.doNextFile };
 
-	var totalSize = album.selectedFiles.sum(MediaFile.getFileSize);
-	UI.setStatus("{0}, {1}".format(plural(album.selectedFiles.length,"file"), formatSize(totalSize)));
+	UI.displaySelection();
+	var totalSize = UI.selectedFileList.sum(MediaFile.getUploadFileSize);
 	UI.progressBar.setMax(totalSize);
-//	UI.progressBar.setMax(album.selectedFiles.length);
+//	UI.progressBar.setMax(UI.selectedFileList.length);
 	UI.progressBar.reset();
 	UI.progressBar.show();
 
@@ -106,34 +110,34 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 	UI.fileIndex=0;
 	chunkIndex=1;
 	//upload file
-	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
+	UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 };
 
 UI.uploadNextFile = function(response, script, params, callbacks)
 {
-//	UI.addStatus("{0}/{1} {2}:".format(UI.fileIndex, album.selectedFiles.length, album.selectedFiles[UI.fileIndex].name));
+//	UI.addStatus("{0}/{1} {2}:".format(UI.fileIndex, UI.selectedFileList.length, UI.selectedFileList[UI.fileIndex].name));
 //	UI.addStatus(response);
 	//same file, next chunk 	//response.file.filesize;
 	
 //	UI.progressBar.setProgress(UI.fileIndex);
 	if(response.nbChunks>1 && response.chunk < response.nbChunks)
 	{
-		album.selectedFiles[UI.fileIndex].nbChunks = response.nbChunks;
+		UI.selectedFileList[UI.fileIndex].nbChunks = response.nbChunks;
 		params.chunk=response.chunk;
 		params.nbChunks=response.nbChunks;
 //		UI.progressBar.addProgress(params.chunk / params.nbChunks);
 		UI.progressBar.addProgress(response.file.filesize);
-		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
+		UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 		return;
 	}
 
-	var filesize=MediaFile.getFileSize(album.selectedFiles[UI.fileIndex]);
+	var filesize=MediaFile.getFileSize(UI.selectedFileList[UI.fileIndex]);
 	UI.progressBar.addProgress(filesize);
 	++UI.fileIndex;
 //	UI.progressBar.addProgress(response.file.filesize);
 //	UI.progressBar.addProgress(1);
 	//finished
-	if(UI.fileIndex == album.selectedFiles.length)
+	if(UI.fileIndex == UI.selectedFileList.length)
 	{
 		var totalTime = UI.progressBar.totalTime(true);
 		UI.addStatus("Finished in {0}.".format(totalTime));
@@ -147,17 +151,17 @@ UI.uploadNextFile = function(response, script, params, callbacks)
 		delete params.nbChunks;
 		delete params.chunk;
 	}
-	album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
+	UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
 };
 
 
 UI.doNextFile = function(response, script, params, callbacks)
 {
 	UI.progressBar.addProgress(1); //response.file.filesize);
-	if(++UI.fileIndex < album.selectedFiles.length)
+	if(++UI.fileIndex < UI.selectedFileList.length)
 	{
-		params.tn = album.selectedFiles[UI.fileIndex].resizeBeforeUpload();
-		album.selectedFiles[UI.fileIndex].scriptAjax(script, params, true, false, callbacks);
+		params.tn = UI.selectedFileList[UI.fileIndex].resizeBeforeUpload();
+		UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, false, callbacks);
 	}
 	else
 	{
