@@ -73,7 +73,7 @@ function MediaPlayer(settings)
 
 MediaPlayer.videoPlayerSizes=[
 	["small", 400,225],
-	["default",720,405],
+	["default",640,360],
 	["large", 960,540],
 	["hd", 1280,720]
 ];

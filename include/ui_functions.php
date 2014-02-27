@@ -126,6 +126,13 @@ function addScript($scriptPath, $file="")
 	return $scriptPath;
 }
 
+function addJavascript($url)
+{
+	if (!empty($url)) {?>
+<script type="text/javascript" src="<?php echo $url?>"></script>
+<?php }
+}
+
 function addStylesheet($relPath)
 {
 	$stylesheet = findInParent($relPath,"night.css",true);

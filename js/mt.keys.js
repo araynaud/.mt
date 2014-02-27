@@ -89,7 +89,16 @@ UI.keys =
 		'B': function() { UI.toggleOption("border"); },
 		'M': function() { UI.toggleOption("margin"); },
 		'S': function() { UI.toggleOption("shadow"); },		
-		'R': function() { UI.toggleOption("rotate"); }
+		'R': function() { UI.toggleOption("rotate"); },
+
+		107: function() { MediaPlayer.slide.nextSize(1) },
+		109: function() { MediaPlayer.slide.nextSize(-1) },
+
+		173: function() { MediaPlayer.slide.nextSize(-1); },
+		61: function() { MediaPlayer.slide.nextSize(1); },
+		189: function() { MediaPlayer.slide.nextSize(-1); },
+		187: function() { MediaPlayer.slide.nextSize(1); },
+
 	},
 	"video": 
 	{
