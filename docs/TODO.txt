@@ -53,11 +53,14 @@ OK load metadata for subdirs  when depth>0
 OK search by name: in all subdirs
 
 OK 1 Description with & cut.
-use POST for action.php ajax
-retest multiple ajax
+OK use POST for action.php ajax
+OK retest multiple ajax
 
 2 load tags from subdirs
 3 search by tag in subdirs.
+
+Resize video player with window
+
 
 OK Upload: vsizes is null. exclude dirs.
 5 upload .bg.jpg and readme.txt.
@@ -65,7 +68,6 @@ OK Upload: vsizes is null. exclude dirs.
 2 display: use paginate.min_pages and min_last_page
 
 OK if mediaplayer disabled: video.click => download mp4
-
 
 video convert progress
 every N seconds: refresh mediafile with data.php / ajax

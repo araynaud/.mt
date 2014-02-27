@@ -361,7 +361,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 			if(this.play)
 				setTimeout(function() {
 					MediaPlayer.slide.play();
-				}, 2000);
+				}, this.transition.duration);
 								
 		}
 	}
