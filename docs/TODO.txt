@@ -59,8 +59,8 @@ OK retest multiple ajax
 2 load tags from subdirs
 3 search by tag in subdirs.
 
-Resize video player with window
-
+4 Resize video player with window
+5 mediaplayer settings in config
 
 OK Upload: vsizes is null. exclude dirs.
 5 upload .bg.jpg and readme.txt.

@@ -358,6 +358,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 		{
 			MediaPlayer.slide.loadMediaFile(this.currentFile);
 			MediaPlayer.slide.show(this.transition.duration);
+			this.fitVideo();
 			if(this.play)
 				setTimeout(function() {
 					MediaPlayer.slide.play();
@@ -425,6 +426,43 @@ Slideshow.prototype.showComments = function(pic,divId)
 //fit long, short side, stretch
 //move small icon thumbnails above caption
 
+
+Slideshow.prototype.fitVideo = function () 
+{
+	if(!this.currentFile.isVideoStream()) return;
+
+	var bw = 60; // image.borderMarginWidth();
+	var bh = 80; //image.borderMarginHeight();
+
+	var preRatio = this.currentFile.width / this.currentFile.height;
+	var wWidth  = this.container.width()  - bw;
+	var wHeight = this.container.height() - bh;
+	var wRatio = wWidth / wHeight;
+	var width  = Math.min(wWidth, this.currentFile.width);
+	var height = Math.min(wHeight, this.currentFile.height);
+	if (this.zoom && preRatio > wRatio) //if too wide, fit width
+	{
+		width = wWidth;
+		height = width / preRatio;
+	}
+	else if (this.zoom) //or fit height;
+	{
+		height = wHeight;
+		width = height * preRatio;
+	}
+
+	MediaPlayer.slide.resize(width, height);
+/*	var playerContainer=MediaPlayer.slide.getElement();
+	if(playerContainer.height())
+	{
+		pch = playerContainer.outerHeight(true);
+		if(wHeight > pch)
+			playerContainer.css("margin-top", (wHeight - pch)/2);
+		this.setStatus("margin {0} {1} {2}".format(wHeight, pch, wHeight - pch);
+	}
+*/
+};
+
 Slideshow.prototype.fitImage = function (image, preLoaded) 
 {
 	preLoaded = valueOrDefault(preLoaded, this.preLoadedImage);
@@ -434,17 +472,18 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 	if (image.attr("src") !== preLoaded.src)
 		image.attr("src", preLoaded.src);
 
-	var preRatio = preLoaded.width / preLoaded.height;
-	var wRatio = this.container.width() / this.container.height();
 	image.css("margin", "");
 	image.toggleClass("margin", album.margin);
+	var bw= image.borderMarginWidth();
+	var bh= image.borderMarginHeight();
+
+	var preRatio = preLoaded.width / preLoaded.height;
+	var wRatio = (this.container.width() - bw ) / (this.container.height() - bh);
 
 	var height = preLoaded.height;
 	var width = preLoaded.width;
 	image.width(width);
 	image.height(height);
-	var bw= image.borderMarginWidth();
-	var bh= image.borderMarginHeight();
 	if (this.zoom && preRatio > wRatio) //if too wide, fit width
 	{
 		width = this.container.width() - bw;

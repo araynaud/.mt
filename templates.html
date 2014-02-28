@@ -30,7 +30,7 @@
 					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else type=="VIDEO" && tnsizes && stream && ~albumVar('config').MediaPlayer.video.enabled}}
+		{{else type=="VIDEO" && tnsizes && stream && ~albumVar('config').MediaPlayer.slide.enabled}}
 				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:stream}}"/>
 		{{else type=="VIDEO" && tnsizes}}
 			<a href="{{:~fileUrl(#data,stream)}}" target="fileDownload">
@@ -128,15 +128,31 @@
 </script>
 
 <!-- template for playlist items -->
+<script id="playlistItemTemplate2" type="text/x-jsrender">
+	<div id="{{:type}}PlaylistItem_{{:#index}}" class="item hidden nofloat translucent">
+		<div class="number small inlineBlock">{{:(#index+1)}}</div>
+
+		{{if tnsizes}}
+			<img class="tinyThumb inlineBlock" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
+		{{/if}}
+
+ 
+		<div class="inlineBlock marginH" style="max-width:60%">
+		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>
+		{{:description}}
+		</div>
+	</div>
+</script>
+
 <script id="playlistItemTemplate" type="text/x-jsrender">
-	<li id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
+	<div id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
 		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
 			<img class="floatR icon" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
 		</a>
 		{{if ~config("ENABLE_FFMPEG") }}
 			<a href="{{:~scriptUrl(#data, 'data.php', 'data=metadata')}}" target="metadata">
 				<img class="floatR" src="icons/info.png" height="12px" style="margin: 2px;" title="info {{>filename}}"/>
-			</a>
+		</a>
 		{{/if}}
 		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
@@ -149,8 +165,9 @@
 			<div>{{:description}}</div>
 		{{/if}}
 		<br/>
-	</li>
+	</div>
 </script>
+
 
 <!-- template for background -->
 <script id="backgroundTemplate" type="text/x-jsrender">

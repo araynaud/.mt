@@ -508,6 +508,12 @@ img
 	text-decoration: none;
 }
 
+img.tinyThumb
+{
+	width: 25%;
+	max-height: 40px;
+}
+
 .playlist 
 {
 	text-align: left;
@@ -517,9 +523,10 @@ img
 	margin-bottom: 0px;
 	font-size: 9pt;
 	font-weight: bold;
+	vertical-align: middle;
 }
 
-.playlist li
+.playlist li, .playlist > div.item
 {
 /*	border-bottom: solid 1px #444;*/
 	margin-top: 1px;
@@ -528,7 +535,7 @@ img
 	padding-bottom: 1px;
 }
 
-.playlist li.selectedItem
+.playlist > .selectedItem
 {
 	font-weight: bold;
 	border-top: solid 1px #BBB;
@@ -659,12 +666,6 @@ div.dir.photoBorder .caption
 {
 	border-bottom-left-radius: 50px;
 	border-bottom-right-radius: 50px;
-}
-
-img.tinyThumb
-{
-	width: 60px;
-	height: 40px;
 }
 
 ul

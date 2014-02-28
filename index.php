@@ -127,7 +127,10 @@ $(window).resize(function(event)
 {
 	if(!window.album) return;
 	if(UI.mode==="slideshow")
+	{
 		UI.slideshow.fitImage();
+		UI.slideshow.fitVideo();
+	}
 	UI.setContentHeight();
 	UI.setContentWidth();
 	UI.setColumnWidths();
@@ -222,7 +225,7 @@ $(window).resize(function(event)
 <div id="audioContainer" class="footerRightCorner right noprint">
 	<div id="musicPlayerMessage" class="text"></div>
 	<div id="musicPlayerControls"></div>	
-	<ul id="musicPlayerPlaylist" class="playlist scrollY"></ul>
+	<div id="musicPlayerPlaylist" class="playlist scrollY"></div>
 	<div id="musicPlayer"></div>
 </div>
 

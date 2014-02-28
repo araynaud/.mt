@@ -6,7 +6,7 @@ var playerSettings=
 	//	skinName: "five",
 		allowHtml5: true,
 		allowFlash: true,
-		width: 240,
+		width: 260,
 		height: 24,
 		autostart: false,		
 		item: 0,
@@ -39,7 +39,7 @@ var playerSettings=
 	{
 		id:"slidePlayer",
 		container: "videoSlide",
-		allowHtml5: true,
+	//	allowHtml5: true,
 		allowFlash: true,
 		size: 1,
 		autostart: false,
@@ -248,12 +248,12 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 		if(["top","bottom"].contains(this.settings["playlist.position"]))
 		{
 			this.playlistDiv.width(this.settings.width);
-			if(this.settings["playlist.size"])
-				this.playlistDiv.height(this.settings["playlist.size"]);
+//			if(this.settings["playlist.size"])
+//				this.playlistDiv.height(this.settings["playlist.size"]);
 		}
 		else if(["left","right"].contains(this.settings["playlist.position"]))
 		{
-			this.playlistDiv.height(this.settings.height);
+			this.playlistDiv.css("max-height", this.settings.height);
 			if(this.settings["playlist.size"])
 				this.playlistDiv.width(this.settings["playlist.size"]);
 		}	
@@ -518,7 +518,7 @@ MediaPlayer.prototype.setSize = function()
 	this.setMessage(size[0]);
 
 	this.playlistDiv.css("max-height", size[2]);
-	this.playlistDiv.height(size[2]);
+//	this.playlistDiv.height(size[2]);
 
 	return this.player.resize(size[1], size[2]);
 };
@@ -571,7 +571,7 @@ MediaPlayer.prototype.setupEvents = function()
 	});
 	// player.onTime(function(event) 
 	// {
-		// $("#{0}Playlist li.selectedItem .duration".format(mp.settings.id)).html(formatTime(event.duration));
+		// $("#{0}Playlist > div.selectedItem .duration".format(mp.settings.id)).html(formatTime(event.duration));
         // mp.setMessage(formatTime(event.position) +" / "+formatTime(event.duration));
     // });
 
@@ -605,7 +605,7 @@ MediaPlayer.prototype.displayItemDuration = function(duration)
 			duration=item.duration;
 	}
 	if(!duration || duration <= 0) return;
-	var durationDiv=$("#{0}Playlist li.selectedItem .duration".format(this.settings.id));
+	var durationDiv=$("#{0}Playlist .selectedItem .duration".format(this.settings.id));
 	durationDiv.html(formatTime(duration));
 };
 
@@ -629,9 +629,9 @@ MediaPlayer.prototype.displaySelectedItem = function(index)
 {
 	var selectedItem;
 	if(isMissing(index))
-		selectedItem=$("#{0}Playlist li.selectedItem".format(this.settings.id));
+		selectedItem=$("#{0}Playlist > div.selectedItem".format(this.settings.id));
 	else
-		selectedItem=$("#{0}Playlist li:eq({1})".format(this.settings.id, index));
+		selectedItem=$("#{0}Playlist > div:eq({1})".format(this.settings.id, index));
 
 	var item=this.getPlaylistItem();
 	document.title = item ? item.title : album.title;
