@@ -176,7 +176,6 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 
 //TODO: remove player if it already exists. or load new file and change settings?
 	this.player=jwplayer(this.settings.id).setup(this.settings);
-	this.setupIcons();
 	this.setupEvents();
 
 	if(fileUrl && this.settings.uiMode)
@@ -508,6 +507,7 @@ MediaPlayer.prototype.initSize = function()
 
 MediaPlayer.prototype.nextSize = function(incr)
 {
+	incr=valueOrDefault(incr,1);
 	this.settings.size = modulo(this.settings.size + incr, MediaPlayer.videoPlayerSizes.length);
 	return this.setSize();
 };
@@ -540,7 +540,7 @@ MediaPlayer.prototype.setupEvents = function()
 	var mp=this; //reference to this MediaPlayer used from jwplayer event callbacks
 	this.player.onPlay(function(event)
 	{
-		mp.setMessage("playing"); 
+		mp.setMessage(); 
 		mp.displayItemDuration();		
 	});
 
@@ -583,10 +583,21 @@ MediaPlayer.prototype.setupEvents = function()
 //		UI.addStatus(" resized: full screen {0}".format(event.fullscreen));
 	});
 
-/*	this.player.onResize(function(event)
+/*
+	this.player.onResize(function(event)
 	{	
-		//mp.setMessage("onResize", event);	
-		UI.addStatus(" resized: {0}x{1}".format(event.width, event.height));
+		mp.setMessage("onResize", event);	
+		UI.setStatus("resized: {0}x{1}".format(event.width, event.height));
+
+		//set player top margin
+		if(mp.settings.uiMode=="slideshow")
+		{
+			var playerContainer=mp.getElement();
+			var pch = playerContainer.outerHeight(true);
+			var wHeight = UI.slideshow.container.height();
+			playerContainer.css("margin-top", (wHeight - pch)/2);
+			this.setMessage("margin {0} {1} {2}".format(wHeight, pch, (wHeight - pch)/2 ));
+		}
 	});
 */
 };

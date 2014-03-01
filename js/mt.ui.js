@@ -145,7 +145,7 @@ UI.toggleOption = function(option, state, noEvent)
 {
 	album[option] = !isMissing(state) ? state : !album[option];
 	if(UI.mode=="slideshow")
-		UI.slideshow.showImage(null,"crossFade");
+		UI.slideshow.toggleOption();
 	$("#cb_" + option).toggleChecked(state, noEvent);
 }
 

@@ -28,7 +28,6 @@ function Slideshow(options)
 	this.changeMode=true;
 	this.zoomFunction="scale";
 	this.transition = new Transition(this);
-
 	this.setOptions(options);
 
 	//make references		
@@ -50,11 +49,18 @@ Slideshow.prototype.setOptions = function(options)
 	this.transition.setOptions(this);
 	this.setStart(this.start);
 
-	if(isEmpty(this.transition.elements)) return;
+	if(!isEmpty(this.transition.elements))
+		this.transition.elements.bindReset("click", Slideshow.slideOnClick);
 
-	this.transition.elements.bindReset("click", Slideshow.slideOnClick);
 	//if(!UI.clientIs("mobile"))
 	//this.transition.elements.bindReset("mousemove", Slideshow.slideOnHover);
+};
+
+Slideshow.prototype.setMediaPlayer = function(mediaPlayer)
+{
+	this.mplayer = mediaPlayer;
+	if(this.mplayer)
+		this.mplayerSlide = this.mplayer.getElement();
 };
 
 Slideshow.slideOnClick = function(e)
@@ -90,7 +96,6 @@ Slideshow.slideOnHover = function(e)
 
 };
 
-
 Slideshow.getClickCoord = function(e,img)
 {
 	var off=img.offset();
@@ -100,7 +105,6 @@ Slideshow.getClickCoord = function(e,img)
 	var cy = e.clientY - Math.round(off.top);
 	return { x: cx, y: cy, rx : Math.roundDigits(cx / img.outerWidth(), 2), ry : Math.roundDigits(cy / img.outerHeight(), 2) };
 };
-
 
 Slideshow.prototype.setContainer = function(container)
 {
@@ -219,7 +223,10 @@ Slideshow.prototype.togglePlay = function(playState)
 	var icon = this.play ? "pause.png" : "play.png";
 	$("#playButton").attr("src", String.combine(Album.serviceUrl ,"icons", icon));
 	$("#playButtonBig").attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
-	if(this.play)
+
+	if(this.currentFile.isVideo())
+		this.mplayer.togglePlay();
+	else if(this.play)
 	{
 		this.setInterval();
 		this.showNextImage();
@@ -234,11 +241,25 @@ Slideshow.prototype.nextTransition = function()
 	this.setStatus("transition: " + this.transition.getLabel());
 };
 
+Slideshow.prototype.toggleOption = function()
+{
+	if(this.currentFile.isImage())
+		UI.slideshow.showImage(null,"crossFade");
+	else
+	{
+		this.styleSlide(this.mplayerSlide);
+		this.fitVideo();
+	}
+};
+
 Slideshow.prototype.toggleZoom = function()
 {
 	this.zoom=!this.zoom;
 	this.setStatus("zoom: " + this.zoom);
-	this.showImage(this.currentIndex, this.zoomFunction);
+	if(this.currentFile.isImage())
+		this.showImage(this.currentIndex, this.zoomFunction);
+	else
+		this.fitVideo();
 };
 
 Slideshow.prototype.toggleControls = function()
@@ -330,13 +351,15 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	this.setStart(index);
 	this.setStatus();
 	this.currentFile=this.pics[this.currentIndex];
+
 	this.preLoadedImage = this.loadImage();
-	this.currentImg = this.transition.getNextSlide();
-	this.currentImg.toggleClass("margin", album.margin);
-	this.currentImg.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
-	this.currentImg.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
-	if(window.UI && UI.divStyles)
-		this.currentImg.attr("style", UI.divStyles());
+	if(this.currentFile.isVideo())
+		this.styleSlide(this.mplayerSlide);
+	else
+	{
+		this.currentImg = this.transition.getNextSlide();
+		this.styleSlide(this.currentImg);
+	}
 
 	if(this.preLoadedImage.complete)
 		this.displayLoadedImage(transitionFunction);
@@ -347,6 +370,16 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	}
 };
 
+Slideshow.prototype.styleSlide = function(el)
+{
+	el.toggleClass("margin", album.margin);
+	el.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
+	el.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
+
+	if(window.UI && UI.divStyles)
+		el.attr("style", UI.divStyles());
+};
+
 Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 {
 //try{
@@ -354,24 +387,21 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 	{
 		this.hideImage();
 		this.transition.inProgress=false;
-		if(MediaPlayer.slide)
+		if(this.mplayer)
 		{
-			MediaPlayer.slide.loadMediaFile(this.currentFile);
-			MediaPlayer.slide.show(this.transition.duration);
+			this.mplayer.loadMediaFile(this.currentFile);
 			this.fitVideo();
+			this.mplayer.show(this.transition.duration);
 			if(this.play)
-				setTimeout(function() {
-					MediaPlayer.slide.play();
-				}, this.transition.duration);
-								
+				setTimeout(function() {	UI.slideshow.mplayer.play(); }, this.transition.duration);								
 		}
 	}
 	else
 	{
-		if(MediaPlayer.slide)
+		if(this.mplayer)
 		{
-			MediaPlayer.slide.pause();
-			MediaPlayer.slide.hide(this.transition.duration);
+			this.mplayer.pause();
+			this.mplayer.hide(this.transition.duration);
 		}
 
 		this.fitImage();
@@ -431,6 +461,9 @@ Slideshow.prototype.fitVideo = function ()
 {
 	if(!this.currentFile.isVideoStream()) return;
 
+	if(!this.zoom)
+		return this.mplayer.setSize();
+
 	var bw = 60; // image.borderMarginWidth();
 	var bh = 80; //image.borderMarginHeight();
 
@@ -451,23 +484,14 @@ Slideshow.prototype.fitVideo = function ()
 		width = height * preRatio;
 	}
 
-	MediaPlayer.slide.resize(width, height);
-/*	var playerContainer=MediaPlayer.slide.getElement();
-	if(playerContainer.height())
-	{
-		pch = playerContainer.outerHeight(true);
-		if(wHeight > pch)
-			playerContainer.css("margin-top", (wHeight - pch)/2);
-		this.setStatus("margin {0} {1} {2}".format(wHeight, pch, wHeight - pch);
-	}
-*/
+	this.mplayer.resize(width, height);
 };
 
 Slideshow.prototype.fitImage = function (image, preLoaded) 
 {
 	preLoaded = valueOrDefault(preLoaded, this.preLoadedImage);
-	if (!preLoaded) return;
 	image = valueOrDefault(image, this.currentImg);
+	if (!preLoaded || !image) return;
 
 	if (image.attr("src") !== preLoaded.src)
 		image.attr("src", preLoaded.src);

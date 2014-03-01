@@ -2,28 +2,25 @@
 	<img id="slide0" class="slide bottom left hidden" alt="" src="icons/blank1px.png" />
 	<img id="slide1" class="slide top right hidden" alt="" src="icons/blank1px.png" />
 
-	<div id="videoSlide" class="inlineBlock centered photoBorder shadow">
+	<div id="videoSlide" class="inlineBlock centered">
 		<div id="slidePlayer"></div>
-		<div class="translucent right">
-			<span id="slidePlayerControls"></span>
-			<span id="slidePlayerMessage" class="text"></span>
-		</div>
 	</div>
 
 	<div class="headerLeftCorner controls" id="prevDiv">
 		<img  id="indexButtonBig" class="iconTrans" src="icons/close128.png" onclick="UI.setMode()" title="back to thumbnails (Esc)" alt="back to thumbnails"/>
 		<br/>
-		<img  id="prevButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-previous.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow.showNextImage(-1)"/>
+		<img  id="prevButtonBig" class="iconTrans" src="icons/media-previous.png" alt="previous" title="previous (LEFT)" onclick="UI.slideshow.showNextImage(-1)"/>
 	</div>
 	<div class="headerRightCorner controls" id="nextDiv">
 		<img id="playButtonBig" class="iconTrans" src="icons/media-play.png" alt="play" title="play (space)" onclick="UI.slideshow.togglePlay()"/>
 		<br/>
-		<img id="nextButtonBig" class="iconTrans" style="margin-top:30%" src="icons/media-next.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
+		<img id="nextButtonBig" class="iconTrans" src="icons/media-next.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
 	</div>
 
 	<div class="footerLeftCorner">
 		<div id="slideshowControls">
-			<span class="translucent small status" id="slideshowStatus"></span>		
+			<span id="slidePlayerMessage" class="translucent small status text"></span>
+			<span id="slidePlayerControls" class="translucent"></span>
 			<br/>
 			<img class="icon" src="icons/thumbnails.png" alt="controls" title="controls (C)" onclick="UI.slideshow.toggleControls()"/>
 			<span id="controls" class="controls">

@@ -440,6 +440,12 @@ Album.prototype.getSelection = function()
 	return selectedFiles;
 };
 
+Album.prototype.selectSlideshowFiles = function()
+{
+	var types = config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
+	return Album.selectFiles(this.activeFileList(), {type: types});
+};
+
 //get files for current page
 //depending on countPerPage and pageNumber
 Album.prototype.selectCurrentPageFiles = function()
