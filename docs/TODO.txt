@@ -553,7 +553,7 @@ playlist template: only link to download mp3
 audio links: use soundmanager?
 
 Android 4: test html5 video player for mp4
-OK ipad: test players
+OK ipad: test players. make hack with setTimeout, play/pause/play
 
 --------
 

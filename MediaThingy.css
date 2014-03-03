@@ -264,22 +264,6 @@ img.icontr, img.iconTrans
 	text-align: right;
 }
 
-
-.footerLeft50
-{
-	position: fixed;
-	bottom: 50px;
-	left: 20px;
-}
-
-.footerLeftCorner
-{
-	position: fixed;
-	bottom: 0px;
-	left: 0px;
-	text-align: left;
-}
-
 .headerLeftCorner
 {
 	position: fixed;
@@ -296,11 +280,34 @@ img.icontr, img.iconTrans
 	text-align: right;
 }
 
+.footerLeft50
+{
+	position: fixed;
+	bottom: 50px;
+	left: 20px;
+}
+
 .footerRight50
 {
 	position: fixed;
 	bottom: 50px;
 	right: 20px;
+}
+
+.footerCenter
+{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+.footerLeftCorner
+{
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+	text-align: left;
 }
 
 .footerRightCorner, .musicplayer_footer
@@ -485,7 +492,7 @@ div.dir img.thumbnail
 
 /* ---------------- generic styles ---------------- */
 
-.centered, #videoPlayer_wrapper
+.centered, #videoPlayer_wrapper, .footerCenter
 {
 	margin-left:auto;
 	margin-right:auto;

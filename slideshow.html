@@ -17,6 +17,11 @@
 		<img id="nextButtonBig" class="iconTrans" src="icons/media-next.png" onclick="UI.slideshow.showNextImage(+1)" alt="next" title="next (RIGHT)"/>
 	</div>
 
+	<div class="footerCenter margin">
+		<span class="translucent" id="comments"></span>
+		<span class="translucent" id="slideShowTags"></span>
+	</div>
+
 	<div class="footerLeftCorner">
 		<div id="slideshowControls">
 			<span id="slidePlayerMessage" class="translucent small status text"></span>
@@ -31,7 +36,7 @@
 				<img class="icontr" id="fasterIcon" src="icons/arrow-forward.png" onclick="UI.slideshow.faster()" alt="faster" title="faster (UP)"/>
 			</span>
 			<br/>
-			<span class="translucent">
+			<span class="translucent small">
 				<span id="ImageText"></span>
 				<a id="ImageLink" target="full"></a>
 			</span>
@@ -44,8 +49,5 @@
 		<img class="iconTrans admin" id="deleteButtonBig" src="icons/remove.png" onclick="UI.confirmFileAction('delete')" title="delete" alt="delete"/>
 		<br/>
 		<img class="iconTrans admin" id="bgButtonBig" src="icons/background.png" onclick="UI.confirmFileAction('background')" title="set as background" alt="background"/>
-		<div>
-			<span class="translucent" id="comments"></span><br/>
-		</div>
 	</div>
 </div>

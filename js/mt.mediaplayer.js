@@ -39,7 +39,7 @@ var playerSettings=
 	{
 		id:"slidePlayer",
 		container: "videoSlide",
-	//	allowHtml5: true,
+		allowHtml5: true,
 		allowFlash: true,
 		size: 1,
 		autostart: false,
