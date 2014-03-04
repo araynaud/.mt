@@ -307,19 +307,21 @@ MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
 //jwplayer mapped function
 MediaPlayer.prototype.play = function()
 {
-	if(this.player)
+	if(this.player && !this.isPlaying())
 		this.player.play(true);
 };
 
 MediaPlayer.prototype.pause = function()
 {
-	if(this.player)
+	if(this.player && this.isPlaying())
 		this.player.play(false);
 };
 
 MediaPlayer.prototype.togglePlay = function(state)
 {
-	if(this.player)	this.player.play(state);
+	if(!this.player) return;
+	if(state === this.isPlaying()) return;
+	this.player.play(state);
 };
 
 MediaPlayer.prototype.remove = function()
@@ -541,6 +543,9 @@ MediaPlayer.prototype.setupEvents = function()
 	this.player.onPlay(function(event)
 	{
 		mp.setMessage(); 
+		if(mp.settings.uiMode=="slideshow")
+			UI.slideshow.togglePlay(true);
+//			UI.slideshow.play=true;
 		mp.displayItemDuration();		
 	});
 
@@ -549,7 +554,12 @@ MediaPlayer.prototype.setupEvents = function()
 		mp.displayItemDuration();
 	});
 
-	this.player.onPause(function(event) { mp.setMessage("paused"); });
+	this.player.onPause(function(event)
+	{ 
+		mp.setMessage("paused");
+		if(mp.settings.uiMode=="slideshow")
+			UI.slideshow.togglePlay(false);
+	 });
 	this.player.onComplete(function(event)
 	{
 		mp.setMessage("finished playing."); 

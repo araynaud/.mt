@@ -241,7 +241,7 @@ Slideshow.prototype.togglePlay = function(playState)
 	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
 	if(this.currentFile.isVideo())
-		this.mplayer.togglePlay();
+		this.mplayer.togglePlay(this.play);
 	else if(this.play)
 	{
 		this.setInterval();
