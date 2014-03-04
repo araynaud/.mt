@@ -19,7 +19,7 @@ Transition.prototype.setOptions = function(options)
 	if(isObject(options))
 		Object.merge(this,options);
 
-	if(this.elementSelector && !isEmpty(this.container))
+	if(isString(this.elementSelector) && !isEmpty(this.container))
 		this.elements =  this.container.find(this.elementSelector);
 	else if(this.elementSelector)
 		this.elements =  $(this.elementSelector);

@@ -111,7 +111,6 @@ $(document).ready(function()
 	{
 		var mf=album.getMediaFileByName(search.start);
 		if(mf) mf.play();
-//		UI.slideshow.display(search.start);
 	}
 });
 

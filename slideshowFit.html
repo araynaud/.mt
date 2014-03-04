@@ -5,11 +5,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <link type="text/css" rel="stylesheet" href="MediaThingy.css"/>
-<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery-1.8.3.js"></script>
 <script type="text/javascript" src="js/lib/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" src="js/lib/jsrender.js"></script>
 <script type="text/javascript" src="js/lib/jquery.views.js"></script>
-<script type="text/javascript" src="jwplayer/jwplayer.js"></script>
 <script type="text/javascript" src="js/lib/querystring.js"></script>
 
 <script type="text/javascript" src="js/mt.extensions.js"></script>
@@ -19,6 +18,7 @@
 <script type="text/javascript" src="js/mt.transition.js"></script>
 <script type="text/javascript" src="js/mt.slideshow.js"></script>
 <script type="text/javascript" src="js/mt.ui.js"></script>
+<script type="text/javascript" src="js/mt.templates.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>
 
 <script type="text/javascript">
@@ -44,11 +44,10 @@ Album.onLoad = function (albumInstance)
 	var options={
 		//play: true,
 		//interval: 3000,
-		pics: albumInstance.selectFiles("IMAGE"),
-		container: "#slideshowContainer",
-		statusBar: "#title",
+		pics: albumInstance.selectSlideshowFiles(),
 		alignX:"center",
 		alignY:"bottom",
+		elements: {container: "#slideshowContainer", statusBar: "#title"}
 	};
 //	slideshow.setOptions(search);
 	slideshow.setOptions(options);

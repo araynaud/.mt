@@ -45,7 +45,7 @@ if($.views)
 UI.renderTemplate = function(templateId, targetId, data, funct)
 {
 	var target = $(targetId);
-	if(!target.length)
+	if(!target.length && isString(targetId))
 		target = $("#"+targetId);
 	if(!target.length)		return;
 	funct= valueOrDefault(funct,"html");

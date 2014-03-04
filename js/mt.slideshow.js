@@ -19,14 +19,25 @@ function Slideshow(options)
 	this.tnIndex=1;
 	this.depth=0;
 	this.preLoadedImage=null;
-	this.container=null;
-	this.statusBar=".status";
-	this.showInterval = "#speed";
 	this.alignX = "center"; //"left", "right"
 	this.alignY = "center"; //"top", "bottom"
-	this.elementSelector = "img.slide";
 	this.changeMode=true;
 	this.zoomFunction="scale";
+	this.elements = {
+		slides: "img.slide",
+		statusBar: ".status",
+		speed: "#speed",
+		description: "#slideshowCaption",
+		tags: "#slideshowTags",
+		imageText: "#imageText",
+		imageLink: "#imageLink",
+		indexButton: "img#indexButtonBig",
+		prevButton: "img#prevButtonBig",
+		nextButton: "img#nextButtonBig",
+		playButton: "img#playButtonBig",
+		comments: "#fbComments"
+	};
+	this.elementSelector = this.elements.slides;
 	this.transition = new Transition(this);
 	this.setOptions(options);
 
@@ -44,6 +55,7 @@ Slideshow.prototype.setOptions = function(options)
 	if(isObject(options))
 		Object.merge(this,options);
 
+	this.setupElements();
 	this.setInterval();
 	this.setContainer();
 	this.transition.setOptions(this);
@@ -55,6 +67,14 @@ Slideshow.prototype.setOptions = function(options)
 	//if(!UI.clientIs("mobile"))
 	//this.transition.elements.bindReset("mousemove", Slideshow.slideOnHover);
 };
+
+Slideshow.prototype.setupElements = function()
+{
+	if(!this.elements) return;
+	for (var el in this.elements)
+		this.elements[el] = $(this.elements[el]);
+	return this.elements;
+}
 
 Slideshow.prototype.setMediaPlayer = function(mediaPlayer)
 {
@@ -89,11 +109,10 @@ Slideshow.slideOnHover = function(e)
 //	UI.slideshow.setStatus(coord);
 	
 	//display icons conditionally
-	$("img#indexButtonBig").toggle(coord.rx < .25 && coord.ry < .25);
-	$("img#prevButtonBig").toggle(coord.rx < .25 && coord.ry >= .25);
-	$("img#playButtonBig").toggle(coord.rx > .75 && coord.ry < .25);
-	$("img#nextButtonBig").toggle(coord.rx > .75 && coord.ry >= .25);
-
+	this.elements.indexButton.toggle(coord.rx < .25 && coord.ry < .25);
+	this.elements.prevButton.toggle(coord.rx < .25 && coord.ry >= .25);
+	this.elements.playButton.toggle(coord.rx > .75 && coord.ry < .25);
+	this.elements.nextButton.toggle(coord.rx > .75 && coord.ry >= .25);
 };
 
 Slideshow.getClickCoord = function(e,img)
@@ -109,11 +128,10 @@ Slideshow.getClickCoord = function(e,img)
 Slideshow.prototype.setContainer = function(container)
 {
 	if(container)
-		this.container = container;
-	this.container=$(this.container);
-	if(isEmpty(this.container)) 
-		this.container = $(window);
-	return this.container;
+		this.elements.container = $(container);
+	if(isEmpty(this.elements.container)) 
+		this.elements.container = $(window);
+	return this.elements.container;
 };
 
 Slideshow.prototype.setDepth = function(depth)
@@ -123,8 +141,7 @@ Slideshow.prototype.setDepth = function(depth)
 
 Slideshow.prototype.displayInterval = function()
 {
-	if(this.showInterval)
-		$(this.showInterval).html(this.interval/1000 +"s");
+	this.elements.speed.html(this.interval/1000 +"s");
 };
 
 Slideshow.prototype.setInterval = function(interval)
@@ -202,7 +219,7 @@ Slideshow.prototype.display = function(start)
 	this.setStart(start);
 //	alert("Slideshow.display:{0} / {1} pics.".format(start,this.pics.length));
 	if(isEmpty(this.pics)) return;
-	if(!this.container) this.setContainer();
+	if(!this.elements.container) this.setContainer();
 
 	if(window.UI && UI.setMode)
 		UI.setMode("slideshow");
@@ -221,8 +238,7 @@ Slideshow.prototype.togglePlay = function(playState)
 	this.play=valueOrDefault(playState,!this.play);
 	this.setStatus(this.play ? "playing" : "paused");
 	var icon = this.play ? "pause.png" : "play.png";
-	$("#playButton").attr("src", String.combine(Album.serviceUrl ,"icons", icon));
-	$("#playButtonBig").attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
+	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
 	if(this.currentFile.isVideo())
 		this.mplayer.togglePlay();
@@ -268,11 +284,9 @@ Slideshow.prototype.toggleControls = function()
 	$('#fbComments').fadeToggle('slow');
 };
 
-Slideshow.prototype.setImageLink = function(href,text)
+Slideshow.prototype.setImageLink = function(href, text)
 {
-	var link = $("#ImageLink");
-	link.html(text);
-	link.attr("href",href);
+	this.elements.imageLink.html(text).attr("href",href);
 };
 
 Slideshow.prototype.validIndex = function(i)
@@ -412,11 +426,9 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 	}	
 
 //}catch(err) { alert(Object.toText(err,"\n")); }
-
-	$("#ImageText").html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
-	//save as currentFile	
-	this.setImageLink(MediaFile.getFileUrl(this.currentFile), this.currentFile.filename);
-	this.showComments(this.currentFile,"comments");
+	this.elements.imageText.html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
+	this.setImageLink(this.currentFile.getFileUrl(), this.currentFile.name);
+	this.showComments(this.currentFile);
 };
 
 
@@ -442,13 +454,11 @@ Slideshow.prototype.autoShowNextImage = function()
 	this.timer = setTimeout(function(){ ss.showNextImage(this.increment); } , this.interval);
 };
 
-Slideshow.prototype.showComments = function(pic,divId)
+Slideshow.prototype.showComments = function(mediaFile)
 {
-	var div=$('#'+divId);
-	div.html(pic.description||"");
-	if(pic.tags)
-		UI.renderTemplate("tagTemplate", div, Object.keys(pic.tags), "append");
-}
+	this.elements.description.html(mediaFile.description||"");
+	UI.renderTemplate("tagTemplate", this.elements.tags, Object.values(mediaFile.tags));
+};
 
 // ---- IMAGE display functions -------
 
@@ -468,8 +478,8 @@ Slideshow.prototype.fitVideo = function ()
 	var bh = 80; //image.borderMarginHeight();
 
 	var preRatio = this.currentFile.width / this.currentFile.height;
-	var wWidth  = this.container.width()  - bw;
-	var wHeight = this.container.height() - bh;
+	var wWidth  = this.elements.container.width()  - bw;
+	var wHeight = this.elements.container.height() - bh;
 	var wRatio = wWidth / wHeight;
 	var width  = Math.min(wWidth, this.currentFile.width);
 	var height = Math.min(wHeight, this.currentFile.height);
@@ -502,7 +512,7 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 	var bh= image.borderMarginHeight();
 
 	var preRatio = preLoaded.width / preLoaded.height;
-	var wRatio = (this.container.width() - bw ) / (this.container.height() - bh);
+	var wRatio = (this.elements.container.width() - bw ) / (this.elements.container.height() - bh);
 
 	var height = preLoaded.height;
 	var width = preLoaded.width;
@@ -510,12 +520,12 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 	image.height(height);
 	if (this.zoom && preRatio > wRatio) //if too wide, fit width
 	{
-		width = this.container.width() - bw;
+		width = this.elements.container.width() - bw;
 		height = width / preRatio;
 	}
 	else if (this.zoom) //or fit height;
 	{
-		height = this.container.height() - bh;
+		height = this.elements.container.height() - bh;
 		width = height * preRatio;
 	}
 
@@ -532,10 +542,10 @@ Slideshow.prototype.setMargins = function(image)
 	var mx = image.marginWidth()/2;
 	var my = image.marginHeight()/2;	
 
-	var x = this.container.width() - image.outerWidth(true);
+	var x = this.elements.container.width() - image.outerWidth(true);
 	if (this.alignX == "center") x/=2;
 
-	var y = this.container.height() - image.outerHeight(true);
+	var y = this.elements.container.height() - image.outerHeight(true);
 	if (this.alignY == "center") y/=2;
 
 	image.css("margin-left", this.alignX == "left" ? mx : x+mx);
@@ -659,7 +669,7 @@ Slideshow.prototype.setStatus = function(text)
 	if(isObject(text))
 		text=JSON.stringify(text);
 
-	$(this.statusBar).html(text);
+	this.elements.statusBar.html(text);
 };
 
 Slideshow.prototype.addStatus = function(text)
@@ -667,7 +677,7 @@ Slideshow.prototype.addStatus = function(text)
 	if(!text) return;
 	if(isObject(text))
 		text=JSON.stringify(text);
-	$(this.statusBar).append("\n" + text);
+	this.elements.statusBar.append("\n" + text);
 };
 
 

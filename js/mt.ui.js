@@ -16,7 +16,7 @@ UI.modes=
 		},
 		onHide: function()
 		{
-			UI.rotatePages(false);
+			if(UI.rotatePages)	UI.rotatePages(false);
 		}
 	},
 	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"] },

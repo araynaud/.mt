@@ -53,6 +53,11 @@ function isArray(input)
 	return Object.getType(input) === "Array";
 }
 
+function isObjectNotArray(input)
+{
+	return isObject(input) && !isArray(input);
+}
+
 function getVar(name)
 {
     return window[name];
@@ -855,7 +860,10 @@ Object.merge = function (o1, o2, addNew, includeFunctions)
 	{
 		if(!addNew && !(k in o1)) continue;
 		if(!includeFunctions && isFunction(o2[k])) continue;
-		o1[k] = o2[k];
+		if(isObjectNotArray(o1[k]) && isObjectNotArray(o2[k]))
+			Object.merge(o1[k], o2[k], true);
+		else
+			o1[k] = o2[k];
 	}
 	return o1;
 };
@@ -970,7 +978,7 @@ Object.values = function (obj, skipNull)
     var vals = [];
     if(!obj) return vals;
     //if array, return obj
-    if(!isObject(obj)) return obj;
+    if(!isObjectNotArray(obj)) return obj;
     //TODO if not object, return [obj]
     for(var key in obj)
         if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
