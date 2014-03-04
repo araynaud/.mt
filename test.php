@@ -190,7 +190,7 @@ debug("selectDirs Time elapsed", getTimer());
 debugVar("dirs", true);
 
 startTimer();
-$groupedFiles = groupByName($files, $byType);
+$groupedFiles = groupByName($relPath, $files, $byType);
 debug("groupByName Time elapsed", getTimer());
 
 startTimer();

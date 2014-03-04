@@ -15,7 +15,7 @@ function getFileData(&$getData, $path, $file)
 			$search = getSearchParameters();
 			$files = listFiles($relPath, $search); 
 			if($getData == "groupedfiles")
-				$files = groupByName($files, true);
+				$files = groupByName($relPath, $files, true);
 			return $files;
 		case "config":
 			return $config;

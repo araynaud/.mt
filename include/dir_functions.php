@@ -128,7 +128,7 @@ debug("subdirs",$subdirs);
 		foreach($subdirs as $subdir)
 		{
 			$newDir=combine($dir,$subdir);
-			$nb = max(floor($remaining/$nbDirs), 1);
+			$nb = ($remaining == 0) ? 0 : max(floor($remaining/$nbDirs), 1);
 			$subdirFiles=listFiles($newDir,$search,combine($subPath,$subdir),$nb,$recurse);
 			if(!$subdirFiles) continue;
 			
@@ -316,8 +316,11 @@ function getDistinctNames($files)
 	return $distinct;
 }
 
-function groupByName($files, $byType=false)
+function groupByName($relPath, $files, $byType=false)
 {
+	global $relPathG;
+	$relPathG=$relPath;
+
 	$distinct=array();
 	foreach ($files as $file)
 	{
@@ -325,6 +328,7 @@ function groupByName($files, $byType=false)
 		splitFilePath($file,$subdir,$filename);
 		splitFilename($filename,$name,$ext);
 		$type = getFileType($file);
+debug("groupByName $file", "type $type");
 		$key = combine($subdir, $name);//, !$byType ? $type : false);
 
 		if($byType) 
