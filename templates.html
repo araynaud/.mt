@@ -108,18 +108,18 @@
 		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"
 		{{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}/>
 	{{else}}
-		<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}>{{:#data}}</a>
+		<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}>{{:makeTitle()}}</a>
 	{{/if}}
 </script>
 
 <script id="addTagTemplate" type="text/x-jsrender"> 
-	<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'addtag',to:'{{:#data}}'})"{{/if}}>{{:#data}}</a>
+	<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'addtag',to:'{{:#data}}'})"{{/if}}>{{:makeTitle()}}</a>
 </script>
 
 
 <!-- template for tags search -->
 <script id="tagSelectTemplate" type="text/x-jsrender"> 
-	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:#data}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
+	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:makeTitle()}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
 </script>
 
 <!-- template for video download links by extension -->

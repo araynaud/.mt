@@ -189,6 +189,78 @@ String.prototype.format = function()
 	return s;
 };
 
+String.prototype.makeTitle = function()
+{
+	var str = this.replace("_", " ");
+	str = str.replace("/", " ");
+	str = str.replace("-", " - ");
+	str = str.replace(".", " ");
+	str = str.replace("  ", " ");
+
+	for(var i=str.length-1; i>0; i--)
+		if(str.isWordEnd(i))
+			str = str.insert(i," ");
+
+	return str;
+};
+
+String.prototype.isDigit = function(index)
+{
+	var ch = this.charAt(index);
+	return ch >= "0" && ch <= "9";
+};
+
+String.prototype.isUppercase = function(index)
+{
+	var ch = this.charAt(index);
+	return ch >= "A" && ch <= "Z";
+};
+
+String.prototype.isLowercase = function(index)
+{
+	var ch = this.charAt(index);
+	return ch >= "a" && ch <= "z";
+};
+
+String.prototype.getCharType = function(index)
+{
+	var ch=this.charAt(index);
+	if(!ch) return "";
+	if(ch >= "0" && ch <= "9") return "digit";
+	if(ch >= "a" && ch <= "z") return "lower";
+	if(ch >= "A" && ch <= "Z") return "upper";
+	return "other";
+};
+
+String.prototype.diffCharType = function(index)
+{
+	if(index<=0)return false;
+	var prev = this.getCharType(index-1);
+	var cur = this.getCharType(index);
+	return prev != cur;
+};
+
+String.prototype.isWordEnd = function(index)
+{
+	if(index<=0)return false;
+	var prev = this.getCharType(index-1);
+	var cur  = this.getCharType(index);
+	var next = this.getCharType(index+1);
+	if(prev=="upper" && cur=="upper" && next=="lower") return true;
+	if(prev=="upper" && cur=="lower") return false;
+	return prev != cur;
+};
+
+
+String.prototype.insert = function(pos, str)
+{
+	return this.substr(0, pos) + str + this.substr(pos);
+};
+
+String.prototype.remove = function(pos, len)
+{
+	return this.substr(0, pos) + this.substr(pos+len);
+};
 
 String.startsWith = function(str, sub)
 {
