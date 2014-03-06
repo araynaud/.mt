@@ -267,7 +267,8 @@ function metaTags($album)
 	$meta["article:author"] = "MinorArt"; //uploader username ?
 
 //list album tags
-	$meta["article:tag"] = array_keys(listTagFiles($relPath));
+	$tags=listTagFiles($relPath, $album->getDepth());
+	$meta["article:tag"] = array_keys($tags);
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);

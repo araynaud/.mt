@@ -59,7 +59,8 @@ OK retest multiple ajax
 2 load tags from subdirs
 3 search by tag in subdirs.
 
-4 Resize video player with window
+OK 4 Resize video player with window
+set margin-top to be centered
 5 mediaplayer settings in config
 
 OK Upload: vsizes is null. exclude dirs.
@@ -89,23 +90,20 @@ Slideshow only for current search results
 use album.activeFileList();
 when search cleared: reset pics
 
-
 --------------
 1 edit div: rotate, select, actions.
+OK move, delete, add/remove tag, , description
 
 Media File action dialog. display overlay centered
 get upload/admin buttons via ajax.
 Actions apply to all selected files.
-move, delete, add/remove tag, , description
-
 rename: only current file.
 
 2 refresh mediafile and redisplay after action
 ----------
-
-curlPostFile: use getFilePaths array
-post takenDate as data. 
-upload.php: touch image with $fileDate from MediaFile->getTakenDate();
+OK curlPostFile: use getFilePaths array
+OK post takenDate as data. 
+OK upload.php: touch image with $fileDate from MediaFile->getTakenDate();
 
 
 

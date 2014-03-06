@@ -12,7 +12,6 @@ class Album extends BaseObject
 	private $jquery;
 	private $private;
 	private $search; //array of search criteria: types, name, depth, dates
-    private $depth;
     private $mdate;
     private $cdate;
     private $oldestDate;
@@ -58,7 +57,7 @@ class Album extends BaseObject
 			$this->getMetadataIndex("VIDEO");
 
 			//Group by name / make MediaFile objects
-			$this->tags = loadTagFiles($this->relPath, $allFiles);
+			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), $allFiles);
 
 			$this->createMediaFiles();
 
@@ -77,7 +76,8 @@ class Album extends BaseObject
 	//init search parameters from request
     public function getSearchParameters()
 	{
-		$this->search = getSearchParameters();	
+		if(!$this->search)
+			$this->search = getSearchParameters();	
 		return $this->search;
 	}
 
@@ -89,9 +89,8 @@ class Album extends BaseObject
 
 	public function getDepth()
 	{
-		if($this->depth==null)
-			$this->depth=getParamNumOrBool("depth", 0);
-		return $this->depth;
+		$this->getSearchParameters();
+		return $this->search["depth"];
 	}
 
     public function getPath()

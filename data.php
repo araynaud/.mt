@@ -8,15 +8,18 @@ function getFileData(&$getData, $path, $file)
 	$relPath=getDiskPath($path);
 	$filePath=combine($relPath, $file);
 	$getData = strtolower($getData);
+	$search = getSearchParameters();
 	switch ($getData)
 	{
 		case "groupedfiles":
 		case "files":
-			$search = getSearchParameters();
 			$files = listFiles($relPath, $search); 
 			if($getData == "groupedfiles")
 				$files = groupByName($relPath, $files, true);
 			return $files;
+		case "tags":
+			$tags = loadTagFiles($relPath, $search["depth"]);
+			return $tags;			
 		case "config":
 			return $config;
 		case "size":

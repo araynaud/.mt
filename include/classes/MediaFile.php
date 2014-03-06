@@ -389,6 +389,15 @@ debug("targetDir", $targetDir);
 //debug("moveFile", "($dir, $file, $targetDir)");
 			$result += moveFile($dir, $file, $targetDir, $newName);
 		}
+
+		//set tags for new file/dir
+		$newName = $newName ? $newName : $this->name;
+
+		if($this->tags)
+			foreach ($this->tags as $tag) 
+				saveFileTag($targetDir, $newName, $tag, true);
+
+
 		return $result;
 	}
 

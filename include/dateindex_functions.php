@@ -7,20 +7,20 @@ function getTagFilename($relPath, $tag)
 }
 
 //get index csv without trying to refresh
-function listTagFiles($relPath, $grouped=true)
+function listTagFiles($relPath, $depth=0, $grouped=true)
 {
-	$search = array("type" => "csv");
-	$tagFiles = listFiles("$relPath/.tag", $search);
+	$search = array("type" => "csv", "depth" => $depth, "subdir" => ".tag");
+	$tagFiles = listFiles($relPath, $search);
 debug("tagFiles", $tagFiles);
 	if($grouped)
 		$tagFiles = groupByName($relPath, $tagFiles);
-debug("tagFiles grouped", $tagFiles);
+debug("tagFiles grouped", $tagFiles, true);
 	return $tagFiles;
 }
 
-function loadTagFiles($relPath, $fileList=null)
+function loadTagFiles($relPath, $depth=0, $fileList=null)
 {
-	$tagFiles = listTagFiles($relPath);
+	$tagFiles = listTagFiles($relPath, $depth);
 	$tagData=array();
 
 	foreach ($tagFiles as $tag => $file)

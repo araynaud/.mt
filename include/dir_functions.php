@@ -26,7 +26,7 @@ function listAllFiles($dir, $maxCount=0)
 //$sub: subfolder to list (ex: .tn, .ss)
 //$search =  array( "name"=>"","type"=>"","depth"=>0,"maxCount"=>0,"tnDir"=>"");
 
-function listFiles($dir,$search=array(),$subPath="",$remaining=null,$recurse=null)
+function listFiles($dir, $search=array(),$subPath="",$remaining=null,$recurse=null)
 {
 	global $config;
 	
@@ -68,7 +68,7 @@ debug("listFiles $dir", $search);
 
 			if(ignoreFile($file)) continue;
 
-			if($recurse && fileIsDir("$dir/$file"))
+			if($recurse && fileIsDir("$file"))
 				$subdirs[$file] = $file;
 			splitFilename($file,$key,$ext);
 
@@ -96,6 +96,22 @@ debug("listFiles $dir", $search);
 //debug("keys", array_keys($files));
 debug("recurse",$recurse);	
 debug("subdirs",$subdirs);	
+
+//if $subdir:
+//1 list dirs from $relPath to recurse
+//2 list files from $relPath/$subdir
+	if(@$search["subdir"])
+	{
+debug("files in $dir", $files);		
+debug("subdir", @$search["subdir"]);	
+		$subdir = $search["subdir"];
+		$newDir = combine($dir, @$search["subdir"]);
+		unset($search["subdir"]);
+		$files=listFiles($newDir, $search, combine($subPath, @$search["subdir"]), $remaining, 0);
+debug("list files in $newDir", $files);		
+		$search["subdir"]=$subdir;
+	}
+
 	if($recurse==0 || $remaining>0 && count($files)==$remaining)
 		return $files;
 
@@ -109,7 +125,7 @@ debug("subdirs",$subdirs);
 			$remaining -= count($files);
 		}
 		$recurse++;
-		$parentFiles=listFiles($newDir,$search,combine($subPath,".."),$remaining,$recurse);
+		$parentFiles=listFiles($newDir, $search, combine($subPath,".."), $remaining, $recurse);
 		if($parentFiles)
 			$files=array_merge($files,$parentFiles);
 	}
@@ -129,7 +145,7 @@ debug("subdirs",$subdirs);
 		{
 			$newDir=combine($dir,$subdir);
 			$nb = ($remaining == 0) ? 0 : max(floor($remaining/$nbDirs), 1);
-			$subdirFiles=listFiles($newDir,$search,combine($subPath,$subdir),$nb,$recurse);
+			$subdirFiles=listFiles($newDir, $search, combine($subPath,$subdir), $nb, $recurse);
 			if(!$subdirFiles) continue;
 			
 			$files=array_merge($files,$subdirFiles); //1 array
@@ -150,8 +166,8 @@ function getSearchParameters()
 	$search["type"]=reqParam("type");
 	$search["name"]=reqParam("name");
 	$search["sort"]=reqParam("sort");
-	$search["depth"]=reqParam("depth");
-	$search["metadata"]=reqParamBoolean("metadata");
+	$search["depth"]=reqParam("depth",0);
+	$search["subdir"]=reqParam("subdir");
 	$search["maxCount"]=reqParam("count",0);
 	$search["config"]=reqParamBoolean("config",true);
 	parseWildcards($search);

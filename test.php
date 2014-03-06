@@ -168,7 +168,7 @@ debug();
 // debug("command", $cmdOutput)";
 startTimer();
 
-$tagData = loadTagFiles($relPath);
+$tagData = loadTagFiles($relPath, @$search["depth"]);
 debugVar("tagData", true);
 
 $files = listFiles($relPath, $search);
