@@ -195,8 +195,11 @@ debug($type, count($typeFiles));
 		//for each tag file, 		//mediafile -> addtag
 		if(!$this->tags) return;
 		foreach ($this->tags as $tag => $tagList)
-			if(isset($tagList[$mf->getName()]))
+		{
+			$key = combine($mf->getSubdir(),$mf->getName());
+			if(isset($tagList[$key]))
 				$mf->addTag($tag);
+		}
 	}
 
 

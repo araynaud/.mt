@@ -344,7 +344,7 @@ function groupByName($relPath, $files, $byType=false)
 		splitFilePath($file,$subdir,$filename);
 		splitFilename($filename,$name,$ext);
 		$type = getFileType($file);
-debug("groupByName $file", "type $type");
+//debug("groupByName $file", "type $type");
 		$key = combine($subdir, $name);//, !$byType ? $type : false);
 
 		if($byType) 

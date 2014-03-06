@@ -1,9 +1,11 @@
 <?php
 //---------------TAG functions ----------
 
-function getTagFilename($relPath, $tag)
+function getTagFilename($relPath, $subdir, $tag)
 {
-	return "$relPath/.tag/$tag.csv";
+//	return "$relPath/.tag/$tag.csv";
+	splitFilePath($tag,$subdir,$tag);
+	return combine($relPath, $subdir, ".tag", "$tag.csv");
 }
 
 //get index csv without trying to refresh
@@ -25,17 +27,36 @@ function loadTagFiles($relPath, $depth=0, $fileList=null)
 
 	foreach ($tagFiles as $tag => $file)
 	{
-		$data = loadTagFile($relPath, $tag, $fileList);
-		if($data)
-			$tagData[$tag] = $data;
+		$subdir = @$file["subdir"];
+		$name = $file["name"];
+		$data = loadTagFile($relPath, $subdir, $tag, $fileList);
+		if(!$data) continue;
+
+		if(!isset($tagData[$name]))
+			$tagData[$name] = array();
+		$tagData[$name] = array_merge($tagData[$name], $data);
+//		$tagData[$tag] = $data;
 	}
 	return $tagData;
 }
 
-function loadTagFile($relPath, $tag, $fileList=null)
+function loadTagFile($relPath, $subdir, $tag, $fileList=null)
 {
-	$filename=getTagFilename($relPath, $tag);
+	$filename=getTagFilename($relPath, $subdir, $tag);
+debug("loadTagFile", $filename);
 	$tagList = readArray($filename, true);
+
+	if($subdir)
+	{
+		$tags=array();
+		foreach ($tagList as $name)
+		{			
+			$key = combine($subdir, $name);
+			$tags[$key]= $name;
+		}
+		$tagList=$tags;
+	}
+
 	if($fileList)
 		$tagList = array_intersect_key($tagList, $fileList);
 	return $tagList;
@@ -43,7 +64,7 @@ function loadTagFile($relPath, $tag, $fileList=null)
 
 function saveTagFile($relPath, $tag, $data)
 {
-	$filename=getTagFilename($relPath, $tag);
+	$filename=getTagFilename($relPath, "", $tag);
 	if(empty($data))
 	{	
 		deleteFile($filename);
@@ -59,7 +80,7 @@ function saveFileTag($relPath, $name, $tag, $state)
 	if(!$name || !$tag) return false;
 
 	//load tag file .tag/$tag, returns array of names
-	$tagList = loadTagFile($relPath, $tag);
+	$tagList = loadTagFile($relPath, "", $tag);
 	//if no change, do nothing
 	$alreadySet = (isset($tagList[$name]) == $state);
 	if($alreadySet) return true;
