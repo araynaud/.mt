@@ -240,17 +240,24 @@ function facebookFacepile($path, $width=320)
 
 */
 
-function metaTags($album)
+function metaTags($album, $article=false)
 {
+	if(is_string($album))
+		$album = new Album($album, false);
+
 	$path = $album->getPath();
 	$relPath= $album->getRelPath();
 
 	$meta=array();
-	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
 	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
+	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
 	$meta["og:url"] = getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$meta["og:description"] = $album->getDescription();
+
+//	$meta["serverRoot"] = getServerRoot();
+//	$meta["dataRoot"] = getAbsoluteDataRoot();
+//	$meta["appRoot"] = getAbsoluteAppRoot();
 
 //TODO: image: 1st best, or 1st image, use maxcount ?
 	$image = findFirstImage($relPath);
@@ -258,17 +265,23 @@ function metaTags($album)
 	{
 		//if(is_array($image))	$image=array_shift($image);
 		$is = getimagesize(combine($relPath,$image));
-		$meta["og:image"] = combine(getServerRoot(), $album->getAbsPath(), $image);
+debug("getimagesize", $is);
+		$meta["og:image"] = getAbsoluteFileUrl($path, $image);
 		$meta["og:image:width"]  = $is[0];
 		$meta["og:image:height"] = $is[1];
+		$meta["og:image:type"] = $is["mime"];
 	}
-	$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
-	$meta["article:modified_time"]  = formatDate(filemtime($relPath), true);	//dir modified date?
-	$meta["article:author"] = "MinorArt"; //uploader username ?
 
-//list album tags
-	$tags=listTagFiles($relPath, $album->getDepth());
-	$meta["article:tag"] = array_keys($tags);
+	if($article)
+	{
+		$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
+		$meta["article:modified_time"]  = formatDate(filemtime($relPath), true);	//dir modified date?
+		$meta["article:author"] = "MinorArt"; //uploader username ?
+
+		//list album tags
+		$tags=listTagFiles($relPath, $album->getDepth());
+		$meta["article:tag"] = array_keys($tags);
+	}
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);

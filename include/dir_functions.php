@@ -626,12 +626,22 @@ function findFirstImage($relPath)
 {
 	$search = array();
 	$search["type"]="IMAGE";
-	$search["maxCount"]=1;
-	$search["tnDir"]=".ss";
-
+	$search["maxCount"]=4;
+//	$search["tnDir"]=".ss";
 	$pics=listFiles($relPath,$search);
+/*	if(!$pics)
+	{
+		$search["tnDir"]=".tn";
+		$pics=listFiles($relPath,$search);
+	}
+	if(!$pics)
+	{
+		unset($search["tnDir"]);
+		$pics=listFiles($relPath,$search);
+	}
+*/
 	if($pics)
-	return end($pics);
+		return end($pics);
 }
 
 function pickRandomElements($array,$nb)

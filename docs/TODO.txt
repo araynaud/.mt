@@ -56,14 +56,21 @@ OK 1 Description with & cut.
 OK use POST for action.php ajax
 OK retest multiple ajax
 
-2 load tags from subdirs
-3 search by tag in subdirs.
+OK load tags from subdirs
+OK search by tag in subdirs.
 
 OK 4 Resize video player with window
 set margin-top to be centered
 5 mediaplayer settings in config
 
 OK Upload: vsizes is null. exclude dirs.
+
+Single page app: 
+	to change dir or search with depth != 0: load album data with ajax
+click on dir: no link, but javascript loading album with path=$path/$subdir
+
+	
+	
 5 upload .bg.jpg and readme.txt.
 
 2 display: use paginate.min_pages and min_last_page
@@ -217,6 +224,10 @@ right pane:
 dir nested tree
 
 facebook comments
+https://www.facebook.com/sharer/sharer.php?u=http://minorart.free.fr/.mt/?path=2014/Kokopelli
+
+https://developers.facebook.com/tools/debug/og/object?q=http%3A%2F%2Fminorart.free.fr%2F.mt%2F%3Fpath%3D2014%2FAustralia%2FSydneyZoo
+http://swarminglabs.com/facebook-open-graph-meta-tags/
 ----------------
 
 MTuser/mThingy2013

@@ -11,18 +11,8 @@ header("Content-Type: text/plain");
 session_start();
 
 debug();
-
-/*
-$string = "deleteChars(string, start, end=null)";
-debug("deleteChars", $string);
-debug($string, deleteChars($string, 4));
-debug($string, deleteChars($string, 6, 10));
-debug($string, deleteChars($string, 4, 10));
-*/
-
 $meta = metaTags($path);
 echo jsValue($meta, true, true);
-
 //debug("arrayGet", arrayGet($config,"TYPES.VIDEO"));
 
 debug();
@@ -110,6 +100,16 @@ debug("APP_ROOT",  getAppRoot() . " / " . getAbsoluteAppRoot() );
 debug("DATA_ROOT", getDataRoot(). " / " . getAbsoluteDataRoot() );
 debug("AbsoluteUrl", getAbsoluteUrl($path));
 debug("DOCUMENT_ROOT",$_SERVER["DOCUMENT_ROOT"]);
+debug("combine", combine(getAbsoluteDataRoot(), "..","2014/dir/file.jpg"));
+
+debug("isDomainRoot '" . getAbsoluteAppRoot(), isDomainRoot(getAbsoluteAppRoot()));
+debug("isDomainRoot '" . getAbsoluteDataRoot(), isDomainRoot(getAbsoluteDataRoot()));
+
+
+$image = findFirstImage($relPath);
+debug("findFirstImage", $image);
+$imageUrl = getAbsoluteFileUrl($path, $image);
+debug("getAbsoluteFileUrl", $imageUrl);
 
 debug();
 debug("SEARCH"); //file filters

@@ -11,6 +11,14 @@ function pathToArray($str)
 //combine paths
 //join str array without empty elements
 //handle .. => remove array element + previous
+
+function isDomainRoot($str)
+{
+	$domain = substringAfter($str,"://");
+	$isdomain = substringAfter($domain,"/");
+	return $isdomain == "";
+}
+
 function combine()
 {
 	$argArray = func_get_args();
@@ -149,12 +157,16 @@ function diskPathToUrl($path)
 {	
 	$mapping = getConfig("_mapping");
 	if(!$mapping) return $path;
-	debug("_mapping", $mapping);
 	$key="";
 	foreach ($mapping as $key => $value)
 	{
 		if((startsWith($path, $value)))
-			return "/" . str_replace($value, $key, $path);
+		{
+debug("mapping $key", $value);
+			$path = "/" . str_replace($value, $key, $path);
+			//$path = substringAfter($path, "/_root/", true);
+			return $path;
+		}
 	}
 	return $path;
 }
@@ -293,5 +305,15 @@ function getAbsoluteUrl($path="",$page="",$options="")
 		$url .= (empty($path) ? "?" : "&" ) . $options;
 		
 	return $url;
+}
+
+function getAbsoluteFileUrl($path="",$file="")
+{
+	$relPath = getDiskPath($path);
+	debug($path,$relPath);
+	$absPath = diskPathToUrl($relPath);
+	$absPath = substringAfter($absPath, "../", true);
+debug ("getAbsoluteFileUrl", $absPath);
+	 return combine(getServerRoot(), $absPath, $file);
 }
 ?>

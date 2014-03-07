@@ -6,7 +6,6 @@ USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;playstation;op
 ;USER_AGENT.FORCE;mobile android
 
 ;relative path from app root dir to data files root
-DATA_ROOT;..
 TEMP_DIR;.temp
 SPECIAL_FILES;config/special.txt
 EXIF_SUPPORTED_TYPES;IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
