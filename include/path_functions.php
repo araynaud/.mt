@@ -75,12 +75,12 @@ function combine()
 
 function postPath($path="")
 {	
-	return postPath($_POST["path"]);
+	return postPath(@$_POST["path"]);
 }
 
 function reqPath($path="")
 {	
-	return getPath($_REQUEST["path"]);
+	return getPath(@$_REQUEST["path"]);
 }
 
 function getPath($path="")
@@ -256,7 +256,7 @@ function getPathAfter($path,$dir)
 
 function currentUrl()
 {	
-	return getProtocol() . getServerRoot() . $_SERVER['REQUEST_URI'];
+	return getServerRoot() . $_SERVER['REQUEST_URI'];
 }
 
 function currentScriptName()
@@ -289,21 +289,15 @@ function getAbsoluteDataRoot()
 	return combine(getServerRoot(),getDataRoot());
 }
 
-function getAbsoluteUrl($path="",$page="",$options="")
+function getAbsoluteUrl($path="", $page="", $options=array())
 {
-	if(empty($path))
-		$path=getPath();
-		
 	$url=combine(getAbsoluteAppRoot(), $page);
-	if(empty($page))
-		$url.="/";
-		
-	if(!empty($path)) 
-		$url .= "?path=" . $path;
+	if(empty($page))	$url.="/";
 
-	if(!empty($options)) 
-		$url .= (empty($path) ? "?" : "&" ) . $options;
-		
+	if(!empty($path))	$options["path"] = $path;
+
+ 	$qs = http_build_query($options);
+	if(!empty($options)) $url .= "?$qs";		
 	return $url;
 }
 

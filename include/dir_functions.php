@@ -627,9 +627,9 @@ function findFirstImage($relPath)
 	$search = array();
 	$search["type"]="IMAGE";
 	$search["maxCount"]=4;
-//	$search["tnDir"]=".ss";
+	$search["tnDir"]=".ss";
 	$pics=listFiles($relPath,$search);
-/*	if(!$pics)
+	if(!$pics)
 	{
 		$search["tnDir"]=".tn";
 		$pics=listFiles($relPath,$search);
@@ -639,7 +639,7 @@ function findFirstImage($relPath)
 		unset($search["tnDir"]);
 		$pics=listFiles($relPath,$search);
 	}
-*/
+
 	if($pics)
 		return end($pics);
 }

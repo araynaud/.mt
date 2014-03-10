@@ -39,7 +39,7 @@ class MediaFile extends BaseObject
 		foreach($this->exts as $ext)
 			$this->addVersion($ext);
 
-		$this->title = makeTitle($this->name);
+		$this->getTitle();
 		$this->_filePath = $this->getFilePath();
 		$this->getDescription();
 		$this->getTakenDate();
@@ -67,8 +67,14 @@ class MediaFile extends BaseObject
 
     public static function getMediaFile()
     {    	
-		$path=reqPath();
 		$file = reqParam("file");
+		$path=reqPath();
+
+		if(!$path && !$file)
+			splitFilePath($_SERVER["PATH_INFO"], $path, $file);
+		else if(!$path && contains($file,"/"))
+			splitFilePath($file,$path,$file);
+
 		if($file)
 		{
 			$relPath=getDiskPath($path);
@@ -139,6 +145,13 @@ class MediaFile extends BaseObject
 		return $this->name;
 	}
 
+	public function getTitle()
+	{
+		if(!$this->title)
+			$this->title = makeTitle($this->name);
+		return $this->title;
+	}
+
 	public function getFileType()
 	{
 		return $this->type;
@@ -148,6 +161,13 @@ class MediaFile extends BaseObject
 	public function getSubdir()
 	{
 		return $this->subdir;
+	}
+
+	public function getPath()
+	{
+		if($this->_parent)
+			return $this->_parent->getPath();
+		return "";
 	}
 	
 	public function getRelPath()
@@ -184,6 +204,13 @@ class MediaFile extends BaseObject
 		return combine($this->getRelPath(), $this->subdir, $this->getFilename($ext));
 	}
 
+    public function getFileUrl($ext=0)
+    {
+    	$path = $this->getPath();
+		$filename = $this->getFilename($ext);
+    	return getAbsoluteFileUrl($path, $filename);
+    }
+
     public function getFilesize($ext=0)
 	{
 		$filePath = $this->getFilePath($ext);
@@ -208,7 +235,7 @@ class MediaFile extends BaseObject
 		return combine(".$subdir", $filename);
 	}
 
-    public function getThumbnailFilePath($subdir)
+    public function getThumbnailFilePath($subdir="")
 	{
 		return combine($this->getRelPath(), $this->subdir, $this->getThumbnailFilename($subdir));
 	}
@@ -217,6 +244,13 @@ class MediaFile extends BaseObject
 	{
 		$filePath = $this->getThumbnailFilePath($subdir);
 		return file_exists($filePath) ? filesize($filePath) : -1;
+	}
+
+    public function getThumbnailUrl($subdir="")
+	{
+    	$path = $this->getPath();
+		$filename = $this->getThumbnailFilename($subdir);
+    	return getAbsoluteFileUrl($path, $filename);
 	}
 
     public function createThumbnail($tndir)
@@ -289,6 +323,25 @@ class MediaFile extends BaseObject
 		$filename = $this->getDescriptionFilename(true);
 		$this->description = readTextFile($filename);
 		return $this->description;
+	}
+
+    public function getAlbum()
+	{
+		return $this->_parent;
+	}
+
+    public function getAlbumTitle()
+	{
+		if($this->_parent)
+			return $this->_parent->getTitle();
+		return "";
+	}
+
+    public function getAlbumDescription()
+	{
+		if($this->_parent)
+			return $this->_parent->getDescription();
+		return "";
 	}
 
     public function setDescription($desc)

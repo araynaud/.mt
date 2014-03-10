@@ -48,7 +48,7 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/lib/jquery.views.js"></script>
 <script type="text/javascript" src="js/lib/querystring.js"></script>
 <script type="text/javascript" src="js/lib/date.format.js"></script>
-<?php addJavascript(getConfig("MediaPlayer.jwplayer"))?>
+<?php addJavascript(getConfig("MediaPlayer.jwplayer.js"))?>
 
 <script type="text/javascript" src="js/mt.extensions.js"></script>
 <script type="text/javascript" src="js/mt.color.js"></script>

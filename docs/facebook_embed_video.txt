@@ -1,0 +1,86 @@
+Publish Your Videos to Facebook with a JW Player
+
+Over the past few months, you may have noticed that an increasing number of items in your Facebook News Feed had a play icon in the bottom left hand corner, like so:
+
+
+
+This is because Facebook recently opened the News Feed to third parties, allowing individuals to watch videos from all over the Internet without ever leaving Facebook. While getting this to work requires making some minor modifications to your website, publishers have been quick to implement the changes because of the number of video views Facebook can help drive (especially when a video goes viral).
+
+In this blog post, we’ll describe how publishers can use the JW Player with the Facebook News Feed and enable viewers to have the same experience regardless of where they’re watching it.
+
+What You’ll Need
+
+A video, audio file, or any other piece of content that is playable by the JW Player
+A copy of the JW Player SWF, hosted on your web server
+A web page for your content
+This document (pretty meta, huh?)
+Getting all of this to work is pretty simple, but it can be difficult to manage if you’ve got a large library of content. Additionally, Facebook does not store a copy of the content or player, so they will be loaded from your server every time they are watched on Facebook. If you’re worried about management or your ability to handle the load when your video goes viral, it’s worth taking a look at services like LongTail.tv and Bits on the Run, both of which support this type of Facebook integration natively.
+
+Updating Your Site
+
+Whenever someone publishes a post with a link to their News Feed, Facebook scans that page for metadata about that page. By including some specific metadata in the <head> of your page, you can instruct Facebook to embed your JW Player with your content in the News Feed. However, this also means that you’ll need a unique web page with this metadata for each piece of content, which can become quite difficult to manage if you’re not using a CMS like WordPress or Drupal.
+
+When scanning a page, Facebook examines the <meta> tags. Specifically, it looks at Open Graph tags – those with with an og prefix to the property attribute – and uses the data contained in the content attribute.
+
+An Example
+
+<html>
+  <head>
+    <meta property="og:type" content="movie" /> 
+    <meta property="og:video:height" content="260" /> 
+    <meta property="og:video:width" content="420" /> 
+    <meta property="og:video:type" content="application/x-shockwave-flash" />
+    <meta property="og:title" content="Big Buck Bunny" /> 
+    <meta property="og:description" content="Big Buck Bunny is a short animated film by the Blender Institute, part of the Blender Foundation." />
+    <meta property="og:image" content="http://www.example.com/bunny.png" />
+    <meta property="og:video" content="http://www.example.com/jwplayer/player.swf?file=http%3A%2F%2Fwww.example.com%2Fbunny.flv&autostart=true" /> 
+  </head>
+  <body>
+    …
+  </body>
+</html>
+So what do each of these tags mean?
+
+og:type – The type of content described by this page, should always be “movie”.
+og:video:height / og:video:width – the height and width (in pixels) of your video player will occupy within the news feed.
+og:video:type – The type of video playback you’d like to use, should always be “application/x-shockwave-flash”.
+og:title / og:description – the title and description of your video. Note that the title attribute is different from the HTML <title> tag, and it will not show up in the browser’s title bar.
+og:image – the poster image. This is what will be displayed on the viewer’s wall with the play button over it.
+og:video – the URL to your JW Player, with the configuration passed in as part of the URL string.
+Constructing the Video String
+
+Coming up with a usable og:video tag is a bit of a challenge. Since many of our plugins require similar configuration, we’ve got some documentation that should come in handy. However, you can also follow these steps to build the string:
+
+Start with the absolute path to your JW Player (ie, “http://www.example.com/jwplayer/player.swf”).
+Next, add a “?”. Everything after this will be interpreted as player configuration, and ensures that your web server will serve up your video player.
+For each configuration option you’d like to specify, add the name of the configuration option, then a “=”, and finally the URL-encoded version of the value you wish to specify (ie “file=http%3A%2F%2Fwww.example.com%2Fbunny.flv&autostart=true”). Be sure to separate each configuration option with a “&”.
+As always, you’ll need to make sure that you’re using absolute paths to reference your content and skins. Also, you’ll need to make sure that you have the proper cross-domain security restrictions in place.
+
+Posting to Facebook
+
+Thanks to all of your hard work, posting into Facebook is a snap! Simply drop your into the share box, like so:
+
+You’ll notice that there’s no play button in the preview image. Once you hit the share button, the play button will be added and your content will be posted for the whole world to view and enjoy within their News Feed!
+
+Security Limitations (HTTPS)
+
+Recently, Facebook has received some bad press because the site’s login is not encrypted, making it easy for someone using the same WiFi as you to take over your Facebook account. To get around this, Facebook began offering the option to use a secure version of the site (HTTPS). When using this version of the site, Facebook does not always allow you to view content within the News Feed and may link you off to the original source of the content to view it. This is because most sites do not serve up their content via HTTPS, and loading standard HTTP content in an HTTPS site will result in an aggravating mixed content warning in all browsers.
+
+------
+
+<!-- These two aren't necessary for embedding. -->
+<meta property="og:site_name" content="Example">
+<meta property="fb:app_id" content="000000000000000">
+
+<!-- These are mostly needed. A few are probably still optional, but they're all good to have. -->
+<meta property="og:type" content="movie">
+<meta property="og:title" content="Example Page">
+<meta property="og:description" content="Example Description">
+<meta property="og:url" content="http://www.testdomain.com/path/to/shared/page">
+<meta property="og:image" content="http://content.example.com/images/example.png">
+<meta property="og:video" content="http://static.example.com/player.swf?file=http%3a%2f%2fcontent.example.com%2fpath%2fto%2fvideo.mp4%3fv%3d0&amp;autoplay=true">
+<meta property="og:video:type" content="application/x-shockwave-flash">
+
+<!-- Not necessary, but might (can't find up-to-date docs) be used for iOS fallback. -->
+<meta property="og:video" content="http://content.example.com/path/to/video.mp4?v=0">
+<meta property="og:video:type" content="video/mp4">

@@ -102,15 +102,16 @@ TYPES.SPECIAL;txt;xml;php;chunk;js;css
 JWPLAYER.allowHtml5;true
 JWPLAYER.allowFlash;true
 JWPLAYER.MODES.0.type;flash
-JWPLAYER.MODES.0.src;jwplayer/player.swf
+JWPLAYER.MODES.0.src;jwplayer510/player.swf
 JWPLAYER.MODES.1.type;html5
 JWPLAYER.MODES.2.type;download
 
 MediaPlayer.video.enabled;true
 MediaPlayer.audio.enabled;true
 MediaPlayer.slide.enabled;true
-MediaPlayer.jwplayer;js/lib/jwplayer510.js
-;MediaPlayer.jwplayer;jwplayer6/jwplayer.js
+MediaPlayer.jwplayer.flash;jwplayer510/player.swf
+MediaPlayer.jwplayer.js;js/lib/jwplayer510.js
+;MediaPlayer.jwplayer.js;jwplayer6/jwplayer.js
 
 
 ;FFMPEG scripts
