@@ -57,7 +57,7 @@ UI.displayEdit = function(filebox)
 	UI.rotateIcons.toggle(UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
 
-	$("#cb_selected").toggleChecked(UI.currentFile.selected);
+	$("#cb_selected").toggleChecked(UI.currentFile.selected, true);
 //	UI.setStatus(UI.currentFile.id + " " + UI.currentFile.selected);
 
 };
@@ -137,7 +137,14 @@ UI.resetInput = function()
 
 UI.fileActionAjax = function(params, showConfirm)
 {
-	return UI.fileAction(params, null, showConfirm)
+	if(album.getSelection().length <=1)
+		return UI.fileAction(params, null, showConfirm)
+
+	var scriptName=".admin/action.php"; //default action page
+	if(params && params.script)
+		scriptName = params.script;
+
+	return UI.doSelectedFiles(scriptName, params);
 }
 
 UI.fileAction = function(params, windowName, showConfirm)
@@ -154,7 +161,7 @@ UI.fileAction = function(params, windowName, showConfirm)
 	if(params && params.script)
 	{
 		scriptName = params.script;
-		delete params.scriptName;
+		delete params.script;
 	}
 	if(isMissing(windowName))
 	{

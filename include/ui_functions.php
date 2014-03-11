@@ -255,10 +255,6 @@ function metaTags($album, $article=true)
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$meta["og:description"] = $album->getDescription();
 
-//	$meta["serverRoot"] = getServerRoot();
-//	$meta["dataRoot"] = getAbsoluteDataRoot();
-//	$meta["appRoot"] = getAbsoluteAppRoot();
-
 //TODO: image: 1st best, or 1st image, use maxcount ?
 	$image = findFirstImage($relPath);
 	if($image)

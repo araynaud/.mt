@@ -4,11 +4,11 @@ UI.downloadScript= "download.php";
 
 UI.downloadMultipleFiles = function()
 {
-	UI.selectedFileList = album.getSelection();
+	UI.selectedFileList = album.getSelection(true);
 	UI.fileIndex = 0;
 	UI.downloadFile();
 	UI.interval = setInterval(UI.downloadFile, config.downloads.interval);
-}
+};
 
 UI.downloadFile = function()
 {
@@ -26,7 +26,7 @@ UI.downloadFile = function()
 	UI.downloadIframe.attr("src", downloadScriptUrl);
 //	UI.addStatus("{0}:{1}".format(UI.fileIndex, downloadScriptUrl));
 	UI.fileIndex++;
-}
+};
 
 UI.getIframe = function()
 {
@@ -36,42 +36,46 @@ UI.getIframe = function()
 	//if it does not exist, make download iframe	
 	$("body").prepend('<iframe class="hidden" src="" id="downloadIframe" height="100"/>');
 	return UI.getIframe();
-}
-
-//------------- Multiple upload --------------
-
-//call ajax script for all selected files
-UI.uploadSelectedFiles = function()
-{
-	UI.selectedFileList = album.getSelection();
-
-	UI.progressBar.displayFunction = null;
-	UI.progressBar.setMax(UI.selectedFileList.length);
-	UI.progressBar.reset();
-	UI.progressBar.show();
-
-	var callbacks = {success: MediaFile.imageSuccess, error: MediaFile.imageError, next: UI.uploadNextFile};
-	var params = {target: album.path };
-	UI.multipleAjaxAsync(".upload/curlPostMediaFile.php", params, callbacks);
 };
 
+
+//call ajax script for all selected files
 UI.doSelectedFiles = function(script, params)
 {
-	UI.selectedFileList = album.getSelection();
+	UI.selectedFileList = album.getSelection(true);
 	UI.multipleAjaxAsync(script, params);
+};
+
+UI.doNextFile = function(response, script, params, callbacks)
+{
+	var filesize=MediaFile.getFileSize(UI.selectedFileList[UI.fileIndex]);
+	UI.progressBar.addProgress(filesize);
+
+//	UI.progressBar.addProgress(1); //response.file.filesize);
+	if(++UI.fileIndex < UI.selectedFileList.length)
+	{
+		UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, false, callbacks);
+		return true;
+	}
+
+	//when all files processed
+	var totalTime = UI.progressBar.totalTime(true);
+	UI.addStatus("Finished in {0}.".format(totalTime));
+	UI.progressBar.toggle(false);
+	return false;
 };
 
 UI.displaySelection = function(fileList)
 {
 	if(isEmpty(fileList))
-		fileList = album.getSelection();
+		fileList = album.getSelection(false);
 	if(isEmpty(fileList))
 		return UI.setStatus();
 
 	var totalSize = fileList.sum(MediaFile.getUploadFileSize);
 	var str = "{0}, {1}".format(plural(fileList.length,"file"), formatSize(totalSize));
 	UI.setStatus(str);
-}
+};
 
 UI.multipleAjaxSync = function(script, params)
 {
@@ -92,7 +96,7 @@ UI.multipleAjaxSync = function(script, params)
 //		UI.addStatus(response);
 	}
 	UI.addStatus("Finished.");
-}
+};
 
 UI.multipleAjaxAsync = function(script, params, callbacks)
 {
@@ -107,10 +111,26 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 	UI.progressBar.show();
 
 	//async: ajax call for each file. when response, call for next.
-	UI.fileIndex=0;
-	chunkIndex=1;
 	//upload file
+	UI.fileIndex=0;
 	UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
+};
+
+
+//------------- Multiple upload --------------
+UI.uploadSelectedFiles = function()
+{
+	UI.selectedFileList = album.getSelection(true);
+
+	UI.progressBar.displayFunction = formatSize;
+//	UI.progressBar.displayFunction = null;
+	UI.progressBar.setMax(UI.selectedFileList.length);
+	UI.progressBar.reset();
+	UI.progressBar.show();
+
+	var callbacks = {success: MediaFile.imageSuccess, error: MediaFile.imageError, next: UI.uploadNextFile};
+	var params = {target: album.path };
+	UI.multipleAjaxAsync(".upload/curlPostMediaFile.php", params, callbacks);
 };
 
 UI.uploadNextFile = function(response, script, params, callbacks)
@@ -152,21 +172,4 @@ UI.uploadNextFile = function(response, script, params, callbacks)
 		delete params.chunk;
 	}
 	UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, true, callbacks);
-};
-
-
-UI.doNextFile = function(response, script, params, callbacks)
-{
-	UI.progressBar.addProgress(1); //response.file.filesize);
-	if(++UI.fileIndex < UI.selectedFileList.length)
-	{
-		params.tn = UI.selectedFileList[UI.fileIndex].resizeBeforeUpload();
-		UI.selectedFileList[UI.fileIndex].scriptAjax(script, params, true, false, callbacks);
-	}
-	else
-	{
-		var totalTime = UI.progressBar.totalTime(true);
-		UI.addStatus("Finished in {0}.".format(totalTime));
-		UI.progressBar.toggle(false);
-	}
 };

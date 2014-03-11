@@ -571,10 +571,20 @@ UI.setupEvents = function()
 
 	$("#cb_selected").bindReset("change", function() 
 	{
-//		UI.addStatus(UI.currentFile.id);
-		UI.currentFile.selected = $(this).isChecked();
+		UI.addStatus(UI.currentFile.index + " / " + UI.currentFile.id);
+		var state=$(this).isChecked();
+		if(isMissing(UI.prevSelectedFile))
+		{
+			UI.currentFile.toggleSelected(state);
+			UI.prevSelectedFile = UI.currentFile.index;
+		}
+		else // select multiple
+		{
+			album.selectRange(UI.prevSelectedFile, UI.currentFile.index, state);
+			UI.prevSelectedFile = null;
+		}
+
 		//$("div#" + UI.currentFile.id);
-		UI.currentFile.getDiv().toggleClass("selected", UI.currentFile.selected);
 		UI.displaySelection();
 	});
 

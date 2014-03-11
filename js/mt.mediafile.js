@@ -639,6 +639,20 @@ MediaFile.play = function(el)
 	return mediaFile.play();
 };
 
+
+MediaFile.prototype.getFileIndex = function(index)
+{
+	this.index = album.getFileIndex(index);
+	return this.index;
+};
+
+
+MediaFile.prototype.toggleSelected = function(state)
+{
+	this.selected = valueOrDefault(state, this.selected);
+	this.getDiv().toggleClass("selected", this.selected);
+};
+
 MediaFile.prototype.play = function()
 {
 	switch(this.type)

@@ -77,12 +77,21 @@ click on dir: no link, but javascript loading album with path=$path/$subdir
 
 OK if mediaplayer disabled: video.click => download mp4
 
-video convert progress
+1 Select multiple files by range
+1st selection
+store last selected file index,
+2nd selection: select to current file index
+
+2 search by tags: or (current) / and / exact
+modify MediaFile.testProperty or new method?
+
+4video convert progress
 every N seconds: refresh mediafile with data.php / ajax
 
-mobile: display edit as dialog/overlay with big icons.
+4 actions: apply to selection. mutlple ajax or pass multiple names
+for add tag, remove tag, move, delete
 
-actions: apply to selection. mutlple ajax or pass multiple names
+5 mobile: display edit as dialog/overlay with big icons.
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height

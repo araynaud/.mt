@@ -432,10 +432,10 @@ Album.prototype.activeFileList = function()
 	return [];
 }
 
-Album.prototype.getSelection = function()
+Album.prototype.getSelection = function(allByDefault)
 {
 	var selectedFiles = album.selectFiles({selected: true});
-	if(isEmpty(selectedFiles)) 
+	if(allByDefault && isEmpty(selectedFiles)) 
 		selectedFiles = album.activeFileList();
 	return selectedFiles;
 };
@@ -478,6 +478,16 @@ Album.prototype.isMediaFileExcluded = function(element, index, array)
 {  
 	return !this.isMediaFileSelected(element, index, array);
 };
+
+Album.prototype.selectRange = function(from, to, state)
+{
+	var i = from;
+	from=Math.min(from, to);
+	to=Math.max(i, to);
+	for(i = from; i<=to; i++)
+		this.mediaFiles[i].toggleSelected(state);
+};
+
 
 //get options from config
 //set initial state of album and UI
