@@ -484,10 +484,10 @@ Album.prototype.selectRange = function(from, to, state)
 	var i = from;
 	from=Math.min(from, to);
 	to=Math.max(i, to);
+	var fileList=this.activeFileList();
 	for(i = from; i<=to; i++)
-		this.mediaFiles[i].toggleSelected(state);
+		fileList[i].toggleSelected(state);
 };
-
 
 //get options from config
 //set initial state of album and UI
