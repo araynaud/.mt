@@ -40,7 +40,7 @@ function isString(input)
 
 function isObject(input)
 {
-    return typeof(input)=="object";
+    return !isMissing(input) && typeof(input)=="object";
 }
 
 function isFunction(input)

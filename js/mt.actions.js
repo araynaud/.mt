@@ -90,9 +90,10 @@ UI.inputAction = function(params)
 	if(params.choices)
 	{
 		choices = params.choices;
-		if(isObjectNotArray(choices) && isObject(fieldValue))
+		if(isObjectNotArray(choices))
 		{
-			choices = Object.keyDiff(choices, fieldValue);
+			if(isObject(fieldValue))
+				choices = Object.keyDiff(choices, fieldValue);
 			choices = Object.keys(choices);
 		}
 		//look how to pass parameters to template?
