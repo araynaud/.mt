@@ -90,11 +90,13 @@ UI.inputAction = function(params)
 	if(params.choices)
 	{
 		choices = params.choices;
-		if(isObject(choices) && isObject(fieldValue))
+		if(isObjectNotArray(choices) && isObject(fieldValue))
+		{
 			choices = Object.keyDiff(choices, fieldValue);
-		choices = Object.keys(choices);
+			choices = Object.keys(choices);
+		}
 		//look how to pass parameters to template?
-		UI.renderTemplate("addTagTemplate", UI.editChoicesList, choices);
+		UI.renderTemplate("tagTemplate", UI.editChoicesList, choices, null, {action: params.action});
 		delete params.choices;
 	}
 	else
@@ -140,7 +142,7 @@ UI.fileActionAjax = function(params, showConfirm)
 	if(album.getSelection().length <=1)
 		return UI.fileAction(params, null, showConfirm)
 
-	var scriptName=".admin/action.php"; //default action page
+	var scriptName=".admin/action.php"; //default action page. TODO: .upload / .admin based on User
 	if(params && params.script)
 		scriptName = params.script;
 

@@ -42,7 +42,7 @@ if($.views)
 	});
 };
 
-UI.renderTemplate = function(templateId, targetId, data, funct)
+UI.renderTemplate = function(templateId, targetId, data, funct, params)
 {
 	var target = $(targetId);
 	if(!target.length && isString(targetId))
@@ -51,7 +51,7 @@ UI.renderTemplate = function(templateId, targetId, data, funct)
 	funct= valueOrDefault(funct,"html");
 	var html="";
 	if(data)
-		html = $("#"+templateId).render(data);
+		html = $("#"+templateId).render(data,params);
 	if(isFunction(target[funct]))
 		target[funct](html);
 	else

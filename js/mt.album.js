@@ -38,13 +38,9 @@ function Album(data)
 		this.groupedFiles[type] = typeFiles;	
 	}
 
-	this.musicFiles = Object.values(this.groupedFiles.AUDIO);
-	this.otherFiles = Object.values(this.groupedFiles.FILE);
-	this.dirs = Object.values(this.groupedFiles.DIR);
-	this.mediaFiles = this.dirs;
-	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.IMAGE));
-	this.mediaFiles = this.mediaFiles.concat(Object.values(this.groupedFiles.VIDEO));
-
+	this.otherFiles = this.getFilesByType("FILE");
+	this.musicFiles = this.getFilesByType("AUDIO");
+	this.mediaFiles = this.getFilesByType(["DIR", "IMAGE", "VIDEO"]);
 	this.initTags();
 }
 
@@ -440,10 +436,33 @@ Album.prototype.getSelection = function(allByDefault)
 	return selectedFiles;
 };
 
+Album.prototype.getSelectedFilenames = function(allByDefault)
+{
+	var selectedFiles = album.getSelection();
+	var names=[];
+	for(var i=0;i<selectedFiles.length;i++)
+		names.push(selectedFiles[i].name);
+	return names;
+};
+
 Album.prototype.selectSlideshowFiles = function()
 {
 	var types = config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
 	return Album.selectFiles(this.activeFileList(), {type: types});
+};
+
+
+Album.prototype.getFilesByType = function(type)
+{
+	if(isString(type))
+		return Object.values(this.groupedFiles[type]);
+	
+	var files=[];
+	if(isArray(type))
+		for(var i=0; i<type.length; i++)		
+			files = files.concat(this.getFilesByType(type[i]));
+
+	return files;
 };
 
 //get files for current page

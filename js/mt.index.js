@@ -74,7 +74,7 @@ UI.displayFiles = function(selectedFiles, transition, append)
 	if(album.columns>=1)
 		UI.displayColumns(selectedFiles);
 	else
-		UI.renderTemplate("fileboxTemplate", UI.pageDiv, selectedFiles, append);
+		UI.renderTemplate("fileboxTemplate", UI.pageDiv, selectedFiles, append, {action: 'removetag'});
 
 	if(!isEmpty(album.otherFiles))
 		UI.renderTemplate("downloadFileTemplate", UI.downloadFileDiv, album.otherFiles);

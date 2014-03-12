@@ -106,16 +106,15 @@
 <script id="tagTemplate" type="text/x-jsrender"> 
 	{{if #data=='best'}}
 		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"
-		{{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}/>
+		{{if true}} onclick="UI.fileActionAjax({action:'{{:~action}}',to:'{{:#data}}'}, {{:~confirm ? 'true' : 'false'}})"{{/if}}/>
 	{{else}}
-		<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'removetag',to:'{{:#data}}'},true)"{{/if}}>{{:makeTitle()}}</a>
+		<a class="tag nowrap" {{if true}} onclick="UI.fileActionAjax({action:'{{:~action}}',to:'{{:#data}}'}, {{:~confirm ? 'true' : 'false' }})"{{/if}}>{{:makeTitle()}}</a>
 	{{/if}}
 </script>
 
 <script id="addTagTemplate" type="text/x-jsrender"> 
-	<a class="tag" {{if true}} onclick="UI.fileActionAjax({action:'addtag',to:'{{:#data}}'})"{{/if}}>{{:makeTitle()}}</a>
+	<a class="tag" onclick="UI.fileActionAjax({action:'{{:~action}}',to:'{{:#data}}'})">{{:makeTitle()}}</a>
 </script>
-
 
 <!-- template for tags search -->
 <script id="tagSelectTemplate" type="text/x-jsrender"> 

@@ -46,7 +46,11 @@
 
 		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
 		title="move to parent" alt="move to parent"
-		onclick="UI.fileActionAjax({action:'move', to:'..'}, true)" />
+		onclick="UI.fileActionAjax({action:'move', to:'..'}, true)" />p
+
+		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
+		title="move" alt="move"
+		onclick="UI.inputAction({action:'move', field: 'subdir', choices: album.dirs})" />*
 		
 		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"
 		title="delete" alt="delete"

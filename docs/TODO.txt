@@ -69,12 +69,6 @@ Single page app:
 	to change dir or search with depth != 0: load album data with ajax
 click on dir: no link, but javascript loading album with path=$path/$subdir
 
-	
-	
-5 upload .bg.jpg and readme.txt.
-
-2 display: use paginate.min_pages and min_last_page
-
 OK if mediaplayer disabled: video.click => download mp4
 
 1 Select multiple files by range
@@ -85,13 +79,17 @@ store last selected file index,
 2 search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method?
 
-4video convert progress
+4 video convert progress
 every N seconds: refresh mediafile with data.php / ajax
 
 4 actions: apply to selection. mutlple ajax or pass multiple names
 for add tag, remove tag, move, delete
 
-5 mobile: display edit as dialog/overlay with big icons.
+6 mobile: display edit as dialog/overlay with big icons.
+
+5 upload .bg.jpg and readme.txt.
+
+2 display: use paginate.min_pages and min_last_page
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
