@@ -523,7 +523,7 @@ UI.setupElements = function()
 	UI.contentFooter=$("#contentFooter");
 	UI.fileContainer = $("div#files");
 	UI.downloadFileDiv = $("div#downloadFileList");
-	UI.tagListDiv = $("div#tagList");
+	UI.tagListDiv = $("#tagList");
 	UI.pagers = $(".pager");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
 

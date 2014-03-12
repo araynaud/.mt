@@ -17,7 +17,7 @@ function Album(data)
 	else if(isString(data))
 		this.url=data;
 
-	this.relPath = this.urlAbsPath ? "/" + this.urlAbsPath : String.combine(Album.serviceUrl, this.relPath);
+	this.relPath = this.urlAbsPath ? this.urlAbsPath : String.combine(Album.serviceUrl, this.relPath);
 	this.dateRange = this.getDateRange();
 
 	this.loadDisplayOptions();
@@ -191,7 +191,7 @@ Album.prototype.createMissingThumbnails = function(tnIndex, type)
 	tnIndex=valueOrDefault(tnIndex,0);
 	var mediaFiles = this.mediaFiles.filter(MediaFile.needsThumbnail);
 	if(type)
-		mediaFiles=Album.selectFiles(mediaFiles, "VIDEO","type");
+		mediaFiles=Album.selectFiles(mediaFiles, {type: "VIDEO"});
 	$("#description").html("");
 	for(var k=0;k<mediaFiles.length;k++)
 	{	
@@ -253,78 +253,73 @@ Album.searchFiles = function(fileList, search)
 	return album.searchResults;
 };
 
-Album.selectFiles = function(fileList, filterValue, filterField)
+Album.selectFiles = function(fileList, filterValue)
 {  
 	if(!fileList) return [];
 	if(isFunction(filterValue))
 		return fileList.filter(filterValue);
 		
-	if(!isObject(filterValue))
-		Album.filterField=filterField || Album.defaultFilter;
 	Album.filterValue=filterValue;
 	return fileList.filter(MediaFile.isSelected);
 };
 
-Album.prototype.selectFiles = function (filterValue, filterField)
+Album.prototype.selectFiles = function (filterValue)
 {
-	return Album.selectFiles(this.mediaFiles, filterValue, filterField);
+	return Album.selectFiles(this.mediaFiles, filterValue);
 };
 
-Album.countFiles = function(fileList, filterValue, filterField)
+Album.countFiles = function(fileList, filterValue)
 {  
 	if(!fileList) return 0;
-	fileList=Album.selectFiles(fileList, filterValue, filterField);
-	if(!fileList) return 0;
-	return fileList.length || 0;
+	fileList=Album.selectFiles(fileList, filterValue);
+	if(!isEmpty(fileList)) return 0;
+	return fileList.length;
 };
 
-Album.prototype.countFiles = function (filterValue, filterField)
+Album.prototype.countFiles = function (filterValue)
 {
-	var fileList=this.selectFiles(filterValue, filterField);
-	if(!fileList) return 0;
-	return fileList.length || 0;	
+	var fileList=this.selectFiles(filterValue);
+	if(!isEmpty(fileList)) return 0;
+	return fileList.length;
 };
 
-Album.prototype.hasFiles = function (filterValue, filterField)
+Album.prototype.hasFiles = function (filterValue)
 {
-	var fileList=this.selectFiles(filterValue, filterField);
+	var fileList=this.selectFiles(filterValue);
 	return !isEmpty(fileList);	
 };
 
 //return all files except those filtered
-Album.excludeFiles = function(fileList, filterValue, filterField)
+Album.excludeFiles = function(fileList, filterValue)
 {  
 	if(!fileList) return [];
 
 	if(isFunction(filterValue))
 		return fileList.extract( function () { return !filterValue(); } );
 
-	Album.filterField=filterField || Album.defaultFilter;
 	Album.filterValue=filterValue;
 	return fileList.extract(MediaFile.isExcluded);
 };
 
-Album.prototype.excludeFiles = function (filterValue, filterField)
+Album.prototype.excludeFiles = function (filterValue)
 {
-	return Album.excludeFiles(this.mediaFiles, filterValue, filterField);
+	return Album.excludeFiles(this.mediaFiles, filterValue);
 };
 
 //return filtered files and remove them from list
-Album.extractFiles = function(fileList, filterValue, filterField)
+Album.extractFiles = function(fileList, filterValue)
 {
 	if(!fileList) return [];
-
 	if(isFunction(filterValue))
 		return this.mediaFiles.extract(filterValue);
    
-	Album.filterField=filterField || Album.defaultFilter;
 	Album.filterValue=filterValue;
 	return fileList.extract(MediaFile.isSelected);
 };
 
-Album.prototype.extractFiles = function (filterValue, filterField)
+Album.prototype.extractFiles = function (filterValue)
 {
-	return Album.extractFiles(this.mediaFiles, filterValue, filterField);
+	return Album.extractFiles(this.mediaFiles, filterValue);
 };
 
 Album.prototype.sortFiles = function(sortOptions)
@@ -352,7 +347,7 @@ Album.prototype.sortFiles = function(sortOptions)
 	//extract dirs, put them first
 	if(sortOptions.dirsFirst)
 	{
-		var dirs = this.extractFiles("DIR");
+		var dirs = this.extractFiles({type:"DIR"});
 		this.mediaFiles = dirs.concat(this.mediaFiles); 
 	}	
 //		this.mediaFiles.sortObjectsBy(MediaFile.isDir,true); //put dirs first
@@ -483,19 +478,6 @@ Album.getFileIndex = function(index)
 Album.prototype.getFileIndex = function(index)
 {
 	return this.startFileIndex+index;
-};
-
-//array filtering functions
-Album.prototype.isMediaFileSelected = function(element, index, array)
-{  
-	if($.isArray(element[this.filterField]))
-		return element[this.filterField].contains(this.filterValue);
-	return (element[this.filterField]==this.filterValue);  
-};
-
-Album.prototype.isMediaFileExcluded = function(element, index, array)
-{  
-	return !this.isMediaFileSelected(element, index, array);
 };
 
 Album.prototype.selectRange = function(from, to, state)

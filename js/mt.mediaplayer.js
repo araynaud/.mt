@@ -213,11 +213,11 @@ MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
 
 MediaPlayer.prototype.loadMusicPlaylist = function(audioFiles)
 {
-	var hasOgg=Album.selectFiles(audioFiles,"ogg","exts");
+	var hasOgg=Album.selectFiles(audioFiles, {exts:"ogg"});
 	if(($.browser.mozilla || $.browser.webkit) && hasOgg.length>0)
 		allowFlash=false;
 	else if($.browser.msie && hasOgg.length>0)
-		audioFiles=Album.excludeFiles(audioFiles,"ogg","exts");
+		audioFiles=Album.excludeFiles(audioFiles, {exts:"ogg"});
 
 	return this.loadPlaylist(audioFiles);
 };

@@ -199,14 +199,16 @@ $(window).resize(function(event)
 <?php include("video.html");?>
 
 <div id="indexContainer" class="nofloat">
-	<div class="nofloat">
-		<div id="tagList" class="floatR" direction="right" callback="UI.setContentWidth"></div>
-		<div id="pagesTop" class="pager centered"></div>
-	</div><br/>
+	<div class="centered">
+		<input id="cb_allTags" type="checkbox" class="sOption" label="All" title="All"/>
+		<span id="tagList" class="centered" callback="UI.setContentWidth"></span>
+		<spanid="pagesTop" class="pager centered"></span>
+	</div>
+	<br/>
 	<div class="floatR">
 		<div class="right noprint controls">
-			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
+			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
 		</div>
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="UI.setContentWidth"></div>

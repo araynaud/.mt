@@ -37,7 +37,7 @@ $(document).ready(function()
 
 function albumOnLoad()
 {
-	var images=album.selectFiles("IMAGE");
+	var images=album.selectFiles({type:"IMAGE"});
 	images=images.divideInto(2);
 
 	UI.slideshow.setContainer("#slideshowContainer");	

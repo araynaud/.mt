@@ -76,14 +76,14 @@ OK if mediaplayer disabled: video.click => download mp4
 store last selected file index,
 2nd selection: select to current file index
 
+4 actions: apply to selection. mutlple ajax or pass multiple names
+for add tag, remove tag, move, delete
+
 2 search by tags: or (current) / and / exact
-modify MediaFile.testProperty or new method?
+modify MediaFile.testProperty or new method
 
 4 video convert progress
 every N seconds: refresh mediafile with data.php / ajax
-
-4 actions: apply to selection. mutlple ajax or pass multiple names
-for add tag, remove tag, move, delete
 
 6 mobile: display edit as dialog/overlay with big icons.
 

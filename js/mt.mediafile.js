@@ -539,7 +539,7 @@ MediaFile.isSelected = function(element, index, array)
 		return result;
 	}
 
-	return MediaFile.testProperty(element, Album.filterValue, Album.filterField);
+	return true;
 };
 
 MediaFile.testProperty = function(element, value, field)
@@ -547,7 +547,7 @@ MediaFile.testProperty = function(element, value, field)
 	//find value in an element of the array
 	if(isMissing(element[field])) return isMissing(value);
 
-	if($.isArray(value))
+	if(isArray(value))
 	{
 		var result=false;
 		for(var n=0;n<value.length;n++)
