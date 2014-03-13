@@ -79,6 +79,9 @@ store last selected file index,
 4 actions: apply to selection. mutlple ajax or pass multiple names
 for add tag, remove tag, move, delete
 
+3 checkbox to reset selection: select all or none
+3 checboxes label="" checkedLabel="other"
+
 2 search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method
 

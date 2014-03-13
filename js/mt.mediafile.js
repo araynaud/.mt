@@ -533,7 +533,7 @@ MediaFile.isSelected = function(element, index, array)
 		var result=false;
 		for(var key in Album.filterValue)
 		{
-			result=MediaFile.testProperty(element, Album.filterValue[key], key);
+			result=MediaFile.testProperty(element, key, Album.filterValue[key]);
 			if(!result) break;		
 		}
 		return result;
@@ -542,26 +542,27 @@ MediaFile.isSelected = function(element, index, array)
 	return true;
 };
 
-MediaFile.testProperty = function(element, value, field)
+MediaFile.testProperty = function(element, key, value)
 {  
 	//find value in an element of the array
-	if(isMissing(element[field])) return isMissing(value);
+	var field = element[key];
+	if(isMissing(field)) return isMissing(value);
 
 	if(isArray(value))
 	{
 		var result=false;
-		for(var n=0;n<value.length;n++)
+		for(var n=0; n<value.length; n++)
 		{
-			result=MediaFile.testProperty(element, value[n], field);			
-			if(result) break;		
+			result = MediaFile.testProperty(element, key, value[n]);			
+			if(xor(value.matchAll, result)) break;		
 		}
 		return result;
 	}
 
-	if(isString(element[field]))	return element[field].containsText(value);
-	if(isArray(element[field]))		return element[field].contains(value);
-	if(isObject(element[field]))	return element[field].hasOwnProperty(value);
-	return (element[field]==value);  
+	if(isString(field))	return field.containsText(value);
+	if(isArray(field))	return field.contains(value);
+	if(isObject(field))	return field.hasOwnProperty(value);
+	return (field == value);  
 }
 
 MediaFile.isExcluded = function(element, index, array)

@@ -125,7 +125,7 @@ UI.displayTags = function()
 {
 	if(isEmpty(album.tags)) return;
 	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags));
-	$("input.tagOption").bindReset("click", UI.search);		
+	$("input.tagOption, input.operator").bindReset("click", UI.search);		
 	UI.styleCheckboxes("", "tagOption", "tagLabel");
 };
 
@@ -503,6 +503,13 @@ UI.getSearchOptions = function()
 		if(!$(this).is(":checked")) return;
 		if(!obj["tags"]) obj.tags=[];
 		obj.tags.push(this.id.substringAfter("cb_tag_")); 
+	});
+
+	$("input.operator").each(function()
+	{
+		var prop = this.id.substringAfter("cb_all_");
+		if(isArray(obj[prop]))
+			obj[prop].matchAll = $(this).is(":checked");
 	});
 
 	return obj;

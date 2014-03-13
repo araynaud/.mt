@@ -200,8 +200,8 @@ $(window).resize(function(event)
 
 <div id="indexContainer" class="nofloat">
 	<div class="centered">
-		<input id="cb_allTags" type="checkbox" class="sOption" label="All" title="All"/>
 		<span id="tagList" class="centered" callback="UI.setContentWidth"></span>
+		<input id="cb_all_tags" type="checkbox" class="operator" label="All" title="Match all tags"/>
 		<spanid="pagesTop" class="pager centered"></span>
 	</div>
 	<br/>
