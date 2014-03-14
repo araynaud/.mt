@@ -105,6 +105,7 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 
 	UI.displaySelection();
 	var totalSize = UI.selectedFileList.sum(MediaFile.getUploadFileSize);
+	UI.progressBar.displayFunction = formatSize;
 	UI.progressBar.setMax(totalSize);
 //	UI.progressBar.setMax(UI.selectedFileList.length);
 	UI.progressBar.reset();
@@ -123,7 +124,6 @@ UI.uploadSelectedFiles = function()
 	UI.selectedFileList = album.getSelection(true);
 
 	UI.progressBar.displayFunction = formatSize;
-//	UI.progressBar.displayFunction = null;
 	UI.progressBar.setMax(UI.selectedFileList.length);
 	UI.progressBar.reset();
 	UI.progressBar.show();
