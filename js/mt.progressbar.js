@@ -100,7 +100,7 @@ ProgressBar.prototype.refresh = function()
 	this.percent = Math.round(100 * this.progress / this.max) + "%";
 	this.progressDiv.width(this.percent);
 	var displayValue = this[this.displayValue];
-	if(isFunction(this.displayFunction)) 
+	if(this.displayValue != "percent" && isFunction(this.displayFunction)) 
 		displayValue = this.displayFunction(displayValue);
 	this.progressLabel.html(displayValue);
 	this.remainingLabel.html("{0} remaining / {1} total.".format(this.remainingTime(true), this.totalTime(true)));

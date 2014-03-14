@@ -80,7 +80,7 @@ store last selected file index,
 for add tag, remove tag, move, delete
 
 3 checkbox to reset selection: select all or none
-3 checboxes label="" checkedLabel="other"
+3 checkboxes label="" checkedLabel="other"
 
 2 search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method
