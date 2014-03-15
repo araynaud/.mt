@@ -13,6 +13,7 @@ UI.modes=
 			var alt = UI.transition.getNextSlide();
 			alt.html("");
 			alt.hide();
+			UI.displaySelectedFiles();
 		},
 		onHide: function()
 		{
@@ -446,6 +447,9 @@ UI.displayFileCounts = function (fileList,divId,clear)
 	var counts=fileList.countBy("type");
 	for(var k in counts)
 		$(divId).append(" " + plural(counts[k],k.toLowerCase()));
+
+	$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
+	$("#playIcon").toggle(album.hasFiles("VIDEO"));
 };
 
 UI.styleCheckboxes = function(container, cssClass, labelClass)

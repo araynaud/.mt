@@ -86,6 +86,7 @@ Album.onLoad = function (albumInstance)
 		config = album.config;
 		UI.displayUser();
 		UI.slideshow = new Slideshow(config.slideshow);
+		UI.slideshow.setOptions(search);
 		UI.transition.setOptions(config.transition);
 
 		$("#description").html(album.description);
@@ -99,18 +100,19 @@ Album.onLoad = function (albumInstance)
 		UI.selectCountPerPage(false);
 		UI.sortFiles(!search.start);
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
-		$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
-		$("#playIcon").toggle(album.hasFiles("VIDEO"));
 
 		UI.displayTags();
 		UI.styleCheckboxes();
 		UI.setupEvents();
+
+		$(".lOption").each(UI.toggleLayoutOption); 
 
 		if(search.start)
 		{
 			var mf=album.getMediaFileByName(search.start);
 			if(mf) mf.play();
 		}
+
 	}
 	catch(err)
 	{
@@ -120,11 +122,13 @@ Album.onLoad = function (albumInstance)
 };
 
 //show all thumbnail images if in cache
+/*
 $(window).load(function()
 {	
 	if(!window.album) return;
-	$(".lOption").each(UI.toggleLayoutOption); 
 });
+*/
+
 //if columns : new columns on a different row.
 //make page container .nofloat
 $(window).resize(function(event)
