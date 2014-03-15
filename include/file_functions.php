@@ -212,8 +212,6 @@ debug("LoadConfiguration", $relPath);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
 
 	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);
-//	config.thumbnails.dirs=Object.keys(config.thumbnails.sizes);
-
 
 //output config for default site
 	$publish = getConfig("_publish");

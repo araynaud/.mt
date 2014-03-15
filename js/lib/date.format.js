@@ -190,12 +190,11 @@ Date.prototype.format = function (mask, utc) {
 Date.fromString = function(dateStr, dateOnly)
 {
 	if(Object.isInstanceOf(dateStr, "Date"))		return dateStr;
-	if(!dateStr || typeof(dateStr)!='string')		return false;
+	if(!dateStr || typeof(dateStr)!='string')		return Date();
 	if(dateOnly)
 		dateStr=dateStr.substringBefore(" ");
 
 	var date = new Date(dateStr);
-	var t=typeof(date);
 	if (isNaN(date))
 	{
 		dateStr=dateStr.replace(" ", "T");
@@ -206,25 +205,26 @@ Date.fromString = function(dateStr, dateOnly)
 };
 
 //timespan between 2 dates
+Date.units={
+	second: 1000,
+	minute: 60,
+	hour: 60,
+	day: 24,
+	month: 30.5,
+	year: 12
+};
+
 Date.diffUnits = function(from, to)
 {
-	var units={
-		second: 1000,
-		minute: 60,
-		hour: 60,
-		day: 24,
-		month: 30.5,
-		year: 12
-	};
 	var duration = Math.abs(to - from);
 	var unit;
 	var factor=1;
-	for(var u in units)
+	for(var u in Date.units)
 	{
-		factor *= units[u];
+		factor *= Date.units[u];
 		if(duration < factor)
 		{
-			factor /= units[u];
+			factor /= Date.units[u];
 			break;
 		} 
 		unit = u;
@@ -238,15 +238,15 @@ Date.diffUnits = function(from, to)
 Date.prototype.diffUnits = function(from)
 {
 	if(!from) from = new Date();
-	return Date.diffUnits(from,this);
+	return Date.diffUnits(from, this);
 };
 
 Date.dateRange = function (from, to, dateOnly)
 {
 
 	if(!to && !from) return false;
-	dFrom=Date.fromString(from,dateOnly);
-	dTo= Date.fromString(to,dateOnly);
+	dFrom = Date.fromString(from, dateOnly);
+	dTo = Date.fromString(to, dateOnly);
 	var dateRange = {};
 
 	if(!dFrom)
@@ -255,7 +255,7 @@ Date.dateRange = function (from, to, dateOnly)
 		dateRange.dFrom = dFrom;
 	else //if(dFrom && dTo && dFrom!=dTo)
 	{
-		dateRange = Date.diffUnits(dFrom,dTo);
+		dateRange = Date.diffUnits(dFrom, dTo);
 		dateRange.dFrom = dFrom;
 		dateRange.dTo = dTo;
 	}
@@ -291,6 +291,7 @@ Date.formatDateDiff = function(dateRange)
 Date.timeSince = function(since)
 {
 	dSince=Date.fromString(since);
+	if(!dSince.diffUnits) return dSince;
 	return dSince.diffUnits();
 };
 

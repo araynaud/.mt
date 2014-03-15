@@ -1056,7 +1056,22 @@ Object.values = function (obj, skipNull)
         if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
             vals.push(obj[key]);
     return vals;
-}
+};
+
+if(!isFunction(Object.keys)) 
+	Object.keys = function (obj, skipNull)
+{
+    var vals = [];
+    if(!obj) return vals;
+    //if array, return obj
+    if(!isObjectNotArray(obj)) return obj;
+    //TODO if not object, return [obj]
+    for(var key in obj)
+        if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
+            vals.push(key);
+    return vals;
+};
+
 
 //--- OTHER UTILITY FUNCTIONS
 function plural(nb, word, pluralWord)
