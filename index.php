@@ -69,50 +69,55 @@ if(isMobile()) {?>
 <script type="text/javascript">
 var config;
 UI.transition = new Transition({elementSelector: "div.mediaFileList", type: 2, clear: true, maxType:3, duration: 1000});
+var search = new Querystring().params;
 $(document).ready(function()
 {
 	UI.setupElements();
 	UI.makeBackgroundGradients();		
+	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
+});
 
-	var search = new Querystring().params;
-	Album.getAlbumAjax("album", search); //, true, albumOnLoad);
-	if(!window.album) return;
-
-	config = album.config;
-	UI.displayUser();
-	UI.slideshow = new Slideshow(config.slideshow);
-	UI.transition.setOptions(config.transition);
-
-	$("#description").html(album.description);
-	$("#dateRange").html(album.formatDateRange(true));	
-	if(!album.mediaFiles)
+Album.onLoad = function (albumInstance) 
+{
+	try
 	{
-		$("#pagesTop").html("No files in this album.");
-		return;
-	}
+		if(!window.album) return;
 
-	try{
+		config = album.config;
+		UI.displayUser();
+		UI.slideshow = new Slideshow(config.slideshow);
+		UI.transition.setOptions(config.transition);
+
+		$("#description").html(album.description);
+		$("#dateRange").html(album.formatDateRange(true));	
+		if(!album.mediaFiles)
+		{
+			$("#pagesTop").html("No files in this album.");
+			return;
+		}
+
 		UI.selectCountPerPage(false);
 		UI.sortFiles(!search.start);
+		UI.displayFileCounts(album.mediaFiles,"#counts");	
+		$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
+		$("#playIcon").toggle(album.hasFiles("VIDEO"));
+
+		UI.displayTags();
+		UI.styleCheckboxes();
+		UI.setupEvents();
+
+		if(search.start)
+		{
+			var mf=album.getMediaFileByName(search.start);
+			if(mf) mf.play();
+		}
 	}
 	catch(err)
 	{
 		alert(Object.toText(err,"\n"));
 	}
-	UI.displayFileCounts(album.mediaFiles,"#counts");	
-	$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
-	$("#playIcon").toggle(album.hasFiles("VIDEO"));
 
-	UI.displayTags();
-	UI.styleCheckboxes();
-	UI.setupEvents();
-
-	if(search.start)
-	{
-		var mf=album.getMediaFileByName(search.start);
-		if(mf) mf.play();
-	}
-});
+};
 
 //show all thumbnail images if in cache
 $(window).load(function()
@@ -200,14 +205,14 @@ $(window).resize(function(event)
 
 <div id="indexContainer" class="nofloat">
 	<div class="centered">
-		<span id="tagList" class="centered" callback="UI.setContentWidth"></span>
-		<input id="cb_all_tags" type="checkbox" class="operator" label="All" title="Match all tags"/>
+		<span id="tagList" class="centered"></span>
 		<spanid="pagesTop" class="pager centered"></span>
 	</div>
 	<br/>
 	<div class="floatR">
 		<div class="right noprint controls">
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
+			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
 			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
 		</div>
