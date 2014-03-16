@@ -480,12 +480,19 @@ Album.prototype.getFileIndex = function(index)
 	return this.startFileIndex+index;
 };
 
+Album.prototype.selectAll = function(state)
+{
+	return this.selectRange(null, null, state)
+};
+
 Album.prototype.selectRange = function(from, to, state)
 {
+	var fileList=this.activeFileList();
+	from = valueOrDefault(from, 0);
+	to = valueOrDefault(to, fileList.length-1);
 	var i = from;
 	from=Math.min(from, to);
 	to=Math.max(i, to);
-	var fileList=this.activeFileList();
 	for(i = from; i<=to; i++)
 		fileList[i].toggleSelected(state);
 };

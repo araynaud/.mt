@@ -28,12 +28,7 @@ $allowFacebook=allowFacebook($path);
 if(!empty($description)) {?>
 	<meta name="description" content="<?php echo $description?>"/>
 <?php }
-
 metaTags($album);
-//debug("meta", xmlValue("meta", metaTags($album)), true);
-
-//prevent scaling on mobile browser
-// iOS <meta name="viewport" content="width=1165, user-scalable=no">
 if(isMobile()) {?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
 <?php } ?>
@@ -121,16 +116,6 @@ Album.onLoad = function (albumInstance)
 
 };
 
-//show all thumbnail images if in cache
-/*
-$(window).load(function()
-{	
-	if(!window.album) return;
-});
-*/
-
-//if columns : new columns on a different row.
-//make page container .nofloat
 $(window).resize(function(event)
 {
 	if(!window.album) return;

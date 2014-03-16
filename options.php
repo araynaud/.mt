@@ -1,7 +1,7 @@
 <div id="optionsContainer" class="noprint footerLeftCorner">
 	<div class="fixedLeft left">
-		<!--img class="iconTrans" id="scrollerIcon" src="icons/media-up.png" alt="play" title="play (space)" onclick="UI.scrollPages()"/>
-		<br/-->
+		<input id="cb_select_all" type="checkbox" label="X" title="Select All/none"/>
+		<br/>
 		<img class="iconTrans" id="scrollerIcon" src="icons/media-down.png" alt="play" title="play (space)" onclick="UI.scrollPages()"/>
 		<br/>
 		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>

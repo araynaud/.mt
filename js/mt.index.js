@@ -576,10 +576,19 @@ UI.setupEvents = function()
 		UI.appendNextPage();
 	});
 
+	$("#cb_select_all").bindReset("change", function() 
+	{
+		var state=$(this).isChecked();
+		UI.prevSelectedFile=null;
+		album.selectAll(state);
+	});
+	
 	$("#cb_selected").bindReset("change", function() 
 	{
 		UI.addStatus(UI.currentFile.index + " / " + UI.currentFile.id);
-		var state=$(this).isChecked();
+		var state = $(this).isChecked();
+		var pp = UI.prevSelectedFile;
+
 		if(isMissing(UI.prevSelectedFile))
 		{
 			UI.currentFile.toggleSelected(state);
@@ -590,9 +599,8 @@ UI.setupEvents = function()
 			album.selectRange(UI.prevSelectedFile, UI.currentFile.index, state);
 			UI.prevSelectedFile = null;
 		}
-
-		//$("div#" + UI.currentFile.id);
 		UI.displaySelection();
+		UI.addStatus("Selection: {0} - {1}".format(pp, UI.currentFile.index));
 	});
 
 	$("#playMusicIcon").toggle(album.musicFiles);	
