@@ -189,16 +189,18 @@ debug($type, count($typeFiles));
 		return $this->groupedFiles;
 	}
 
-
 	private function setMediaFileTags($mf)
 	{
 		//for each tag file, 		//mediafile -> addtag
-		if(!$this->tags) return;
+		if(!$mf || !$this->tags) return;
+		$key = combine($mf->getSubdir(), $mf->getName());
 		foreach ($this->tags as $tag => $tagList)
 		{
-			$key = combine($mf->getSubdir(),$mf->getName());
-			if(isset($tagList[$key]))
+			if(array_key_exists("$key", $tagList))
+			{
+				debug("\t$key addTag", $tag);
 				$mf->addTag($tag);
+			}
 		}
 	}
 

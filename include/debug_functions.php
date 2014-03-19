@@ -31,6 +31,11 @@ function debug($text="", $value=null, $indent=0)
 
 	if(!$value && !$text)
 		echo "\n";
+	else if($indent==="print_r")
+	{
+		echo "$text: ";
+		print_r($value);
+	}
 	else if(!isset($value) || $value===null)
 		echo "$text:\n";
 	else if (is_bool($value))

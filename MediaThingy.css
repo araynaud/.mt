@@ -251,7 +251,7 @@ img.icontr, img.iconTrans
 .fixedLeft
 {
 	position: fixed;
-	bottom: 40%;
+	top: 40%;
 	left: 20px;
 	text-align: left;
 }
@@ -259,7 +259,7 @@ img.icontr, img.iconTrans
 .fixedRight
 {
 	position: fixed;
-	bottom: 40%;
+	top: 40%;
 	right: 20px;
 	text-align: right;
 }

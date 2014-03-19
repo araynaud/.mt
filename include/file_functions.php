@@ -386,7 +386,6 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 		if(is_array($row) && count($row)==1)
 			$row = array_shift($row);
 
-//debug("row $key", $row);
 		if(!$key)
 			$csvRows[] = $row;
 		else
@@ -466,7 +465,7 @@ function csvHeaderRow($data, $writeKey="")
 	//get union of keys in all rows
 	foreach ($data as $key => $row)
 		if($row)
-			$columns = array_merge($columns, $row);
+			$columns = arrayReplace($columns, $row);
 
 	$k = array_keys($columns);
 	if($writeKey)

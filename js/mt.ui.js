@@ -468,7 +468,7 @@ UI.styleCheckboxes = function(container, cssClass, labelClass)
 		var label = $("label[for={0}]".format(this.id));
 		if(isEmpty(label))
 		{
-			label = $("<label for='{0}'/>".format(this.id));
+			label = $("<label id='label_{0}' for='{0}'/>".format(this.id));
 			var icon = cb.attr("icon"); //take attr from CB
 			var text = cb.attr("label");
 			if(icon)

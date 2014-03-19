@@ -33,10 +33,11 @@ function loadTagFiles($relPath, $depth=0, $fileList=null)
 		if(!$data) continue;
 
 		if(!isset($tagData[$name]))
-			$tagData[$name] = array();
-		$tagData[$name] = array_merge($tagData[$name], $data);
-//		$tagData[$tag] = $data;
+			$tagData[$name] = $data;
+		else
+			$tagData[$name] = arrayReplace($tagData[$name], $data);
 	}
+//	debug("loadTagFiles",$tagData,"print_r");
 	return $tagData;
 }
 
@@ -120,7 +121,7 @@ function getMetadataIndex($relPath, $type, $fileList=array(), $completeIndex=fal
 {
 	//TODO use dateIndex.types;IMAGE		
 	$index = loadMetadataIndex($relPath, $type);
-debug("loadMetadataIndex keys", array_keys($index));
+debug("loadMetadataIndex", $index, true);
 if(!$fileList) $fileList=array();
 debug("fileList", $fileList);
 	$subdirFiles=array();
