@@ -2,7 +2,7 @@
 require_once("include/config.php");
 
 $mf = MediaFile::getMediaFile();
-debugVar("mf");
+debugVar("mf",true);
 if(!$mf) return;
 
 debug($path, urlencode($path));

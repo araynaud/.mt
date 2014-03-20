@@ -71,28 +71,34 @@ click on dir: no link, but javascript loading album with path=$path/$subdir
 
 OK if mediaplayer disabled: video.click => download mp4
 
-1 Select multiple files by range
-1st selection
-store last selected file index,
+OK Select multiple files by range
+1st selection: store last selected file index
 2nd selection: select to current file index
+fix bug.
 
-4 actions: apply to selection. mutlple ajax or pass multiple names
-for add tag, remove tag, move, delete
+OK checkbox to reset selection: select all or none
 
-3 checkbox to reset selection: select all or none
-3 checkboxes label="" checkedLabel="other"
-
-2 search by tags: or (current) / and / exact
+OK search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method
 
+
+1 actions: apply to selection. multiple ajax or pass multiple names
+for short actions (addtag, removetag, move, delete): send all selected filenames, do all on the server in 1 call
+for long actions (convert video): call afterAction callback after each file in doMultipleFiles
+
+OK 21 embed slideshow / video in div: javascript:  slideshow.start(url, path)
+
+2 Embed in facebook link to file
+3 checkboxes label="" checkedLabel="other" icon= checkedIcon=
+
 4 video convert progress
-every N seconds: refresh mediafile with data.php / ajax
+every N seconds: refresh mediafile with data.php/ajax. return filesize of video $tmp_file
 
-6 mobile: display edit as dialog/overlay with big icons.
+5 mobile: display edit as dialog/overlay with big icons.
 
-5 upload .bg.jpg and readme.txt.
+6 upload .bg.jpg and readme.txt.
 
-2 display: use paginate.min_pages and min_last_page
+7 display: use paginate.min_pages and min_last_page
 
 ---------------
 rotate image ajax: return mediafile, tnsizes= -1, swap width/height
@@ -974,10 +980,7 @@ my.
 
 ----------
 
-21 embed slideshow / video in div
-javascript API:  slideshow.start(url, path)
-
-Gallery.setContainer("#slideshowContainer");	
+21 Gallery.setContainer("#slideshowContainer");	
 Album.getAlbumAjax(search);
 search: add sort
 options: container, interval, play, zoom, sort

@@ -256,7 +256,14 @@ function metaTags($album, $article=true)
 	$meta["og:description"] = $album->getDescription();
 
 //TODO: image: 1st best, or 1st image, use maxcount ?
-	$image = findFirstImage($relPath);
+//or if start use this one
+	$mediaFile = MediaFile::getMediaFile();
+debug("mediaFile", $mediaFile);
+	if($mediaFile)
+		$image = $mediaFile->getThumbnailFilename("ss");
+	else
+		$image = findFirstImage($relPath);
+
 	if($image)
 	{
 		//if(is_array($image))	$image=array_shift($image);

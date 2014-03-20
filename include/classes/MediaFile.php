@@ -67,8 +67,10 @@ class MediaFile extends BaseObject
 
     public static function getMediaFile()
     {    	
-		$file = reqParam("file");
 		$path=reqPath();
+		$file = reqParam("file");
+		if(!$file)
+			$file = reqParam("start");
 
 		if(!$path && !$file)
 			splitFilePath($_SERVER["PATH_INFO"], $path, $file);
@@ -82,7 +84,7 @@ class MediaFile extends BaseObject
 			$_REQUEST["name"] = getFilename($file);
 		}
 		$album = new Album($path, true);
-		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : $album->getMediaFiles();
+		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : null; // $album->getMediaFiles();
 		return $mf;
 	}
 
