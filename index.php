@@ -1,8 +1,11 @@
 <?php
 require_once("include/config.php");
 session_start();
-$path=getPath();
+reqPathFile($path, $file);
+//$path=getPath();
 debugVar("path");
+debugVar("file");
+
 $album = new Album($path, false);
 $relPath=$album->getRelPath();
 $urlPath=$album->getAbsPath();
@@ -64,7 +67,10 @@ if(isMobile()) {?>
 <script type="text/javascript">
 var config;
 UI.transition = new Transition({elementSelector: "div.mediaFileList", type: 2, clear: true, maxType:3, duration: 1000});
-var search = new Querystring().params;
+var qs = new Querystring();
+var search = qs.params;
+if(qs.whole) search.whole=qs.whole;
+
 $(document).ready(function()
 {
 	UI.setupElements();
@@ -93,7 +99,7 @@ Album.onLoad = function (albumInstance)
 		}
 
 		UI.selectCountPerPage(false);
-		UI.sortFiles(!search.start);
+		UI.sortFiles(!search.file);
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
 
 		UI.displayTags();
@@ -102,9 +108,9 @@ Album.onLoad = function (albumInstance)
 
 		$(".lOption").each(UI.toggleLayoutOption); 
 
-		if(search.start)
+		if(search.file)
 		{
-			var mf=album.getMediaFileByName(search.start);
+			var mf=album.getMediaFileByName(search.file);
 			if(mf) mf.play();
 		}
 

@@ -105,13 +105,25 @@ String.combine = function()
 String.getFilename = function(url)
 {
 	url = url.substringBefore("?");
-	url = url.substringAfter("/",true, true);
+	url = url.substringAfter("/", true, true);
 	return url.urlDecode();
 };
 
 String.prototype.getFilename = function()
 {
 	return String.getFilename(this);
+};
+
+String.getParent = function(url)
+{
+	url = url.substringBefore("?");
+	url = url.substringBefore("/", true);
+	return url.urlDecode();
+};
+
+String.prototype.getParent = function()
+{
+	return String.getParent(this);
 };
 
 String.getFilenameNoExt = function(url)

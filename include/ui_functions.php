@@ -240,7 +240,7 @@ function facebookFacepile($path, $width=320)
 
 */
 
-function metaTags($album, $article=true)
+function metaTags($album, $article=false)
 {
 	if(is_string($album))
 		$album = new Album($album, false);
@@ -251,7 +251,7 @@ function metaTags($album, $article=true)
 	$meta=array();
 	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
 	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
-	$meta["og:url"] = getAbsoluteUrl($path);
+	$meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$meta["og:description"] = $album->getDescription();
 

@@ -26,6 +26,8 @@ function Querystring(qs) { // optionally pass a querystring to parse
 			: name;
 		
 		this.params[name] = value;
+		if(args.length==1 && pair.length==1) 
+			this.whole = value;
 	}
 }
 

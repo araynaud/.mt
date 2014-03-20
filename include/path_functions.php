@@ -72,6 +72,27 @@ function combine()
 //split into array /
 //test if each level exists is_dir
 //if not, toggle .
+function reqPathFile(&$path, &$file)
+{	
+	$path = reqPath();
+	$file = reqParam("file");
+
+	if(!$path && $file && contains($file,"/"))
+		splitFilePath($file,$path,$file);
+
+	if(!$path && !$file && isset($_SERVER["PATH_INFO"]))
+		splitFilePath(@$_SERVER["PATH_INFO"], $path, $file);
+
+	if(!$path && !$file && isset($_SERVER["QUERY_STRING"]))
+		splitFilePath(@$_SERVER["QUERY_STRING"], $path, $file);
+
+	$relPath=getDiskPath($path);
+	if($file)
+	{
+		$_REQUEST["type"] = getFileType("$relPath/$file");
+		$_REQUEST["name"] = getFilename($file);
+	}
+}
 
 function postPath($path="")
 {	
