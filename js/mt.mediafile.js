@@ -438,9 +438,15 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 	async = valueOrDefault(async, false);
 	params = valueOrDefault(params, {});
 	params.format="ajax";
-	var scriptUrl = mediaFile.getScriptUrl(script); //, params);
-	var method= post ? "POST" : "GET";
-	var link = $.makeElement("a", { href: scriptUrl.appendQueryString({debug:"true"}), target: "debug"}).html(scriptUrl);
+	var scriptUrl = mediaFile.getScriptUrl(script);
+	var method = post ? "POST" : "GET";
+
+	if(config.debug.ajax)
+	{
+		var debugScriptUrl = mediaFile.getScriptUrl(script, params).appendQueryString({debug:"true"});
+		var link = $.makeElement("a", { href: debugScriptUrl, target: "debug"}).html(scriptUrl);
+		UI.addStatus(link.outerHtml());
+	}
 
 	var result = false;
    	$.ajax({

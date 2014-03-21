@@ -1,6 +1,5 @@
 ;app global default config
 TITLE;iPad Thingy
-DEBUG.OUTPUT;false
 
 ;thumbnail display
 DISPLAY.rotate;false

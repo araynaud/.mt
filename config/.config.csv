@@ -1,6 +1,7 @@
 ;app global default config
 TITLE;Media Thingy
-DEBUG.OUTPUT;false
+debug.output;false
+debug.ajax;false
 
 USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;playstation;opera
 ;USER_AGENT.FORCE;mobile android

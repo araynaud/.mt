@@ -2,6 +2,8 @@
 require_once("include/config.php");
 session_start();
 reqPathFile($path, $file);
+debugVar("path");
+debugVar("file");
 
 $album = new Album($path, false);
 $relPath=$album->getRelPath();

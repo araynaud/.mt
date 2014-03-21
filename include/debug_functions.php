@@ -3,7 +3,7 @@
 function isDebugMode()
 {
 	global $config;
-	return $config["DEBUG"]["OUTPUT"] || contains(currentScriptName(),"test") || reqParam("debug")==="true";
+	return getConfig("debug.output") || contains(currentScriptName(),"test") || reqParam("debug")==="true";
 }
 
 function startTimer()

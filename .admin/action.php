@@ -7,9 +7,12 @@ setContentType("text", "plain");
 // create MediaFile by name
 // AJAX response: new MediaFile after action + error or confirmation message
 
-$path=reqPath();
-$file = reqParam("file");
+reqPathFile($path, $file);
+debugVar("path");
+debugVar("file");
 $name = reqParam("name");
+debugVar("name");
+
 $action = reqParam("action");
 $actions = getConfig("file.actions");
 //move/rename options

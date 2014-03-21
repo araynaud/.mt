@@ -55,9 +55,14 @@ $indent=reqParam("indent", 1);
 $includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 
-$path=getPath();
+
+reqPathFile($path, $file);
+debugVar("path");
+debugVar("file");
+$name = reqParam("name");
+debugVar("name");
 $relPath=getDiskPath($path);
-$file=getParam("file"); // file or folder description file
+
 $filePath=combine($relPath, $file);
 $data=getFileData($getData, $path, $file);
 $data=objToArray($data, true, true);
