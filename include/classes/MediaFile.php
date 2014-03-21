@@ -220,8 +220,10 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		$filename = $this->name . "." . $this->getThumbnailExtension();
 		if(!$subdir) return $filename;
 		$tnPath = combine(".$subdir", $filename);
-		$fullPath = combine($this->getRelPath(), $this->subdir, $tnPath);
-		return file_exists($fullPath) ? $tnPath : $filename;
+		return $tnPath;
+
+//		$fullPath = combine($this->getRelPath(), $this->subdir, $tnPath);
+//		return file_exists($fullPath) ? $tnPath : $filename;
 	}
 
     public function getThumbnailFilePath($subdir="")

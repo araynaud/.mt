@@ -265,10 +265,11 @@ debug("mediaFile", $mediaFile);
 		$image = findFirstImage($relPath);
 
 	if($image)
+		$is = @getimagesize(combine($relPath,$image));
+
+	if($image && $is)
 	{
-		//if(is_array($image))	$image=array_shift($image);
-		$is = getimagesize(combine($relPath,$image));
-debug("getimagesize", $is);
+		debug("getimagesize", $is);
 		$meta["og:image"] = getAbsoluteFileUrl($path, $image);
 		$meta["og:image:width"]  = $is[0];
 		$meta["og:image:height"] = $is[1];
