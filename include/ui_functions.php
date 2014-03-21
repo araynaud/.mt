@@ -253,20 +253,25 @@ function metaTags($album, $article=false)
 	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
 	$meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
-	$meta["og:description"] = $album->getDescription();
 
 //TODO: image: 1st best, or 1st image, use maxcount ?
 //or if start use this one
 	$mediaFile = MediaFile::getMediaFile();
-debug("mediaFile", $mediaFile);
-	if($mediaFile)
-		$image = $mediaFile->getThumbnailFilename("ss");
-	else
+	debug("mediaFile", $mediaFile);
+	$meta["og:description"] = metaDescription($album, $mediaFile);
+
+//TODO: mediaFile method findOgImage
+	$image="";
+	if(!$mediaFile)
 		$image = findFirstImage($relPath);
+	else if($mediaFile->thumbnailExists("ss"))
+		$image = $mediaFile->getThumbnailFilename("ss");
+	else if($mediaFile->thumbnailExists("tn"))
+		$image = $mediaFile->getThumbnailFilename("tn");
+	else if($mediaFile->isImage()) 
+		$image = $mediaFile->getFilename();
 
-	if($image)
-		$is = @getimagesize(combine($relPath,$image));
-
+	$is = @getimagesize(combine($relPath, $image));
 	if($image && $is)
 	{
 		debug("getimagesize", $is);
@@ -291,6 +296,15 @@ debug("mediaFile", $mediaFile);
 		echo metaTag($key, $value);
 
 	return $meta;
+}
+
+function metaDescription($album, $mediaFile)
+{
+	$ad = $album ? $album->getDescription() : ""; 
+	$md = $mediaFile ? $mediaFile->getDescription() : "";
+	if($ad && $md) return "$ad. $md";
+	if($ad) return $ad;
+	return $md;
 }
 
 function metaTag($key, $value)

@@ -244,6 +244,12 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
     	return getAbsoluteFileUrl($path, $filename);
 	}
 
+    public function thumbnailExists($subdir="")
+	{
+		$tnPath = $this->getThumbnailFilePath($subdir);
+		return file_exists($tnPath);
+	}
+
     public function createThumbnail($tndir)
 	{
 		if(!$tndir) return false;
