@@ -86,12 +86,17 @@ function reqPathFile(&$path, &$file)
 	if(!$path && !$file && isset($_SERVER["QUERY_STRING"]))
 		splitFilePath(@$_SERVER["QUERY_STRING"], $path, $file);
 
+	if($path)
+		$_REQUEST["path"] = $path;
+
 	$relPath=getDiskPath($path);
 	if($file)
 	{
 		$_REQUEST["type"] = getFileType("$relPath/$file");
 		$_REQUEST["name"] = getFilename($file);
 	}
+	debug("reqPathFile", $_REQUEST);
+	debug("reqPathFile", "$path / $file");
 }
 
 function postPath($path="")

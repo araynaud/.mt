@@ -621,12 +621,11 @@ function subdirThumbs($relPath,$max_thumbs)
 	return $pics;
 }
 
-//pick random 4 thumbs in this dir
 function findFirstImage($relPath)
 {
 	$search = array();
 	$search["type"]="IMAGE";
-	$search["maxCount"]=4;
+	$search["maxCount"]=1;
 	$search["tnDir"]=".ss";
 	$pics=listFiles($relPath,$search);
 	if(!$pics)
@@ -639,11 +638,12 @@ function findFirstImage($relPath)
 		unset($search["tnDir"]);
 		$pics=listFiles($relPath,$search);
 	}
-
+debug("findFirstImage", $pics);
 	if($pics)
 		return end($pics);
 }
 
+//pick random 4 thumbs in this dir
 function pickRandomElements($array,$nb)
 {
 	shuffle($array);

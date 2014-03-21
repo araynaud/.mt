@@ -78,6 +78,7 @@ class Album extends BaseObject
 	{
 		if(!$this->search)
 			$this->search = getSearchParameters();	
+debug("Album::getSearchParameters", $this->search);		
 		return $this->search;
 	}
 
@@ -245,7 +246,7 @@ debug($type, count($typeFiles));
 	public function getMediaFile($index=0)
 	{
 		$files=$this->getMediaFiles();
-		return $files[$index];
+		return @$files[$index];
 	}
 
 }

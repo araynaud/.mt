@@ -68,24 +68,9 @@ class MediaFile extends BaseObject
     public static function getMediaFile()
     {    	
 		$path=reqPath();
-		$file = reqParam("file");
-		if(!$file)
-			$file = reqParam("start");
-
-		if(!$path && !$file)
-			splitFilePath($_SERVER["PATH_INFO"], $path, $file);
-		else if(!$path && contains($file,"/"))
-			splitFilePath($file,$path,$file);
-
-		if($file)
-		{
-			$relPath=getDiskPath($path);
-			$_REQUEST["type"] = getFileType("$relPath/$file");
-			$_REQUEST["name"] = getFilename($file);
-		}
 		$album = new Album($path, true);
-		$mf = $album->countMediaFiles() == 1 ? $album->getMediaFile() : null; // $album->getMediaFiles();
-		return $mf;
+debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
+		return $album->getMediaFile();
 	}
 
     public function addImageThumbnails()
@@ -234,7 +219,9 @@ class MediaFile extends BaseObject
 	{		
 		$filename = $this->name . "." . $this->getThumbnailExtension();
 		if(!$subdir) return $filename;
-		return combine(".$subdir", $filename);
+		$tnPath = combine(".$subdir", $filename);
+		$fullPath = combine($this->getRelPath(), $this->subdir, $tnPath);
+		return file_exists($fullPath) ? $tnPath : $filename;
 	}
 
     public function getThumbnailFilePath($subdir="")
