@@ -74,21 +74,15 @@ function combine()
 //if not, toggle .
 function reqPathFile(&$path, &$file, $addFilters=true)
 {	
-	debug("reqPathFile before", $_REQUEST);
-	$path = reqPath();
+	debug("reqPathFile request before", $_REQUEST);
+	$path = reqParam("path");
 	$file = reqParam("file");
 
 	if(!$path && $file)
 		splitFilePath($file,$path,$file);
 
-	if(!$path && !$file && isset($_SERVER["PATH_INFO"]))
-		splitFilePath(@$_SERVER["PATH_INFO"], $path, $file);
-
 	if(!$path && !$file && isset($_SERVER["QUERY_STRING"]))
 		splitFilePath(urldecode(@$_SERVER["QUERY_STRING"]), $path, $file);
-
-	if($path)
-		$_REQUEST["path"] = $path;
 
 	$filePath = combine($path, $file);
 
@@ -100,17 +94,18 @@ function reqPathFile(&$path, &$file, $addFilters=true)
 		$path = $filePath;
 		$file = "";
 	}
-	else if($file && $addFilters)
-	{
-		if($filetype!="FILE")
-			$_REQUEST["type"] = $filetype;
-		$_REQUEST["name"] = getFilename($file);
-	}
-	debug("reqPathFile after", $_REQUEST);
 
 	$file = urldecode($file);
 	$path = urldecode($path);
+	$_REQUEST["path"] = $path;
+	$_REQUEST["file"] = $file;
+	
+	if($addFilters && $filetype!="FILE" && $filetype!="DIR")
+		$_REQUEST["type"] = $filetype;
+	if($addFilters && $file)
+		$_REQUEST["name"] = getFilename($file);
 
+	debug("reqPathFile request after", $_REQUEST);
 	debug("reqPathFile", "$path / $file");
 }
 

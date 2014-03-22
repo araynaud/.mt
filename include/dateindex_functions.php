@@ -121,9 +121,9 @@ function getMetadataIndex($relPath, $type, $fileList=array(), $completeIndex=fal
 {
 	//TODO use dateIndex.types;IMAGE		
 	$index = loadMetadataIndex($relPath, $type);
-debug("loadMetadataIndex", $index, true);
+//debug("loadMetadataIndex", $index, true);
 if(!$fileList) $fileList=array();
-debug("fileList", $fileList);
+//debug("fileList", $fileList);
 	$subdirFiles=array();
 	if($fileList)
 	{
@@ -162,7 +162,7 @@ debug("getMetadataIndex $name", $filePath);
 		loadSubdirData($index, $relPath, $subdirFiles, $type);
 
 debug();
-debug("getMetadataIndex $type", $index, true);
+//debug("getMetadataIndex $type", $index, true);
 debug();
 	return $index;
 }
@@ -368,7 +368,7 @@ debug("addedFiles", count($addedFiles));
 
 	asort($filteredIndex);
 	
-debug("getRefreshedDateIndex", $filteredIndex, true);
+//debug("getRefreshedDateIndex", $filteredIndex, true);
 	return $filteredIndex;
 }
 ?>

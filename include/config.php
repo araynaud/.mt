@@ -21,10 +21,10 @@ require_once("classes/Album.php");
 $startTime=startTimer();
 $path=getPath();
 
+LoadConfiguration($path, $config);
+
 if(isDebugMode())
 	header("Content-Type: text/plain");
-
-LoadConfiguration($path, $config);
 
 if(isset($config["DEFAULT_TIMEZONE"]))
 	date_default_timezone_set($config["DEFAULT_TIMEZONE"]);
