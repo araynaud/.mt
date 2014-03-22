@@ -85,7 +85,7 @@ function reqPathFile(&$path, &$file, $addFilters=true)
 		splitFilePath(@$_SERVER["PATH_INFO"], $path, $file);
 
 	if(!$path && !$file && isset($_SERVER["QUERY_STRING"]))
-		splitFilePath(@$_SERVER["QUERY_STRING"], $path, $file);
+		splitFilePath(urldecode(@$_SERVER["QUERY_STRING"]), $path, $file);
 
 	if($path)
 		$_REQUEST["path"] = $path;
