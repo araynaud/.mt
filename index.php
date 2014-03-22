@@ -2,8 +2,11 @@
 require_once("include/config.php");
 session_start();
 reqPathFile($path, $file);
-debugVar("path");
-debugVar("file");
+//debugVar("path");
+//debugVar("file");
+$params=array("path"=>$path, "file"=>$file);
+debugVar("params");
+
 
 $album = new Album($path, false);
 $relPath=$album->getRelPath();
@@ -64,11 +67,11 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.progressbar.js"></script>
 
 <script type="text/javascript">
+<?php echo jsVar("params", true, true, true) ?>
+var qs = new Querystring();
+var search = Object.merge(qs.params, params, true);
 var config;
 UI.transition = new Transition({elementSelector: "div.mediaFileList", type: 2, clear: true, maxType:3, duration: 1000});
-var qs = new Querystring();
-var search = qs.params;
-if(qs.whole) search.whole=qs.whole;
 
 $(document).ready(function()
 {

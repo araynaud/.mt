@@ -72,12 +72,13 @@ function combine()
 //split into array /
 //test if each level exists is_dir
 //if not, toggle .
-function reqPathFile(&$path, &$file)
+function reqPathFile(&$path, &$file, $addFilters=true)
 {	
+	debug("reqPathFile before", $_REQUEST);
 	$path = reqPath();
 	$file = reqParam("file");
 
-	if(!$path && $file && contains($file,"/"))
+	if(!$path && $file)
 		splitFilePath($file,$path,$file);
 
 	if(!$path && !$file && isset($_SERVER["PATH_INFO"]))
@@ -89,13 +90,27 @@ function reqPathFile(&$path, &$file)
 	if($path)
 		$_REQUEST["path"] = $path;
 
+	$filePath = combine($path, $file);
+
 	$relPath=getDiskPath($path);
-	if($file)
+	$filetype = getFileType("$relPath/$file");
+	debug("filetype", $filetype);
+	if($filetype=="DIR")
 	{
-		$_REQUEST["type"] = getFileType("$relPath/$file");
+		$path = $filePath;
+		$file = "";
+	}
+	else if($file && $addFilters)
+	{
+		if($filetype!="FILE")
+			$_REQUEST["type"] = $filetype;
 		$_REQUEST["name"] = getFilename($file);
 	}
-	debug("reqPathFile", $_REQUEST);
+	debug("reqPathFile after", $_REQUEST);
+
+	$file = urldecode($file);
+	$path = urldecode($path);
+
 	debug("reqPathFile", "$path / $file");
 }
 

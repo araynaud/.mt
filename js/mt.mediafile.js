@@ -220,6 +220,21 @@ MediaFile.prototype.getFileUrl = function (ext)
 	return MediaFile.getFileUrl(this, ext);
 };
 
+MediaFile.getShortPath = function (mediaFile)
+{
+	return String.combine(album.path, mediaFile.subdir, mediaFile.name);
+};
+
+MediaFile.prototype.getShortPath = function ()
+{
+	return String.combine(album.path, this.subdir, this.name);
+};
+
+MediaFile.prototype.getShortUrl = function ()
+{
+	return UI.appRootUrl() + "?" + this.getShortPath();
+};
+
 MediaFile.getFileDir = function(mediaFile, subdir)
 {
 	return String.combine(album.relPath, mediaFile.subdir, subdir);

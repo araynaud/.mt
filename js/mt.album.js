@@ -51,16 +51,6 @@ Album.defaultFilter="type";
 Album.getAlbumAjax = function(instanceName, search, async, callback)
 {	
 	if(!search) search={};
-	if (!search.path && !search.file && search.whole) 
-	{
-		search.path = search.whole.getParent();
-		search.file = search.whole.getFilename();
-	}	
-	else if (!search.path && search.file) 
-	{
-		search.path = search.file.getParent();
-		search.file = search.file.getFilename();
-	}	
 	search.format = "json";
 	search.data = "album";	
 	search.debug = "false";

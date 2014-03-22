@@ -55,10 +55,7 @@ $indent=reqParam("indent", 1);
 $includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 
-
-reqPathFile($path, $file);
-debugVar("path");
-debugVar("file");
+reqPathFile($path, $file, false);
 $name = reqParam("name");
 debugVar("name");
 $relPath=getDiskPath($path);

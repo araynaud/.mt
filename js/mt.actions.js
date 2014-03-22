@@ -182,10 +182,28 @@ UI.goToPage = function(scriptName, params, windowName)
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
 	if(!mediaFile) return false;
 	var link=mediaFile.getScriptUrl(scriptName +".php", params);
-	
+	return UI.goToUrl(link, windowName);
+};
+
+UI.goToUrl = function(link, windowName)
+{
 	if(windowName)	window.open(link, windowName);
 	else	location=link;
 	return true;
+};
+
+UI.appRootUrl = function()
+{
+	return window.location.href.substringBefore("?");
+};
+
+UI.fbShare = function()
+{
+	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
+	if(!mediaFile) return false;
+
+	var link="https://www.facebook.com/sharer/sharer.php".appendQueryString({u: mediaFile.getShortUrl()});
+	return UI.goToUrl(link, 'fb');
 };
 
 UI.ajaxError = function(xhr, textStatus, errorThrown)
