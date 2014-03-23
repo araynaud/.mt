@@ -4,8 +4,7 @@ setContentType("text", "plain");
 
 startTimer();
 
-$path=reqPath();
-$file=reqParam("file");
+reqPathFile($path, $file);
 $relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
 

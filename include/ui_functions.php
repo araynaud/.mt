@@ -240,7 +240,7 @@ function facebookFacepile($path, $width=320)
 
 */
 
-function metaTags($album, $article=false)
+function metaTags($album, $article=true)
 {
 	if(is_string($album))
 		$album = new Album($album, false);

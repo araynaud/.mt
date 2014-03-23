@@ -1,6 +1,7 @@
 <?php
 require_once("include/config.php");
 
+reqPathFile($path, $file);
 $mf = MediaFile::getMediaFile();
 debugVar("mf",true);
 if(!$mf) return;

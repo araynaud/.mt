@@ -2,8 +2,6 @@
 require_once("include/config.php");
 session_start();
 reqPathFile($path, $file);
-//debugVar("path");
-//debugVar("file");
 $params=array("path"=>$path, "file"=>$file);
 debugVar("params");
 
