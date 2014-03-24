@@ -7,8 +7,11 @@ DISPLAY.displayOptions;false
 DISPLAY.searchOptions;true
 ;DISPLAY.titleContainer;false
 
-PAGINATE.DEFAULT;5
+transition.changeMode;false
+slideshow.changeMode;false
+slideshow.zoomFunction;crossFade
 
+keyboard;false
 transition.changeMode;false
 slideshow.changeMode;false
 slideshow.zoomFunction;crossFade

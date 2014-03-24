@@ -382,6 +382,7 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		var ss=this;
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction); });
 	}
+	UI.editDiv.appendTo("#slideshowControls").show();
 };
 
 Slideshow.prototype.styleSlide = function(el)
@@ -457,7 +458,7 @@ Slideshow.prototype.autoShowNextImage = function()
 Slideshow.prototype.showComments = function(mediaFile)
 {
 	this.elements.description.html(mediaFile.description||"");
-	UI.renderTemplate("tagTemplate", this.elements.tags, Object.values(mediaFile.tags));
+	UI.renderTemplate("tagTemplate", this.elements.tags, Object.values(mediaFile.tags), null, {action: "removetag"});
 };
 
 // ---- IMAGE display functions -------

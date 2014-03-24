@@ -183,7 +183,7 @@ div#files
 	
 }
 
-.edit
+div.file .edit
 {
 	/* fix it at the bottom */
 	position:absolute;
@@ -637,7 +637,7 @@ div.video.photoBorder .caption
 	border-bottom-right-radius: 30px;
 }
 
-div.video.photoBorder .edit
+div.video.photoBorder div.file .edit
 {
 	border-top-left-radius: 30px;
 	border-top-right-radius: 30px;

@@ -6,8 +6,6 @@ DISPLAY.displayOptions;false
 DISPLAY.searchOptions;false
 ;DISPLAY.titleContainer;false
 
-PAGINATE.DEFAULT;5
-
 transition.changeMode;false
 slideshow.changeMode;false
 slideshow.zoomFunction;crossFade

@@ -680,9 +680,6 @@ MediaFile.prototype.play = function()
 	switch(this.type)
 	{
 		case "VIDEO":
-//			if(MediaPlayer.slide)
-//				return MediaPlayer.slide.loadMediaFile(this);
-//			break;
 		case "IMAGE":
 			return UI.slideshow.display(this);
 		case "AUDIO":
