@@ -258,6 +258,11 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 {
 	//render template in this file div id
 //	UI.addStatus("refreshMediaFile " + mediaFile.id);
+	if(UI.mode=="slideshow")
+	{
+		UI.slideshow.showImage(null,"none");
+		return;
+	}
 
 	UI.editDiv.hide().appendTo(UI.body);
 	//to avoid losing it when refreshing index

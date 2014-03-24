@@ -478,12 +478,14 @@ Slideshow.prototype.fitVideo = function ()
 	var bw = 60; // image.borderMarginWidth();
 	var bh = 80; //image.borderMarginHeight();
 
-	var preRatio = this.currentFile.width / this.currentFile.height;
+	var preRatio = 16/9;
+	if(this.currentFile.width && this.currentFile.height)
+		preRatio = this.currentFile.width / this.currentFile.height;
 	var wWidth  = this.elements.container.width()  - bw;
 	var wHeight = this.elements.container.height() - bh;
 	var wRatio = wWidth / wHeight;
-	var width  = Math.min(wWidth, this.currentFile.width);
-	var height = Math.min(wHeight, this.currentFile.height);
+	var width  = Math.min(wWidth, this.currentFile.width || 0);
+	var height = Math.min(wHeight, this.currentFile.height || 0);
 	if (this.zoom && preRatio > wRatio) //if too wide, fit width
 	{
 		width = wWidth;
