@@ -160,9 +160,7 @@
 			onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
 		{{/if}}
 		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>
-		{{if description}}
-			<div>{{:description}}</div>
-		{{/if}}
+		{{if true tmpl="descriptionTagTemplate"/}}
 		<br/>
 	</div>
 </script>

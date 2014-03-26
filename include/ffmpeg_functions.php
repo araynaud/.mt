@@ -73,18 +73,10 @@ function getMediaFileInfo($relPath, $file="")
 		return $data;
 	}
 
-/*	$metadata = loadImageInfo($relPath, $file);
-	if($metadata) 
-	{
-		$metadata["source"] = getMetadataFilename($relPath, $file);
-		return $metadata;	
-	}
-*/
 	$ffprobe=getExePath("PROBE");
 	$cmd = makeCommand("[0] -i [1] -show_format -show_streams", $ffprobe, $filePath);
 	$output = execCommand($cmd, false, false);	
 	$data = parseFfprobeMetadata($output);
-//	saveImageInfo($relPath, $file, $data);
 	return $data;
 }
 
@@ -132,17 +124,11 @@ function parseFfprobeMetadata($output)
 	foreach($sections as $name => $section)
 	{
 debug("$name", count($section));
+		//if section has only 1 element, $section=$section[0]
 		if(count($section)==1)
 			$sections[$name]=$section[0];
 	}
 	
-	//if section has only 1 element, $section=$section[0]
-				//make array if count($tmp)==1
-/*
-				$tmp=$sections[$meta];
-				$sections[$meta]=array();
-				$sections[$meta][]=$tmp;
-*/
 	return $sections;
 }
 

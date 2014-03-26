@@ -621,4 +621,10 @@ function updateFileMetadata()
 //save file
 }
 
+
+function isFileHidden($fn)
+{
+    $attr = trim(exec('FOR %A IN ("'.$fn.'") DO @ECHO %~aA'));
+    return (@$attr[3] === 'h');
+}
 ?>

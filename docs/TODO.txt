@@ -81,9 +81,10 @@ OK checkbox to reset selection: select all or none
 OK search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method
 
-
 1 actions: apply to selection. multiple ajax or pass multiple names
 for short actions (addtag, removetag, move, delete): send all selected filenames, do all on the server in 1 call
+reload album ajax
+
 for long actions (convert video): call afterAction callback after each file in doMultipleFiles
 
 OK 21 embed slideshow / video in div: javascript:  slideshow.start(url, path)
@@ -92,6 +93,7 @@ OK 21 embed slideshow / video in div: javascript:  slideshow.start(url, path)
 3 checkboxes label="" checkedLabel="other" icon= checkedIcon=
 
 4 video convert progress
+add tmp filename $tmp_file = .tmp_$inputFile
 every N seconds: refresh mediafile with data.php/ajax. return filesize of video $tmp_file
 
 5 mobile: display edit as dialog/overlay with big icons.
