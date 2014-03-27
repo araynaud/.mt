@@ -150,3 +150,6 @@ file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
 file.delete.to;.bad
 
 fb.app_id;159679107375436
+
+youtube.videoUrl;http://www.youtube.com/watch?v={0}
+youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg

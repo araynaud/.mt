@@ -330,13 +330,17 @@ Slideshow.prototype.getPicUrl = function(index)
 //otherwise get or generate thumbnail
 
 	//wait for image to be generated, then return newly generated static image url
-	var tnIndex = Math.min(this.tnIndex, pic.tnsizes.length - 1);
-	if(pic.tnsizes[tnIndex] <=0)
+	var tnIndex = this.tnIndex;
+	if(pic.tnsizes)
 	{
-		this.setStatus("loading...");
-		var url = pic.getThumbnailUrlAjax(tnIndex);
-		this.setStatus();
-		return url;
+		tnIndex = Math.min(this.tnIndex, pic.tnsizes.length - 1);
+		if(pic.tnsizes[tnIndex] <=0)
+		{
+			this.setStatus("loading...");
+			var url = pic.getThumbnailUrlAjax(tnIndex);
+			this.setStatus();
+			return url;
+		}
 	}
 	return pic.getThumbnailUrl(tnIndex);
 };

@@ -38,6 +38,16 @@ function Album(data)
 		this.groupedFiles[type] = typeFiles;	
 	}
 
+	if(this.youtube)
+		for(var key in this.youtube)
+		{
+			if(!this.groupedFiles.VIDEO)
+				this.groupedFiles.VIDEO={};
+			var mf= {id: key, title: this.youtube[key], type:"VIDEO", stream:"youtube"};
+			mf = new MediaFile(mf);
+			this.groupedFiles.VIDEO[key]=mf;
+		}
+
 	this.otherFiles = this.getFilesByType("FILE");
 	this.musicFiles = this.getFilesByType("AUDIO");
 	this.mediaFiles = this.getFilesByType(["DIR", "IMAGE", "VIDEO"]);

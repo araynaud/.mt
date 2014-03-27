@@ -203,6 +203,9 @@ MediaFile.prototype.getFilePath = function(ext)
 
 MediaFile.getFileUrl = function (mediaFile, ext)
 {
+	if(mediaFile.stream=="youtube")
+		return config.youtube.videoUrl.format(mediaFile.id);
+
 	var filename=mediaFile.filename;
 	if(isMissing(ext))
 		ext="";
@@ -289,6 +292,9 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 {
 	tnIndex=valueOrDefault(tnIndex,0);
 //if image smaller than slideshow or animated, use original
+	if(mediaFile.stream=="youtube")
+		return config.youtube.imageUrl.format(mediaFile.id);
+
 	if(mediaFile.type=="IMAGE" && !mediaFile.hasThumbnail(tnIndex))
 		return mediaFile.getFileUrl();
 
