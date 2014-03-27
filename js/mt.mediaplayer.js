@@ -287,7 +287,7 @@ MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
 	{
 		var mediaFile=mediaFiles[k];
 		var streamExt=MediaFile.isVideoStream(mediaFile);
-		if(filterStream && !streamExt) continue;
+		if(filterStream && !streamExt || streamExt=="youtube") continue;
 
 		var desc= mediaFile.takenDate; //TODO parse and format date
 		if(mediaFile.description)

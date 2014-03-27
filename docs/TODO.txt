@@ -92,9 +92,15 @@ OK 21 embed slideshow / video in div: javascript:  slideshow.start(url, path)
 OK Embed in facebook link to file
 multiple images in meta
 
-youtube integration
+1 OK youtube integration
 2014/Australia/youtube.csv
 create MediaFile objects.
+
+video VS slideshow pause
+
+2 calculate slideshow duration based on current files:
+videos.sum("getDuration") + images.length * slideshow.duration;
+MediaFile.prototype.getDuration: return this.duration || slideshow.duration
 
 3 checkboxes label="" checkedLabel="other" icon= checkedIcon=
 

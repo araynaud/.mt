@@ -432,7 +432,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 
 //}catch(err) { alert(Object.toText(err,"\n")); }
 	this.elements.imageText.html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
-	this.setImageLink(this.currentFile.getFileUrl(), this.currentFile.name);
+	this.setImageLink(this.currentFile.getFileUrl(), this.currentFile.name || this.currentFile.title);
 	this.showComments(this.currentFile);
 };
 
