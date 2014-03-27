@@ -5,7 +5,7 @@ $configFile="include/config.php";
 if(file_exists("../$configFile"))	$configFile = "../$configFile";
 require_once($configFile);
 
-startTimer();
+//startTimer();
 
 header("Content-Type: text/plain");
 session_start();
@@ -13,7 +13,7 @@ session_start();
 debug();
 $meta = metaTags($path);
 echo jsValue($meta, true, true);
-//debug("arrayGet", arrayGet($config,"TYPES.VIDEO"));
+debug("arrayGet", arrayGet($config,"TYPES.VIDEO"));
 
 debug();
 debug("publish");
@@ -166,16 +166,26 @@ debug();
 
 // $cmdOutput=shell_exec("dir ..\\$path");
 // debug("command", $cmdOutput)";
-startTimer();
+//startTimer();
 
 $tagData = loadTagFiles($relPath, @$search["depth"]);
 debugVar("tagData", true);
 
 $files = listFiles($relPath, $search);
 debug("listFiles $relPath Time elapsed", getTimer());
+debugVar("files", true);
+
+$winfiles = listFilesNTFS($relPath, true);
+debug("listFilesNTFS $relPath Time elapsed", getTimer());
+debugVar("winfiles", true);
+
+$winfiles = listHiddenFilesNTFS($relPath, true);
+debug("listHiddenFilesNTFS $relPath Time elapsed", getTimer());
+debugVar("winfiles", true);
+
 $files = array_values($files);
 debugVar("files", true);
-$fileDate = getFileDate(combine("$relPath", $files[0]));
+$fileDate = getFileDate(combine($relPath, $files[0]));
 $mtm = strtotime($fileDate);
 debugVar("fileDate");
 debugVar("mtm");
@@ -184,16 +194,16 @@ debugVar("now");
 $since = $now - $mtm;
 debugVar("since");
 
-startTimer();
+//startTimer();
 $dirs=selectDirs($relPath,$files);
 debug("selectDirs Time elapsed", getTimer());
 debugVar("dirs", true);
 
-startTimer();
+//startTimer();
 $groupedFiles = groupByName($relPath, $files, $byType);
 debug("groupByName Time elapsed", getTimer());
 
-startTimer();
+//startTimer();
 //debugVar("groupedFiles", true);
 
 $metadataIndex = getMetadataIndex($relPath, "VIDEO", @$groupedFiles["VIDEO"],true);
@@ -220,6 +230,8 @@ if($metadataIndex)
 
 $mf = MediaFile::getMediaFile();
 debugVar("mf",true);
+if($mf)
+{
 $tags = $mf->getTags();
 debugVar("tags");
 $tagsCsv = csvValue($tags);
@@ -227,7 +239,7 @@ debugVar("tagsCsv");
 $tags = parseCsvTable($tagsCsv);
 //$tags = explode(";", $tagsCsv);
 debugVar("tags");
-
+}
 
 //$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
 //debugVar("indexFiles",true);
@@ -248,7 +260,7 @@ if($tn && $dirs)
 
 $t1 = getTimer();
 debug("Time elapsed", getTimer());
-startTimer();
+//startTimer();
 
 $appRootDir=pathToAppRoot();
 $csvFilename=combine($appRootDir,"config","events.csv");

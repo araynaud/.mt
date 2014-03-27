@@ -49,13 +49,12 @@ debug("listFiles $dir", $search);
 	}
 	else
 	{
-		global $ignoreList, $relPathG;
+		global $relPathG;
 		$handle=opendir($dir);	
-		if(!$handle)
-			return $files;
+		if(!$handle)	return $files;
 
-		loadIgnoreList($dir);	//load from .ignore.txt file only once
 		$relPathG=$dir;
+		loadIgnoreList($dir);	//load from .ignore.txt file only once
 			
 		$subdirs=array();
 		while(($file = readdir($handle))!==false)
@@ -263,21 +262,25 @@ function compareNewestFileDates($dir1,$dir2,$relPath="",$reverse=false)
 
 function loadIgnoreList($dir)
 {
-	global $ignoreList;
-	$ignoreList=readArray("$dir/.ignore.txt");
+	global $ignoreList, $hiddenList;
+	$ignoreList=readArray("$dir/.ignore.txt", true);
+	$hiddenList = listHiddenFilesNTFS($dir, true);
+	debug("listHiddenFilesNTFS", $hiddenList);
 	return $ignoreList;
 }
 
 //function with condition to exclude file before adding it to array
 function ignoreFile($file)
 {
-	global $config, $ignoreList;
+	global $config, $ignoreList, $hiddenList, $relPathG;
 	//always ignore $specialDirs and file names and types
 	if(in_array($file, @$config["SPECIAL_FILES"])) return true;
 
 	//list hidden and ignored files for admin
+	if(isset($hiddenList[$file])) return true;
 	if(is_admin()) return false;
-	if(in_array($file, $ignoreList)) return true;
+	if(isset($ignoreList[$file])) return true;
+
 	return fileIsHidden($file);
 }
 
@@ -381,10 +384,10 @@ function groupByName($relPath, $files, $byType=false)
 //filter array of filenames
 function removeIgnoredFiles($relPath,$files)
 {
-	return excludeFiles($files,loadIgnoreList($relPath));
+	return excludeFiles($files, loadIgnoreList($relPath));
 }
 
-function excludeFiles($files,$list)
+function excludeFiles($files, $list)
 {
 	if(is_string($list))	$list=readArray($list);		
 	if(empty($list))		return $files;
@@ -487,6 +490,36 @@ function fileIsNotHidden($file)
 function fileIsHidden($file)
 {
 	return $file[0] == ".";
+}
+
+
+//windows only
+function isFileHiddenNTFS($file)
+{
+	if(PHP_OS != "WINNT") return false;
+
+	$cmd='FOR %A IN ("'.$file.'") DO @ECHO %~aA';
+debug("isFileHiddenNTFS",$cmd);
+    $attr = trim(exec($cmd));
+    return (@$attr[3] === 'h');
+}
+
+//windows only
+function listFilesNTFS($dir, $options="", $valuesAsKeys=false)
+{
+debug("listFilesNTFS", $options);
+	if(PHP_OS != "WINNT") return array();
+	$cmd="dir /B $options \"$dir\"";
+    $files = execCommand($cmd, false, false);
+	if($valuesAsKeys)
+		$files = array_combine($files, $files);
+    return $files;
+}
+
+function listHiddenFilesNTFS($dir, $valuesAsKeys=false)
+{	
+	if(PHP_OS != "WINNT") return array();
+	return listFilesNTFS($dir, "/AH", $valuesAsKeys);
 }
 
 //ext => type
@@ -621,11 +654,19 @@ function subdirThumbs($relPath,$max_thumbs)
 	return $pics;
 }
 
+
 function findFirstImage($relPath)
+{
+	$pics = findFirstImages($relPath,1);
+	if($pics)
+		return end($pics);
+}
+
+function findFirstImages($relPath, $maxCount=1)
 {
 	$search = array();
 	$search["type"]="IMAGE";
-	$search["maxCount"]=1;
+	$search["maxCount"]=$maxCount;
 	$search["tnDir"]=".ss";
 	$pics=listFiles($relPath,$search);
 	if(!$pics)
@@ -638,9 +679,8 @@ function findFirstImage($relPath)
 		unset($search["tnDir"]);
 		$pics=listFiles($relPath,$search);
 	}
-debug("findFirstImage", $pics);
-	if($pics)
-		return end($pics);
+	debug("findFirstImage", $pics);
+	return $pics;
 }
 
 //pick random 4 thumbs in this dir

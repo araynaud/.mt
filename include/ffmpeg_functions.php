@@ -10,7 +10,7 @@ function getExePath($exe="FFMPEG", $key="_FFMPEG")
 	global $config;
 		
 	if(!isset($config[$key])) return false;
-	$exePath=combine($config[$key]["PATH"] , $config[$key][$exe]);
+	$exePath=combine(getConfig("$key.PATH"), getConfig("$key.$exe"));
 	if(!file_exists($exePath)) return false;
 	return $exePath;
 }

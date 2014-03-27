@@ -89,7 +89,13 @@ for long actions (convert video): call afterAction callback after each file in d
 
 OK 21 embed slideshow / video in div: javascript:  slideshow.start(url, path)
 
-2 Embed in facebook link to file
+OK Embed in facebook link to file
+multiple images in meta
+
+youtube integration
+2014/Australia/youtube.csv
+create MediaFile objects.
+
 3 checkboxes label="" checkedLabel="other" icon= checkedIcon=
 
 4 video convert progress

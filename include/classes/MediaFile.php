@@ -252,6 +252,19 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return file_exists($tnPath);
 	}
 
+
+    public function getBestImage($maxSize)
+	{
+		$dir = $this->selectThumbnail($maxSize);
+		if($this->thumbnailExists($dir))
+			return $this->getThumbnailFilename($dir);
+		if($this->isImage()) 
+			return $this->getFilename();
+		return false;
+	}
+
+
+
     public function createThumbnail($tndir)
 	{
 		if(!$tndir) return false;

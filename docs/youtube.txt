@@ -1,0 +1,35 @@
+16bFBzx7I_0;Midnight Oil - The Dead Heart;http://www.youtube.com/watch?v=16bFBzx7I_0
+HDlavnA1ck8;Hoodoo Gurus - 1000 Miles Away;http://www.youtube.com/watch?v=HDlavnA1ck8
+
+http://img.youtube.com/vi/E0CazRHB0so/0.jpg
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/0.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/1.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/2.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/3.jpg
+
+Each YouTube video has 4 generated images. They are predictably formatted as follows:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/0.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/1.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/2.jpg
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/3.jpg
+The first one in the list is a full size image and others are thumbnail images. The default thumbnail image (ie. one of 1.jpg, 2.jpg, 3.jpg) is:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg
+For the high quality version of the thumbnail use a url similar to this:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/hqdefault.jpg
+There is also a medium quality version of the thumbnail, using a url similar to the HQ:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/mqdefault.jpg
+For the standard definition version of the thumbnail, use a url similar to this:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/sddefault.jpg
+For the maximum resolution version of the thumbnail use a url similar to this:
+
+http://img.youtube.com/vi/<insert-youtube-video-id-here>/maxresdefault.jpg
+All of the above urls are available over https too. Just change http to https in any of the above urls. Additionally, the slightly shorter hostname i3.ytimg.com works in place of img.youtube.com in the example urls above.
+
+Alternatively, you can use the YouTube Data API (v3) or the older YouTube API v2.0 to get thumbnail images.
+https://developers.google.com/youtube/v3/

@@ -186,7 +186,7 @@ function LoadConfiguration($path=null, &$configData = array())
 	$relPath=getDiskPath($path);
 //4 supersede values with folder specific config file in $relPath 
 // find in parents and load from root to current dir
-debug("LoadConfiguration", $relPath);	
+//debug("LoadConfiguration", $relPath);	
 	if($relPath)
 		$configFilenames=findFilesInParent($relPath,".config.csv");
 	if($configFilenames) 
@@ -227,7 +227,7 @@ debug("LoadConfiguration", $relPath);
 function getDirConfig($path, $key=null)
 {
 	$relPath=getDiskPath($path);
-debug("getDirConfig", $relPath);
+//debug("getDirConfig", $relPath);
 	$depth=pathDepth($path);
 
 //1 default config by path depth
@@ -240,7 +240,7 @@ debug("getDirConfig", $relPath);
 	readCsvFile($configFilename, 0, ";", ".", $configData);
 	if(!isset($key)) return $configData;
 
-debug("getDirConfig", $configData);
+//debug("getDirConfig", $configData);
 	
 	return isset($configData[$key]) ? $configData[$key] : "";
 }
@@ -339,7 +339,7 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 {
 	$text = readTextFile($filename);
 	if(!$text)		return $csvRows;
-debug("readCsvTableFile", $filename);
+//debug("readCsvTableFile", $filename);
 	return parseCsvTable($text, $keyColumn, $columnNames, $csvRows);
 }
 
@@ -619,12 +619,5 @@ function updateFileMetadata()
 	//load MetaData file
 	setNestedArrayValue($metadata, $key ,$rowData);
 //save file
-}
-
-
-function isFileHidden($fn)
-{
-    $attr = trim(exec('FOR %A IN ("'.$fn.'") DO @ECHO %~aA'));
-    return (@$attr[3] === 'h');
 }
 ?>

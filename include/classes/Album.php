@@ -20,6 +20,7 @@ class Album extends BaseObject
 	private $dirs; //subdirectories
 	private $_allFiles; //array of files in the directory
 	private $_metadataIndex = array();
+	private $youtube; //array of files in the directory
 	private $groupedFiles; //array of files in the directory
 	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
@@ -39,7 +40,6 @@ class Album extends BaseObject
 		$this->getAbsPath();
 		$this->getTitle();
 		$this->getDescription();
-
 		if($details)
 		{
 			$this->getSearchParameters();
@@ -58,7 +58,8 @@ class Album extends BaseObject
 
 			//Group by name / make MediaFile objects
 			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), $allFiles);
-
+			$this->youtube = loadYoutubePlaylist($this->relPath);
+debug("youtube", $this->youtube,"print_r");
 			$this->createMediaFiles();
 
 			$this->oldestDate=getOldestFileDate($this->relPath);

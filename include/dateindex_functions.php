@@ -259,6 +259,15 @@ function loadDateIndex($relPath)
 	return array_filter($dateIndex);
 }
 
+function loadYoutubePlaylist($relPath)
+{
+	$indexFilename=combine($relPath, "youtube.csv");
+	$index=readCsvFile($indexFilename, 0,";");
+debug("loadYoutubePlaylist $indexFilename",$index);
+	return array_filter($index);
+}
+
+
 function getFilesFromDateIndex($relPath)
 {
 	return array_keys(loadDateIndex($relPath));

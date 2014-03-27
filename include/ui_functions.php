@@ -263,14 +263,19 @@ function metaTags($album, $article=true)
 //TODO: mediaFile method findOgImage
 	$image="";
 	if(!$mediaFile)
-		$image = findFirstImage($relPath);
-	else if($mediaFile->thumbnailExists("ss"))
+		$image = findFirstImages($relPath,4);
+	else
+		$image = $mediaFile->getBestImage(1000);
+debug("metaTags image", $image);
+/*	else if($mediaFile->thumbnailExists("ss"))
 		$image = $mediaFile->getThumbnailFilename("ss");
 	else if($mediaFile->thumbnailExists("tn"))
 		$image = $mediaFile->getThumbnailFilename("tn");
 	else if($mediaFile->isImage()) 
 		$image = $mediaFile->getFilename();
+*/
 
+/*
 	$is = @getimagesize(combine($relPath, $image));
 	if($image && $is)
 	{
@@ -280,7 +285,7 @@ function metaTags($album, $article=true)
 		$meta["og:image:height"] = $is[1];
 		$meta["og:image:type"] = $is["mime"];
 	}
-
+*/
 	if($article)
 	{
 		$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
@@ -291,6 +296,33 @@ function metaTags($album, $article=true)
 		$tags=listTagFiles($relPath, $album->getDepth());
 		$meta["article:tag"] = array_keys($tags);
 	}
+
+	foreach ($meta as $key => $value) 
+		echo metaTag($key, $value);
+
+	metaImage($path, $relPath, $image);
+
+	return $meta;
+}
+
+function metaImage($path, $relPath, $image)
+{
+	if(!$image) return;
+	if(is_array($image))
+	{
+		foreach ($image as $el)
+			metaImage($path, $relPath, $el);
+		return;
+	}
+
+	$is = @getimagesize(combine($relPath, $image));
+	if(!$is) return;
+debug("getimagesize", $is);
+	$meta=array();
+	$meta["og:image"] = getAbsoluteFileUrl($path, $image);
+	$meta["og:image:width"]  = $is[0];
+	$meta["og:image:height"] = $is[1];
+	$meta["og:image:type"] = $is["mime"];
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);
