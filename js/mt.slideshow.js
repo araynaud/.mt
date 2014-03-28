@@ -141,7 +141,8 @@ Slideshow.prototype.setDepth = function(depth)
 
 Slideshow.prototype.displayInterval = function()
 {
-	this.elements.speed.html(this.interval/1000 +"s");
+	this.elements.speed.html(this.interval/1000 + "s");
+	this.setStatus("total: " + formatTime(this.totalDuration()));
 };
 
 Slideshow.prototype.setInterval = function(interval)
@@ -239,6 +240,10 @@ Slideshow.prototype.togglePlay = function(playState)
 	this.setStatus(this.play ? "playing" : "paused");
 	var icon = this.play ? "pause.png" : "play.png";
 	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
+
+//TODO: add config setting. slideshow.playaudio
+	if(config.slideshow.playAudio && this.play && MediaPlayer.audio)
+		MediaPlayer.audio.play();
 
 	if(this.currentFile.isVideo())
 		this.mplayer.togglePlay(this.play);
@@ -685,6 +690,13 @@ Slideshow.prototype.addStatus = function(text)
 	if(isObject(text))
 		text=JSON.stringify(text);
 	this.elements.statusBar.append("\n" + text);
+};
+
+
+Slideshow.prototype.totalDuration = function()
+{
+	if(!this.pics) return 0;
+	return this.pics.sum(MediaFile.getDuration);
 };
 
 

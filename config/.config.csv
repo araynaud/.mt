@@ -59,6 +59,7 @@ DISPLAY.size;small
 ;slideshow.alignY;bottom
 slideshow.changeMode;true
 slideshow.tnIndex;1
+slideshow.playAudio;true
 
 ;UI transition
 transition.type;1

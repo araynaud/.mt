@@ -49,8 +49,8 @@ MediaFile.prototype.contains = function(key)
 
 MediaFile.prototype.getId = function()
 {
-	if(!this.id)
-		this.id = MediaFile.getId(this.name); //, this.type);
+	if(!this.id)	this.id = MediaFile.getId(this.name); //, this.type);
+	if(!this.name) 	this.name=this.id;
 	return this.id;
 };
 
@@ -694,4 +694,15 @@ MediaFile.prototype.play = function()
 			break;
 	}
 	return false;
+};
+
+MediaFile.getDuration = function(mediaFile)
+{
+	return mediaFile.getDuration();	
+};
+
+MediaFile.prototype.getDuration = function()
+{
+	var defaultInterval = UI.slideshow && UI.slideshow.interval ? UI.slideshow.interval : 0;
+	return this.duration || defaultInterval / 1000;	
 };

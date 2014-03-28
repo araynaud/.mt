@@ -80,7 +80,7 @@
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
 		{{if true tmpl="descriptionTagTemplate"/}}
-		<div>{{if ~dateFormat(takenDate,"monthDayTime")}}{{:~dateFormat(takenDate,"monthDayTime")}}{{/if}}
+		<div>{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}{{:~dateFormat(takenDate,"monthDayTime")}}{{/if}}
 			{{if transparent}}Tr{{/if}}
 			{{if alpha}}RGBA{{/if}}
 			{{if animated}}Anim{{/if}}
@@ -98,7 +98,7 @@
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
 		{{if true tmpl="descriptionTagTemplate"/}}
-		{{if ~dateFormat(takenDate,"monthDayTime")}}
+		{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}
 			<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
 		{{/if}}
 	</div>

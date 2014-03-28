@@ -77,7 +77,7 @@ UI.getGroupTitle = function(mediaFile)
 	if(album.sort=="type")
 		return value+"S";
 	if(album.sort=="subdir")
-		return value;
+		return value.makeTitle();
 //	if(album.sort=="name" || album.sort=="filename" || album.sort=="title")
 	return value.substring(0,1).toUpperCase();
 

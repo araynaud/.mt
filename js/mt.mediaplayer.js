@@ -164,7 +164,7 @@ MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 	return this.loadPlayer(fileUrl, imageUrl, mediaFile.duration);
 };
 
-MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
+MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl, duration)
 {
 	this.initSize();
 
@@ -172,6 +172,7 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl)
 	this.settings.skin=this.getSkin();
 	this.settings.file=fileUrl;
 	this.settings.image=imageUrl;
+	this.settings.duration=duration;
 	this.settings["playlist.position"]="none";
 
 //TODO: remove player if it already exists. or load new file and change settings?
@@ -287,7 +288,7 @@ MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
 	{
 		var mediaFile=mediaFiles[k];
 		var streamExt=MediaFile.isVideoStream(mediaFile);
-		if(filterStream && !streamExt || streamExt=="youtube") continue;
+		//if(filterStream && !streamExt) // || streamExt=="youtube") continue;
 
 		var desc= mediaFile.takenDate; //TODO parse and format date
 		if(mediaFile.description)
