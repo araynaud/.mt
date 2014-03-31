@@ -528,6 +528,7 @@ MediaPlayer.prototype.setSize = function()
 
 MediaPlayer.prototype.resize = function(width,height)
 {
+	if(!this.player) return;
 	return this.player.resize(width,height);
 };
 

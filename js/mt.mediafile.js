@@ -661,13 +661,6 @@ MediaFile.getDiv = function(mediaFile)
 	return $("div#" + mediaFile.id);
 }
 
-MediaFile.play = function(el)
-{
-	mediaFile = album.getByAttribute(el);
-	return mediaFile.play();
-};
-
-
 MediaFile.prototype.getFileIndex = function(index)
 {
 	this.index = album.getFileIndex(index);
@@ -681,11 +674,19 @@ MediaFile.prototype.toggleSelected = function(state)
 	this.getDiv().toggleClass("selected", this.selected);
 };
 
+MediaFile.play = function(el)
+{
+	mediaFile = album.getByAttribute(el);
+	return mediaFile.play();
+};
+
 MediaFile.prototype.play = function()
 {
 	switch(this.type)
 	{
 		case "VIDEO":
+			if(!MediaPlayer.slide || !this.isVideoStream())
+				return false;
 		case "IMAGE":
 			return UI.slideshow.display(this);
 		case "AUDIO":

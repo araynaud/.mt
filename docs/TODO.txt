@@ -1,3 +1,5 @@
+http://kenwheeler.github.io/slick/
+
 The Getaway : Paul Feig Goes Seafood Crazy In Boston's North End 
 http://www.youtube.com/watch?v=rMxhMOYJ-Dc
 
@@ -12,8 +14,6 @@ http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=1
 Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
-Midnight Oil - The Dead Heart http://www.youtube.com/watch?v=16bFBzx7I_0
-Hoodoo Gurus - 1000 Miles Away : http://www.youtube.com/watch?v=HDlavnA1ck8
 -----------
 if !ffmpeg enabled
 OK upload .ss images for videos. function uploadThumbnail($subdir)
@@ -21,8 +21,11 @@ if no .ss : use .tn
 
 -----------
 BUGS
+OK 
 Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
+.enable only on windows
+
 
 OK Filename with different types
 breaks date index
@@ -96,11 +99,14 @@ multiple images in meta
 2014/Australia/youtube.csv
 create MediaFile objects.
 
-video VS slideshow pause
+1 DIR description: MediaFile::getMediaFile returns null if file is dir
 
-2 calculate slideshow duration based on current files:
+OK video VS slideshow pause
+
+OK calculate slideshow duration based on current files:
 videos.sum("getDuration") + images.length * slideshow.duration;
 MediaFile.prototype.getDuration: return this.duration || slideshow.duration
+2 display total video duration with file counts
 
 3 checkboxes label="" checkedLabel="other" icon= checkedIcon=
 

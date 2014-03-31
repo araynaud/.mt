@@ -123,7 +123,7 @@ _FFMPEG.PROBE;ffprobe.exe
 _FFMPEG.QTFS;qt-faststart.exe
 _FFMPEG.MP4BOX;MP4Box.exe
 
-_FFMPEG.scripts;config
+_FFMPEG.scripts;cmd
 _FFMPEG.convert.stream.title;convert video
 _FFMPEG.convert.stream.format;mp4
 _FFMPEG.convert.stream.3gp;ffmpeg_3gp_mp4.bat

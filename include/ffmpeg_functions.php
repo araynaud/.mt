@@ -262,7 +262,7 @@ debug("estimateFileSize", "($duration, $videoBitrate, $audioBitrate)");
 	return $bps * $duration;
 }
 
-function convertVideo($relPath, $inputFile, $to, $size)
+function convertVideo($relPath, $inputFile, $to, $size=0)
 {
 //calculate height from display_aspect_ratio
 	$convert = getConfig("_FFMPEG.convert.$to");
@@ -273,21 +273,23 @@ debug($to, $convert);
 	$ffmpeg=getExePath();		// where ffmpeg is located, such as /usr/sbin/ffmpeg
 	$prop = getVideoProperties($relPath, $inputFile, $to);
 debug("getVideoProperties", $prop, true);
-	$size = min($prop["width"], $size); //resize only if input video is larger than $size
+	if(!$size)
+		$size = $convert["height"];
+	$size = min($prop["height"], $size); //resize only if input video is larger than $size
 
 	$inputExt = getFilenameExtension($inputFile);
 
 	$outputFile = getFilename($inputFile, $convert["format"]);
-	$outputFile = combine($relPath, $outputFile);	
+	$outputFilePath = combine($relPath, $outputFile);	
 	$outputFilename = getFilename($outputFile);	
 	// the input video file
-	$inputFile = combine($relPath, $inputFile);
+	$inputFilePath = combine($relPath, $inputFile);
 
-	debug($inputFile,$outputFile);
-	if(realpath($inputFile) == realpath($outputFile)) 
+	debug($inputFile, $outputFile);
+	if(realpath($inputFilePath) == realpath($outputFilePath)) 
 		return false;
 
-	if (file_exists($outputFile))
+	if (file_exists($outputFilePath))
 		unlink($outputFile);
 //use metadata display_aspect_ratio to calculate size
 //round to multiples of 2 or 4
@@ -304,14 +306,14 @@ debug("script", $script);
 	$script = realpath($script);
 debug("script", $script);
 
-	$cmd = "$script [0] [1] [2]";
-	$cmd = makeCommand($cmd, $inputFile, $outputFilename, $size);
+	$cmd = "$script [0] [1] [2] [3]";
+	$cmd = makeCommand($cmd, $relPath, $inputFile, $outputFilename, $size);
 debug("command", $cmd);
 	$output = execCommand($cmd, false); //exec in background
 	
-	if(file_exists($outputFile) && filesize($outputFile)==0) 
-		unlink($outputFile);
-	return $outputFile;
+	if(file_exists($outputFilePath) && filesize($outputFilePath)==0) 
+		unlink($outputFilePath);
+	return $outputFilePath;
 }
 
 function convertVideoProgress($relPath, $inputFile, $to)
