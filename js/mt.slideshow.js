@@ -178,10 +178,10 @@ Slideshow.prototype.setStart = function(start)
 {
 	if(isMissing(start))	
 		return this.currentIndex;
-	if(this.pics.length==0)
-		this.currentIndex=0;
+	if(this.pics.length == 0)
+		this.currentIndex = 0;
 	else
-		this.currentIndex=this.getPicPosition(start);
+		this.currentIndex = this.getPicPosition(start);
 	
 	return this.currentIndex;
 };
@@ -208,7 +208,7 @@ Slideshow.prototype.getPicPosition = function(input)
 
 Slideshow.prototype.remove = function(file)
 {
-	file=valueOrDefault(file,this.currentIndex);
+	file=valueOrDefault(file, this.currentIndex);
 	var position=this.getPicPosition(file);
 	this.pics.splice(position,1);
 	if(position==this.pics.length) 
@@ -242,8 +242,8 @@ Slideshow.prototype.togglePlay = function(playState)
 	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
 //TODO: add config setting. slideshow.playaudio
-	if(config.slideshow.playAudio && this.play && MediaPlayer.audio)
-		MediaPlayer.audio.play();
+//	if(config.slideshow.playAudio && this.play && MediaPlayer.audio)
+//		MediaPlayer.audio.play();
 
 	if(this.currentFile.isVideo())
 		this.mplayer.togglePlay(this.play);
@@ -278,7 +278,7 @@ Slideshow.prototype.toggleZoom = function()
 	this.zoom=!this.zoom;
 	this.setStatus("zoom: " + this.zoom);
 	if(this.currentFile.isImage())
-		this.showImage(this.currentIndex, this.zoomFunction);
+		this.showImage(null, this.zoomFunction);
 	else
 		this.fitVideo();
 };
@@ -352,15 +352,14 @@ Slideshow.prototype.getPicUrl = function(index)
 
 Slideshow.prototype.getMediaFile = function(index)
 {
-	if(isEmpty(this.mediaFiles))
-		return null;
-	index=valueOrDefault(validIndex(index) ,this.currentIndex);
-	return this.pics[this.currentIndex];
+	if(isEmpty(this.pics))	return null;
+	index=valueOrDefault(validIndex(index), this.currentIndex);
+	return this.pics[index];
 };
 
 Slideshow.prototype.getPicFilename = function(index)
 {
-	index=valueOrDefault(index,this.currentIndex);
+	index=valueOrDefault(validIndex(index), this.currentIndex);
 	return this.pics[index].filename;
 };
 
@@ -373,7 +372,9 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	if(isEmpty(this.pics)) return;
 	this.setStart(index);
 	this.setStatus();
-	this.currentFile=this.pics[this.currentIndex];
+
+	var fileChange = (this.pics[this.currentIndex] != this.currentFile);
+	this.currentFile = this.pics[this.currentIndex];
 
 	this.preLoadedImage = this.loadImage();
 	if(this.currentFile.isVideo())
@@ -385,11 +386,11 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	}
 
 	if(this.preLoadedImage.complete)
-		this.displayLoadedImage(transitionFunction);
+		this.displayLoadedImage(transitionFunction, fileChange);
 	else
 	{
 		var ss=this;
-		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction); });
+		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
 	UI.editDiv.appendTo("#slideshowControls").show();
 };
@@ -404,10 +405,9 @@ Slideshow.prototype.styleSlide = function(el)
 		el.attr("style", UI.divStyles());
 };
 
-Slideshow.prototype.displayLoadedImage = function(transitionFunction)
+Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange)
 {
-//try{
-	if(this.currentFile.isVideoStream())
+	if(this.currentFile.isVideoStream() && fileChange)
 	{
 		this.hideImage();
 		this.transition.inProgress=false;
@@ -415,12 +415,17 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 		{
 			this.mplayer.loadMediaFile(this.currentFile);
 			this.fitVideo();
-			this.mplayer.show(this.transition.duration);
+
+			var opts = {duration: this.transition.duration};
 			if(this.play)
-				setTimeout(function() {	UI.slideshow.mplayer.play(); }, this.transition.duration);								
+			{
+				var sl=this;
+				opts.complete = function() { sl.mplayer.play(); }
+			}
+			this.mplayer.show(opts);
 		}
 	}
-	else
+	else if(this.currentFile.isImage())
 	{
 		if(this.mplayer)
 		{
@@ -435,7 +440,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction)
 			this.autoShowNextImage();
 	}	
 
-//}catch(err) { alert(Object.toText(err,"\n")); }
+	this.addStatus("fileChange:" + fileChange);
 	this.elements.imageText.html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
 	this.setImageLink(this.currentFile.getFileUrl(), this.currentFile.name || this.currentFile.title);
 	this.showComments(this.currentFile);
@@ -453,8 +458,7 @@ Slideshow.prototype.showNextImage = function(increment)
 		this.increment=increment;
 //for next image
 	this.transition.increment=this.increment;
-    this.currentIndex = this.nextIndex();
-	this.showImage();
+	this.showImage(this.nextIndex());
 };
 
 Slideshow.prototype.autoShowNextImage = function()

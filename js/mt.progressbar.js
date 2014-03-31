@@ -61,7 +61,7 @@ ProgressBar.prototype.elapsedTime = function(format)
 ProgressBar.formatSeconds = function(value,digits)
 {
 	digits = valueOrDefault(digits,2);
-	return Math.roundDigits((value) / 1000, digits) + "s";
+	return formatTime(Math.roundDigits(value / 1000, digits));
 };
 
 ProgressBar.prototype.totalTime = function(format)

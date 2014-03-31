@@ -321,8 +321,8 @@ MediaPlayer.prototype.pause = function()
 MediaPlayer.prototype.togglePlay = function(state)
 {
 	if(!this.player) return;
-	if(state === this.isPlaying()) return;
-	this.player.play(state);
+	if(state != this.isPlaying())
+		this.player.play(state);
 };
 
 MediaPlayer.prototype.remove = function()
@@ -546,7 +546,6 @@ MediaPlayer.prototype.setupEvents = function()
 		mp.setMessage(); 
 		if(mp.settings.uiMode=="slideshow")
 			UI.slideshow.togglePlay(true);
-//			UI.slideshow.play=true;
 		mp.displayItemDuration();		
 	});
 
