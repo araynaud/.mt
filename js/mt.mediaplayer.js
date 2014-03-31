@@ -505,7 +505,7 @@ MediaPlayer.prototype.initSize = function()
 	var size=MediaPlayer.videoPlayerSizes[this.settings.size];
 	this.settings.width=size[1];
 	this.settings.height=size[2];
-	this.setMessage(size[0]);
+//	this.setMessage(size[0]);
 }
 
 MediaPlayer.prototype.nextSize = function(incr)
@@ -563,7 +563,7 @@ MediaPlayer.prototype.setupEvents = function()
 	 });
 	this.player.onComplete(function(event)
 	{
-		mp.setMessage("finished playing."); 
+		mp.setMessage("finished."); 
 		if(mp.settings.uiMode=="slideshow" && UI.slideshow.play)
 			UI.slideshow.showNextImage();
 	});

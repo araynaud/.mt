@@ -440,7 +440,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 			this.autoShowNextImage();
 	}	
 
-	this.addStatus("fileChange:" + fileChange);
+//	this.addStatus("fileChange:" + fileChange);
 	this.elements.imageText.html("({0}/{1})".format(this.currentIndex + 1, this.pics.length));
 	this.setImageLink(this.currentFile.getFileUrl(), this.currentFile.name || this.currentFile.title);
 	this.showComments(this.currentFile);
