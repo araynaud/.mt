@@ -208,7 +208,7 @@ function LoadConfiguration($path=null, &$configData = array())
 
 //finally add some keys to output
 
-	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]));
+	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]), true);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
 
 	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);

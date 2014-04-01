@@ -262,28 +262,35 @@ function compareNewestFileDates($dir1,$dir2,$relPath="",$reverse=false)
 
 function loadIgnoreList($dir)
 {
-	global $ignoreList, $hiddenList;
+	global $ignoreList;
 	$ignoreList=readArray("$dir/.ignore.txt", true);
-	$hiddenList = listHiddenFilesNTFS($dir, true);
-	debug("listHiddenFilesNTFS", $hiddenList);
 	return $ignoreList;
 }
 
 //function with condition to exclude file before adding it to array
 function ignoreFile($file)
 {
-	global $config, $ignoreList, $hiddenList, $relPathG;
+	global $config, $ignoreList, $relPathG;
 	//always ignore $specialDirs and file names and types
-	if(in_array($file, @$config["SPECIAL_FILES"])) return true;
-
+	if(isSpecialFile($file)) return true;
 	//list hidden and ignored files for admin
-	if(isset($hiddenList[$file])) return true;
 	if(is_admin()) return false;
 	if(isset($ignoreList[$file])) return true;
 
 	return fileIsHidden($file);
 }
 
+function isSpecialFile($file)
+{
+	global $config;
+	$specialFiles = @$config["SPECIAL_FILES"];
+	$file=strtolower($file);
+	if(isset($specialFiles[$file])) return true;
+	foreach ($specialFiles as $value)
+		if(startsWith($file, $value)) return true;
+
+	return false;
+}
 
 //list filter*.*
 //to find comments
@@ -507,8 +514,8 @@ debug("isFileHiddenNTFS",$cmd);
 //windows only
 function listFilesNTFS($dir, $options="", $valuesAsKeys=false)
 {
-debug("listFilesNTFS", $options);
 	if(PHP_OS != "WINNT") return array();
+debug("listFilesNTFS", $options);
 	$cmd="dir /B $options \"$dir\"";
     $files = execCommand($cmd, false, false);
 	if($valuesAsKeys)
@@ -667,6 +674,7 @@ function findFirstImages($relPath, $maxCount=1)
 	$search = array();
 	$search["type"]="IMAGE";
 	$search["maxCount"]=$maxCount;
+	$search["depth"]=1;
 	$search["tnDir"]=".ss";
 	$pics=listFiles($relPath,$search);
 	if(!$pics)

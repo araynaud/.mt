@@ -1,3 +1,5 @@
-ffmpeg -i %1 -b:v 800k -r 20 .%2_tmp.mp4
-qt-faststart .%2_tmp.mp4 %2.mp4
-del .%2_tmp.mp4
+rem directory inputFile outputFilename resizeHeight
+set tmpFile=%1\\.tmp_%3.mp4
+ffmpeg -i %1\\%2 -b 800k -r 20 %1\\%tmpFile%
+qt-faststart %tmpFile% %1\\%3.mp4
+del %tmpFile%

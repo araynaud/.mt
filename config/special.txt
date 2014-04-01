@@ -15,7 +15,9 @@ youtube.csv
 index.html
 readme.txt
 thumbs.db
-Thumbs.db
 desktop.ini
-Desktop.ini
 web.config
+AlbumArtSmall.jpg
+Folder.jpg
+AlbumArt_
+.tmp_
