@@ -329,7 +329,7 @@ debug("getVideoProperties", $prop, true);
 
 	$outputFile = getFilename($inputFile, $convert["format"]);
 	$outputFile = combine($relPath, $outputFile);	
-	$tmpFile = getFilename($inputFile) . "_tmp." . $convert["format"];
+	$tmpFile = getTempVideoFilename($inputFile, $convert["format"]);
 	$tmpFile = combine($relPath, $tmpFile);
 	$prop["tmpFile"] = $tmpFile;
 	$prop["outputFile"] = $outputFile;
@@ -338,6 +338,14 @@ debug("getVideoProperties", $prop, true);
 	if($prop["estimatedFileSize"])
 		$prop["progress"] = 100 * $prop["outputFileSize"] / $prop["estimatedFileSize"];
 	return $prop;
+}
+
+function getTempVideoFilename($filename, $format="")
+{
+//set tmpFile=%1\\.tmp_%3.mp4
+	if($format)
+		$filename = getFilename($filename, $format);
+	return ".tmp_$filename";	
 }
 
 //mkv or MTS to mp4: if video is H264, remux without re-encoding.
