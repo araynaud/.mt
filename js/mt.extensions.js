@@ -991,7 +991,7 @@ Object.toText = function (obj, separator, includeFunctions)
 		if(isFunction(obj[k]) && !includeFunctions) continue;
 		msg+= separator + k+ ": " +  Object.toText(obj[k], separator);
 	}
-	return msg;
+	return isEmpty(msg) ? obj : msg;
 };
 
 String.prototype.appendQueryString = function(obj)
