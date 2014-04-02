@@ -21,11 +21,9 @@ if no .ss : use .tn
 
 -----------
 BUGS
-OK 
-Hidden Files: HTTP Error 404.9 - Not Found
+OK  Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
 .enable only on windows
-
 
 OK Filename with different types
 breaks date index

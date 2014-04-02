@@ -1,1 +1,1 @@
-ffmpeg -i %1 -acodec mp3 -ab 128k %2.mp3
+ffmpeg -i %1\\%2 -acodec mp3 -ab 128k %1\\%3.mp3
