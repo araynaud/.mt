@@ -74,7 +74,7 @@ SORT.OPTIONS;takenDate;name;type;random;duration;width;height;ratio;title;filena
 
 ;paginate / count per page
 PAGINATE.OPTIONS;1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all
-.DEFAULT;10
+.DEFAULT;15
 .MIN_PAGES;3
 .MIN_LAST_PAGE;.5
 

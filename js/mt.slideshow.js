@@ -15,6 +15,7 @@ function Slideshow(options)
 	this.start=0;
 	this.zoom=true;
 	this.play=false;
+	this.playAudio=false;
 	this.timer=null;
 	this.tnIndex=1;
 	this.depth=0;
@@ -241,9 +242,7 @@ Slideshow.prototype.togglePlay = function(playState)
 	var icon = this.play ? "pause.png" : "play.png";
 	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
-//TODO: add config setting. slideshow.playaudio
-//	if(config.slideshow.playAudio && this.play && MediaPlayer.audio)
-//		MediaPlayer.audio.play();
+	this.autoPlayAudio();
 
 	if(this.currentFile.isVideo())
 		this.mplayer.togglePlay(this.play);
@@ -255,6 +254,12 @@ Slideshow.prototype.togglePlay = function(playState)
 	else
 		clearTimeout(this.timer);
 };
+
+Slideshow.prototype.autoPlayAudio = function()
+{	
+	if(this.playAudio && window.MediaPlayer && MediaPlayer.audio)
+		MediaPlayer.audio.togglePlay(this.play);
+}
 
 Slideshow.prototype.nextTransition = function()
 {
@@ -392,7 +397,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		var ss=this;
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
-	UI.editDiv.appendTo("#slideshowControls").show();
+	if(UI.editDiv)
+		UI.editDiv.appendTo("#slideshowControls").show();
 };
 
 Slideshow.prototype.styleSlide = function(el)

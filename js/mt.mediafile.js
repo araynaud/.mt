@@ -124,10 +124,19 @@ MediaFile.isVideoStream = function(mediaFile)
 
 MediaFile.prototype.isVideoStream = function(mediaFile)
 {
-	if(this.type=="VIDEO" && !isEmpty(this.stream))
-		return isArray(this.stream) ? this.stream[0] : this.stream;
-	return false;
-//	return MediaFile.hasType(this, "VIDEO", "STREAM");
+	if(this.type!="VIDEO" || isEmpty(this.stream)) return false;
+	return isArray(this.stream) ? this.stream[0] : this.stream;
+};
+
+MediaFile.isLocalVideoStream = function(mediaFile)
+{
+	return mediaFile.isLocalVideoStream();
+};
+
+MediaFile.prototype.isLocalVideoStream = function(mediaFile)
+{
+	var stream = this.isVideoStream();
+	return stream && stream!="youtube";
 };
 
 MediaFile.prototype.hasType = function(type, subType)

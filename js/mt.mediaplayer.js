@@ -205,7 +205,7 @@ MediaPlayer.prototype.loadPlayer2 = function(fileUrl, imageUrl, duration)
 MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
 {
 	//select only VIDEO_STREAM types
-	var videoFiles=mediaFiles.filter(MediaFile.isVideoStream); 
+	var videoFiles=mediaFiles.filter(MediaFile.isLocalVideoStream); 
 	this.loadPlaylist(videoFiles);
 	if(this.settings.uiMode)
 		UI.setMode(this.settings.uiMode);
