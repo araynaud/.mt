@@ -43,7 +43,7 @@ function Album(data)
 		{
 			if(!this.groupedFiles.VIDEO)
 				this.groupedFiles.VIDEO={};
-			var mf= {id: key, title: this.youtube[key], type:"VIDEO", stream:"youtube"};
+			var mf= {id: key, name: this.youtube[key], type:"VIDEO", stream:"youtube"};
 			mf = new MediaFile(mf);
 			this.groupedFiles.VIDEO[key]=mf;
 		}

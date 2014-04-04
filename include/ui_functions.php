@@ -160,7 +160,7 @@ function displayBackground($path, $hidden=false)
 // ---------Visit tracker: http://st.free.fr/phpmyvisites.php
 function visitBody()
 {
-	global $path;//=getPath();
+	$path=reqPath();
 	if(isLocal()) return;
 ?>
 <a id="visitLink" href="http://st.free.fr/" title="Free web analytics, website statistics" onclick="window.open(this.href);return(false);">
@@ -231,13 +231,7 @@ function facebookFacepile($path, $width=320)
 <meta property="article:author" content="http://www.legorafi.fr/author/admin/" />
 <meta property="article:section" content="Monde Libre" />
 <meta property="article:tag" content="Angleterre" />
-<meta property="article:tag" content="Kate" />
-<meta property="article:tag" content="Royal Baby" />
-<meta property="article:tag" content="William" />
-<meta property="article:tag" content="Windsor" />
-
 <meta name="description" content="<?php echo $description?>"/>
-
 */
 
 function metaTags($album, $article=true)
@@ -267,25 +261,7 @@ function metaTags($album, $article=true)
 	else
 		$image = $mediaFile->getBestImage(1000);
 debug("metaTags image", $image);
-/*	else if($mediaFile->thumbnailExists("ss"))
-		$image = $mediaFile->getThumbnailFilename("ss");
-	else if($mediaFile->thumbnailExists("tn"))
-		$image = $mediaFile->getThumbnailFilename("tn");
-	else if($mediaFile->isImage()) 
-		$image = $mediaFile->getFilename();
-*/
 
-/*
-	$is = @getimagesize(combine($relPath, $image));
-	if($image && $is)
-	{
-		debug("getimagesize", $is);
-		$meta["og:image"] = getAbsoluteFileUrl($path, $image);
-		$meta["og:image:width"]  = $is[0];
-		$meta["og:image:height"] = $is[1];
-		$meta["og:image:type"] = $is["mime"];
-	}
-*/
 	if($article)
 	{
 		$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?

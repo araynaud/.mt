@@ -11,6 +11,7 @@ function MediaFile(data)
 	else if(isString(data))
 		this.url=data;
 	this.getId();
+	this.getTitle();
 	this.filename = this.getFilename();
 
 	this.initTags();
@@ -52,6 +53,13 @@ MediaFile.prototype.getId = function()
 	if(!this.id)	this.id = MediaFile.getId(this.name); //, this.type);
 	if(!this.name) 	this.name=this.id;
 	return this.id;
+};
+
+MediaFile.prototype.getTitle = function()
+{
+	//if(!this.title)	
+		this.title = this.name.makeTitle();
+	return this.title;
 };
 
 MediaFile.getId = function(name, type)

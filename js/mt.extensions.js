@@ -205,7 +205,7 @@ String.prototype.makeTitle = function()
 {
 	var str = this.replace("_", " ");
 	str = str.replace("/", " ");
-	str = str.replace("-", " - ");
+//	str = str.replace("-", " - ");
 	str = str.replace(".", " ");
 	str = str.replace("  ", " ");
 

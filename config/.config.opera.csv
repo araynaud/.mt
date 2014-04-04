@@ -8,3 +8,8 @@ DISPLAY.shadow;false
 keyboard;false
 slideshow.type;0
 transition.changeMode;false
+slideshow.autoPlayAudio;false
+
+MediaPlayer.video.enabled;true
+MediaPlayer.audio.enabled;false
+MediaPlayer.slide.enabled;false
