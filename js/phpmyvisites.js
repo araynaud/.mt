@@ -6,6 +6,7 @@ function pmv_plugMoz(pmv_pl) {
 	return '0';
 }
 function pmv_plugIE(pmv_plug){
+	return '0';
 	pmv_find = false;
 	document.write('<SCR' + 'IPT LANGUAGE=VBScript>\n on error resume next \n pmv_find = IsObject(CreateObject("' + pmv_plug + '")) </SCR' + 'IPT>\n');
 	if (pmv_find) return '1';
@@ -105,8 +106,11 @@ function pmv_log(pmv_urlPmv, pmv_site, pmv_pname, pmv_vars)
 	pmv_do.writeln('<img src="'+pmv_src+'" alt="phpMyVisites" style="border:0" />');
 }
 
-var pagename = params.path;
-var phpmyvisitesSite = visit.id;
-var phpmyvisitesURL = visit.url + visit.php;
-var a_vars=[];
-pmv_log(phpmyvisitesURL, phpmyvisitesSite, pagename, a_vars);
+if(visit && visit.enabled)
+{
+	var pagename = params ? params.path : "";
+	var phpmyvisitesSite = visit.id;
+	var phpmyvisitesURL = visit.url + visit.php;
+	var a_vars=[];
+	pmv_log(phpmyvisitesURL, phpmyvisitesSite, pagename, a_vars);
+}

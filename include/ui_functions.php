@@ -160,7 +160,7 @@ function displayBackground($path, $hidden=false)
 // ---------Visit tracker: http://st.free.fr/phpmyvisites.php
 function visitBody()
 {
-	if(isLocal()) return;
+	if(isLocal() || !getConfig("visittracker.enabled")) return;
 	$path=reqPath();
 ?>
 <a id="visitLink" href="http://st.free.fr/" title="Free web analytics, website statistics" onclick="window.open(this.href);return(false);">
