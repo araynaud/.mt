@@ -65,7 +65,11 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.progressbar.js"></script>
 
 <script type="text/javascript">
-<?php echo jsVar("params", true, true, true) ?>
+<?php echo jsVar("params", true, true, true);
+$visit = $config['visittracker']; 
+echo jsVar("visit", true, true, true); 
+?>
+
 var qs = new Querystring();
 var search = Object.merge(qs.params, params, true);
 var config;
@@ -219,8 +223,7 @@ $(window).resize(function(event)
 		<div id="mediaFileList1" class="mediaFileList"></div>
 	</div>
 	<div id="contentFooter" class="wrapper">
-	<? visitBody() ?>
-		<!--img class="icon" id="loadMoreIcon" alt="load more" title="load more" src="icons/media-next.png" onclick="UI.appendNextPage();"/-->
+		<?php visitBody() ?>
 	</div>
 </div>
 

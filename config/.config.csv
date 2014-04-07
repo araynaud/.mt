@@ -47,7 +47,7 @@ DISPLAY.size;small
 .transpose;false
 .maxTnIndex;2
 .displayOptions;true
-.searchOptions;true
+.searchOptions;false
 .titleContainer;true
 .downloadFileList;true
 .tagList;true
@@ -154,3 +154,8 @@ fb.app_id;159679107375436
 
 youtube.videoUrl;http://www.youtube.com/watch?v={0}
 youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
+
+visittracker.siteId;238250
+visittracker.url;http://st.free.fr/
+visittracker.php;phpmyvisites.php
+visittracker.js;phpmyvisites.js

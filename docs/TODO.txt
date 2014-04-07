@@ -58,7 +58,14 @@ OK use POST for action.php ajax
 OK retest multiple ajax
 
 OK load tags from subdirs
-OK search by tag in subdirs.
+
+=== 1 search by tag in subdirs.
+search : name or tag matches.
+
+?tag=a,b,c ?tag=a|b|c
+1 load tags in subdirs with specified names a:[file1, file2], b:[file2, file3], c:[file3, file4]
+2 list files, grouped by name
+3 array_intersect keys
 
 OK 4 Resize video player with window
 set margin-top to be centered

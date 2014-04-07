@@ -39,7 +39,7 @@ class MediaFile extends BaseObject
 		foreach($this->exts as $ext)
 			$this->addVersion($ext);
 
-		$this->getTitle();
+		//$this->getTitle();
 		$this->_filePath = $this->getFilePath();
 		$this->getDescription();
 		$this->getTakenDate();

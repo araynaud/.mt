@@ -160,19 +160,17 @@ function displayBackground($path, $hidden=false)
 // ---------Visit tracker: http://st.free.fr/phpmyvisites.php
 function visitBody()
 {
-	$path=reqPath();
 	if(isLocal()) return;
+	$path=reqPath();
 ?>
 <a id="visitLink" href="http://st.free.fr/" title="Free web analytics, website statistics" onclick="window.open(this.href);return(false);">
-	<script type="text/javascript">
-		var a_vars = Array();
-		var pagename="<?php echo combine($path,currentScriptName());?>";
-		var phpmyvisitesSite = 238250;
-		var phpmyvisitesURL = "http://st.free.fr/phpmyvisites.php";
-	</script>
-	<script type="text/javascript" src="http://st.free.fr/phpmyvisites.js"></script>
+	<script type="text/javascript" src="js/phpmyvisites.js"></script>
 </a>
 <?php
+// img src = http://st.free.fr/phpmyvisites.php?
+// url=//minorart.free.fr/.mt/%3Fpath%3D2014/Australia&pagename=2014/Australia/index.php
+// &id=238250
+// &res=1920x1080&col=24&h=13&m=42&s=54&flash=1&director=0&quicktime=0&realplayer=0&pdf=1&windowsmedia=0&java=1&cookie=1&ref=http%3A//minorart.free.fr/.mt/%3Fpath%3D2014
 }
 
 //--------------- Facebook API ---------

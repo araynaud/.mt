@@ -15,7 +15,7 @@ function Slideshow(options)
 	this.start=0;
 	this.zoom=true;
 	this.play=false;
-	this.playAudio=false;
+	this.autoPlayAudio=false;
 	this.timer=null;
 	this.tnIndex=1;
 	this.depth=0;
@@ -242,12 +242,14 @@ Slideshow.prototype.togglePlay = function(playState)
 	var icon = this.play ? "pause.png" : "play.png";
 	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
 
-	this.autoPlayAudio();
-
 	if(this.currentFile.isVideo())
+	{
 		this.mplayer.togglePlay(this.play);
+		this.togglePlayAudio(!this.play);
+	}
 	else if(this.play)
 	{
+		this.togglePlayAudio(true);
 		this.setInterval();
 		this.showNextImage();
 	}
@@ -255,10 +257,10 @@ Slideshow.prototype.togglePlay = function(playState)
 		clearTimeout(this.timer);
 };
 
-Slideshow.prototype.autoPlayAudio = function()
+Slideshow.prototype.togglePlayAudio = function(state)
 {	
-	if(this.playAudio && window.MediaPlayer && MediaPlayer.audio)
-		MediaPlayer.audio.togglePlay(this.play);
+	if(this.autoPlayAudio && window.MediaPlayer && MediaPlayer.audio)
+		MediaPlayer.audio.togglePlay(state);
 }
 
 Slideshow.prototype.nextTransition = function()
@@ -417,6 +419,10 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 	{
 		this.hideImage();
 		this.transition.inProgress=false;
+
+		if(this.currentFile.stream=="youtube")
+			this.togglePlayAudio(!this.play);
+
 		if(this.mplayer)
 		{
 			this.mplayer.loadMediaFile(this.currentFile);
@@ -443,7 +449,10 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 		this.transition.execute(transitionFunction);
 
 		if(this.play)
+		{
+			this.togglePlayAudio(this.play);
 			this.autoShowNextImage();
+		}
 	}	
 
 //	this.addStatus("fileChange:" + fileChange);
