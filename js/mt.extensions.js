@@ -203,18 +203,30 @@ String.prototype.format = function()
 
 String.prototype.makeTitle = function()
 {
-	var str = this.replace("_", " ");
-	str = str.replace("/", " ");
-//	str = str.replace("-", " - ");
-	str = str.replace(".", " ");
-	str = str.replace("  ", " ");
+	var str = this.replace(/_/g, " ");
+	str = str.replace(/\//g, " ");
+	str = str.replace(/\./g, " ");
 
 	for(var i=str.length-1; i>0; i--)
 		if(str.isWordEnd(i))
 			str = str.insert(i," ");
 
+	str = str.replace(/  /g, " ");
 	return str;
 };
+
+String.prototype.makeFilename = function()
+{
+	var str = str.replace(/ /g, "");
+	return str;
+}
+
+//lowercase, each first letter of word uppercase
+//isWordStart
+String.prototype.capitalize = function()
+{
+}
+
 
 String.prototype.isDigit = function(index)
 {
