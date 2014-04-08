@@ -99,18 +99,22 @@ function pmv_log(pmv_urlPmv, pmv_site, pmv_pname, pmv_vars)
 {
 	var pmv_urlCur = pmv_do.location.href;
 	var pmv_pos = pmv_urlCur.indexOf("//");
-	if (pmv_pos > 0) {
+	if (pmv_pos > 0)
 		pmv_urlCur = pmv_urlCur.substr(pmv_pos);
-	}
+
 	var pmv_src = pmv_getUrlStat(pmv_urlPmv, pmv_site, pmv_urlCur, pmv_pname, "", pmv_vars);
-	pmv_do.writeln('<img src="'+pmv_src+'" alt="phpMyVisites" style="border:0" />');
+	return pmv_src;
 }
 
-if(visit && visit.enabled)
+function pmv(img)
 {
+	var visit=config.visittracker;
+	if(!visit || !visit.enabled || isEmpty(img)) return;
+
 	var pagename = params ? params.path : "";
-	var phpmyvisitesSite = visit.id;
-	var phpmyvisitesURL = visit.url + visit.php;
-	var a_vars=[];
-	pmv_log(phpmyvisitesURL, phpmyvisitesSite, pagename, a_vars);
+	var phpmyvisitesURL = (visit.url || "") + visit.php;
+
+	var pmv_src = pmv_log(phpmyvisitesURL, visit.siteId, pagename);
+	img.attr("src", pmv_src);
+	return pmv_src;
 }

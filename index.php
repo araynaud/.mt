@@ -63,13 +63,10 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.templates.js"></script>
 <script type="text/javascript" src="js/mt.downloads.js"></script>
 <script type="text/javascript" src="js/mt.progressbar.js"></script>
+<script type="text/javascript" src="js/phpmyvisites.js"></script>
 
 <script type="text/javascript">
-<?php echo jsVar("params", true, true, true);
-$visit = $config['visittracker']; 
-echo jsVar("visit", true, true, true); 
-?>
-
+<?php echo jsVar("params", true, true, true); ?>
 var qs = new Querystring();
 var search = Object.merge(qs.params, params, true);
 var config;
@@ -110,6 +107,9 @@ Album.onLoad = function (albumInstance)
 		UI.styleCheckboxes();
 		UI.setupEvents();
 
+		//pmv append to footer
+		pmv(UI.visitImg);
+
 		$(".lOption").each(UI.toggleLayoutOption); 
 
 		if(search.file)
@@ -117,7 +117,6 @@ Album.onLoad = function (albumInstance)
 			var mf=album.getMediaFileByName(search.file);
 			if(mf) mf.play();
 		}
-
 	}
 	catch(err)
 	{
@@ -151,6 +150,10 @@ $(window).resize(function(event)
 		<img class="icon notupload" id="uploadLoginIcon" src="icons/upload.png" alt="Upload login" title="upload" onclick="User.login('upload')"/>
 		<img class="icon notadmin" id="adminLoginIcon" src="icons/login.gif" alt="Admin" title="admin" onclick="User.login('admin')"/>
 		<img class="icon upload" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.login()"/>
+<?php if(!isLocal()) {?>		
+		<img id="visitImg" class="icon" alt="phpMyVisites" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
+<?php	}?>
+
 		<br/>
 		<img class="icon" src="icons/info.png" id="browserInfoIcon" alt="info" onclick="UI.displayBrowserInfo();"/>
 		<a class="spaceLeft upload" href=".upload/multiupload.php<?php echo qsParameters("path")?>">M<img class="upload" id="multiUploadIcon" src="icons/upload.png"/></a>
@@ -222,9 +225,7 @@ $(window).resize(function(event)
 		<div id="mediaFileList0" class="mediaFileList"></div>
 		<div id="mediaFileList1" class="mediaFileList"></div>
 	</div>
-	<div id="contentFooter" class="wrapper">
-		<?php visitBody() ?>
-	</div>
+	<div id="contentFooter" class="wrapper"><?php echo getConfig("FOOTER");?></div>
 </div>
 
 <div id="audioContainer" class="footerRightCorner right noprint">

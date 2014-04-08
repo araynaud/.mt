@@ -529,10 +529,13 @@ UI.setupElements = function()
 	UI.body=$("body");
 	UI.contentFooter=$("#contentFooter");
 	UI.fileContainer = $("div#files");
+	UI.userDiv=$('#userLabel');
+	UI.visitImg=$('#visitImg');
 	UI.downloadFileDiv = $("div#downloadFileList");
 	UI.tagListDiv = $("#tagList");
 	UI.pagers = $(".pager");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
+
 
 //edit div elements
 	UI.editDiv=$("div#editDiv");
