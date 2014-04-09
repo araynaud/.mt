@@ -13,6 +13,7 @@ function Slideshow(options)
 	this.pics = [];
 	this.increment=1;
 	this.start=0;
+	this.animate=false;
 	this.zoom=true;
 	this.play=false;
 	this.autoPlayAudio=false;
@@ -450,6 +451,8 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 
 		if(this.play)
 		{
+			if(this.animate)	this.animateImage();
+
 			this.togglePlayAudio(this.play);
 			this.autoShowNextImage();
 		}
@@ -461,6 +464,14 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 	this.showComments(this.currentFile);
 };
 
+Slideshow.prototype.animateImage = function()
+{
+	var width =  this.elements.container.width(); //this.currentImg.width(); // / this.currentFile.ratio;
+	var height = width / this.currentFile.ratio;
+	var marginTop = (this.elements.container.height() - height)/2;
+	this.currentImg.animate({width: width, height: height, marginTop: marginTop, marginBottom: marginTop, marginLeft:0, marginRight:0 }, this.interval/2);
+	//this.currentImg.animateRotate(-10, 0, this.interval/2);
+};
 
 Slideshow.prototype.showNextImage = function(increment)
 {
@@ -537,6 +548,9 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 	if (image.attr("src") !== preLoaded.src)
 		image.attr("src", preLoaded.src);
 
+	image.css("height", "");
+	image.css("width", "");
+
 	image.css("margin", "");
 	image.toggleClass("margin", album.margin);
 	var bw= image.borderMarginWidth();
@@ -547,21 +561,20 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 
 	var height = preLoaded.height;
 	var width = preLoaded.width;
-	image.width(width);
-	image.height(height);
+
 	if (this.zoom && preRatio > wRatio) //if too wide, fit width
 	{
 		width = this.elements.container.width() - bw;
-		height = width / preRatio;
+		image.width(width);
 	}
 	else if (this.zoom) //or fit height;
 	{
 		height = this.elements.container.height() - bh;
-		width = height * preRatio;
+		image.height(height);
 	}
 
-	image.width(width);
-	image.height(height);
+//	image.width(width);
+//	image.height(height);
 //	this.setStatus("{0} x {1}".format(width, height));
 
 	//position image

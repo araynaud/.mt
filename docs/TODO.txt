@@ -15,11 +15,6 @@ Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphith
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
 -----------
-if !ffmpeg enabled
-OK upload .ss images for videos. function uploadThumbnail($subdir)
-if no .ss : use .tn
-
------------
 BUGS
 OK  Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
@@ -82,7 +77,7 @@ OK if mediaplayer disabled: video.click => download mp4
 OK Select multiple files by range
 1st selection: store last selected file index
 2nd selection: select to current file index
-fix bug.
+=== fix bug checkbox loses its event or bound twice?
 
 OK checkbox to reset selection: select all or none
 

@@ -26,7 +26,6 @@ $allowFacebook=allowFacebook($path);
 <head>
 	<title><?php echo $title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <?php
 if(!empty($description)) {?>
 	<meta name="description" content="<?php echo $description?>"/>
