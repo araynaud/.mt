@@ -466,11 +466,12 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 
 Slideshow.prototype.animateImage = function()
 {
-	var width =  this.elements.container.width(); //this.currentImg.width(); // / this.currentFile.ratio;
+	var width =  this.elements.container.width();
 	var height = width / this.currentFile.ratio;
 	var marginTop = (this.elements.container.height() - height)/2;
 	this.currentImg.animate({width: width, height: height, marginTop: marginTop, marginBottom: marginTop, marginLeft:0, marginRight:0 }, this.interval/2);
-	//this.currentImg.animateRotate(-10, 0, this.interval/2);
+	if(album.rotate)
+		this.currentImg.animateRotate(-30, 0, this.interval/2);
 };
 
 Slideshow.prototype.showNextImage = function(increment)
@@ -548,9 +549,6 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 	if (image.attr("src") !== preLoaded.src)
 		image.attr("src", preLoaded.src);
 
-	image.css("height", "");
-	image.css("width", "");
-
 	image.css("margin", "");
 	image.toggleClass("margin", album.margin);
 	var bw= image.borderMarginWidth();
@@ -561,22 +559,19 @@ Slideshow.prototype.fitImage = function (image, preLoaded)
 
 	var height = preLoaded.height;
 	var width = preLoaded.width;
-
 	if (this.zoom && preRatio > wRatio) //if too wide, fit width
 	{
 		width = this.elements.container.width() - bw;
-		image.width(width);
+		height = width/preRatio;
 	}
 	else if (this.zoom) //or fit height;
 	{
 		height = this.elements.container.height() - bh;
-		image.height(height);
+		width = height * preRatio;
 	}
-
-//	image.width(width);
-//	image.height(height);
+	image.width(width);
+	image.height(height);
 //	this.setStatus("{0} x {1}".format(width, height));
-
 	//position image
 	this.setMargins(image);
 };
@@ -596,12 +591,6 @@ Slideshow.prototype.setMargins = function(image)
 	image.css("margin-right", this.alignX == "right" ? mx : x+mx);
 	image.css("margin-top", this.alignY == "top" ? my : y+my);
 	image.css("margin-bottom", this.alignY == "bottom" ? my : y+my);
-
-//	this.addStatus("l:{0} r:{1} t:{2} b:{3}".format(image.css("margin-left"),image.css("margin-right"),image.css("margin-top"),image.css("margin-bottom")));
-//	this.addStatus("x:{0} y:{1}".format(image.css("left"), image.css("top")));
-
-//	this.addStatus("o x:{0} y:{1}".format(image.offset().left, image.offset().top));
-//	this.addStatus("p x:{0} y:{1}".format(image.position().left, image.position().top));
 };
 
 Slideshow.prototype.toFullScreen = function(image,container)

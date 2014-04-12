@@ -42,11 +42,12 @@ Album.onLoad = function (albumInstance)
 	albumInstance.border=false;
 	albumInstance.margin=false;
 	var options={
-		//play: true,
+		play: true,
 		//interval: 3000,
 		pics: albumInstance.selectSlideshowFiles(),
 		alignX:"center",
 		alignY:"bottom",
+		animate:true,
 		elements: {container: "#slideshowContainer", statusBar: "#title"}
 	};
 //	slideshow.setOptions(search);

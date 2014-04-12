@@ -523,6 +523,8 @@ MediaPlayer.prototype.setSize = function()
 	this.playlistDiv.css("max-height", size[2]);
 //	this.playlistDiv.height(size[2]);
 
+	if(!this.player) return;
+
 	return this.player.resize(size[1], size[2]);
 };
 
