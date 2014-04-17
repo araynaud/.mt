@@ -54,12 +54,12 @@ DISPLAY.size;small
 
 ;slideshow
 ;slideshow.interval;5000
-;slideshow.zoom;false
+slideshow.zoom;1
 ;slideshow.alignX;right
 ;slideshow.alignY;bottom
 slideshow.changeMode;true
 slideshow.tnIndex;1
-slideshow.animate;true
+slideshow.animate;false
 slideshow.autoPlayAudio;false
 
 ;UI transition
