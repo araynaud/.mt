@@ -59,7 +59,7 @@ slideshow.zoom;1
 ;slideshow.alignY;bottom
 slideshow.changeMode;true
 slideshow.tnIndex;1
-slideshow.animate;false
+slideshow.animate;true
 slideshow.autoPlayAudio;false
 
 ;UI transition

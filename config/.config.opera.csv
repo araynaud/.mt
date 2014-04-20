@@ -9,7 +9,8 @@ keyboard;false
 slideshow.type;0
 transition.changeMode;false
 slideshow.autoPlayAudio;false
+slideshow.animate;false
 
-MediaPlayer.video.enabled;true
+MediaPlayer.video.enabled;false
 MediaPlayer.audio.enabled;false
 MediaPlayer.slide.enabled;false

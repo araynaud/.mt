@@ -20,7 +20,7 @@
 </script>
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
-	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles(#data)}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
+	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
 		{{if type=="DIR" && thumbnails}}
 			<a href="?path={{:~filePath(#data)}}" title="{{>title}}">
 				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">

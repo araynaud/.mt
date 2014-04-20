@@ -308,13 +308,13 @@ UI.resetImageSize = function(img)
 };
 
 //return rotate, shadow, border, scale
-UI.divStyles = function(mediaFile)
+UI.divStyles = function(angle)
 {
+	angle = valueOrDefault(angle, 0);
 	var style="";
-	var angle=0;
 	if(album.rotate) 
 	{
-		angle=$.randomBetween(-10,10);
+		if(!angle)	angle = $.randomBetween(-10, 10);
 		style+=" transform: rotate({0}deg); -webkit-transform: rotate({0}deg); -ms-transform: rotate({0}deg);".format(angle);
 	}
 	return style;

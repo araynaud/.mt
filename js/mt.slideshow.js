@@ -14,7 +14,8 @@ function Slideshow(options)
 	this.increment=1;
 	this.start=0;
 	this.animate=false;
-	this.zoom=0;
+	this.zoom=1;
+	this.animStartZoom=0;
 	this.play=false;
 	this.autoPlayAudio=false;
 	this.timer=null;
@@ -42,6 +43,7 @@ function Slideshow(options)
 	this.elementSelector = this.elements.slides;
 	this.transition = new Transition(this);
 	this.setOptions(options);
+	this.angle=0;
 
 	//make references		
 	Slideshow.instances = Slideshow.instances || [];
@@ -51,7 +53,7 @@ function Slideshow(options)
 		Slideshow.instances.push(this);
 }
 
-Slideshow.zoom = { labels: {none: "none", long: "fit long", short: "fit short", width: "fit width",  height: "fit height"} };
+Slideshow.zoom = { labels: {none: "none", long: "fit long", short: "fit short" }}; // width: "fit width",  height: "fit height"} };
 
 Slideshow.initZoomTypes = function ()
 {
@@ -293,10 +295,17 @@ Slideshow.prototype.toggleOption = function()
 
 Slideshow.prototype.toggleZoom = function()
 {
-	this.zoom=(this.zoom+1) % Slideshow.zoom.types.length;
-	this.setStatus("zoom: " + Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]);
+	this.animStartZoom = this.zoom;
+	this.zoom = modulo(this.zoom+1, Slideshow.zoom.types.length);
+	if(this.animate)
+		this.setStatus("zoom: {0} / {1}".format(
+			Slideshow.zoom.labels[Slideshow.zoom.types[this.animStartZoom]],
+			Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]));
+	else
+		this.setStatus("zoom: " + Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]);
+
 	if(this.currentFile.isImage())
-		this.fitImage(null, null, true);
+		this.fitImage(true);
 	else
 		this.fitVideo();
 };
@@ -420,8 +429,10 @@ Slideshow.prototype.styleSlide = function(el)
 	el.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
 	el.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
 
+	this.angle = album.rotate ? $.randomBetween(-10, 10) : 0;
+
 	if(window.UI && UI.divStyles)
-		el.attr("style", UI.divStyles());
+		el.attr("style", UI.divStyles(this.angle));
 };
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange)
@@ -456,13 +467,19 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 			this.mplayer.hide(this.transition.duration);
 		}
 
-		this.fitImage();
+		if(this.animate && this.play)
+		{
+			this.fitImage(false, this.animStartZoom);
+			var sl=this;
+			setTimeout( function() { sl.animateImage(); }, this.transition.duration);
+		}
+		else
+			this.fitImage();
+
 		this.transition.execute(transitionFunction);
 
 		if(this.play)
 		{
-			if(this.animate)	this.animateImage();
-
 			this.togglePlayAudio(this.play);
 			this.autoShowNextImage();
 		}
@@ -474,20 +491,17 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 	this.showComments(this.currentFile);
 };
 
+
+//TODO: animate from zoom start to zoom end
+//add this.startZoom
+//end: to this.zoom
+//animate for how long: interval, interval/2, transition.duration
 Slideshow.prototype.animateImage = function()
 {
-	var width =  this.elements.container.width();
-	var height = width / this.currentFile.ratio;
-	var marginTop = (this.elements.container.height() - height)/2;
-	this.currentImg.animate({width: width, height: height, marginTop: marginTop, marginBottom: marginTop, marginLeft:0, marginRight:0 }, this.interval/2);
-	if(album.rotate)
-		this.currentImg.animateRotate(-30, 0, this.interval/2);
+	this.fitImage(true, this.zoom);
+	if(album.rotate && this.angle)
+		this.currentImg.animateRotate(this.angle, 0, this.interval/2);
 };
-
-Slideshow.prototype.animateSlide = function(anim)
-{
-	this.currentImg.animate(anim, this.transition.duration);
-}
 
 Slideshow.prototype.showNextImage = function(increment)
 {
@@ -555,20 +569,17 @@ Slideshow.prototype.fitVideo = function ()
 	this.mplayer.resize(width, height);
 };
 
-Slideshow.prototype.fitImage = function (image, preLoaded, animate) 
+Slideshow.prototype.fitImage = function (animate, zoomLevel) 
 {
-	preLoaded = valueOrDefault(preLoaded, this.preLoadedImage);
-	image = valueOrDefault(image, this.currentImg);
+	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
+	var preLoaded = this.preLoadedImage;
+	var image = this.currentImg;
 	if (!preLoaded || !image) return;
 
 	if (image.attr("src") !== preLoaded.src)
 		image.attr("src", preLoaded.src);
 
-	var ibm = this.getImageBorderMargins();
-	var size = this.getImageSize(preLoaded, ibm);
-	this.getImageMargins(ibm, size);
-//	UI.addStatus(ibm);
-//	UI.addStatus(size);
+	var size = this.getImageSize(zoomLevel);
 	if(animate)
 		image.animate(size, this.transition.duration);
 	else
@@ -589,35 +600,38 @@ Slideshow.prototype.getImageBorderMargins = function ()
 	return ibm;
 };
 
-Slideshow.prototype.getImageSize = function (preLoaded, ibm) 
+Slideshow.prototype.getImageSize = function (zoomLevel)
 {
-	preLoaded = valueOrDefault(preLoaded, this.preLoadedImage);
+	preLoaded = this.preLoadedImage;
+	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
 
+	var ibm = this.getImageBorderMargins();
 	var size = { height: preLoaded.height, width: preLoaded.width };
 
 	var preRatio = preLoaded.width / preLoaded.height;
 	var wRatio = (this.elements.container.width() - ibm.bmw) / (this.elements.container.height() - ibm.bmh);
 
-	if(!this.zoom)
-		return size;
-
-	var zoomType = Slideshow.zoom.types[this.zoom];
-	var fitWidth = zoomType == "width";
-	if(preRatio > wRatio && zoomType=="long")  
-		fitWidth=true;
-	if(preRatio <= wRatio && zoomType=="short") 
-		fitWidth=true;
-
-	if (fitWidth) //fit width
+	if(zoomLevel)
 	{
-		size.width = this.elements.container.width() - ibm.bmw;
-		size.height = size.width / preRatio;
+		var zoomType = Slideshow.zoom.types[zoomLevel];
+		var fitWidth = zoomType == "width";
+		if(preRatio > wRatio && zoomType=="long")  
+			fitWidth=true;
+		if(preRatio <= wRatio && zoomType=="short") 
+			fitWidth=true;
+
+		if (fitWidth) //fit width
+		{
+			size.width = this.elements.container.width() - ibm.bmw;
+			size.height = size.width / preRatio;
+		}
+		else //or fit height;
+		{
+			size.height = this.elements.container.height() - ibm.bmh;
+			size.width = size.height * preRatio;
+		}
 	}
-	else //or fit height;
-	{
-		size.height = this.elements.container.height() - ibm.bmh;
-		size.width = size.height * preRatio;
-	}
+	this.getImageMargins(ibm, size);
 	return size;
 };
 

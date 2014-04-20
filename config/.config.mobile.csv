@@ -17,3 +17,5 @@ transition.changeMode;false
 slideshow.changeMode;false
 slideshow.zoomFunction;crossFade
 slideshow.autoPlayAudio;false
+slideshow.animate;false
+
