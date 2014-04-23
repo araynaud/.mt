@@ -14,8 +14,8 @@ function Slideshow(options)
 	this.increment=1;
 	this.start=0;
 	this.animate=false;
+	this.animStartZoom=2;
 	this.zoom=1;
-	this.animStartZoom=0;
 	this.play=false;
 	this.autoPlayAudio=false;
 	this.timer=null;
@@ -295,7 +295,7 @@ Slideshow.prototype.toggleOption = function()
 
 Slideshow.prototype.toggleZoom = function()
 {
-	this.animStartZoom = this.zoom;
+	this.animStartZoom = modulo(this.animStartZoom+1, Slideshow.zoom.types.length);
 	this.zoom = modulo(this.zoom+1, Slideshow.zoom.types.length);
 	if(this.animate)
 		this.setStatus("zoom: {0} / {1}".format(
@@ -467,7 +467,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 			this.mplayer.hide(this.transition.duration);
 		}
 
-		if(this.animate && this.play)
+		if(this.animate && this.play && this.animStartZoom != this.zoom)
 		{
 			this.fitImage(false, this.animStartZoom);
 			var sl=this;
