@@ -161,8 +161,20 @@ MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 	var fileUrl = mediaFile.getFileUrl(mediaFile.isVideoStream());
 	var imageUrl = mediaFile.getThumbnailUrl(1); //add tnIndex to settings
 
+//	return this.loadHtml5Player(fileUrl, imageUrl);
 	return this.loadPlayer(fileUrl, imageUrl, mediaFile.duration);
 };
+
+MediaPlayer.prototype.loadHtml5Player = function(fileUrl, imageUrl, duration)
+{
+	this.initSize();
+
+	var pl=$("#html5player");
+	pl.attr("src", fileUrl);
+	pl.attr("poster", imageUrl);
+	pl.width(this.settings.width);
+	pl.height(this.settings.height);
+}
 
 MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl, duration)
 {

@@ -293,6 +293,13 @@ Album.prototype.countFiles = function (filterValue)
 	return fileList.length;
 };
 
+Album.hasFiles = function(fileList, filterValue)
+{  
+	if(!fileList) return 0;
+	fileList=Album.selectFiles(fileList, filterValue);
+	return !isEmpty(fileList);	
+};
+
 Album.prototype.hasFiles = function (filterValue)
 {
 	var fileList=this.selectFiles(filterValue);

@@ -59,8 +59,8 @@ DISPLAY.size;small
 slideshow.changeMode;true
 slideshow.tnIndex;1
 slideshow.animate;true
-slideshow.animStartZoom;1
-slideshow.zoom;2
+slideshow.animStartZoom;2
+slideshow.zoom;1
 slideshow.autoPlayAudio;false
 
 ;UI transition
