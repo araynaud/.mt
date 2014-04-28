@@ -32,7 +32,9 @@ function listFiles($dir, $search=array(),$subPath="",$remaining=null,$recurse=nu
 	
 	$files=array();
 	if (!is_dir($dir))	return $files;
+
 	//init recursive variables from search array
+	$subdirs=array();
 	setIfNull($remaining,@$search["maxCount"]);
 	setIfNull($recurse,@$search["depth"]);	
 	if(!isset($search["exts"]) && isset($search["type"]))
@@ -56,25 +58,22 @@ debug("listFiles $dir", $search);
 		$relPathG=$dir;
 		loadIgnoreList($dir);	//load from .ignore.txt file only once
 			
-		$subdirs=array();
 		while(($file = readdir($handle))!==false)
 		{
 			//filter by files: works if dir sorted by name and case sensitive
 			// if($first && $file < $first) continue;
 			// if($last && $file > $last && !startsWith($file,$last) ) break; 
 			//pass function with condition to filter file before adding to array		
-//debug("listFiles", $file);
-
 			if(ignoreFile($file)) continue;
 
 			if($recurse && fileIsDir("$file"))
 				$subdirs[$file] = $file;
 			splitFilename($file,$key,$ext);
 
-			if(in_array($ext, @$config["TYPES"]["SPECIAL"])) continue;
-//			if(fileHasType($file, "SPECIAL")) continue;
-				
-			if(!fileHasNameAndType($file, @$search["name"], @$search["exts"], @$search["starts"], @$search["ends"])) continue;
+			$hasNameAndType = fileHasNameAndType($file, @$search["name"], @$search["exts"], @$search["starts"], @$search["ends"]);
+			if(isset($search["exts"]) && !$hasNameAndType && in_array($ext, @$config["TYPES"]["SPECIAL"])) continue;
+//			if(fileHasType($file, "SPECIAL")) continue;				
+			if(!$hasNameAndType) continue;
 //use name as key
 			$key=combine($subPath,$file);
 //debug("splitFilename", "file=$file / key=$key / ext=$ext");
@@ -544,7 +543,7 @@ function getFileType($file)
 	return "FILE";
 }
 
-function fileHasType($file,$ext="")
+function fileHasType($file, $ext="")
 {
 	global $extG, $config;
 	setIfEmpty($ext,$extG);
@@ -557,7 +556,6 @@ function fileHasType($file,$ext="")
 
 	$fileExt=getFilenameExtension($file);
 	$result=arraySearchRecursive($ext, $fileExt);
-
 	return $result!==false;
 }
 
@@ -633,9 +631,9 @@ function findFilesInParent($relPath,$file,$getOther=false, $maxCount=0, $appendP
 	else
 		$search["type"]=getFilenameExtension($file);
 		
-	$search["depth"]=-10;
-	$search["maxCount"]=$maxCount; // find only first one
-	$found=@listFiles($relPath,$search);
+	$search["depth"] = -10; // TODO, use depth of path?
+	$search["maxCount"] = $maxCount; // find only first one
+	$found = listFiles($relPath,$search);
 	if(!$found) 
 		return false;
 

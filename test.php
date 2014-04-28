@@ -161,7 +161,7 @@ $bg=findInParent($relPath,".bg.jpg");
 debug("Background", $bg);
 $stylesheet=findInParent($path,"night.css",true);
 debug("Stylesheet", $stylesheet);
-//addStylesheet($relPath);
+addStylesheet($relPath);
 debug();
 
 // $cmdOutput=shell_exec("dir ..\\$path");
