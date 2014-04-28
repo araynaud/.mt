@@ -128,8 +128,12 @@ _FFMPEG.MP4BOX;MP4Box.exe
 _FFMPEG.scripts;cmd
 _FFMPEG.convert.stream.title;convert video
 _FFMPEG.convert.stream.format;mp4
-_FFMPEG.convert.stream.3gp;ffmpeg_3gp_mp4.bat
 _FFMPEG.convert.stream.script;ffmpeg2mp4.bat
+_FFMPEG.convert.stream.3gp.format;mp4
+_FFMPEG.convert.stream.3gp.script;ffmpeg_3gp_mp4.bat
+_FFMPEG.convert.stream.mp4.format;m4v
+_FFMPEG.convert.stream.mp4.script;ffmpeg_mp4_m4v.bat
+
 _FFMPEG.convert.stream.width;960
 _FFMPEG.convert.stream.height;540
 _FFMPEG.convert.stream.video_bitrate;800

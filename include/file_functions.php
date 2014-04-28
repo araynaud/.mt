@@ -509,18 +509,20 @@ function setFileDate($file, $date)
 
 function getFileDate($filename)
 {
+	$currentDate = formatDate(microtime(true));
+
 	//Get most recent file for a directory
 	if (is_dir($filename))	return getNewestFileDate($filename);
 
 	//or Get EXIF data for an image
 	$date=getExifDateTaken($filename);
-	if(!empty($date)) return $date;// ."EX";
+	if(!empty($date) && $date < $currentDate) return $date;// ."FN";
 
 	//or Get date from filename
 	$date = getDateFromFilename($filename);
-	if(!empty($date)) return $date;// ."FN";
+	if(!empty($date) && $date < $currentDate) return $date;// ."FN";
 
-	//or Get modified date
+	//or Get file modified date
 	return formatFilemtime($filename);// ."FM";
 }
 

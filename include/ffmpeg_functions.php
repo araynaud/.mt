@@ -277,30 +277,29 @@ debug("getVideoProperties", $prop, true);
 		$size = $convert["height"];
 	$size = min($prop["height"], $size); //resize only if input video is larger than $size
 
-	$inputExt = getFilenameExtension($inputFile);
+	$inputExt = strtolower(getFilenameExtension($inputFile));
+	$outputExt = arrayGetCoalesce($convert, "$inputExt.format", "format");
 
-	$outputFile = getFilename($inputFile, $convert["format"]);
-	$outputFilePath = combine($relPath, $outputFile);	
+	$outputFile = getFilename($inputFile, $outputExt);
 	$outputFilename = getFilename($outputFile);	
+	$outputFilePath = combine($relPath, $outputFile);	
 	// the input video file
 	$inputFilePath = combine($relPath, $inputFile);
 
-	debug($inputFile, $outputFile);
+	debug("convertVideo $inputFile", $outputFile);
+	debug("input ", realpath($inputFilePath));
+	debug("output", realpath($outputFilePath));
 	if(realpath($inputFilePath) == realpath($outputFilePath)) 
 		return false;
 
 	if (file_exists($outputFilePath))
-		unlink($outputFile);
+		unlink($outputFilePath);
 //use metadata display_aspect_ratio to calculate size
 //round to multiples of 2 or 4
 
-//config.convert.scripts.path
-//config.convert.scripts.mp4
-//config.convert.scripts.mp3
-
 	$scriptDir = getConfig("_FFMPEG.scripts");
 debug("scriptDir", $scriptDir);
-	$scriptName = arrayGetCoalesce($convert, $inputExt, "script");
+	$scriptName = arrayGetCoalesce($convert, "$inputExt.script", "script");
 	$script = combine(pathToAppRoot(), $scriptDir, $scriptName);
 debug("script", $script);
 	$script = realpath($script);

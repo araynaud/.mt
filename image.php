@@ -54,8 +54,22 @@ $transform = getParam("transform");
 createDir($relPath, $saveDir);
 $outputDir = combine($relPath, $saveDir);
 
-preventCaching();
+if($format=="thumbnail")
+{
+	$tnImage = getExifThumbnail($inputFile);
+	if($saveDir)
+	{
+		createDir($relPath, $saveDir);
+		$outputFilename = combine($outputDir, $file);
+		writeBinaryFile($outputFilename, $tnImage);
+	}
+	if($tnImage)
+		header("Content-Type: image/jpeg");
+	echo $tnImage;
+	return;
+}
 
+preventCaching();
 if($transform) //only for JPEG, angle multiple of 90
 {
 	jpegLosslessRotate($relPath, $file, $transform);
