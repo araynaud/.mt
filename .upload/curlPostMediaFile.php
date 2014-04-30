@@ -63,14 +63,16 @@ if($mf->isImage())
 else if($mf->isVideo())
 {
 	$stream=$mf->isVideoStream();
+debug("isVideoStream", $stream, "print_r");
 	if(!$stream)
 	{
 		$response["time"] = getTimer();
 		$response["message"] = "$file is not a streamable video. convert file first.";
 		echo jsValue($response);
 		return;
-	}
-	$stream=$stream[0];
+	}	
+	if(is_array($stream))
+		$stream=reset($stream);
 	$file = $mf->getFilename($stream);
 	$filePath = $mf->getFilePath($stream);
 	debug("using $stream $file", $filePath);
