@@ -14,9 +14,13 @@ $name = reqParam("name");
 debugVar("name");
 
 $action = reqParam("action");
+debugVar("action");
+
 $actions = getConfig("file.actions");
 //move/rename options
 $to = reqParam("to");
+debugVar("to");
+
 $rename = reqParam("rename");
 
 //tag options
@@ -53,6 +57,9 @@ else
 			break;
 		case "delete":
 			$result = $mf->delete();
+			break;
+		case "date":
+			$result = $mf->setDate($to);
 			break;
 		case "description":
 			$result = $mf->setDescription($to);

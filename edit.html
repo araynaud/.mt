@@ -32,15 +32,19 @@
 		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
 	</span>	
 	<span id="adminIcons" class="admin">		
-		<img class="icon notdir" id="bestIcon" src="icons/edit.gif"
+		<img class="icon notdir" id="descIcon" src="icons/edit.gif"
 		title="edit description" alt="desc" 
 		onclick="UI.inputAction({action:'description', field:'description'})" />
+
+		<img class="icon notdir" id="dateIcon" src="icons/date.png"
+		title="set date" alt="date" 
+		onclick="UI.inputAction({action:'date', field:'takenDate'})" />
 
 		<img class="icon notdir" id="bestIcon" src="icons/star.png"
 		title="set as best" alt="best"
 		onclick="UI.fileActionAjax({action:'addtag', to:'best'})" />
 		
-		<img class="icon notdir" id="bestIcon" src="icons/addtag.png"
+		<img class="icon notdir" id="addTagIcon" src="icons/addtag.png"
 		title="add tag" alt="tag" 
 		onclick="UI.inputAction({action:'addtag', field:'tags', choices:album.tags})" />
 

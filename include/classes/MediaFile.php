@@ -503,6 +503,23 @@ debug("addTag " . $this->name, $tag);
 		return $this->tags;
 	}
 
+	public function setDate($date)
+	{
+		if(!$date) return $this;
+
+		$this->takenDate = $date;
+		//TODO: update date index
+
+		//change filemdate
+		$versions = $this->getFilePaths(true, false, true, false, false);
+		debug("MediaFile.setDate", $versions);
+		foreach ($versions as $key => $filePath)
+		{
+			setFileDate($filePath, $date);
+			debug("setFileDate $filePath", $date);
+		}
+		return $this;		
+	}
 }
 
 ?>
