@@ -14,10 +14,4 @@ slideshow.zoomFunction;crossFade
 ;file types // different files depending on device?
 TYPES.AUDIO;mp3;m4a;aac
 TYPES.VIDEO;mp4;m4v;mov;3gp
-TYPES.VIDEO_STREAM;mp4;m4v;3gp
-
-;JW Player options
-JWPLAYER.allowHtml5;true
-JWPLAYER.allowFlash;false
-JWPLAYER.MODES.0.type;html5
-JWPLAYER.MODES.1.type;download
+TYPES.VIDEO_STREAM;m4v;mp4;3gp

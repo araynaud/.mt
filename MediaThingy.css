@@ -739,7 +739,7 @@ ol
 	overflow-y: auto;
 }
 
-.icon, .spaceLeft { 
+.spaceLeft { 
 	margin-left:10px;
 }
 
@@ -1094,7 +1094,7 @@ body.mobile
 
 .mobile label.checkboxLabel img, .mobile label.tagLabel img, .mobile img.icon, .mobile img.icontr, .mobile .controls img
 {
-	min-height: .9cm;
+	height: .9cm;
 }
 
 .mobile label.checkboxLabel, .mobile label.tagLabel

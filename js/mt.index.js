@@ -442,13 +442,13 @@ UI.displayPageLinks = function()
 	{	
 		if(i==album.pageNum+1)
 			UI.pagers.append("<img class='icontr' src='icons/arrow-forward.png' title='next page' onclick='UI.selectNextPage()'/>");		
-		var aClass = (i!=album.pageNum) ? "small icon" : "";
+		var aClass = (i!=album.pageNum) ? "small spaceLeft" : "";
 		UI.pagers.append("<a class='bold {1}'>{0}</a>".format(i, aClass));
 		if(i==album.pageNum-1)
-			UI.pagers.append("<img class='icon icontr' src='icons/arrow-back.png' title='previous page' onclick='UI.selectNextPage(-1)'/>");		
+			UI.pagers.append("<img class='spaceLeft icontr' src='icons/arrow-back.png' title='previous page' onclick='UI.selectNextPage(-1)'/>");		
 	}
 	if(album.pageNum<album.nbPages)
-		UI.pagers.append("<img class='icon icontr' src='icons/arrow-last.png' title='last page' onclick='UI.selectPage({0})'/>".format(album.nbPages));		
+		UI.pagers.append("<img class='spaceLeft icontr' src='icons/arrow-last.png' title='last page' onclick='UI.selectPage({0})'/>".format(album.nbPages));		
 	
 	$("a.small", UI.pagers).click(function()
 	{ 
