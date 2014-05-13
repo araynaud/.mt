@@ -49,7 +49,7 @@ DISPLAY.size;small
 .displayOptions;true
 .searchOptions;false
 .titleContainer;true
-.downloadFileList;true
+.downloadFileList;false
 .tagList;true
 
 ;slideshow
