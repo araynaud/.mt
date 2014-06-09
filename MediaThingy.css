@@ -102,6 +102,10 @@ pre
 	top: 0px;
 	width: 100%;
 	height: 100%;
+
+    background-repeat:no-repeat;
+    background-position:left center fixed;
+    background-size: cover;
 }
 
 .bg img
