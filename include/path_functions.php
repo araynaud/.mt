@@ -85,16 +85,15 @@ function reqPathFile(&$path, &$file, $addFilters=true)
 		splitFilePath(urldecode(@$_SERVER["QUERY_STRING"]), $path, $file);
 
 	$filePath = combine($path, $file);
-
 	$relPath=getDiskPath($path);
 	$filetype = getFileType("$relPath/$file");
 	debug("filetype", $filetype);
-	if($filetype=="DIR")
+/*	if($filetype=="DIR")
 	{
 		$path = $filePath;
 		$file = "";
 	}
-
+*/
 	$file = urldecode($file);
 	$path = urldecode($path);
 	$_REQUEST["path"] = $path;

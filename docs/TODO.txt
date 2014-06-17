@@ -14,8 +14,35 @@ http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=1
 Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
+---------
+JS change background: modify with background-image
+use body?
+
+apply background to parent: move .bg.jpg to ..
+
+publish: upload album readme.txt, audio, other files
+
+Organize Tags: rename, delete, make dir
+Orgazine dirs: rename, merge, make tag
+
+custom order files
+files set date: display js calendar
+
+Responsive menu.
+list of dirs
+admin options/links
+edit menu
+
 -----------
 BUGS
+Tag dirs: debug JS
+rotate, images in cache
+
+image animations: 
+zoom
+rotate
+pan/scroll for panoramic (ratio > 3)
+
 OK  Hidden Files: HTTP Error 404.9 - Not Found
 This error occurs when the requested file is marked as hidden on the file system.
 .enable only on windows
@@ -147,7 +174,6 @@ rename: only current file.
 OK curlPostFile: use getFilePaths array
 OK post takenDate as data. 
 OK upload.php: touch image with $fileDate from MediaFile->getTakenDate();
-
 
 
 set dir mappings in readonly mode: write no files, create no dirs

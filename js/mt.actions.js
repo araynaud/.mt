@@ -280,16 +280,9 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 
 UI.displayBackground = function(mediaFile, hidden)
 {
-	var background = { url: mediaFile.getThumbnailUrl(1), hidden: hidden ? " hidden" : "" };
-	var imgbg=$("#imgbg");
-	if(!imgbg.length)
-	{
-		UI.renderTemplate("backgroundTemplate","body", background, "prepend");
-		UI.makeBackgroundGradients();
-	}
-	else
-		imgbg.attr("src", background.url);
-
+	var background = { url: mediaFile.getThumbnailUrl(1, true), hidden: hidden ? " hidden" : "" };
+	var imgbg=$("#divbg");
+	imgbg.css("background-image", "url({0})".format(background.url) );
 	return background;
 };
 

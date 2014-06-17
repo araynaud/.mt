@@ -148,11 +148,14 @@ function displayBackground($path, $hidden=false)
 {
 	$background = findInParent($path, ".bg.jpg", false);
 	$background = diskPathToUrl($background);
-	$class=isIE()? "bgIE" : "bg";
-	if (!empty($background)) {
-?>	<div id="divbg" class="bg noprint <?php if($hidden) echo " hidden" ?>" style="background-image: url(<?php echo $background?>)">
+	$class="";
+	if($hidden) $class .= " hidden";
+	$style = "";
+	if ($background) $style = "style=\"background-image: url($background)\"";
+?>
+	<div id="divbg" class="bg noprint <?php echo $class?>" <?php echo $style?>/>
 	</div>
-<?php }
+<?php
 	return $background;
 }
 

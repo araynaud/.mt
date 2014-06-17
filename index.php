@@ -164,6 +164,7 @@ $(window).resize(function(event)
 		<a class="admin" title="reset image metadata" href=".admin/delete.php?file=.tn/.metadata.IMAGE.csv<?php echo qsParameters("path",false)?>"><img src="icons/refresh.png"/></a>
 		<a class="spaceLeft admin" target="csv" title="video metadata" href="download.php?file=.tn/.metadata.VIDEO.csv<?php echo qsParameters("path",false)?>&type=text/plain">MV</a>
 		<a class="admin" title="reset video metadata" href=".admin/delete.php?file=.tn/.metadata.VIDEO.csv<?php echo qsParameters("path",false)?>"><img src="icons/refresh.png"/></a>
+		<a class="spaceLeft admin" title="reset best" href=".admin/delete.php?file=.tag/best.csv<?php echo qsParameters("path",false)?>"><img src="icons/star.png"/><img src="icons/delete.png"/></a>
 
 		<a class="spaceLeft admin" title="delete background" href=".admin/delete.php?file=.bg.jpg<?php echo qsParameters("path",false)?>"><img class="admin" src="icons/delete.png"  alt="delete"/><img class="admin" src="icons/background.png" alt="background"/></a>
 
