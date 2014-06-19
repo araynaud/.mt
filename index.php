@@ -48,6 +48,7 @@ if(isMobile()) {?>
 <?php addJavascript(getConfig("MediaPlayer.jwplayer.js"))?>
 
 <script type="text/javascript" src="js/mt.extensions.js"></script>
+<script type="text/javascript" src="js/mt.extensions.jquery.js"></script>
 <script type="text/javascript" src="js/mt.color.js"></script>
 <script type="text/javascript" src="js/mt.user.js"></script>
 <script type="text/javascript" src="js/mt.mediafile.js"></script>
@@ -150,14 +151,14 @@ $(window).resize(function(event)
 		<img class="icon notadmin" id="adminLoginIcon" src="icons/login.gif" alt="Admin" title="admin" onclick="User.login('admin')"/>
 		<img class="icon upload" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.login()"/>
 <?php if(!isLocal()) {?>		
-		<img id="visitImg" class="icon" alt="phpMyVisites" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
+		<img id="visitImg" class="" alt="phpMyVisites" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
 <?php	}?>
-
 		<br/>
 		<img class="icon" src="icons/info.png" id="browserInfoIcon" alt="info" onclick="UI.displayBrowserInfo();"/>
 		<a class="spaceLeft upload" href=".upload/multiupload.php<?php echo qsParameters("path")?>">M<img class="upload" id="multiUploadIcon" src="icons/upload.png"/></a>
 		<a class="spaceLeft upload" href=".upload/upload_form.php<?php echo qsParameters("path")?>"><img class="upload" id="multiUploadIcon" src="icons/upload.png"/></a>
 
+<?php if(!isMobile()) {?>		
 		<a class="spaceLeft admin" target="csv" title="date index" href="download.php?file=.dateIndex.csv<?php echo qsParameters("path",false)?>&type=text/plain">DI</a>
 		<a class="admin" title="reset date index" href=".admin/delete.php?file=.dateIndex.csv<?php echo qsParameters("path",false)?>"><img src="icons/refresh.png"/></a>
 		<a class="spaceLeft admin" target="csv" title="image metadata" href="download.php?file=.tn/.metadata.IMAGE.csv<?php echo qsParameters("path",false)?>&type=text/plain">MI</a>
@@ -165,13 +166,13 @@ $(window).resize(function(event)
 		<a class="spaceLeft admin" target="csv" title="video metadata" href="download.php?file=.tn/.metadata.VIDEO.csv<?php echo qsParameters("path",false)?>&type=text/plain">MV</a>
 		<a class="admin" title="reset video metadata" href=".admin/delete.php?file=.tn/.metadata.VIDEO.csv<?php echo qsParameters("path",false)?>"><img src="icons/refresh.png"/></a>
 		<a class="spaceLeft admin" title="reset best" href=".admin/delete.php?file=.tag/best.csv<?php echo qsParameters("path",false)?>"><img src="icons/star.png"/><img src="icons/delete.png"/></a>
-
 		<a class="spaceLeft admin" title="delete background" href=".admin/delete.php?file=.bg.jpg<?php echo qsParameters("path",false)?>"><img class="admin" src="icons/delete.png"  alt="delete"/><img class="admin" src="icons/background.png" alt="background"/></a>
 
 		<a class="spaceLeft upload" target="test" href="test.php<?php echo qsParameters("path")?>"><img src="icons/testing.png" alt="description"/></a>
 		<a class="spaceLeft upload" href=".upload/description.php<?php echo qsParameters("path")?>"><img src="icons/comment.gif" alt="description"/></a>
 		<a class="spaceLeft" target="xml" href="data.php?data=album&format=xml&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/xml.png" alt="XML" title="XML index"/></a>
 		<a class="spaceLeft" target="json" href="data.php?data=album&format=json&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/json_orange.png" alt="JSON" title="JSON index"/></a>
+<?php	}?>
 <?php if(isLocal()) {?>		
 		<a class="spaceLeft" href="<?php echo getLocalUrl($relPath)?>"><img src="icons/explorer.gif" alt="Explorer" title="View in explorer"/></a>
 <?php	}?>

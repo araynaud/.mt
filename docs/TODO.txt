@@ -20,7 +20,10 @@ use body?
 
 apply background to parent: move .bg.jpg to ..
 
-publish: upload album readme.txt, audio, other files
+publish:
+- OK audio
+- readme.txt (if album empty or if readme changed) 
+- other files
 
 Organize Tags: rename, delete, make dir
 Orgazine dirs: rename, merge, make tag
@@ -34,6 +37,17 @@ admin options/links
 edit menu
 
 -----------
+add youtube UI:
+
+enter URL or video id
+https://www.youtube.com/watch?v=qj21q1mYmxw
+download http://youtu.be/qj21q1mYmxw
+parse HTML, get meta tags
+<meta property="og:title" content="Demon cat-talks funny">
+<meta property="og:description" content="I have no idea what he is saying but I know he&#39;s one word away from something special,I just can&#39;t put my finger on it.">
+<meta property="og:image" content="http://i1.ytimg.com/vi/qj21q1mYmxw/hqdefault.jpg">
+
+
 BUGS
 Tag dirs: debug JS
 rotate, images in cache

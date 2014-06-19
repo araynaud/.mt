@@ -119,9 +119,20 @@ UI.multipleAjaxAsync = function(script, params, callbacks)
 
 
 //------------- Multiple upload --------------
+UI.uploadMusicFiles = function()
+{
+	UI.uploadFiles(album.musicFiles);
+};
+
 UI.uploadSelectedFiles = function()
 {
-	UI.selectedFileList = album.getSelection(true);
+	UI.uploadFiles(album.getSelection(true));
+}
+
+UI.uploadFiles = function(mediaFiles)
+{
+	UI.selectedFileList = mediaFiles;
+	if(isEmpty(UI.selectedFileList)) return;
 
 	UI.progressBar.displayFunction = formatSize;
 	UI.progressBar.setMax(UI.selectedFileList.length);
