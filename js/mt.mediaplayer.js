@@ -508,6 +508,17 @@ MediaPlayer.prototype.setupIcons = function()
 	};
 	icon=$.makeElement("img", iconAttr);
 	this.controlDiv.append(icon);	
+
+	iconAttr={
+		id: this.settings.id + "{0}uploadIcon",
+		src: "icons/upload16.png",
+		"class": "icon upload",
+		alt: "upload",
+		title: "upload files",
+		onclick: "UI.uploadMusicFiles()"
+	};
+	icon=$.makeElement("img", iconAttr);
+	this.controlDiv.append(icon);	
 };
 
 MediaPlayer.prototype.initSize = function()
