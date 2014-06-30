@@ -4,6 +4,11 @@ body
 	margin-bottom: 0px;
 }
 
+.bgwhite
+{
+	background-color: white;
+}
+
 .gradient
 {
 	position:absolute;

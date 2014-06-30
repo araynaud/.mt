@@ -14,6 +14,9 @@ http://maps.googleapis.com/maps/api/staticmap?center=wofford%20heights,CA&zoom=1
 Geocoding: http://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true
 Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=false
 
+Authentication for Single Page Apps
+http://madhatted.com/2014/6/17/authentication-for-single-page-apps
+
 ---------
 JS change background: modify with background-image
 use body?
@@ -46,7 +49,9 @@ parse HTML, get meta tags
 <meta property="og:title" content="Demon cat-talks funny">
 <meta property="og:description" content="I have no idea what he is saying but I know he&#39;s one word away from something special,I just can&#39;t put my finger on it.">
 <meta property="og:image" content="http://i1.ytimg.com/vi/qj21q1mYmxw/hqdefault.jpg">
+store in youtube.csv
 
+UI to edit, add, delete.
 
 BUGS
 Tag dirs: debug JS

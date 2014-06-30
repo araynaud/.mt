@@ -18,6 +18,7 @@ deleteTempImage();
 	<?php addStylesheet($relPath); ?>
 	<script type="text/javascript" src="../js/lib/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript" src="../js/mt.extensions.js"></script>
+	<script type="text/javascript" src="../js/mt.extensions.jquery.js"></script>
 	<!--script type="text/javascript" src="../js/mt.transitions.js"></script-->
 	<script type="text/javascript" src="../js/mt.color.js"></script>
 	<script type="text/javascript" src="../js/mt.ui.js"></script>
