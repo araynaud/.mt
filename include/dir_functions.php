@@ -353,6 +353,7 @@ function groupByName($relPath, $files, $byType=false)
 		splitFilePath($file,$subdir,$filename);
 		splitFilename($filename,$name,$ext);
 		$type = getFileType($file);
+		$filePath=combine($relPath,$subdir,$file);
 //debug("groupByName $file", "type $type");
 		$key = combine($subdir, $name);//, !$byType ? $type : false);
 
@@ -376,8 +377,12 @@ function groupByName($relPath, $files, $byType=false)
 			$element["subdir"] = $subdir;
 			$element["type"] = $type;
 			$element["exts"] = array();
+			$element["size"] = array();
+			$element["date"] = array();
 		}
 		$element["exts"][]=$ext;
+		$element["size"][]=filesize($filePath);
+		$element["date"][]=formatFilemtime($filePath);
 
 		if($byType) 
 			$distinct[$type][$key] = $element;

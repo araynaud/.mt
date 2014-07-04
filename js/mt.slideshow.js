@@ -14,7 +14,8 @@ function Slideshow(options)
 	this.increment=1;
 	this.start=0;
 	this.animate=false;
-	this.animStartZoom=2;
+	this.animStartZoom=1;
+	this.animEndZoom=2;
 	this.zoom=1;
 	this.play=false;
 	this.autoPlayAudio=false;
@@ -53,7 +54,7 @@ function Slideshow(options)
 		Slideshow.instances.push(this);
 }
 
-Slideshow.zoom = { labels: {none: "none", long: "fit long", short: "fit short" }}; // width: "fit width",  height: "fit height"} };
+Slideshow.zoom = { labels: {none: "none", long: "fit", short: "cover" }}; // width: "fit width",  height: "fit height"} };
 
 Slideshow.initZoomTypes = function ()
 {
@@ -296,11 +297,12 @@ Slideshow.prototype.toggleOption = function()
 Slideshow.prototype.toggleZoom = function()
 {
 	this.animStartZoom = modulo(this.animStartZoom+1, Slideshow.zoom.types.length);
+	this.animEndZoom = modulo(this.animEndZoom+1, Slideshow.zoom.types.length);
 	this.zoom = modulo(this.zoom+1, Slideshow.zoom.types.length);
 	if(this.animate)
 		this.setStatus("zoom: {0} / {1}".format(
 			Slideshow.zoom.labels[Slideshow.zoom.types[this.animStartZoom]],
-			Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]));
+			Slideshow.zoom.labels[Slideshow.zoom.types[this.animEndZoom]]));
 	else
 		this.setStatus("zoom: " + Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]);
 
@@ -467,7 +469,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 			this.mplayer.hide(this.transition.duration);
 		}
 
-		if(this.animate && this.play && this.animStartZoom != this.zoom)
+		if(this.animate && this.play && this.animEndZoom != this.zoom)
 		{
 			this.fitImage(false, this.animStartZoom);
 			var sl=this;
@@ -498,9 +500,9 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 //animate for how long: interval, interval/2, transition.duration
 Slideshow.prototype.animateImage = function()
 {
-	this.fitImage(true, this.zoom);
+	this.fitImage(true, this.animEndZoom);
 	if(album.rotate && this.angle)
-		this.currentImg.animateRotate(this.angle, 0, this.interval/2);
+		this.currentImg.animateRotate(this.angle, 0, this.interval - this.transition.duration);
 };
 
 Slideshow.prototype.showNextImage = function(increment)
@@ -527,7 +529,8 @@ Slideshow.prototype.autoShowNextImage = function()
 Slideshow.prototype.showComments = function(mediaFile)
 {
 	this.elements.description.html(mediaFile.description||"");
-	UI.renderTemplate("tagTemplate", this.elements.tags, Object.values(mediaFile.tags), null, {action: "removetag"});
+	if(window.UI && UI.renderTemplate)
+		UI.renderTemplate("tagTemplate", this.elements.tags, Object.values(mediaFile.tags), null, {action: "removetag"});
 };
 
 // ---- IMAGE display functions -------
@@ -581,7 +584,7 @@ Slideshow.prototype.fitImage = function (animate, zoomLevel)
 
 	var size = this.getImageSize(zoomLevel);
 	if(animate)
-		image.animate(size, this.transition.duration);
+		image.animate(size, this.interval - this.transition.duration);
 	else
 		image.css(size);
 };

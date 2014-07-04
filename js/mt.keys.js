@@ -97,8 +97,7 @@ UI.keys =
 		173: function() { MediaPlayer.slide.nextSize(-1); },
 		61: function() { MediaPlayer.slide.nextSize(1); },
 		189: function() { MediaPlayer.slide.nextSize(-1); },
-		187: function() { MediaPlayer.slide.nextSize(1); },
-
+		187: function() { MediaPlayer.slide.nextSize(1); }
 	},
 	"video": 
 	{
@@ -145,7 +144,7 @@ UI.keys =
 		'V': UI.playAllVideos,
 	//F: Facebook
 //		'F': function() { if(typeof toggleFacebookComments !=="undefined") toggleFacebookComments(); }
-		'F': function() { UI.toggleOption("downloadFileList"); },		
+		'F': function() { UI.toggleOption("downloadFileList"); }
 	}
 };
 

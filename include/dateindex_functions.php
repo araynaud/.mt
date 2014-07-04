@@ -15,7 +15,7 @@ function listTagFiles($relPath, $depth=0, $grouped=true)
 	$tagFiles = listFiles($relPath, $search);
 debug("tagFiles", $tagFiles);
 	if($grouped)
-		$tagFiles = groupByName($relPath, $tagFiles);
+		$tagFiles = groupByName("$relPath/.tag", $tagFiles);
 debug("tagFiles grouped", $tagFiles, true);
 	return $tagFiles;
 }

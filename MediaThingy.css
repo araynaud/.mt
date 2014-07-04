@@ -1088,6 +1088,11 @@ body.mobile
 	font-size: .6cm;
 }
 
+.mobile .title
+{
+	font-size: 18pt;
+}
+
 /* big UI widgets for mobile */
 .mobile input, .mobile select
 {
