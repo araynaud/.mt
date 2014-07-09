@@ -228,6 +228,14 @@ debug($type, count($typeFiles));
 	{
 		return @$this->groupedFiles[$type];
 	}
+
+	public function getFileByName($name)
+	{
+		foreach ($this->groupedFiles as $type => $files)
+			if(isset($files[$name]))
+				return $files[$name];
+		return null;
+	}
 	
 	public function countFilesByType($type)
 	{

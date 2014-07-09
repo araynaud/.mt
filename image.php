@@ -70,6 +70,29 @@ if($format=="thumbnail")
 }
 
 preventCaching();
+
+//make configurable: if irfan view is enabled.
+if($target && $size)
+{
+	$status = jpegResize($relPath, $file, $saveDir, $size);
+	if($status!==false) 
+	{
+		$imgType=getImageTypeFromExt($file);
+		if($format == "ajax")
+		{
+			$jsonResponse=array();
+			$jsonResponse["file"]=$file;
+			$jsonResponse["output"]=$inputFile;
+			$jsonResponse["time"]=getTimer();
+			echo jsValue($jsonResponse);
+			return;
+		}
+		if(!isDebugMode())
+			sendFileToResponse($outputDir, $file, "image/$imgType");
+		return;
+	}
+}
+
 if($transform) //only for JPEG, angle multiple of 90
 {
 	jpegLosslessRotate($relPath, $file, $transform);
@@ -92,10 +115,11 @@ if($transform) //only for JPEG, angle multiple of 90
 	if(!isDebugMode())
 	{
 		$imgType=getImageTypeFromExt($file);
-		setContentType("image",$imgType);
-		$fp = fopen(combine($relPath, $file), 'rb'); //stream the image directly from the generated file
-		fpassthru($fp);
-		fclose($fp);	
+		sendFileToResponse($outputDir, $file, "image/$imgType");
+//		setContentType("image",$imgType);
+//		$fp = fopen(combine($relPath, $file), 'rb'); //stream the image directly from the generated file
+//		fpassthru($fp);
+//		fclose($fp);	
 	}
 	return;
 }
@@ -114,7 +138,9 @@ if(!$img && $url)
 if(!$img)
 	$img=loadImageForResize($relPath, $file, $size, $imageInfo);
 
-if($img)
+if(!$img)
+	$img = exif_thumbnail($inputFile);
+else
 {
 	debug("loaded img", getTimer());
 	getImageInfo($inputFile, $img, $imageInfo);
@@ -133,7 +159,7 @@ if($img)
 	//Resize
 	if(($tool=="resize" || empty($tool)) && $size)
 	{
-		$img = resizeImage($img, $imageInfo, $size,$size);
+		$img = resizeImage($img, $imageInfo, $size, $size);
 		debug("resize", getTimer());
 	}
 
@@ -175,15 +201,13 @@ if($img)
 		imagestring($img, 5, 10, 50, "Selection: $x1,$y1 to $x2,$y2", $textcolor);
 	}
 }
-else
-	$img = exif_thumbnail($inputFile);
 
 //if target dir specified, write file or output directly to response
 $outputFile = NULL;
 if($saveFile && $tool=="save")
-	$outputFile = combine($relPath,$saveDir,$saveFile);
+	$outputFile = combine($relPath, $saveDir, $saveFile);
 else if($saveDir)
-	$outputFile = combine($relPath,$saveDir,$file);
+	$outputFile = combine($relPath, $saveDir, $file);
 
 //for AJAX: output image file Url when image ready
 if($format=="ajax" && $outputFile)

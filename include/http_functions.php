@@ -152,12 +152,13 @@ function getShareUrl($sharePath, $relPath, $file="")
 	return "file:///" . $localUrl;
 }
 
-function setContentType($ct="text", $type="plain")
+function setContentType($ct="text", $type="")
 {
+	$contentType = combine($ct, $type);
 	if(isDebugMode()) 
-		debug("Content-Type", "$ct/$type");
+		debug("Content-Type", $contentType);
 	else
-		header("Content-Type: $ct/$type");
+		header("Content-Type: $contentType");
 }
 
 function sendFileToResponse($relPath,$file,$contentType="",$attachment=true)
@@ -168,8 +169,9 @@ function sendFileToResponse($relPath,$file,$contentType="",$attachment=true)
 	$src_info = getimagesize($filePath);
 	$img_type=$src_info["mime"];
 
-	if(!empty($contentType)) 
-		header("Content-Type: $contentType");
+	if($contentType)
+		 setContentType($contentType);
+	//return;
 	header('Content-Length: ' . filesize($filePath));
 	if($attachment)
 	{

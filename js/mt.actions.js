@@ -97,7 +97,7 @@ UI.inputAction = function(params)
 			choices = Object.keys(choices);
 		}
 		//look how to pass parameters to template?
-		UI.renderTemplate("tagTemplate", UI.editChoicesList, choices, null, {action: params.action});
+		UI.renderTemplate("tagTemplate", UI.editChoicesList, choices, null, {action: params.action, multiple: true});
 		delete params.choices;
 	}
 	else
@@ -108,7 +108,7 @@ UI.inputAction = function(params)
 	UI.editAdminIcons.hide();
 	UI.editFieldDiv.show();
 	UI.editFieldLabel.html(params.field);
-	UI.editParams=params;
+	UI.editParams = params;
 
 //	UI.editField.val("");
 	if(isString(fieldValue))
@@ -120,7 +120,7 @@ UI.okInput = function()
 {
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
 	var value = UI.editField.val();
-	if(!mediaFile || !UI.editParams || !value) return;
+	if(!mediaFile || !UI.editParams) return; // || !value) return;
 
 	mediaFile.set(UI.editParams.field, value);
 	UI.editParams.to = value;
@@ -146,7 +146,12 @@ UI.fileActionAjax = function(params, showConfirm)
 	var scriptName=".admin/action.php"; //default action page. TODO: .upload / .admin based on User
 	if(params && params.script)
 		scriptName = params.script;
-
+	else if(params.multiple)
+	{
+		params.files=album.getSelectedFileNames();
+		params.script = ".admin/action_multiple.php";
+		return UI.fileAction(params, null, showConfirm);
+	}
 	return UI.doSelectedFiles(scriptName, params);
 }
 
@@ -160,7 +165,7 @@ UI.fileAction = function(params, windowName, showConfirm)
 		answer = confirm(params.action + " " + mediaFile.name + " ?");
 	if(!answer)		return false;
 
-	var scriptName=".admin/action"; //default action page
+	var scriptName=".admin/action.php"; //default action page
 	if(params && params.script)
 	{
 		scriptName = params.script;
@@ -169,7 +174,7 @@ UI.fileAction = function(params, windowName, showConfirm)
 	if(isMissing(windowName))
 	{
 		var callbacks = {success: UI.afterAction };
-		mediaFile.scriptAjax(scriptName + ".php", params, false, true, callbacks);
+		mediaFile.scriptAjax(scriptName, params, false, true, callbacks);
 	}
 	else
 		UI.goToPage(scriptName, params, windowName);

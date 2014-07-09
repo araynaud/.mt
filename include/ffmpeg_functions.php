@@ -421,4 +421,26 @@ $file = realpath ($file);
 	return $output;
 }
 
+//	i_view32.exe c:\test.bmp /resize=(100,100) /resample /aspectratio /convert=d:\$N_thumb.jpg
+function jpegResize($relPath, $file, $saveDir, $size)
+{	
+	$exePath=getExePath("EXE","_IRFANVIEW");
+	if(!$exePath || !$saveDir) return false;	
+
+debug("relPath",$relPath);
+debug("file",$file);
+debug("saveDir",$saveDir);
+debug("size",$size);
+
+	$outputFile = combine($relPath, $saveDir, $file);
+	$file = combine($relPath, $file);
+
+debug("input",$file);
+debug("output",$outputFile);
+	$cmd = makeCommand("[0] [1] /resize=([2],[2]) /resample /aspectratio /jpgq=60 /convert=[3]", $exePath, $file, $size, $outputFile);
+debug("command",$cmd);
+	$output = execCommand($cmd, false, false, false);	
+	return $output;
+}
+
 ?>

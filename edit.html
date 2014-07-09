@@ -34,7 +34,7 @@
 	<span id="adminIcons" class="admin">		
 		<img class="icon notdir" id="descIcon" src="icons/edit.gif"
 		title="edit description" alt="desc" 
-		onclick="UI.inputAction({action:'description', field:'description'})" />
+		onclick="UI.inputAction({action:'description', field:'description', multiple: true})" />
 
 		<img class="icon notdir" id="dateIcon" src="icons/date.png"
 		title="set date" alt="date" 
@@ -42,19 +42,19 @@
 
 		<img class="icon notdir" id="bestIcon" src="icons/star.png"
 		title="set as best" alt="best"
-		onclick="UI.fileActionAjax({action:'addtag', to:'best'})" />
+		onclick="UI.fileActionAjax({action:'addtag', to:'best', multiple: true})" />
 		
 		<img class="icon notdir" id="addTagIcon" src="icons/addtag.png"
 		title="add tag" alt="tag" 
-		onclick="UI.inputAction({action:'addtag', field:'tags', choices:album.tags})" />
+		onclick="UI.inputAction({action:'addtag', field:'tags', multiple: true, choices:album.tags})" />
 
 		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
 		title="move to parent" alt="move to parent"
-		onclick="UI.fileActionAjax({action:'move', to:'..'}, true)" />
+		onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true}, true)" />
 
 		<img class="icon notdir" id="parentIcon" src="icons/subdirs.gif" 
 		title="move" alt="move"
-		onclick="UI.inputAction({action:'move', field: 'subdir', choices: album.dirs})" />
+		onclick="UI.inputAction({action:'move', field: 'subdir', multiple: true, choices: album.dirs})" />
 		
 		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"
 		title="delete" alt="delete"

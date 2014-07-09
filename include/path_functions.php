@@ -108,12 +108,12 @@ function reqPathFile(&$path, &$file, $addFilters=true)
 	debug("reqPathFile", "$path / $file");
 }
 
-function postPath($path="")
+function postPath()
 {	
-	return postPath(@$_POST["path"]);
+	return getPath(@$_POST["path"]);
 }
 
-function reqPath($path="")
+function reqPath()
 {	
 	return getPath(@$_REQUEST["path"]);
 }
