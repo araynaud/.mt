@@ -2,7 +2,7 @@
 // media file, 1 per name
 class MediaFile extends BaseObject
 {
-    private $id;
+    //private $id;
     private $_filePath;
     protected $name;
     protected $subdir;
@@ -31,9 +31,6 @@ class MediaFile extends BaseObject
     public function __construct($album, $file)
 	{
 		$this->_parent=$album;
-		foreach ($file as $key => $value)
-			$this->$key = $value;
-
 		$this->setMultiple($file);
 
 		foreach($this->exts as $ext)
@@ -489,12 +486,23 @@ debug("deleteFile", "($dir, $file)");
 
 	public function addTag($tag)
 	{
-		$this->tags[]=$tag;
+		$this->tags[$tag] = $tag;
 debug("addTag " . $this->name, $tag);
+	}
+
+	public function removeTag($tag)
+	{
+		if(isset($this->tags[$tag]))
+			unset($this->tags[$tag]);
+debug("removeTag " . $this->name, $tag);
 	}
 
 	public function setTag($tag, $state)
 	{
+		if($state)
+			$this->addTag($tag);
+		else
+			$this->removeTag($tag);
 		return saveFileTag($this->getFileDir(), $this->name, $tag, $state);
 	}
 

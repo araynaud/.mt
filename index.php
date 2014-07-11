@@ -145,7 +145,7 @@ $(window).resize(function(event)
 <body class="<?php echo isMobile() && !isIpad() ? "mobile" : "desktop"; ?>">
 <?php $background=displayBackground($relPath, false);?>
 
-<div id="titleContainer" direction="down" callback="UI.setColumnWidths">
+<div id="titleContainer" direction="down" callback="setColumnWidths">
 	<div id="userDiv" class="floatR right noprint">
 		<span id="userLabel"> </span>
 		<img class="icon notupload" id="uploadLoginIcon" src="icons/upload.png" alt="Upload login" title="upload" onclick="User.login('upload')"/>
@@ -220,7 +220,7 @@ $(window).resize(function(event)
 			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
 		</div>
-		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="UI.setContentWidth"></div>
+		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="setContentWidth"></div>
 	</div>
 
 	<div id="files" class="container margin">

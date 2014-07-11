@@ -122,8 +122,8 @@ UI.okInput = function()
 	var value = UI.editField.val();
 	if(!mediaFile || !UI.editParams) return; // || !value) return;
 
-	mediaFile.set(UI.editParams.field, value);
 	UI.editParams.to = value;
+//	mediaFile.set(UI.editParams.field, UI.editParams.to);
 	UI.fileActionAjax(UI.editParams);
 	UI.resetInput();
 };
@@ -138,30 +138,30 @@ UI.resetInput = function()
 
 };
 
-UI.fileActionAjax = function(params, showConfirm)
+UI.fileActionAjax = function(params)
 {
 	if(album.getSelection().length <=1)
-		return UI.fileAction(params, null, showConfirm)
+		return UI.fileAction(params)
 
 	var scriptName=".admin/action.php"; //default action page. TODO: .upload / .admin based on User
 	if(params && params.script)
 		scriptName = params.script;
 	else if(params.multiple)
 	{
-		params.files=album.getSelectedFileNames();
+		params.name=album.getSelectedFileNames();
 		params.script = ".admin/action_multiple.php";
-		return UI.fileAction(params, null, showConfirm);
+		return UI.fileAction(params);
 	}
 	return UI.doSelectedFiles(scriptName, params);
 }
 
-UI.fileAction = function(params, windowName, showConfirm)
+UI.fileAction = function(params)
 {
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
 	if(!mediaFile) return false;
 
 	var answer=true;
-	if(showConfirm)
+	if(params.confirm)
 		answer = confirm(params.action + " " + mediaFile.name + " ?");
 	if(!answer)		return false;
 
@@ -171,6 +171,14 @@ UI.fileAction = function(params, windowName, showConfirm)
 		scriptName = params.script;
 		delete params.script;
 	}
+
+	var windowName;
+	if(params && params.script)
+	{
+		windowName = params.window;
+		delete params.window;
+	}
+
 	if(isMissing(windowName))
 	{
 		var callbacks = {success: UI.afterAction };
@@ -193,7 +201,7 @@ UI.goToPage = function(scriptName, params, windowName)
 UI.goToUrl = function(link, windowName)
 {
 	if(windowName)	window.open(link, windowName);
-	else	location=link;
+	else	window.location=link;
 	return true;
 };
 
@@ -223,8 +231,27 @@ UI.ajaxError = function(xhr, textStatus, errorThrown)
 //pass response, use .action and .parameters
 UI.afterAction = function(response, mediaFile, params)
 {
-	if(!mediaFile) return false;
+	if(!mediaFile && !response.mediaFiles) return false;
 	if(!params || !params.action) return false;
+
+	UI.setStatus("action done in " + response.time);
+	//handle multiple files if params.multiple && response.files
+	//response.files: update mediaFiles
+	if(response.mediaFiles)
+	{
+		var mediaFiles = response.mediaFiles;
+		delete response.mediaFiles;
+		for(var key in mediaFiles)
+		{
+			var rmf = mediaFiles[key];
+			var mf = album.getMediaFileByName(key, rmf.type);
+			UI.afterAction(response, mf, params);
+		}
+		return;
+	}
+
+	if(params.field)
+		mediaFile.set(params.field, params.to);
 
 	switch(params.action)
 	{

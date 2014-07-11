@@ -45,13 +45,13 @@
 	</div>
 
 	<div class="fixedRight controls">
-		<img class="iconTrans admin" id="bestButtonBig" src="icons/star-48.png" onclick="UI.fileActionAjax({action:'addtag', to:'best'})" title="select as best" alt="Best"/>
+		<img class="iconTrans admin" id="bestButtonBig" src="icons/star-48.png" onclick="UI.fileActionAjax({action: 'addtag', to: 'best'})" title="select as best" alt="Best"/>
 		<br/>
-		<img class="iconTrans admin" id="parentButtonBig" src="icons/folder_up.png" onclick="UI.fileActionAjax({action:'move', to:'..'},true)"
+		<img class="iconTrans admin" id="parentButtonBig" src="icons/folder_up.png" onclick="UI.fileActionAjax({action: 'move', to: '..', confirm: true})"
 		title="move to parent" alt="move to parent"/>
 		<br/>
-		<img class="iconTrans admin" id="deleteButtonBig" src="icons/remove.png" onclick="UI.fileActionAjax({action:'delete'},true)" title="delete" alt="delete"/>
+		<img class="iconTrans admin" id="deleteButtonBig" src="icons/remove.png" onclick="UI.fileActionAjax({action: 'delete', confirm: true})" title="delete" alt="delete"/>
 		<br/>
-		<img class="iconTrans admin" id="bgButtonBig" src="icons/background64.png" onclick="UI.fileActionAjax({action:'background'},true)" title="set as background" alt="background"/>
+		<img class="iconTrans admin" id="bgButtonBig" src="icons/background64.png" onclick="UI.fileActionAjax({action: 'background', confirm: true})" title="set as background" alt="background"/>
 	</div>
 </div>

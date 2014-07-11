@@ -248,10 +248,10 @@ Album.prototype.getMediaFileById = function(id, type)
 };
 
 //get mediafile from currently hover div
-Album.prototype.getMediaFileByName = function(name)
+Album.prototype.getMediaFileByName = function(name, type)
 {  
 	var id = MediaFile.getId(name);
-	return this.getMediaFileById(id);
+	return this.getMediaFileById(id, type);
 };
 
 //Filter by json object {name: "a", type: "image", date: "", description: "" }
@@ -460,7 +460,7 @@ Album.prototype.getSelectedFileNamesArray = function()
 Album.prototype.getSelectedFileNames = function()
 {
 	var names = this.getSelectedFileNamesArray();
-	return names.join(":");
+	return names.join("|");
 };
 
 Album.prototype.selectSlideshowFiles = function()

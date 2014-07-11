@@ -28,7 +28,7 @@ $tag = reqParam("tag", $to);
 
 //output options
 $indent = reqParam("indent", 1);
-$includeEmpty = reqParamBoolean("empty",true);
+$includeEmpty = reqParamBoolean("empty");
 
 $mf = MediaFile::getMediaFile();
 debugVar("mf");
@@ -90,7 +90,7 @@ if(!$message)
 //return MediaFile after action
 //should be null for delete and new file for move
 
-$mf = MediaFile::getMediaFile();
+//$mf = MediaFile::getMediaFile();
 debugVar("mf");
 
 //JSON response

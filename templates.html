@@ -108,9 +108,9 @@
 <script id="tagTemplate" type="text/x-jsrender"> 
 	{{if #data=='best'}}
 		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"
-		{{if true}} onclick="UI.fileActionAjax({action:'{{:~action}}',to:'{{:#data}}'}, {{:~confirm ? 'true' : 'false'}})"{{/if}}/>
+		{{if true}} onclick="UI.fileActionAjax({action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple ? 'true' : 'false'}}, confirm:{{:~confirm ? 'true' : 'false'}} })"{{/if}}/>
 	{{else}}
-		<a class="tag nowrap" {{if true}} onclick="UI.fileActionAjax({ action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple}} }, {{:~confirm ? 'true' : 'false' }})"{{/if}}>{{:makeTitle()}}</a>
+		<a class="tag nowrap" {{if true}} onclick="UI.fileActionAjax({ action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple ? 'true' : 'false'}}, confirm: {{:~confirm ? 'true' : 'false'}} })"{{/if}}>{{:makeTitle()}}</a>
 	{{/if}}
 </script>
 

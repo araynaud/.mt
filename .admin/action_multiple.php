@@ -10,8 +10,8 @@ setContentType("text", "plain");
 //reqPathFile($path, $file);
 $path = reqPath();
 debugVar("path");
-$files = reqParam("files");
-$files = explode(":", $files);
+$files = reqParam("name");
+$files = explode("|", $files);
 
 $action = reqParam("action");
 debugVar("action");
@@ -28,9 +28,10 @@ $tag = reqParam("tag", $to);
 
 //output options
 $indent = reqParam("indent", 1);
-$includeEmpty = reqParamBoolean("empty",true);
+$includeEmpty = reqParamBoolean("empty",false);
 
 $album = new Album($path, true);
+
 $messages=array();
 
 foreach ($files as $file)
@@ -104,6 +105,8 @@ $response["action"] = $action;
 $response["parameters"] = $parameters;
 $response["result"] = $result;
 $response["message"] = $messages;
+$response["files"] = $files;
+$response["mediaFiles"] = $album->getMediaFiles("IMAGE|VIDEO");
 //$response["file"] = $mf;
 $response["time"] = getTimer();
 echo jsValue($response, $indent, $includeEmpty);

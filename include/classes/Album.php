@@ -226,7 +226,14 @@ debug($type, count($typeFiles));
 	
 	public function getFilesByType($type)
 	{
-		return @$this->groupedFiles[$type];
+		if(isset($this->groupedFiles[$type]))
+			return $this->groupedFiles[$type];
+		return array();
+	}
+
+	public function countFilesByType($type)
+	{
+		return count(@$this->groupedFiles[$type]);
 	}
 
 	public function getFileByName($name)
@@ -237,14 +244,20 @@ debug($type, count($typeFiles));
 		return null;
 	}
 	
-	public function countFilesByType($type)
+	public function getMediaFiles($types="")
 	{
-		return count(@$this->groupedFiles[$type]);
-	}
+		if(!$types)
+			return flattenArray($this->groupedFiles);
 
-	public function getMediaFiles()
-	{
-		return flattenArray($this->groupedFiles);
+		if(is_string($types))
+			$types = explode('|', $types);
+		$mediaFiles = array();
+		foreach ($types as $type)
+		{
+			$typeFiles = $this->getFilesByType($type);
+			$mediaFiles= array_merge($mediaFiles, $typeFiles);
+		}
+		return $mediaFiles;
 	}
 
 	public function countMediaFiles()

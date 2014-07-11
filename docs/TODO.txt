@@ -18,10 +18,37 @@ Authentication for Single Page Apps
 http://madhatted.com/2014/6/17/authentication-for-single-page-apps
 
 ---------
-JS change background: modify with background-image
+1 UI.afterAction handle multiple files if params.multiple && response.files
+response.files: update mediaFiles
+
+for (mf in response.files)
+{
+	find album.groupedFiles[type][name],  
+	mf.update
+	update with mf.data with Object.merge
+}
+
+2 after image rotate:
+update csv data: append to existing file will supersede value.
+then option to reload and rewrite data.
+do not store ratio, just calculate width/height
+ 
+3 cache album content: save JSON: .album.json
+delete and regenerate JSON file when content updated or file is older than...
+action.php, upload.php, action_multiple.php
+
+4 autotag rules:
+panorama if ratio > N (use different slideshow: .hd, slide from left to right)
+anim if anim gif
+
+album.cache.file;.album.json
+album.cache.expire;1day
+
+5 apply background to parent: move .bg.jpg to ..
+
+OK JS change background: modify with background-image
 use body?
 
-apply background to parent: move .bg.jpg to ..
 
 publish:
 - OK audio
@@ -130,8 +157,8 @@ OK checkbox to reset selection: select all or none
 OK search by tags: or (current) / and / exact
 modify MediaFile.testProperty or new method
 
-1 actions: apply to selection. multiple ajax or pass multiple names
-for short actions (addtag, removetag, move, delete): send all selected filenames, do all on the server in 1 call
+OK actions: apply to selection. multiple ajax
+OK pass multiple names for short actions (addtag, removetag, move, delete): send all selected filenames, do all on the server in 1 call
 reload album ajax
 
 for long actions (convert video): call afterAction callback after each file in doMultipleFiles

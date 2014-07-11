@@ -85,7 +85,9 @@ switch (strtolower($format))
 		break;
 	default:
 		setContentType("text", "plain");
-		echo jsValue($data, $indent, $includeEmpty);
+		$json = jsValue($data, $indent, $includeEmpty);
+		//writeTextFile("$relPath/.album.json", $json);
+		echo $json;
 }
 
 ?>

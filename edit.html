@@ -50,7 +50,7 @@
 
 		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
 		title="move to parent" alt="move to parent"
-		onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true}, true)" />
+		onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true, confirm: true})" />
 
 		<img class="icon notdir" id="parentIcon" src="icons/subdirs.gif" 
 		title="move" alt="move"
@@ -58,11 +58,11 @@
 		
 		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"
 		title="delete" alt="delete"
-		onclick="UI.fileActionAjax({action:'delete'}, true)" />
+		onclick="UI.fileActionAjax({action: 'delete', confirm: true})" />
 		
 		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" 
 		title="set as background" alt="background"
-		onclick="UI.fileActionAjax({action:'background'}, true)" />
+		onclick="UI.fileActionAjax({action: 'background', confirm: true})" />
 
 		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png"
 		title="refresh" alt="refresh" 
