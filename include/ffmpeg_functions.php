@@ -397,6 +397,13 @@ qt-FS on mp4:
 qt-faststart.exe ..\..\Pictures\f1\2012_Bresil_Dimanche_F1.mp4 df1.mp4
 */
 
+function isIrfanViewEnabled()
+{
+	$exePath=getExePath("EXE","_IRFANVIEW");
+	return $exePath != false;
+}
+
+
 function jpegLosslessRotate($relPath, $file="", $transform)
 {	
 	global $config;

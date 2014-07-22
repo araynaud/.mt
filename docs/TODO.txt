@@ -18,16 +18,12 @@ Authentication for Single Page Apps
 http://madhatted.com/2014/6/17/authentication-for-single-page-apps
 
 ---------
-1 UI.afterAction handle multiple files if params.multiple && response.files
-response.files: update mediaFiles
+Bugs
+slideshow:
+edit icons not displayed on first image
+when .ss image does not exist: not displayed
 
-for (mf in response.files)
-{
-	find album.groupedFiles[type][name],  
-	mf.update
-	update with mf.data with Object.merge
-}
-
+---------
 2 after image rotate:
 update csv data: append to existing file will supersede value.
 then option to reload and rewrite data.
@@ -46,33 +42,37 @@ album.cache.expire;1day
 
 5 apply background to parent: move .bg.jpg to ..
 
-OK JS change background: modify with background-image
-use body?
 
-
-publish:
+6 publish:
 - OK audio
 - readme.txt (if album empty or if readme changed) 
 - other files
 
-Organize Tags: rename, delete, make dir
+7 Organize Tags: rename, delete, make dir
 Orgazine dirs: rename, merge, make tag
 
-custom order files
+8 custom order files
 files set date: display js calendar
 
-Responsive menu.
+9 Responsive menu.
 list of dirs
 admin options/links
 edit menu
 
 -----------
-add youtube UI:
+OK 1 UI.afterAction handle multiple files if params.multiple && response.files
+response.files: update mediaFiles
+
+OK JS change background: modify with background-image
+use body?
+
+
+10 add youtube UI:
 
 enter URL or video id
 https://www.youtube.com/watch?v=qj21q1mYmxw
-download http://youtu.be/qj21q1mYmxw
-parse HTML, get meta tags
+download and parse HTML, get meta tags from http://youtu.be/qj21q1mYmxw
+
 <meta property="og:title" content="Demon cat-talks funny">
 <meta property="og:description" content="I have no idea what he is saying but I know he&#39;s one word away from something special,I just can&#39;t put my finger on it.">
 <meta property="og:image" content="http://i1.ytimg.com/vi/qj21q1mYmxw/hqdefault.jpg">

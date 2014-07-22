@@ -60,8 +60,8 @@ if($format=="thumbnail")
 	if($saveDir)
 	{
 		createDir($relPath, $saveDir);
-		$outputFilename = combine($outputDir, $file);
-		writeBinaryFile($outputFilename, $tnImage);
+		$outputFile = combine($outputDir, $file);
+		writeBinaryFile($outputFile, $tnImage);
 	}
 	if($tnImage)
 		header("Content-Type: image/jpeg");
@@ -82,7 +82,9 @@ if($target && $size)
 		{
 			$jsonResponse=array();
 			$jsonResponse["file"]=$file;
-			$jsonResponse["output"]=$inputFile;
+			$outputFile = combine($outputDir, $file);
+			$jsonResponse["output"] = diskPathToUrl($outputFile);
+			$jsonResponse["filesize"] = filesize($outputFile);
 			$jsonResponse["time"]=getTimer();
 			echo jsValue($jsonResponse);
 			return;
