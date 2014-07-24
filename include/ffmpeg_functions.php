@@ -226,7 +226,7 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 	$data["width"] = arrayGetCoalesce($metadata, "STREAM.$video.width", "STREAM.width");
 	$data["height"] = arrayGetCoalesce($metadata, "STREAM.$video.height", "STREAM.height");
 	$display_aspect_ratio = fractionValue(arrayGet($metadata, "STREAM.0.display_aspect_ratio"));
-	$data["ratio"] = $display_aspect_ratio;
+//	$data["ratio"] = $display_aspect_ratio;
 
 	//$data["streams"] = $streams;
 	$data["frameRate"] = fractionValue(arrayGet($metadata, "STREAM.$video.avg_frame_rate"));

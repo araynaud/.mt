@@ -22,9 +22,6 @@ UI.modes=
 	},
 	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"] },
 	slideshow: { scrollable: false, show: ["#slideshowContainer"], 
-		onShow: function() { 
-			UI.displayEdit("#slideshowControls");
-		},
 		onHide: function()
 		{
 			UI.slideshow.togglePlay(false);

@@ -12,6 +12,7 @@ function MediaFile(data)
 		this.url=data;
 	this.getId();
 	this.getTitle();
+	this.getRatio();
 	this.filename = this.getFilename();
 
 	this.initTags();
@@ -61,6 +62,14 @@ MediaFile.prototype.getTitle = function()
 		this.title = this.name.makeTitle();
 	return this.title;
 };
+
+MediaFile.prototype.getRatio = function()
+{
+	if(!this.ratio)
+		this.ratio = this.width / this.height;
+	return this.ratio;
+};
+
 
 MediaFile.getId = function(name, type)
 {

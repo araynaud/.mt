@@ -424,8 +424,8 @@ debug("getImageSize", $is);
 	$imageInfo["format"] = substringAfter($is["mime"],"/");
 	$imageInfo["width"] = $is[0];
 	$imageInfo["height"] = $is[1];
-	if($imageInfo["height"])
-		$imageInfo["ratio"] =  $imageInfo["width"] / $imageInfo["height"];
+//	if($imageInfo["height"])
+//		$imageInfo["ratio"] =  $imageInfo["width"] / $imageInfo["height"];
 	return $imageInfo;
 }
 

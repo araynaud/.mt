@@ -45,6 +45,8 @@ UI.displayEditEvent = function()
 
 UI.displayEdit = function(filebox)
 {
+	if(isEmpty(UI.editDiv)) return;
+
 	//UI.addStatus(UI.mode + " edit: " + !!filebox);
 	if(!filebox || !User.getRole())
 	{
