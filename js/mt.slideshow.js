@@ -314,7 +314,7 @@ Slideshow.prototype.toggleZoom = function()
 
 Slideshow.prototype.toggleControls = function()
 {
-	$("#slideshowContainer .controls").fadeToggle('slow');
+	$("#slideshowContainer .controls").toggle('slow');
 	$('#fbComments').fadeToggle('slow');
 };
 
@@ -421,8 +421,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		var ss=this;
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
-	if(UI.editDiv)
-		UI.editDiv.appendTo("#slideshowControls").show();
+
+	UI.displayEdit("#slideshowControls");
 };
 
 Slideshow.prototype.styleSlide = function(el)

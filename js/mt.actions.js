@@ -39,12 +39,13 @@ UI.displayEditEvent = function()
 	else
 	{
 		fileboxes.bindReset("mouseenter", function() { UI.displayEdit($(this)); });	
-		fileboxes.bindReset("mouseleave", function() { UI.displayEdit(); });
+		fileboxes.bindReset("mouseleave", function() { if(UI.mode=="index") UI.displayEdit(); });
 	}
 };
 
 UI.displayEdit = function(filebox)
 {
+	//UI.addStatus(UI.mode + " edit: " + !!filebox);
 	if(!filebox || !User.getRole())
 	{
 		UI.editDiv.hide().appendTo(UI.body); //to avoid losing it when refreshing index
@@ -53,10 +54,11 @@ UI.displayEdit = function(filebox)
 
 	UI.editDiv.appendTo(filebox).show();
 
-	UI.currentFile=album.getByAttribute(filebox);
+	UI.currentFile=album.getByAttribute(filebox) || UI.slideshow.currentFile;
+	if(!UI.currentFile) return;
+
 	UI.rotateIcons.toggle(UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
-
 	$("#cb_selected").toggleChecked(UI.currentFile.selected, true);
 //	UI.setStatus(UI.currentFile.id + " " + UI.currentFile.selected);
 
