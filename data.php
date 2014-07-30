@@ -51,7 +51,7 @@ startTimer();
 $getData = reqParam("data", "MediaFile");
 //output options
 $format=reqParam("format", "json");
-$indent=reqParam("indent", 0);
+$indent=reqParam("indent", 1);
 $includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 

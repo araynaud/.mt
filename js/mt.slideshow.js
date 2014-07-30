@@ -421,8 +421,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		var ss=this;
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
-
-	UI.displayEdit("#slideshowControls");
+	if(UI.displayEdit)
+		UI.displayEdit("#slideshowControls");
 };
 
 Slideshow.prototype.styleSlide = function(el)

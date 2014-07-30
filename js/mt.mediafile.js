@@ -711,12 +711,12 @@ MediaFile.prototype.play = function()
 	switch(this.type)
 	{
 		case "VIDEO":
-			if(!MediaPlayer.slide || !this.isVideoStream())
+			if(!window.MediaPlayer || !MediaPlayer.slide || !this.isVideoStream())
 				return false;
 		case "IMAGE":
 			return UI.slideshow.display(this);
 		case "AUDIO":
-			if(MediaPlayer.audio)
+			if(window.MediaPlayer && MediaPlayer.audio)
 				return MediaPlayer.audio.loadMediaFile(this);
 			break;
 	}

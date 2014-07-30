@@ -54,7 +54,9 @@ $transform = getParam("transform");
 createDir($relPath, $saveDir);
 $outputDir = combine($relPath, $saveDir);
 
-if($format=="thumbnail")
+$ivEnabled = isIrfanViewEnabled();
+
+if($ivEnabled && $format=="thumbnail")
 {
 	$tnImage = getExifThumbnail($inputFile);
 	if($saveDir)
@@ -72,7 +74,7 @@ if($format=="thumbnail")
 preventCaching();
 
 //make configurable: if irfan view is enabled.
-if($target && $size)
+if($ivEnabled && $target && $size)
 {
 	$status = jpegResize($relPath, $file, $saveDir, $size);
 	if($status!==false) 
