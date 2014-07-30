@@ -341,7 +341,7 @@ function getDistinctNames($files)
 	return $distinct;
 }
 
-function groupByName($relPath, $files, $byType=false)
+function groupByName($relPath, $files, $byType=false, $details=true)
 {
 	global $relPathG;
 	$relPathG=$relPath;
@@ -350,11 +350,12 @@ function groupByName($relPath, $files, $byType=false)
 	foreach ($files as $file)
 	{
 		//split subdir/file.ext
-		splitFilePath($file,$subdir,$filename);
-		splitFilename($filename,$name,$ext);
+		splitFilePath($file, $subdir, $filename);
+		splitFilename($filename, $name, $ext);
 		$type = getFileType($file);
-		$filePath=combine($relPath,$subdir,$file);
-//debug("groupByName $file", "type $type");
+		$filePath=combine($relPath, $subdir, $filename);
+		$exists=file_exists($filePath);
+//debug("groupByName $subdir / $file", $filePath);
 		$key = combine($subdir, $name);//, !$byType ? $type : false);
 
 		if($byType) 
@@ -377,13 +378,18 @@ function groupByName($relPath, $files, $byType=false)
 			$element["subdir"] = $subdir;
 			$element["type"] = $type;
 			$element["exts"] = array();
-			$element["size"] = array();
-			$element["date"] = array();
+			if($details && $exists)
+			{
+				$element["size"] = array();
+				$element["date"] = array();
+			}
 		}
 		$element["exts"][]=$ext;
-		$element["size"][]=filesize($filePath);
-		$element["date"][]=formatFilemtime($filePath);
-
+		if($details && $exists)
+		{
+			$element["size"][]=filesize($filePath);
+			$element["date"][]=formatFilemtime($filePath);
+		}
 		if($byType) 
 			$distinct[$type][$key] = $element;
 		else

@@ -4,7 +4,7 @@ require_once("include/config.php");
 function getFileData(&$getData, $path, $file)
 {
 	global $config;
-
+	$details=reqParamBoolean("details");
 	$relPath=getDiskPath($path);
 	$filePath=combine($relPath, $file);
 	$getData = strtolower($getData);
@@ -15,7 +15,7 @@ function getFileData(&$getData, $path, $file)
 		case "files":
 			$files = listFiles($relPath, $search); 
 			if($getData == "groupedfiles")
-				$files = groupByName($relPath, $files, true);
+				$files = groupByName($relPath, $files, true, $details);
 			return $files;
 		case "tags":
 			$tags = loadTagFiles($relPath, $search["depth"]);
