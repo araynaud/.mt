@@ -17,6 +17,10 @@ Reverse: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.9
 Authentication for Single Page Apps
 http://madhatted.com/2014/6/17/authentication-for-single-page-apps
 
+
+$("..").is(":focus")
+HTMLElementObject.blur()
+
 ---------
 Bugs
 slideshow:

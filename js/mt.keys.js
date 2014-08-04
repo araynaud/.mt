@@ -78,7 +78,11 @@ UI.keys =
 		36: function() { UI.slideshow.showImage(0);	},//home: first
 		35: function() { UI.slideshow.showImage(-1); },	//end: last
 		27: function() { UI.setMode(); },		// ESC key: close slideshow
-		32: function() { UI.slideshow.togglePlay(); },	 //SPACE: play/pause
+		32: function() {
+			if(UI.slideshow.mplayer && UI.slideshow.mplayer.playerFocus()) return;
+			UI.addStatus("active: " +document.activeElement.id);
+			UI.slideshow.togglePlay(); 
+		},	 //SPACE: play/pause
 		45: function() { UI.fileActionAjax({action:'addtag', to:'best'}); },		// Insert key: move to best
 		46: function() { UI.fileActionAjax({action:'delete'}, true); },	 //Delete: delete /.bad
 		'P': function() { UI.fileActionAjax({action:'move', to:'..'}, true); },	 //P: move to parent
@@ -101,7 +105,11 @@ UI.keys =
 	},
 	"video": 
 	{
-		32: function() { MediaPlayer.video.togglePlay(); },
+		32: function()
+		{ 
+			if(!MediaPlayer.video.playerFocus())
+				MediaPlayer.video.togglePlay();
+		},
 		//N: next music track
 		'N': function() { MediaPlayer.video.playNext(); },
 		'P': function() { MediaPlayer.video.playPrevious(); },
@@ -138,12 +146,10 @@ UI.keys =
 		'P': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.playPrevious(); },
 		'L': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.togglePlaylist(); },
 		'I': function() { UI.displayBrowserInfo(); },
-	//S key: slideshow
-//		'S': function() { UI.slideshow.display(); },		
 	//V: video player
 		'V': UI.playAllVideos,
 	//F: Facebook
-//		'F': function() { if(typeof toggleFacebookComments !=="undefined") toggleFacebookComments(); }
+//		'F': function() { if(window.toggleFacebookComments) toggleFacebookComments(); }
 		'F': function() { UI.toggleOption("downloadFileList"); }
 	}
 };

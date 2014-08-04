@@ -162,3 +162,15 @@
 		<br/>
 	</div>
 </script>
+
+
+<!-- template for playlist items -->
+<script id="audioLinkTemplate" type="text/x-jsrender">
+	<div id="{{:type}}PlaylistItem_{{:#index}}" class="translucent">
+	{{if duration}}
+		<div class="duration small floatR">{{:~formatTime(duration)}}</div> 
+	{{/if}}
+		<a href="{{:~fileUrl(#data)}}" class="track" title="{{:title}}">{{: description || title}}</a>
+	</div>
+</script>
+

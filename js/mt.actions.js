@@ -238,7 +238,7 @@ UI.afterAction = function(response, mediaFile, params)
 	if(!mediaFile && !response.mediaFiles) return false;
 	if(!params || !params.action) return false;
 
-	UI.setStatus("action done in " + response.time);
+//	UI.setStatus("action done in " + response.time);
 	//handle multiple files if params.multiple && response.files
 	//response.files: update mediaFiles
 	if(response.mediaFiles)

@@ -94,6 +94,7 @@ Slideshow.prototype.setupElements = function()
 Slideshow.prototype.setMediaPlayer = function(mediaPlayer)
 {
 	this.mplayer = mediaPlayer;
+	mediaPlayer.slideshow = this;
 	if(this.mplayer)
 		this.mplayerSlide = this.mplayer.getElement();
 };
@@ -233,7 +234,6 @@ Slideshow.prototype.remove = function(file)
 Slideshow.prototype.display = function(start)
 {
 	this.setStart(start);
-//	alert("Slideshow.display:{0} / {1} pics.".format(start,this.pics.length));
 	if(isEmpty(this.pics)) return;
 	if(!this.elements.container) this.setContainer();
 
@@ -250,11 +250,12 @@ Slideshow.prototype.hideImage = function()
 
 Slideshow.prototype.togglePlay = function(playState)
 {
-//	var iconsdir = String.combine(Album.serviceUrl ,"icons");
 	this.play=valueOrDefault(playState,!this.play);
 	this.setStatus(this.play ? "playing" : "paused");
+
 	var icon = this.play ? "pause.png" : "play.png";
-	this.elements.playButton.attr("src", String.combine(Album.serviceUrl ,"icons", "media-" + icon));
+	icon = String.combine(Album.serviceUrl ,"icons", "media-" + icon);
+	this.elements.playButton.attr("src", icon);
 
 	if(this.currentFile.isVideo())
 	{
@@ -465,7 +466,9 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 	{
 		if(this.mplayer)
 		{
-			//this.mplayer.pause();
+			var pl= this.play;
+			this.mplayer.pause();
+			this.play = pl;
 			this.mplayer.hide(this.transition.duration);
 		}
 
@@ -502,7 +505,7 @@ Slideshow.prototype.animateImage = function()
 {
 	this.fitImage(true, this.animEndZoom);
 	if(album.rotate && this.angle)
-		this.currentImg.animateRotate(this.angle, 0, this.interval - this.transition.duration);
+		this.currentImg.animateRotate(this.angle, 0, this.interval / 2);
 };
 
 Slideshow.prototype.showNextImage = function(increment)

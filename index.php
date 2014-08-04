@@ -56,7 +56,9 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.album.js"></script>
 <script type="text/javascript" src="js/mt.transition.js"></script>
 <script type="text/javascript" src="js/mt.slideshow.js"></script>
-<script type="text/javascript" src="js/mt.mediaplayer.js"></script>
+
+<?php addJavascript(getConfig("MediaPlayer.js"))?>
+
 <script type="text/javascript" src="js/mt.ui.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>
 <script type="text/javascript" src="js/mt.index.js"></script>
@@ -82,7 +84,7 @@ $(document).ready(function()
 
 Album.onLoad = function (albumInstance) 
 {
-	try
+//	try
 	{
 		if(!window.album) return;
 
@@ -119,11 +121,7 @@ Album.onLoad = function (albumInstance)
 			if(mf) mf.play();
 		}
 	}
-	catch(err)
-	{
-		alert(Object.toText(err,"\n"));
-	}
-
+//	catch(err)	{ alert(Object.toText(err,"\n")); }
 };
 
 $(window).resize(function(event)
@@ -152,7 +150,7 @@ $(window).resize(function(event)
 		<img class="icon notadmin" id="adminLoginIcon" src="icons/login.gif" alt="Admin" title="admin" onclick="User.login('admin')"/>
 		<img class="icon upload" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.login()"/>
 <?php if(!isLocal()) {?>		
-		<img id="visitImg" class="" alt="phpMyVisites" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
+		<img id="visitImg" class="" alt="" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
 <?php	}?>
 		<br/>
 		<img class="icon" src="icons/info.png" id="browserInfoIcon" alt="info" onclick="UI.displayBrowserInfo();"/>
@@ -230,7 +228,7 @@ $(window).resize(function(event)
 	<div id="contentFooter" class="wrapper"><?php echo getConfig("FOOTER");?></div>
 </div>
 
-<div id="audioContainer" class="footerRightCorner right noprint">
+<div id="audioContainer" class="footerRightCorner right noprint" style="width:200px">
 	<div id="musicPlayerMessage" class="text"></div>
 	<div id="musicPlayerControls"></div>	
 	<div id="musicPlayerPlaylist" class="playlist scrollY"></div>

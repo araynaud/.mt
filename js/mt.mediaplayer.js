@@ -1,56 +1,3 @@
-var playerSettings=
-{
-	audio:
-	{
-		id:"musicPlayer",
-	//	skinName: "five",
-		allowHtml5: true,
-		allowFlash: true,
-		width: 260,
-		height: 24,
-		autostart: false,		
-		item: 0,
-		repeat: "always",
-		controlbar: "top",		
-		"playlist.display": "html",
-		"playlist.position": "top",
-		"playlist.showAllItems": false,
-		"playlist.size": 24,
-		"playlist.maxHeight": 400
-	},
-	video:
-	{
-		id:"videoPlayer",
-	//	skinName: "five",
-		allowHtml5: true,
-		allowFlash: true,
-		size: 1,
-		autostart: true,
-		item: 0,
-		repeat: "list",
-		controlbar: "over",
-		"playlist.display": "html",
-		"playlist.position": "right",
-		"playlist.showAllItems": true,
-		"playlist.size": 300,
-		uiMode: "video"
-	},
-	slide:
-	{
-		id:"slidePlayer",
-		container: "videoSlide",
-		allowHtml5: true,
-		allowFlash: true,
-		size: 1,
-		autostart: false,
-		item: 0,
-		repeat: "list",
-		controlbar: "over",
-		uiMode: "slideshow"
-	}
-
-};
-
 // constructor for player instance
 function MediaPlayer(settings)
 {
@@ -71,6 +18,62 @@ function MediaPlayer(settings)
 	MediaPlayer[this.playerKey]=this;
 }
 
+MediaPlayer.playerSettings=
+{
+	audio:
+	{
+		id:"musicPlayer",
+	//	skinName: "five",
+		type: "audio",
+		allowHtml5: true,
+		allowFlash: true,
+		width: 260,
+		height: 24,
+		autostart: false,		
+		item: 0,
+		repeat: "always",
+		controlbar: "top",		
+		"playlist.display": "html",
+		"playlist.position": "top",
+		"playlist.showAllItems": false,
+		"playlist.size": 24,
+		"playlist.maxHeight": 400
+	},
+	video:
+	{
+		id:"videoPlayer",
+	//	skinName: "five",
+		type: "video",
+		allowHtml5: true,
+		allowFlash: true,
+		size: 1,
+		autostart: true,
+		item: 0,
+		repeat: "list",
+		controlbar: "over",
+		"playlist.display": "html",
+		"playlist.position": "right",
+		"playlist.showAllItems": true,
+		"playlist.size": 300,
+		uiMode: "video"
+	},
+	slide:
+	{
+		id:"slidePlayer",
+		container: "videoSlide",
+		type: "video",
+		allowHtml5: true,
+		allowFlash: true,
+		size: 1,
+		autostart: false,
+		item: 0,
+		repeat: "list",
+		controlbar: "over",
+		uiMode: "slideshow"
+	}
+
+};
+
 MediaPlayer.videoPlayerSizes=[
 	["small", 400,225],
 	["default",640,360],
@@ -83,8 +86,8 @@ MediaPlayer.getPlayerConfig = function(key,setting)
 {
 	if(!key) 		return "";
 	keyl=key.toLowerCase();
-	if(!setting)	return playerSettings[keyl] || key;
-	return playerSettings[keyl] ? playerSettings[keyl][setting] : key;
+	if(!setting)	return MediaPlayer.playerSettings[keyl] || key;
+	return MediaPlayer.playerSettings[keyl] ? MediaPlayer.playerSettings[keyl][setting] : key;
 };
 
 MediaPlayer.getPlayerId = function(key)
@@ -94,8 +97,7 @@ MediaPlayer.getPlayerId = function(key)
 
 MediaPlayer.getPlayer = function(key)
 {
-	var player=jwplayer(MediaPlayer.getPlayerId(key));
-	return player;
+	return jwplayer(MediaPlayer.getPlayerId(key));
 };
 
 MediaPlayer.prototype.getPlayer = function()
@@ -197,21 +199,20 @@ MediaPlayer.prototype.loadPlayer = function(fileUrl, imageUrl, duration)
 	return this;
 };
 
-//load single file
-MediaPlayer.prototype.loadPlayer2 = function(fileUrl, imageUrl, duration)
+
+MediaPlayer.getInstance = function(playerKey, mediaFiles)
 {
-//TODO: remove player if it already exists. or load new file and change settings?
-//	this.player.load({file: fileUrl, image: imageUrl, duration: duration});
+	if(!MediaPlayer[playerKey])
+		return new MediaPlayer(playerKey);
+	return MediaPlayer[playerKey];
+}
 
-	this.settings.file=fileUrl;
-	this.settings.image=imageUrl;
-	this.setupPlayer();
-//	this.player.setup(this.settings);
-//this.play();
-	if(fileUrl && this.settings.uiMode)
-		UI.setMode(this.settings.uiMode);
-
-	return this;
+MediaPlayer.loadPlaylist = function(playerKey, mediaFiles)
+{
+	var mp = new MediaPlayer(playerKey);
+	if(mp.settings.type=="video")
+		return mp.loadVideoPlaylist(mediaFiles);
+	return mp.loadMusicPlaylist(mediaFiles);
 };
 
 MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
@@ -239,6 +240,9 @@ MediaPlayer.prototype.loadMusicPlaylist = function(audioFiles)
 //TODO, pass startItem : index or filename
 MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 {
+	if(this.hasPlaylist())
+  		return this;
+
 	if(isEmpty(mediaFiles)) return;
 
 	var playlist=MediaPlayer.makePlaylist(album.relPath, mediaFiles);
@@ -725,4 +729,7 @@ MediaPlayer.prototype.toggle = function(options)
 	return this.getElement().toggle(options);
 };
 
-
+MediaPlayer.prototype.playerFocus = function()
+{
+	return (document.activeElement == this.player);
+};

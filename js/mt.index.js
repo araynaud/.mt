@@ -606,19 +606,28 @@ UI.setupEvents = function()
 		UI.addStatus("Selection: {0} - {1}".format(pp, UI.currentFile.index));
 	});
 
+	UI.setupPlayers();
+};
+
+UI.setupPlayers = function()
+{
+	if(!window.MediaPlayer) return;
+
 	$("#playMusicIcon").toggle(album.musicFiles);	
 	if(config.MediaPlayer.audio.enabled)
-	{
-		new MediaPlayer("audio");
-		MediaPlayer.audio.loadMusicPlaylist(album.musicFiles);
-	}
+		MediaPlayer.loadPlaylist("audio", album.musicFiles);
 
-	if(config.MediaPlayer.video.enabled)
-		new MediaPlayer("video");
 	if(config.MediaPlayer.slide.enabled)
 		UI.slideshow.setMediaPlayer(new MediaPlayer("slide"));
 };
 
+UI.playAllVideos = function()
+{ 
+	if(!config.MediaPlayer.video.enabled)
+		return;
+
+	MediaPlayer.loadPlaylist("video", album.mediaFiles);
+};
 
 UI.scrollPages = function(page)
 {	

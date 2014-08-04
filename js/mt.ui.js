@@ -150,14 +150,6 @@ UI.toggleOption = function(option, state, noEvent)
 	$("#cb_" + option).toggleChecked(state, noEvent);
 }
 
-UI.playAllVideos = function()
-{ 
-	if(!MediaPlayer.video.hasPlaylist())
-		MediaPlayer.video.loadVideoPlaylist(album.mediaFiles); 
-	if(MediaPlayer.video.hasPlaylist())
-		UI.setMode("video");
-};
-
 //---------- switch between index / slideshow / video player
 
 UI.changeMode = function(oldMode, newMode, fade)
