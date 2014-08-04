@@ -10,6 +10,6 @@ transition.changeMode;false
 slideshow.changeMode;false
 slideshow.zoomFunction;crossFade
 
-MediaPlayer.video.enabled;false
-MediaPlayer.audio.enabled;false
-MediaPlayer.slide.enabled;false
+MediaPlayer.video.enabled;true
+MediaPlayer.audio.enabled;true
+MediaPlayer.slide.enabled;true
