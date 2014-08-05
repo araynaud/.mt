@@ -163,10 +163,33 @@
 	</div>
 </script>
 
+<script id="playlistLinkTemplate" type="text/x-jsrender">
+	<div id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
+		{{if ~config("ENABLE_FFMPEG") }}
+			<a href="{{:~scriptUrl(#data, 'data.php', 'data=metadata')}}" target="metadata">
+				<img class="floatR" src="icons/info.png" height="12px" style="margin: 2px;" title="info {{>filename}}"/>
+		</a>
+		{{/if}}
+		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
+		<div class="number small floatL">{{:(#index+1)}}</div>
+
+		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
+		{{if tnsizes }}
+			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" />
+		{{else}}
+			<img class="floatR icon" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
+		{{/if}}
+		</a>
+		<a href="{{:~fileUrl(#data)}}" class="track">{{>title}}</a>
+		{{if true tmpl="descriptionTagTemplate"/}}
+		<br/>
+	</div>
+</script>
+
 
 <!-- template for playlist items -->
 <script id="audioLinkTemplate" type="text/x-jsrender">
-	<div id="{{:type}}PlaylistItem_{{:#index}}" class="translucent">
+	<div id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
 	{{if duration}}
 		<div class="duration small floatR">{{:~formatTime(duration)}}</div> 
 	{{/if}}

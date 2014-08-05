@@ -28,9 +28,6 @@ function Html5Player(settings)
 if(!window.MediaPlayer)
 	MediaPlayer = Html5Player;
 
-//http://www.lastrose.com/html5-audio-video-playlist/
-//http://jsfiddle.net/lastrose/vkMqR/
-
 Html5Player.playerSettings=
 {
 	audio:
@@ -48,10 +45,12 @@ Html5Player.playerSettings=
 		key: "video",
 		type: "video",
 		id:"videoPlayer",
+		size: 1,
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
 		style: { width: 640, height: 360 },
+		class: "shadow photoBorder",
 		playlist: {	position: "right", size: 300, showAll: true } //, maxHeight: 400 }
 	},
 	slide:
@@ -59,6 +58,7 @@ Html5Player.playerSettings=
 		key: "slide",
 		type: "video",
 		id:"slidePlayer",
+		size: 1,
 		container: "videoSlide",
 		autostart: true,
 		repeat: false,
@@ -68,6 +68,13 @@ Html5Player.playerSettings=
 	}
 
 };
+
+Html5Player.videoPlayerSizes=[
+	["small", 400,225],
+	["default",640,480],
+	["large", 960,540],
+	["hd", 1280,720]
+];
 
 Html5Player.init = function(playerKey)
 {
@@ -98,6 +105,7 @@ Html5Player.prototype.setupEvents = function()
     { 
 //    	if(window.console) console.log("player.play");
     	h5p.setMessage("playing"); 
+		h5p.settings.autostart = true;
 		if(h5p.slideshow && !h5p.slideshow.play)
 			h5p.slideshow.togglePlay(true);
     });
@@ -107,6 +115,7 @@ Html5Player.prototype.setupEvents = function()
 //    	if(window.console) console.log("player.pause");
 		if(h5p.player.ended) return;
 	   	h5p.setMessage("paused"); 
+		h5p.settings.autostart = false;
 		if(h5p.slideshow && h5p.slideshow.play)
 			h5p.slideshow.togglePlay(false);
     });
@@ -134,12 +143,11 @@ Html5Player.prototype.loadFromHtml = function()
 	}
 
     var h5p=this;
-    this.trackLinks = this.playlistDiv.find("div a, a.track");
+    this.trackLinks = this.playlistDiv.find("a.track");
     this.trackLinks.click(function(e)
     {
         e.preventDefault();
         link = $(this);
-		h5p.settings.autostart = true;
         h5p.loadFile(link.parent().index());
     });
 
@@ -155,12 +163,95 @@ Html5Player.prototype.createPlayer = function()
 	});
 	if(this.settings.style)
 		this.player.css(this.settings.style);
+	if(this.settings.class)
+		this.player.addClass(this.settings.class);
+
+	this.initSize();
 
 	this.player.appendTo(this.container);
 
 	this.jqplayer = this.player;
 	this.player = this.player[0];
 	return this.player;
+};
+
+//TODO pass optional controlDiv id 
+//todo play icon even if only 1 item
+// onclick functions? instance or static?
+Html5Player.prototype.setupIcons = function()
+{
+	if(!this.player) return;
+	if(!this.controlDiv)
+		this.controlDiv=$("#{0}Controls".format(this.settings.id));
+
+	this.controlDiv.html("");
+	this.controlDiv.append('<img id="{0}PrevButton" class="icon icontr" title="previous (P)" src="icons/arrow-first.png" alt="previous" onclick="MediaPlayer.{1}.playPrevious();"/>'.format(this.settings.id, this.playerKey));
+	var icon = this.getPlayPauseIcon();
+	this.controlDiv.append('<img id="{0}PlayButton" class="icon icontr" title="play/pause (M)" src="{2}" alt="play" onclick="MediaPlayer.{1}.togglePlay();"/>'.format(this.settings.id, this.playerKey, icon));
+	this.controlDiv.append('<img id="{0}NextButton" class="icon icontr" title="next (N)" src="icons/arrow-last.png" alt="next" onclick="MediaPlayer.{1}.playNext();"/>'.format(this.settings.id, this.playerKey));
+	
+	var iconAttr={
+		id: this.settings.id + "PlaylistButton",
+		src: "icons/playlist.png",
+		"class": "icon icontr",
+		alt: "playlist",
+		title: "playlist",
+		onclick: "MediaPlayer.{0}.togglePlaylist()".format(this.playerKey)
+	};
+	icon=$.makeElement("img", iconAttr);
+	this.controlDiv.append(icon);	
+	if(!isMissing(this.settings.size))
+	{
+		iconAttr={
+			id: this.settings.id + "{0}ResizeButtonD",
+			src: "icons/24-zoom-actual.png",
+			"class": "icon icontr",
+			alt: "smaller",
+			title: "resize player",
+			onclick: "MediaPlayer.{0}.nextSize(-1)".format(this.playerKey)
+		};
+		icon=$.makeElement("img", iconAttr);//.html(iconAttr.alt);
+		this.controlDiv.append(icon);	
+
+		iconAttr={
+			id: this.settings.id + "{0}ResizeButtonL",
+			src: "icons/24-zoom-fill.png",
+			"class": "icon icontr",
+			alt: "larger",
+			title: "resize player",
+			onclick: "MediaPlayer.{0}.nextSize(1)".format(this.playerKey)
+		};
+
+		icon=$.makeElement("img", iconAttr);
+		this.controlDiv.append(icon);	
+	}
+	
+	iconAttr={
+		id: this.settings.id + "{0}CloseButton",
+		src: "icons/delete.png",
+		"class": "icon icontr",
+		alt: "close",
+		title: "close player",
+		onclick: "MediaPlayer.{0}.remove()".format(this.playerKey)
+	};
+	icon=$.makeElement("img", iconAttr);
+	this.controlDiv.append(icon);	
+
+	iconAttr={
+		id: this.settings.id + "{0}uploadIcon",
+		src: "icons/upload16.png",
+		"class": "icon upload",
+		alt: "upload",
+		title: "upload files",
+		onclick: "UI.uploadMusicFiles()"
+	};
+	icon=$.makeElement("img", iconAttr);
+	this.controlDiv.append(icon);	
+};
+
+Html5Player.prototype.getPlayPauseIcon = function()
+{
+	return this.isPlaying() ? "icons/pause.png" : "icons/play.png";
 };
 
 //render playlist from mediaFiles array
@@ -179,11 +270,16 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 
 	if(!isEmpty(this.playlistDiv) && mediaFiles.length>1)
 	{
-		UI.renderTemplate("audioLinkTemplate", this.playlistDiv, mediaFiles);
+		UI.renderTemplate("playlistLinkTemplate", this.playlistDiv, mediaFiles);
 		this.playlistDiv.width(this.settings.playlist.size);
 		this.playlistDiv.css("max-height", this.settings.playlist.maxHeight || this.settings.style.height || "");
 		this.playlistDiv.css("max-width", this.settings.playlist.maxWidth || "");
 	}
+
+	if(mediaFiles.length>1)
+		this.setupIcons();
+
+
 	return this.loadFromHtml();
 }
 
@@ -200,6 +296,7 @@ Html5Player.prototype.loadFile = function(index)
 	this.player.poster = this.currentFile.getThumbnailUrl(1);
 
 	this.displaySelectedItem();
+	this.setSize();
     this.player.load();
 
 	if(this.settings.uiMode)
@@ -248,7 +345,7 @@ Html5Player.prototype.playNext = function(incr)
 	this.loadFile(this.current + incr);
 }
 
-Html5Player.prototype.playPrev = function(incr)
+Html5Player.prototype.playPrevious = function(incr)
 {
 	incr = valueOrDefault(incr, 1);
 	this.loadFile(this.current - incr);
@@ -280,37 +377,36 @@ Html5Player.prototype.toggle = function(options)
 	return this.getElement().toggle(options);
 };
 
-MediaPlayer.prototype.initSize = function()
+Html5Player.prototype.initSize = function()
 {
 	if(isMissing(this.settings.size)) return;
 
-	var size=MediaPlayer.videoPlayerSizes[this.settings.size];
+	var size=Html5Player.videoPlayerSizes[this.settings.size];
 	this.settings.width=size[1];
 	this.settings.height=size[2];
 //	this.setMessage(size[0]);
 }
 
-MediaPlayer.prototype.nextSize = function(incr)
+Html5Player.prototype.nextSize = function(incr)
 {
 	incr=valueOrDefault(incr,1);
-	this.settings.size = modulo(this.settings.size + incr, MediaPlayer.videoPlayerSizes.length);
+	this.settings.size = modulo(this.settings.size + incr, Html5Player.videoPlayerSizes.length);
 	return this.setSize();
 };
 
-MediaPlayer.prototype.setSize = function()
+Html5Player.prototype.setSize = function()
 {
-	var size=MediaPlayer.videoPlayerSizes[this.settings.size];
+	var size=Html5Player.videoPlayerSizes[this.settings.size];
 	this.setMessage(size[0]);
 
 	this.playlistDiv.css("max-height", size[2]);
-//	this.playlistDiv.height(size[2]);
-
 	if(!this.player) return;
 
-	return this.player.resize(size[1], size[2]);
+	var width = (this.currentFile && this.currentFile.ratio) ? this.currentFile.ratio * size[2] : size[1];
+	return this.resize(width, size[2]);
 };
 
-Html5Player.prototype.resize = function(width,height)
+Html5Player.prototype.resize = function(width, height)
 {
 	$(this.player).css({width: width, height: height});
 };

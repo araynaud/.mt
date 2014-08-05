@@ -110,9 +110,8 @@ UI.keys =
 			if(!MediaPlayer.video.playerFocus())
 				MediaPlayer.video.togglePlay();
 		},
-		//N: next music track
-		'N': function() { MediaPlayer.video.playNext(); },
-		'P': function() { MediaPlayer.video.playPrevious(); },
+		39: function() { MediaPlayer.video.playNext(); },
+		37: function() { MediaPlayer.video.playPrevious(); },
 		'L': function() { MediaPlayer.video.togglePlaylist(); },
 
 		107: function() { MediaPlayer.video.nextSize(1) },
@@ -147,7 +146,7 @@ UI.keys =
 		'L': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.togglePlaylist(); },
 		'I': function() { UI.displayBrowserInfo(); },
 	//V: video player
-		'V': UI.playAllVideos,
+		'V': function() { UI.playAllVideos() },
 	//F: Facebook
 //		'F': function() { if(window.toggleFacebookComments) toggleFacebookComments(); }
 		'F': function() { UI.toggleOption("downloadFileList"); }

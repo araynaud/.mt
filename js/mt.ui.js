@@ -20,7 +20,9 @@ UI.modes=
 			if(UI.rotatePages)	UI.rotatePages(false);
 		}
 	},
-	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"] },
+	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"],
+		onHide: function() { MediaPlayer.video.pause(); }
+	 },
 	slideshow: { scrollable: false, show: ["#slideshowContainer"], 
 		onHide: function()
 		{

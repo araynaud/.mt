@@ -587,7 +587,7 @@ Slideshow.prototype.fitImage = function (animate, zoomLevel)
 
 	var size = this.getImageSize(zoomLevel);
 	if(animate)
-		image.animate(size, this.interval - this.transition.duration);
+		image.animate(size, this.interval / 2);
 	else
 		image.css(size);
 };
