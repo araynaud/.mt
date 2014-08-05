@@ -45,11 +45,11 @@ Html5Player.playerSettings=
 		key: "video",
 		type: "video",
 		id:"videoPlayer",
-		size: 1,
+		size: 0,
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
-		style: { width: 640, height: 360 },
+//		style: { width: 640, height: 360 },
 		class: "shadow photoBorder",
 		playlist: {	position: "right", size: 300, showAll: true } //, maxHeight: 400 }
 	},
@@ -63,7 +63,7 @@ Html5Player.playerSettings=
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
-		style: { width: 640, height: 360 },
+//		style: { width: 640, height: 360 },
 		playlist: {	position: "down", showAll: false, maxHeight: 400 }
 	}
 
@@ -71,7 +71,7 @@ Html5Player.playerSettings=
 
 Html5Player.videoPlayerSizes=[
 	["small", 400,225],
-	["default",640,480],
+	["default",640,360],
 	["large", 960,540],
 	["hd", 1280,720]
 ];
@@ -396,6 +396,7 @@ Html5Player.prototype.nextSize = function(incr)
 
 Html5Player.prototype.setSize = function()
 {
+	if(isMissing(this.settings.size)) return;
 	var size=Html5Player.videoPlayerSizes[this.settings.size];
 	this.setMessage(size[0]);
 
