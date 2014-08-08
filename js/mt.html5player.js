@@ -49,7 +49,6 @@ Html5Player.playerSettings=
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
-//		style: { width: 640, height: 360 },
 		class: "shadow photoBorder",
 		playlist: {	position: "right", size: 300, showAll: true } //, maxHeight: 400 }
 	},
@@ -63,7 +62,6 @@ Html5Player.playerSettings=
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
-//		style: { width: 640, height: 360 },
 		playlist: {	position: "down", showAll: false, maxHeight: 400 }
 	}
 
@@ -272,7 +270,6 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 	{
 		UI.renderTemplate("playlistLinkTemplate", this.playlistDiv, mediaFiles);
 		this.playlistDiv.width(this.settings.playlist.size);
-		this.playlistDiv.css("max-height", this.settings.playlist.maxHeight || this.settings.style.height || "");
 		this.playlistDiv.css("max-width", this.settings.playlist.maxWidth || "");
 	}
 
