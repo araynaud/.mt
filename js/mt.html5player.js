@@ -298,8 +298,6 @@ Html5Player.prototype.loadFile = function(index)
 	this.current = modulo(index, this.mediaFiles.length);
 
 	this.currentFile = this.mediaFiles[this.current];
-
-	this.jqiframe.show();
 	var isEmbedded = this.currentFile.isExternalVideoStream();
 	if(isEmbedded)
 	{
@@ -312,7 +310,8 @@ Html5Player.prototype.loadFile = function(index)
 		this.player.poster = this.currentFile.getThumbnailUrl(1);
 	   this.player.load();
 	}
-	this.jqiframe.toggle(isEmbedded);
+	if(this.jqiframe)
+		this.jqiframe.toggle(isEmbedded);
 	this.jqplayer.toggle(!isEmbedded);
 
 	this.displaySelectedItem();
@@ -429,7 +428,8 @@ Html5Player.prototype.setSize = function()
 Html5Player.prototype.resize = function(width, height)
 {
 	this.jqplayer.css({width: width, height: height});
-	this.jqiframe.css({width: width, height: height});
+	if(this.jqiframe)
+		this.jqiframe.css({width: width, height: height});
 };
 
 Html5Player.prototype.displaySelectedItem = function(index)
