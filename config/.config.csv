@@ -163,6 +163,10 @@ fb.app_id;159679107375436
 
 youtube.videoUrl;http://www.youtube.com/watch?v={0}
 youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
+youtube.embedUrl;http://www.youtube.com/v/{0}
+youtube.iframeUrl;http://www.youtube.com/embed/{0}
+vimeo.iframeUrl;http://player.vimeo.com/video/{0}
+vimeo.imageUrl;http://i.vimeocdn.com/video/{0}.jpg?mw=600
 
 visittracker.enabled;true
 visittracker.siteId;238250

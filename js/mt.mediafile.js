@@ -150,11 +150,23 @@ MediaFile.isLocalVideoStream = function(mediaFile)
 	return mediaFile.isLocalVideoStream();
 };
 
-MediaFile.prototype.isLocalVideoStream = function(mediaFile)
+MediaFile.prototype.isLocalVideoStream = function()
 {
 	var stream = this.isVideoStream();
 	return stream && stream!="youtube";
 };
+
+MediaFile.isExternalVideoStream = function(mediaFile)
+{
+	return mediaFile.isExternalVideoStream();
+};
+
+MediaFile.prototype.isExternalVideoStream = function()
+{
+	var stream = this.isVideoStream();
+	return stream && (stream=="youtube" || stream=="vimeo");
+};
+
 
 MediaFile.prototype.hasType = function(type, subType)
 {
@@ -230,7 +242,7 @@ MediaFile.prototype.getFilePath = function(ext)
 MediaFile.getFileUrl = function (mediaFile, ext)
 {
 	if(mediaFile.stream=="youtube")
-		return config.youtube.videoUrl.format(mediaFile.id);
+		return config.youtube.embedUrl.format(mediaFile.id);
 
 	var filename=mediaFile.filename;
 	if(isMissing(ext))

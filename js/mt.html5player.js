@@ -154,6 +154,8 @@ Html5Player.prototype.loadFromHtml = function()
 
 Html5Player.prototype.createPlayer = function()
 {
+	this.initSize();
+
 	this.player = $.makeElement(this.type, {
 		id: this.settings.id + "_" + this.type,
 		preload: "auto"
@@ -164,13 +166,21 @@ Html5Player.prototype.createPlayer = function()
 	if(this.settings.class)
 		this.player.addClass(this.settings.class);
 
-	this.initSize();
-
 	this.player.appendTo(this.container);
-
 	this.jqplayer = this.player;
 	this.player = this.player[0];
-	return this.player;
+
+	if(this.type!="video") return;
+	
+	this.iframe = $.makeElement("iframe", {id: this.settings.id + "_iframe"});
+	if(this.settings.style)
+		this.iframe.css(this.settings.style);
+	if(this.settings.class)
+		this.iframe.addClass(this.settings.class);
+
+	this.iframe.appendTo(this.container);
+	this.jqiframe = this.iframe;
+	this.iframe = this.iframe[0];
 };
 
 //TODO pass optional controlDiv id 
@@ -244,7 +254,7 @@ Html5Player.prototype.setupIcons = function()
 		onclick: "UI.uploadMusicFiles()"
 	};
 	icon=$.makeElement("img", iconAttr);
-	this.controlDiv.append(icon);	
+//	this.controlDiv.append(icon);	
 };
 
 Html5Player.prototype.getPlayPauseIcon = function()
@@ -288,14 +298,26 @@ Html5Player.prototype.loadFile = function(index)
 	this.current = modulo(index, this.mediaFiles.length);
 
 	this.currentFile = this.mediaFiles[this.current];
-	this.player.title  = this.currentFile.title;
-    this.player.src    = this.currentFile.getFileUrl(this.currentFile.isVideoStream());
-	this.player.poster = this.currentFile.getThumbnailUrl(1);
+
+	this.jqiframe.show();
+	var isEmbedded = this.currentFile.isExternalVideoStream();
+	if(isEmbedded)
+	{
+		this.iframe.src = this.currentFile.getFileUrl();
+	}
+	else
+	{
+		this.player.title  = this.currentFile.title;
+	    this.player.src    = this.currentFile.getFileUrl(this.currentFile.isVideoStream());
+		this.player.poster = this.currentFile.getThumbnailUrl(1);
+	   this.player.load();
+	}
+	this.jqiframe.toggle(isEmbedded);
+	this.jqplayer.toggle(!isEmbedded);
 
 	this.displaySelectedItem();
 	this.setSize();
-    this.player.load();
-
+ 
 	if(this.settings.uiMode)
 		UI.setMode(this.settings.uiMode);
 
@@ -406,7 +428,8 @@ Html5Player.prototype.setSize = function()
 
 Html5Player.prototype.resize = function(width, height)
 {
-	$(this.player).css({width: width, height: height});
+	this.jqplayer.css({width: width, height: height});
+	this.jqiframe.css({width: width, height: height});
 };
 
 Html5Player.prototype.displaySelectedItem = function(index)

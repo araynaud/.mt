@@ -84,6 +84,26 @@ store in youtube.csv
 
 UI to edit, add, delete.
 
+embed youtube
+<embed width="420" height="345" src="http://www.youtube.com/v/qj21q1mYmxw">
+<iframe width="640" height="360" src="http://www.youtube.com/embed/qj21q1mYmxw" allowfullscreen></iframe>
+
+<iframe width="1600" height="319" src="//www.youtube.com/embed/qj21q1mYmxw" frameborder="0" allowfullscreen></iframe>
+
+https://r15---sn-o097znee.googlevideo.com/videoplayback?c=web&clen=440389&cpn=dVixLNYQ0p141fCZ&cver=as3&dur=27.678&expire=1407742708&fexp=902408%2C906335%2C914084%2C917000%2C927622%2C931983%2C934024%2C934030%2C934118%2C940218%2C941415%2C944609%2C945122%2C946023&gir=yes&id=o-AEK0JxGhbcO_saLOvwRskLUJfovdJDnMzFkMOJKpFVrK&initcwndbps=2076000&ip=71.198.47.138&ipbits=0&itag=140&keepalive=yes&key=yt5&lmt=1394279422460409&mm=31&ms=au&mt=1407720992&mv=m&mws=yes&range=0-237567&ratebypass=yes&requiressl=yes&signature=C77285732AB0D051151CEBC35E9CD5E44478CC76.8C9199FE77E0B7F2F766FDDF92D616EBD56EA21F&source=youtube&sparams=clen%2Cdur%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Crequiressl%2Csource%2Cupn%2Cexpire&sver=3&upn=x37z_SF7Wvk
+
+--------------
+vimeo:
+<iframe src="//player.vimeo.com/video/84413334" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+<p><a href="http://vimeo.com/84413334">Rob Bakker: A Wing-suit Base Jump Story</a> from <a href="http://vimeo.com/intel">Intel</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+image url:
+
+<div class="video" data-thumb="http://i.vimeocdn.com/video/468603247.jpg?mw=600" style="background-image: url(&quot;http://i.vimeocdn.com/video/468603247.jpg?mw=600&quot;);"><div class="flideo cloaked"><video x-webkit-airplay="allow" preload="metadata" src="http://pdl.vimeocdn.com/20188/261/236950356.mp4?token2=1407804247_1707acb76c93fefe463541dc50d38bce&amp;aksessionid=a000d65f9c59d280"></video></div></div>
+
+----------
+
+
 BUGS
 Tag dirs: debug JS
 rotate, images in cache

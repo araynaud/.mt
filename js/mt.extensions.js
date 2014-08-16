@@ -326,11 +326,11 @@ String.substringBefore = function(s, sub, last, stringOrEmpty, include)
 {
 	var pos=last ? s.lastIndexOf(sub) : s.indexOf(sub);
 	if(pos<0) 
-		return stringOrEmpty ? "" : s;
+		return stringOrEmpty ? "" : s.toString();
 	if(include)
 		pos+=sub.length;
 
-	return s.substring(0,pos);
+	return s.toString().substring(0,pos);
 };
 
 String.prototype.substringBefore = function(sub, last, stringOrEmpty, include)
@@ -342,10 +342,10 @@ String.substringAfter = function(s, sub, last, stringOrEmpty, include)
 {
 	var pos=last ? s.lastIndexOf(sub) : s.indexOf(sub);
 	if(pos==-1) 
-		return stringOrEmpty ? s : "";
+		return stringOrEmpty ? s.toString() : "";
 	if(!include)
 		pos+=sub.length;
-	return s.substring(pos);
+	return s.toString().substring(pos);
 }
 
 String.prototype.substringAfter = function(sub, last, stringOrEmpty, include)
@@ -582,6 +582,13 @@ Array.prototype.countBy = function(field)
 	}
 	return result;	
 }
+
+Array.prototype.distinct = function(field)
+{
+	var distinctCount = this.countBy(field);
+	return Object.keys(distinctCount);	
+}
+
 
 //divide array into N slices
 //depending on distinct values for a field or function of the elements
