@@ -63,6 +63,15 @@ function getVar(name)
     return window[name];
 }
 
+//This code loads the IFrame Player API code asynchronously.
+function loadJavascript(src)
+{
+	var tag = document.createElement('script');
+	tag.src = src;
+	var firstScriptTag = document.getElementsByTagName('script')[0];
+	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
 //String EXTENSION METHODS
 String.PATH_SEPARATOR="/";
 String.setSeparator = function(sep)
@@ -204,6 +213,47 @@ String.prototype.format = function()
 	s = s.replace(reg, "");
 	return s;
 };
+
+String.toBold = function (str)
+{
+	return 	"<b>" + str + "</b>";
+};
+
+String.toLink = function (text, href)
+{
+	href = valueOrDefault(href, "#"+ text);
+	return 	"<a href='#{0}'>{0}</a>".format(text, href);
+};
+
+String.parseKeywords = function(text, words, format)
+{
+	var reg;
+	format = valueOrDefault(format, String.toBold);
+	//format: if function, call it, if string: use as format string, otherwise, default function
+	if(isString(format))
+	{
+		formatString = format;
+		format = function(word) { return formatString.format(word); };
+	}
+
+	//in replace: format(match, position, text);
+	if(isArray(words))	words = words.join("|");
+
+	reg = new RegExp("\\b(" + words + ")\\b", "gi");
+	text = text.replace(reg, format);
+	return text;
+};
+
+String.prototype.parseKeywords = function(words, format)
+{
+	return String.parseKeywords(this, words, format);
+};
+
+String.makeTitle = function(str)
+{
+	if(isMissing(str)) return "";
+	return str.toString().makeTitle();
+}
 
 String.prototype.makeTitle = function()
 {
@@ -944,6 +994,7 @@ function formatTime(seconds)
 	var minutes=Math.floor(seconds/60);
 	var hours=Math.floor(minutes/60);
 	seconds=seconds % 60;
+	minutes=minutes % 60;
 	if(minutes<10 && hours>0)	minutes="0"+minutes;
 	if(seconds<10)				seconds="0"+seconds;
 	var timeString="{0}:{1}".format(minutes,seconds);
