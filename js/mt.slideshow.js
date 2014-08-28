@@ -313,6 +313,12 @@ Slideshow.prototype.toggleZoom = function()
 		this.fitVideo();
 };
 
+Slideshow.prototype.toggleAnimate = function(state)
+{
+	this.animate = valueOrDefault(state, !this.animate);
+	this.setStatus("animate: " + this.animate);
+};
+
 Slideshow.prototype.toggleControls = function()
 {
 	$("#slideshowContainer .controls").toggle('slow');

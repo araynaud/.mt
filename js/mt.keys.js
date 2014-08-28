@@ -89,6 +89,8 @@ UI.keys =
 		'T': function() { UI.slideshow.nextTransition(); },	//T: next transition
 		'C': function() { UI.slideshow.toggleControls(); },	//C: controls
 		'Z': function() { UI.slideshow.toggleZoom(); }, //Z: Zoom
+		'X': function() { UI.slideshow.toggleAnimate(); },
+
 		//B: borders, M: Margin
 		'B': function() { UI.toggleOption("border"); },
 		'M': function() { UI.toggleOption("margin"); },

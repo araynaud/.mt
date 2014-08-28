@@ -219,27 +219,26 @@ String.toBold = function (str)
 	return 	"<b>" + str + "</b>";
 };
 
-String.toLink = function (text, href)
+String.toLink = function (text)
 {
-	href = valueOrDefault(href, "#"+ text);
-	return 	"<a href='#{0}'>{0}</a>".format(text, href);
+	var href = valueOrDefault(href, "#"+ text);
+	return 	"<a href='{1}'>{0}</a>".format(text, href);
 };
 
 String.parseKeywords = function(text, words, format)
 {
-	var reg;
+	if(isEmpty(text)||isEmpty(words)) return text;
 	format = valueOrDefault(format, String.toBold);
 	//format: if function, call it, if string: use as format string, otherwise, default function
+	//in replace: format(match, position, text);
 	if(isString(format))
 	{
 		formatString = format;
 		format = function(word) { return formatString.format(word); };
 	}
-
-	//in replace: format(match, position, text);
 	if(isArray(words))	words = words.join("|");
 
-	reg = new RegExp("\\b(" + words + ")\\b", "gi");
+	var reg = new RegExp("\\b(" + words + ")\\b", "gi");
 	text = text.replace(reg, format);
 	return text;
 };

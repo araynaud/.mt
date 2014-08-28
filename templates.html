@@ -110,13 +110,13 @@
 		<img class="tag" alt="{{:#data}}" src="icons/{{:#data}}.png"
 		{{if true}} onclick="UI.fileActionAjax({action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple ? 'true' : 'false'}}, confirm:{{:~confirm ? 'true' : 'false'}} })"{{/if}}/>
 	{{else}}
-		<a class="tag nowrap" {{if true}} onclick="UI.fileActionAjax({ action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple ? 'true' : 'false'}}, confirm: {{:~confirm ? 'true' : 'false'}} })"{{/if}}>{{:makeTitle()}}</a>
+		<a class="tag nowrap" {{if true}} onclick="UI.fileActionAjax({ action:'{{:~action}}', to:'{{:#data}}', multiple:{{:~multiple ? 'true' : 'false'}}, confirm: {{:~confirm ? 'true' : 'false'}} })"{{/if}}>{{:~makeTitle(#data)}}</a>
 	{{/if}}
 </script>
 
 <!-- template for tags search -->
 <script id="tagSelectTemplate" type="text/x-jsrender"> 
-	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:makeTitle()}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
+	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:~makeTitle(#data)}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
 </script>
 
 <!-- template for video download links by extension -->
@@ -180,7 +180,7 @@
 			<img class="floatR icon" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
 		{{/if}}
 		</a>
-		<a href="{{:~fileUrl(#data)}}" class="track">{{>title}}</a>
+		<a href="{{:~fileUrl(#data)}}" class="track">{{:title}}</a>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<br/>
 	</div>

@@ -1,3 +1,13 @@
+JS text parse keywords function
+
+
+optimize search on server:
+by tag: read tag file, filter (file_exists)
+by date (from, to): read date index
+before creating MediaFile objects
+
+array_key_insersect(groupedfiles, playlist)
+
 http://kenwheeler.github.io/slick/
 
 The Getaway : Paul Feig Goes Seafood Crazy In Boston's North End 

@@ -27,6 +27,7 @@ if($.views)
 		fileUrl: MediaFile.getFileUrl,
 		scriptUrl: MediaFile.getScriptUrl,
 		isVideoStream: MediaFile.isVideoStream,
+		makeTitle: String.makeTitle,
 		getGroup: UI.getGroup,
 		setGroup: UI.setGroup,
 		dateFormat: dateFormat,

@@ -401,7 +401,7 @@ function writeBinaryFile($filename, $data, $append=false)
 	debug("writeBinaryFile file",$filename);
 	debug("writeBinaryFile length",count($data));
 	$mode = $append ? "ab" : "w";
-	$fh = fopen($filename, $mode);
+	$fh = @fopen($filename, $mode);
 	if(!$fh) return false;
 	fwrite($fh, $data);
 	fclose($fh);
