@@ -109,13 +109,13 @@ Album.getConfig = function(key)
 	if(isMissing(key))
 		return config;
 	return config[key];
-}
+};
 
 Album.get = function(key, default_)
 {
 	var value=album[key];
 	return isMissing(value) ? default_ :  value ;
-}
+};
 
 Album.prototype.get = function(key, default_)
 {
@@ -123,6 +123,12 @@ Album.prototype.get = function(key, default_)
 	return isMissing(value) ? default_ :  value ;
 };
 
+
+Album.prototype.setOptions = function(options)
+{
+	if(isObject(options))
+		Object.merge(this, options, true);
+};
 
 Album.prototype.initTags = function()
 {
@@ -133,8 +139,7 @@ Album.prototype.initTags = function()
 		if(!isArray(tagList)) continue;
 		this.tags[tag] = tagList.toMap();
 	}
-}
-
+};
 
 Album.prototype.setTag = function(tag, file, state)
 {

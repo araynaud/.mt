@@ -186,8 +186,9 @@ $.makeElement = function(tag, attributes)
 $.isOldIE = function(version)
 {
 	version=valueOrDefault(version,8);
-	var bVersion=$.browser.version.substringBefore(".");
-	return $.browser.msie && (bVersion <= version || document.documentMode <=version);
+	if(navigator.userAgent.containsText("MSIE") || navigator.userAgent.containsText("Trident"))
+		return document.documentMode <=version;
+	return false;
 };
 
 jQuery.extend({

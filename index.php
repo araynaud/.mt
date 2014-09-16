@@ -40,7 +40,7 @@ if(isMobile()) {?>
 <?php addStylesheet($relPath);?>
 <link rel="alternate" type="application/rss+xml" href="rss.php?path=<?php echo $path?>" title="<?php echo $title?> news"/>
 
-<script type="text/javascript" src="js/lib/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery-ui-1.9.2.custom.min.js"></script>
 <script type="text/javascript" src="js/lib/jsrender.js"></script>
 <script type="text/javascript" src="js/lib/jquery.views.js"></script>
@@ -57,7 +57,9 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.transition.js"></script>
 <script type="text/javascript" src="js/mt.slideshow.js"></script>
 
-<?php addJavascript(getConfig("MediaPlayer.js"))?>
+<?php 	addJavascript(getConfig("MediaPlayer.js"));
+		addJavascript(getConfig("youtube.iframeApiUrl"));
+?>
 
 <script type="text/javascript" src="js/mt.ui.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>

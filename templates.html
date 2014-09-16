@@ -173,16 +173,15 @@
 		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
 
-		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
-		{{if tnsizes }}
-			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" />
-		{{else}}
-			<img class="floatR icon" src="icons/download.gif" height="12px" style="margin: 2px;" title="download {{>filename}}"/>
-		{{/if}}
+		<a href="{{:~fileUrl(#data)}}" class="track" title="{{:title}} {{:getTags().join(', ') }}">
+			{{if tnsizes}}
+				<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" />
+			{{/if}}
+			{{: description || title}}
 		</a>
-		<a href="{{:~fileUrl(#data)}}" class="track">{{:title}}</a>
-		{{if true tmpl="descriptionTagTemplate"/}}
-		<br/>
+		{{if type=="VIDEO"}}			
+			<br/>
+		{{/if}}
 	</div>
 </script>
 

@@ -1,5 +1,12 @@
-JS text parse keywords function
+rewrite Slideshow with angular:
 
+SlideshowController
+get photo list with album service/resource.
+render all images? or
+<img ng-src="currentImg()">
+<img ng-src="nextImg()">
+
+JS text parse keywords function
 
 optimize search on server:
 by tag: read tag file, filter (file_exists)

@@ -504,7 +504,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 	{
 		var debugScriptUrl = mediaFile.getScriptUrl(script, params).appendQueryString({debug:"true"});
 		var link = $.makeElement("a", { href: debugScriptUrl, target: "debug"}).html(scriptUrl);
-		UI.addStatus(link.outerHtml());
+		if(window.UI) UI.addStatus(link.outerHtml());
 	}
 
 	var result = false;
@@ -527,9 +527,12 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 		error:   function(xhr, textStatus, errorThrown)
 		{ 
 			result = false;
-			UI.setStatus(textStatus + " " + errorThrown);
-			UI.addStatus(link.outerHtml());
-			UI.addStatus(xhr.responseText);
+			if(window.UI)
+			{
+				UI.setStatus(textStatus + " " + errorThrown);
+				UI.addStatus(link.outerHtml());
+				UI.addStatus(xhr.responseText);
+			}
  			if(callbacks && callbacks.error)
 				callbacks.error(xhr, mediaFile);
 		}
@@ -550,7 +553,8 @@ MediaFile.imageSuccess = function(response, mediaFile, params)
 
 MediaFile.imageError = function(xhr, mediaFile)
 {  
-   UI.addStatus(xhr.responseText);
+	if(window.UI)
+		UI.addStatus(xhr.responseText);
 }
 
 //mark thumbnail as existing
@@ -726,7 +730,8 @@ MediaFile.prototype.play = function()
 			if(!window.MediaPlayer || !MediaPlayer.slide || !this.isVideoStream())
 				return false;
 		case "IMAGE":
-			return UI.slideshow.display(this);
+			if(window.UI)
+				return UI.slideshow.display(this);
 		case "AUDIO":
 			if(window.MediaPlayer && MediaPlayer.audio)
 				return MediaPlayer.audio.loadMediaFile(this);
@@ -742,6 +747,6 @@ MediaFile.getDuration = function(mediaFile)
 
 MediaFile.prototype.getDuration = function()
 {
-	var defaultInterval = UI.slideshow && UI.slideshow.interval ? UI.slideshow.interval : 0;
+	var defaultInterval = (window.UI && UI.slideshow && UI.slideshow.interval) ? UI.slideshow.interval : 0;
 	return this.duration || defaultInterval / 1000;	
 };

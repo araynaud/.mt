@@ -3,7 +3,7 @@ TITLE;Media Thingy
 debug.output;false
 debug.ajax;false
 
-USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;playstation;opera
+USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
 ;USER_AGENT.FORCE;mobile android
 
 ;relative path from app root dir to data files root
@@ -165,6 +165,7 @@ youtube.videoUrl;http://www.youtube.com/watch?v={0}
 youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
 youtube.embedUrl;http://www.youtube.com/v/{0}
 youtube.iframeUrl;http://www.youtube.com/embed/{0}
+youtube.iframeApiUrl;https://www.youtube.com/iframe_api
 vimeo.iframeUrl;http://player.vimeo.com/video/{0}
 vimeo.imageUrl;http://i.vimeocdn.com/video/{0}.jpg?mw=600
 

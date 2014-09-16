@@ -179,7 +179,7 @@ div#files
 	z-index: 5;
 }
 
-.caption
+.caption, .captionBottom
 {
 	/* fix it at the bottom */
 	position:absolute;
@@ -189,20 +189,34 @@ div#files
 	
 }
 
-div.file .edit
+div.file .edit, .captionTop
 {
-	/* fix it at the bottom */
 	position:absolute;
-	top: 0px; /* fix IE issue */
+	top: 0px;
 	left: 0px;
 	width: 100%;	
 }
 
 .caption, .captionBelow, .edit
 {
-	/* fix it at the bottom */
 	font-weight:bold;
 	text-align: center;
+}
+
+.captionTop
+{
+	color: #F80;
+    text-shadow: black 1px 1px;
+}
+
+.translucent a, .caption a, .captionBelow a, .captionTop a
+{
+	color: orange;
+}
+
+.title a, .small a, li a, .caption a, .captionTop a, .captionBelow a, .translucent a, .pages a, .pager a
+{
+	text-decoration: none;
 }
 
 .paddingH
@@ -222,11 +236,6 @@ div.video .caption, div.video .captionBelow, div.dir .caption, div.dir .captionB
 {
 	padding-top: 5px;
 	padding-bottom: 5px;
-}
-
-.translucent a, .caption a, .captionBelow a
-{
-	color: orange;
 }
 
 .caption .small, .text
@@ -514,11 +523,6 @@ img
 {
 	vertical-align: top;
 	border: none;
-}
-
-.title a, .small a, li a, .caption a, .captionBelow a, .translucent a, .pages a, .pager a
-{
-	text-decoration: none;
 }
 
 img.tinyThumb

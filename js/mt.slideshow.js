@@ -76,8 +76,9 @@ Slideshow.prototype.setOptions = function(options)
 	this.transition.setOptions(this);
 	this.setStart(this.start);
 
+	var sl = this;
 	if(!isEmpty(this.transition.elements))
-		this.transition.elements.bindReset("click", Slideshow.slideOnClick);
+		this.transition.elements.bindReset("click", function(e) {sl.slideOnClick(e, $(this));} );
 
 	//if(!UI.clientIs("mobile"))
 	//this.transition.elements.bindReset("mousemove", Slideshow.slideOnHover);
@@ -99,23 +100,21 @@ Slideshow.prototype.setMediaPlayer = function(mediaPlayer)
 		this.mplayerSlide = this.mplayer.getElement();
 };
 
-Slideshow.slideOnClick = function(e)
+Slideshow.prototype.slideOnClick = function(e, img)
 {
 	//return UI.slideshow.toggleZoom();
-
-	var img = $(this);
 	var coord = Slideshow.getClickCoord(e, img);
 //	UI.slideshow.setStatus(coord);
 	if(coord.rx < .25 && coord.ry < .25)
 		UI.setMode();
 	else if(coord.rx < .25)
-		UI.slideshow.showNextImage(-1);
+		this.showNextImage(-1);
 	else if(coord.rx > .75 && coord.ry < .25)
-		UI.slideshow.togglePlay();
+		this.togglePlay();
 	else if(coord.rx > .75)
-		UI.slideshow.showNextImage(1);
+		this.showNextImage(1);
 	else
-		UI.slideshow.toggleZoom();
+		this.toggleZoom();
 };
 
 Slideshow.slideOnHover = function(e)
@@ -287,7 +286,7 @@ Slideshow.prototype.nextTransition = function()
 Slideshow.prototype.toggleOption = function()
 {
 	if(this.currentFile.isImage())
-		UI.slideshow.showImage(null,"crossFade");
+		this.showImage(null,"crossFade");
 	else
 	{
 		this.styleSlide(this.mplayerSlide);
@@ -428,7 +427,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		var ss=this;
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
-	if(UI.displayEdit)
+
+	if(window.UI && UI.displayEdit)
 		UI.displayEdit("#slideshowControls");
 };
 

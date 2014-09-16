@@ -279,8 +279,8 @@ UI.displayBrowserInfo =  function()
 	browserInfo.oldIE9=$.isOldIE(9);
 	browserInfo.oldIE8=$.isOldIE();
 	browserInfo.oldIE6=$.isOldIE(6);
-	
-	Object.merge (browserInfo, $.browser, true);
+	if($.browser)
+		Object.merge (browserInfo, $.browser, true);
 	browserInfo.config = config.USER_AGENT;
 	alert(Object.toText(browserInfo,"\n"));
 	return browserInfo;
