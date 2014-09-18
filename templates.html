@@ -22,7 +22,7 @@
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
 	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
 		{{if type=="DIR" && thumbnails}}
-			<a href="?path={{:~filePath(#data)}}" title="{{>title}}">
+			<a href="?{{:~filePath(#data)}}" title="{{>title}}">
 				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
 					{{for thumbnails.getHalfElements(0) tmpl="tnTemplate"/}}
 				</div>
@@ -64,7 +64,7 @@
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
-		<div><a class="subtitle" href="?path={{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a></div>
+		<div><a class="subtitle" href="?{{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a></div>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<div class="small">{{:~dateRange(oldestDate,newestDate,false)}}</div>
 	</div>

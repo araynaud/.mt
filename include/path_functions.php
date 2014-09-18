@@ -88,12 +88,12 @@ function reqPathFile(&$path, &$file, $addFilters=true)
 	$relPath=getDiskPath($path);
 	$filetype = getFileType("$relPath/$file");
 	debug("filetype", $filetype);
-/*	if($filetype=="DIR")
+	if($filetype=="DIR")
 	{
 		$path = $filePath;
 		$file = "";
 	}
-*/
+
 	$file = urldecode($file);
 	$path = urldecode($path);
 	$_REQUEST["path"] = $path;

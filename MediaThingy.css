@@ -206,6 +206,7 @@ div.file .edit, .captionTop
 .captionTop
 {
 	color: #F80;
+	-webkit-text-stroke: 1px black;
     text-shadow: black 1px 1px;
 }
 
@@ -324,6 +325,23 @@ img.icontr, img.iconTrans
 	left: 0px;
 	text-align: left;
 }
+
+.bottomLeftCorner
+{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	text-align: left;
+}
+
+.bottomRightCorner
+{
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	text-align: right;
+}
+
 
 .footerRightCorner, .musicplayer_footer
 {
