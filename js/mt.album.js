@@ -470,7 +470,7 @@ Album.prototype.getSelectedFileNames = function()
 
 Album.prototype.selectSlideshowFiles = function()
 {
-	var types = config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
+	var types = isDefined("MediaPlayer") && config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
 	return Album.selectFiles(this.activeFileList(), {type: types});
 };
 

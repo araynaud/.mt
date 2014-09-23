@@ -18,6 +18,11 @@ function isEmpty(variable)
 	return false;
 }
 
+function isDefined(variable)
+{
+	return !isMissing(window[variable]);
+}
+
 function valueOrDefault(variable,defaultValue)
 {
 	return isMissing(variable) ? defaultValue : variable;

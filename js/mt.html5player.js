@@ -18,7 +18,7 @@ function Html5Player(settings)
     this.current = 0;
     this.container = $("#" + this.settings.id);	
     this.playlistDiv = $("#{0}Playlist".format(this.settings.id));
-	this.messsageDiv = $("#{0}Message".format(this.settings.id));
+	this.messageDiv = $("#{0}Message, .status".format(this.settings.id));
 	this.createPlayer();
 
    	this.setupEvents();
@@ -27,6 +27,11 @@ function Html5Player(settings)
 
 if(!window.MediaPlayer)
 	MediaPlayer = Html5Player;
+
+function onYouTubeIframeAPIReady()
+{
+	Html5Player.YouTubeIframeAPIReady=true;
+}
 
 Html5Player.playerSettings=
 {
@@ -45,7 +50,8 @@ Html5Player.playerSettings=
 		key: "video",
 		type: "video",
 		id:"videoPlayer",
-		size: 0,
+		youtube: true,
+		size: 1,
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
@@ -56,9 +62,9 @@ Html5Player.playerSettings=
 	{
 		key: "slide",
 		type: "video",
-		id:"slidePlayer",
+		id:"videoSlide",
+		youtube: true,
 		size: 1,
-		container: "videoSlide",
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
@@ -82,46 +88,78 @@ Html5Player.init = function(playerKey)
 
 Html5Player.loadPlaylist = function(playerKey, mediaFiles)
 {
-	var h5p = Html5Player.getInstance(playerKey);
-	if(h5p.type=="video")
-		mediaFiles=mediaFiles.filter(MediaFile.isLocalVideoStream); 
-	return h5p.loadPlaylist(mediaFiles);
+	var hp = Html5Player.getInstance(playerKey);
+	if(hp.type=="video")
+		mediaFiles=mediaFiles.filter(MediaFile.isVideoStream); 
+	return hp.loadPlaylist(mediaFiles);
 };
 
 Html5Player.prototype.setupEvents = function()
 {
-    var h5p=this;
+    var hp=this;
     this.player.addEventListener("ended", function(e)
     {
-    	if(h5p.repeat || !h5p.isLastItem())
-	    	h5p.playNext();
-   		else if(h5p.slideshow && h5p.slideshow.play)
-			h5p.slideshow.showNextImage();
+	    var sl=hp.slideshow;
+   		if(sl && sl.play)
+			sl.showNextImage();
+    	else if(hp.repeat || !hp.isLastItem())
+	    	hp.playNext();
  	});
 
     this.player.addEventListener("play",  function(e)
     { 
-//    	if(window.console) console.log("player.play");
-    	h5p.setMessage("playing"); 
-		h5p.settings.autostart = true;
-		if(h5p.slideshow && !h5p.slideshow.play)
-			h5p.slideshow.togglePlay(true);
+    	hp.setMessage("playing"); 
+		hp.settings.autostart = true;
+	    var sl=hp.slideshow;
+		if(sl && !sl.play)
+			sl.togglePlay(true);
     });
 
     this.player.addEventListener("pause", function(e)
     {
-//    	if(window.console) console.log("player.pause");
-		if(h5p.player.ended) return;
-	   	h5p.setMessage("paused"); 
-		h5p.settings.autostart = false;
-		if(h5p.slideshow && h5p.slideshow.play)
-			h5p.slideshow.togglePlay(false);
+		if(hp.player.ended) return;
+	   	hp.setMessage("paused"); 
+		hp.settings.autostart = false;
+	    var sl=hp.slideshow;
+		if(sl && sl.play)
+			sl.togglePlay(false);
     });
 
-	var h5p=this;
 	var preventDefault = function(e) { return false; };
     this.player.addEventListener("keyup", preventDefault);
     this.player.addEventListener("keydown", preventDefault);
+
+    // 4. The API will call this function when the video player is ready.
+    this.ytPlayerReady = function(event) 
+    {
+		event.target.play = event.target.playVideo;
+		event.target.pause= event.target.pauseVideo;
+		event.target.stop = event.target.stopVideo;
+   };
+
+	// 5. The API calls this function when the player's state changes.
+	var done = false;
+	this.ytPlayerStateChange = function(event) 
+	{
+		switch(event.data)
+		{
+			case YT.PlayerState.PLAYING:
+				hp.setMessage("yt playing " + event.data);
+				break;
+
+			case YT.PlayerState.PAUSED:
+				hp.setMessage("yt paused " + event.data);
+				break;
+
+			case YT.PlayerState.ENDED:
+				hp.setMessage("yt ended " + event.data);
+				var sl=hp.slideshow;
+		   		if(sl && sl.play)
+					sl.showNextImage();
+		    	else if(hp.repeat || !hp.isLastItem())
+			    	hp.playNext();
+		}
+	};
 };
 
 Html5Player.getInstance = function(playerKey)
@@ -140,13 +178,13 @@ Html5Player.prototype.loadFromHtml = function()
 		return;
 	}
 
-    var h5p=this;
+    var hp=this;
     this.trackLinks = this.playlistDiv.find("a.track");
     this.trackLinks.click(function(e)
     {
         e.preventDefault();
         link = $(this);
-        h5p.loadFile(link.parent().index());
+        hp.loadFile(link.parent().index());
     });
 
 	return this.loadFile();
@@ -158,8 +196,8 @@ Html5Player.prototype.createPlayer = function()
 
 	this.player = $.makeElement(this.type, {
 		id: this.settings.id + "_" + this.type,
+		controls: true,
 		preload: "auto"
-		,controls: true
 	});
 	if(this.settings.style)
 		this.player.css(this.settings.style);
@@ -170,17 +208,12 @@ Html5Player.prototype.createPlayer = function()
 	this.jqplayer = this.player;
 	this.player = this.player[0];
 
-	if(this.type!="video") return;
-	
-	this.iframe = $.makeElement("iframe", {id: this.settings.id + "_iframe"});
-	if(this.settings.style)
-		this.iframe.css(this.settings.style);
-	if(this.settings.class)
-		this.iframe.addClass(this.settings.class);
+	if(this.type!="video" || !this.settings.youtube
+	 || !Html5Player.YouTubeIframeAPIReady) return;
 
-	this.iframe.appendTo(this.container);
-	this.jqiframe = this.iframe;
-	this.iframe = this.iframe[0];
+//	loadJavascript(config.youtube.iframeApiUrl);
+	this.ytid = this.settings.id + "_youtube";
+	this.yt = $.makeElement("div", {id: this.ytid, class: "hidden"}).appendTo(this.container);	
 };
 
 //TODO pass optional controlDiv id 
@@ -254,7 +287,7 @@ Html5Player.prototype.setupIcons = function()
 		onclick: "UI.uploadMusicFiles()"
 	};
 	icon=$.makeElement("img", iconAttr);
-//	this.controlDiv.append(icon);	
+	this.controlDiv.append(icon);	
 };
 
 Html5Player.prototype.getPlayPauseIcon = function()
@@ -276,7 +309,7 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 
 	this.mediaFiles = mediaFiles;
 
-	if(!isEmpty(this.playlistDiv) && mediaFiles.length>1)
+	if(!isEmpty(this.playlistDiv)) // && mediaFiles.length>1)
 	{
 		UI.renderTemplate("playlistLinkTemplate", this.playlistDiv, mediaFiles);
 		this.playlistDiv.width(this.settings.playlist.size);
@@ -286,7 +319,6 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 	if(mediaFiles.length>1)
 		this.setupIcons();
 
-
 	return this.loadFromHtml();
 }
 
@@ -294,30 +326,50 @@ Html5Player.prototype.loadMediaFile = Html5Player.prototype.loadPlaylist;
 
 Html5Player.prototype.loadFile = function(index)
 {
-	index = valueOrDefault(index, this.current);
-	this.current = modulo(index, this.mediaFiles.length);
-
+	index = modulo(valueOrDefault(index, this.current), this.mediaFiles.length);
+	this.current = index;
 	this.currentFile = this.mediaFiles[this.current];
-	var isEmbedded = this.currentFile.isExternalVideoStream();
+	var isEmbedded = this.isEmbeddedVideo();
 	if(isEmbedded)
 	{
-		this.iframe.src = this.currentFile.getFileUrl();
+		this.player.src = null; //stop HTML5 player
+		if(this.youtubePlayer)
+			this.youtubePlayer.loadVideoById(this.currentFile.id); //cueVideoById
+		else
+		{
+		    this.youtubePlayer = new YT.Player(this.ytid,
+		    {
+		          width: this.settings.width, 
+		          height: this.settings.height,
+		          videoId: this.currentFile.id,
+		          playerVars: { 'autoplay': this.settings.autostart}, //, 'controls': 1 },
+		          events: {
+		            'onReady': this.ytPlayerReady,
+		            'onStateChange': this.ytPlayerStateChange
+		          }
+		    });
+		}
+		this.jqiframe = $("#"+this.ytid);
+		if(this.settings.style)
+			this.jqiframe.css(this.settings.style);
+		if(this.settings.class)
+			this.jqiframe.addClass(this.settings.class);
 	}
 	else
 	{
 		this.player.title  = this.currentFile.title;
 	    this.player.src    = this.currentFile.getFileUrl(this.currentFile.isVideoStream());
 		this.player.poster = this.currentFile.getThumbnailUrl(1);
-	   this.player.load();
+		this.player.load();
 	}
-	if(this.jqiframe)
-		this.jqiframe.toggle(isEmbedded);
-	this.jqplayer.toggle(!isEmbedded);
+
+	if(this.jqiframe) this.jqiframe.toggle(isEmbedded);
+	if(this.jqplayer) this.jqplayer.toggle(!isEmbedded);
 
 	this.displaySelectedItem();
 	this.setSize();
  
-	if(this.settings.uiMode)
+	if(window.UI && this.settings.uiMode)
 		UI.setMode(this.settings.uiMode);
 
     if(this.settings.autostart)
@@ -326,18 +378,48 @@ Html5Player.prototype.loadFile = function(index)
 	return this;
 };
 
+Html5Player.prototype.isEmbeddedVideo = function(index)
+{
+	return this.currentFile && this.currentFile.isExternalVideoStream();
+};
+
+Html5Player.prototype.activePlayer = function()
+{ 
+	return this.isEmbeddedVideo() ? this.youtubePlayer : this.player;
+};
+
+Html5Player.prototype.inactivePlayer = function()
+{ 
+	return this.isEmbeddedVideo() ? this.player : this.youtubePlayer;
+};
+
+Html5Player.prototype.isPlaying = function()
+{ 
+	if(!this.isEmbeddedVideo())
+		return !this.player.paused; 
+	if(this.youtubePlayer)
+		return this.youtubePlayer.getPlayerState()==YT.PlayerState.PLAYING; 
+	return false;
+};
+
 //call upon player onplay event
 //jwplayer mapped function
 Html5Player.prototype.play = function()
 {
-	if(this.player && !this.isPlaying())
-		this.player.play();
+	var pl = this.activePlayer();
+	if(pl && pl.play)
+		pl.play();
+//	else if(pl && pl.playVideo)
+//		pl.playVideo();
 };
 
 Html5Player.prototype.pause = function()
 {
-	if(this.player && this.isPlaying())
-		this.player.pause();
+	var pl= this.activePlayer();
+	if(pl && pl.pause)
+		pl.pause();
+//	else if(pl && pl.pauseVideo)
+//		pl.pauseVideo();
 };
 
 Html5Player.prototype.togglePlay = function(state)
@@ -346,33 +428,27 @@ Html5Player.prototype.togglePlay = function(state)
 //	if(state == !this.player.paused) return;
 
 	if(state)
-		this.player.play();
+		this.play();
 	else
-		this.player.pause();
-
+		this.pause();
 };
-
-Html5Player.prototype.isPlaying = function()
-{ 
-	return !this.player.paused; 
-}
 
 Html5Player.prototype.playNext = function(incr)
 {
 	incr = valueOrDefault(incr, 1);
 	this.loadFile(this.current + incr);
-}
+};
 
 Html5Player.prototype.playPrevious = function(incr)
 {
 	incr = valueOrDefault(incr, 1);
 	this.loadFile(this.current - incr);
-}
+};
 
 Html5Player.prototype.isLastItem = function()
 {
 	return this.current === (this.mediaFiles.length - 1);
-}
+};
 
 Html5Player.prototype.getElement = function()
 {
@@ -476,5 +552,5 @@ Html5Player.prototype.displayEvent = function(event)
 Html5Player.prototype.setMessage = function(text, event)
 {
 	text = Object.toText(text," ");
-	this.messsageDiv.html(text);
+	this.messageDiv.html(text);
 };

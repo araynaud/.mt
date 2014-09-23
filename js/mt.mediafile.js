@@ -164,7 +164,7 @@ MediaFile.isExternalVideoStream = function(mediaFile)
 MediaFile.prototype.isExternalVideoStream = function()
 {
 	var stream = this.isVideoStream();
-	return stream && (stream=="youtube" || stream=="vimeo");
+	return stream=="youtube" || stream=="vimeo";
 };
 
 

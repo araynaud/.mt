@@ -47,7 +47,7 @@ $.fn.toggleEffect = function(state, duration, effect, direction, callback)
 {
 	effect = effect || this.attr("effect") || "slide";
 	direction = direction || this.attr("direction") || "up";
-	if(!callback)	callback = UI[this.attr("callback")];
+	if(!callback && window.UI)	callback = UI[this.attr("callback")];
 	if(!callback)	callback = eval(this.attr("callback"));
 
 	if(effect=="slide" && ["up","down"].contains(direction))

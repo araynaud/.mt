@@ -18,9 +18,10 @@
 <script type="text/javascript" src="js/mt.album.js"></script>
 <script type="text/javascript" src="js/mt.transition.js"></script>
 <script type="text/javascript" src="js/mt.slideshow.js"></script>
+<script type="text/javascript" src="js/mt.html5player.js"></script>
 <script type="text/javascript" src="js/mt.ui.js"></script>
-<script type="text/javascript" src="js/mt.templates.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>
+<script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
 
 <script type="text/javascript">
 var search = new Querystring().params;
@@ -86,6 +87,7 @@ $(window).resize(function()
 	<div id="slideshowContainer" class="floater container noscroll margin" style="width: 500px; height: 300px;">
 		<img id="slide0" class="slide hidden bottom right" alt="" src="icons/blank1px.png"/>
 		<img id="slide1" class="slide hidden top left" alt="" src="icons/blank1px.png"/>
+		<div id="videoSlide" class="inlineBlock centered"></div>
 
 		<div class="caption">
 			<img class="icontr floatL" src="icons/arrow-back.png" alt="previous" title="previous (LEFT)" onclick="slideshow.showNextImage(-1)"/>

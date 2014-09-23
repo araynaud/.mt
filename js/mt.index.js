@@ -616,9 +616,6 @@ UI.setupPlayers = function()
 	$("#playMusicIcon").toggle(album.musicFiles);	
 	if(config.MediaPlayer.audio.enabled)
 		MediaPlayer.loadPlaylist("audio", album.musicFiles);
-
-	if(config.MediaPlayer.slide.enabled)
-		UI.slideshow.setMediaPlayer(new MediaPlayer("slide"));
 };
 
 UI.playAllVideos = function()

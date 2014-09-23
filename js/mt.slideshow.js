@@ -76,6 +76,9 @@ Slideshow.prototype.setOptions = function(options)
 	this.transition.setOptions(this);
 	this.setStart(this.start);
 
+	if(window.MediaPlayer)
+		this.setMediaPlayer(MediaPlayer.getInstance("slide"));
+
 	var sl = this;
 	if(!isEmpty(this.transition.elements))
 		this.transition.elements.bindReset("click", function(e) {sl.slideOnClick(e, $(this));} );
@@ -105,7 +108,7 @@ Slideshow.prototype.slideOnClick = function(e, img)
 	//return UI.slideshow.toggleZoom();
 	var coord = Slideshow.getClickCoord(e, img);
 //	UI.slideshow.setStatus(coord);
-	if(coord.rx < .25 && coord.ry < .25)
+	if(coord.rx < .25 && coord.ry < .25 && window.UI)
 		UI.setMode();
 	else if(coord.rx < .25)
 		this.showNextImage(-1);

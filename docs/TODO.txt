@@ -1,3 +1,32 @@
+album if youtube not enabled or not ready: do not add youtube media files.
+
+
+H5player:
+pick active player for each media file
+if stream==youtube: this.youtubePlayer
+else this.player
+
+slideshow: use video player and youtube iframe like slide images
+style, position, size
+select active player
+
+image: img.slide
+youtube: iframe.slide
+image: video.slide
+use fitimage, styleslide, etc.
+
+youtube
+vimeo
+vine	https://vine.co/v/MLVT1v3j1Wb/embed/simple
+-----------
+
+icons:
+<link rel="icon" href="images/PJgreen32.png">
+<link rel="icon" sizes="192x192" href="images/PJgreen192.png">
+<link rel="icon" sizes="128x128" href="images/PJgreen128.png">
+<link rel="apple-touch-icon" sizes="128x128" href="images/PJgreen128.png">
+<link rel="apple-touch-icon-precomposed" sizes="128x128" href="images/PJgreen128.png">
+
 rewrite Slideshow with angular:
 
 SlideshowController
