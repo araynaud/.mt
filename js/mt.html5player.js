@@ -69,6 +69,7 @@ Html5Player.playerSettings=
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
+		class: "hidden",
 		playlist: {	position: "down", showAll: false, maxHeight: 400 }
 	}
 
@@ -417,8 +418,8 @@ Html5Player.prototype.play = function()
 	var pl = this.activePlayer();
 	if(pl && pl.play)
 		pl.play();
-//	else if(pl && pl.playVideo)
-//		pl.playVideo();
+	else if(pl && pl.playVideo)
+		pl.playVideo();
 };
 
 Html5Player.prototype.pause = function()
@@ -426,8 +427,8 @@ Html5Player.prototype.pause = function()
 	var pl= this.activePlayer();
 	if(pl && pl.pause)
 		pl.pause();
-//	else if(pl && pl.pauseVideo)
-//		pl.pauseVideo();
+	else if(pl && pl.pauseVideo)
+		pl.pauseVideo();
 };
 
 Html5Player.prototype.togglePlay = function(state)
