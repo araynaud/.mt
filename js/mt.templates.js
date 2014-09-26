@@ -1,4 +1,6 @@
 //JSRENDER TEMPLATE FUNCTIONS
+var UI = UI || {};
+
 UI.linkTemplate = function(templateId, targetId, data)
 {
 	$.templates(templateId, "#" + templateId);
@@ -117,17 +119,16 @@ function getTemplateAjax(file, templateId, targetDivId)
 	});
 }
 
-var my = my || {};
-my.getPath = function(name)
+UI.getTemplateUrl = function(name)
 {
-	return '../templates/_' + name + '.tmpl.html';
+	return 'templates/' + name + '.tmpl.html';
 };
 
-my.renderExtTemplate = function(item)
+UI.renderExtTemplate = function(item)
 {
-	var file = my.getPath( item.name );
-	$.when($.get(file))
-	 .done(function(tmplData) {
+	var file = my.getTemplateUrl( item.name );
+	$.when($.get(file)).done(function(tmplData)
+	 {
 		 $.templates({ tmpl: tmplData });
 		 $(item.selector).html($.render.tmpl(item.data));
 	 });    

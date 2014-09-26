@@ -25,9 +25,10 @@
 
 <script type="text/javascript">
 var search = new Querystring().params;
-var	slideshow=new Slideshow(search);
+var	slideshow;
 $(document).ready(function()
 {
+	slideshow = new Slideshow(search);
 	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
 
 	//ui callbacks
@@ -72,10 +73,7 @@ function resize()
  	slideshow.fitImage();
 };
 
-$(window).resize(function()
-{
-	//resize(); 
-});
+//$(window).resize(resize);
 </script>
 </head>
 <body class="centered">

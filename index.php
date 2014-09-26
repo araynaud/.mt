@@ -61,6 +61,12 @@ if(isMobile()) {?>
 		addJavascript(getConfig("youtube.iframeApiUrl"));
 ?>
 
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="icon" href="images/folder32.png">
+<link rel="icon" sizes="128x128" href="icons/folder.png">
+<link rel="apple-touch-icon" sizes="128x128" href="icons/folder.png">
+<link rel="apple-touch-icon-precomposed" sizes="128x128" href="icons/folder.png">
+
 <script type="text/javascript" src="js/mt.ui.js"></script>
 <script type="text/javascript" src="js/mt.keys.js"></script>
 <script type="text/javascript" src="js/mt.index.js"></script>

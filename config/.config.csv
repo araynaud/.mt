@@ -159,8 +159,13 @@ file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
 ;delete: move to this directory. if blank: delete files 
 file.delete.to;.bad
 
+;EXTERNAL API INTEGRATION
+;Facebook
 fb.app_id;159679107375436
 
+;YouTube
+youtube.mode;iframe
+;youtube.mode;link
 youtube.videoUrl;http://www.youtube.com/watch?v={0}
 youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
 youtube.embedUrl;http://www.youtube.com/v/{0}
@@ -169,9 +174,11 @@ youtube.iframeApiUrl;https://www.youtube.com/iframe_api
 ;youtube.oembedUrl;http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={0}
 youtube.oembedUrl;/proxy.php/www.youtube.com/oembed?url=https://www.youtube.com/watch?v={0}
 
+;Vimeo
 vimeo.iframeUrl;http://player.vimeo.com/video/{0}
 vimeo.imageUrl;http://i.vimeocdn.com/video/{0}.jpg?mw=600
 
+;PHPmyVisites
 visittracker.enabled;true
 visittracker.siteId;238250
 visittracker.url;http://st.free.fr/

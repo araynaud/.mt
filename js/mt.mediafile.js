@@ -58,7 +58,7 @@ MediaFile.prototype.getId = function()
 
 MediaFile.prototype.getTitle = function()
 {
-	//if(!this.title)	
+	if(!this.title)	
 		this.title = this.name.makeTitle();
 	return this.title;
 };
@@ -242,7 +242,7 @@ MediaFile.prototype.getFilePath = function(ext)
 MediaFile.getFileUrl = function (mediaFile, ext)
 {
 	if(mediaFile.stream=="youtube")
-		return config.youtube.embedUrl.format(mediaFile.id);
+		return config.youtube.videoUrl.format(mediaFile.id);
 
 	var filename=mediaFile.filename;
 	if(isMissing(ext))
@@ -727,6 +727,8 @@ MediaFile.prototype.play = function()
 	switch(this.type)
 	{
 		case "VIDEO":
+			if(this.isExternalVideoStream() && (config.youtube.mode!="iframe" || !MediaPlayer.YouTubeReady))
+				return false;
 			if(!window.MediaPlayer || !MediaPlayer.slide || !this.isVideoStream())
 				return false;
 		case "IMAGE":

@@ -38,12 +38,12 @@ function Album(data)
 		this.groupedFiles[type] = typeFiles;	
 	}
 
-	if(this.youtube)
+	if(this.youtube && window.MediaPlayer) // && MediaPlayer.YouTubeReady)
 		for(var key in this.youtube)
 		{
 			if(!this.groupedFiles.VIDEO)
 				this.groupedFiles.VIDEO={};
-			var mf= {id: key, name: this.youtube[key], type:"VIDEO", stream:"youtube"};
+			var mf= {id: key, name: this.youtube[key], title: this.youtube[key], type:"VIDEO", stream:"youtube"};
 			mf = new MediaFile(mf);
 			this.groupedFiles.VIDEO[key]=mf;
 		}
@@ -317,7 +317,7 @@ Album.excludeFiles = function(fileList, filterValue)
 	if(!fileList) return [];
 
 	if(isFunction(filterValue))
-		return fileList.extract( function () { return !filterValue(); } );
+		return fileList.extract( function (mf) { return !filterValue(mf); } );
 
 	Album.filterValue=filterValue;
 	return fileList.extract(MediaFile.isExcluded);
@@ -333,7 +333,7 @@ Album.extractFiles = function(fileList, filterValue)
 {
 	if(!fileList) return [];
 	if(isFunction(filterValue))
-		return this.mediaFiles.extract(filterValue);
+		return fileList.extract(filterValue);
    
 	Album.filterValue=filterValue;
 	return fileList.extract(MediaFile.isSelected);
@@ -471,7 +471,12 @@ Album.prototype.getSelectedFileNames = function()
 Album.prototype.selectSlideshowFiles = function()
 {
 	var types = isDefined("MediaPlayer") && config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
-	return Album.selectFiles(this.activeFileList(), {type: types});
+
+
+	var files = Album.selectFiles(this.activeFileList(), {type: types});
+	if(!MediaPlayer.YouTubeReady || config.youtube.mode!="iframe") //remove youtube files if disabled
+		files = Album.excludeFiles(files, MediaFile.isExternalVideoStream);
+	return files;
 };
 
 

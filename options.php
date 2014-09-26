@@ -1,4 +1,6 @@
 <div id="optionsContainer" class="noprint footerLeftCorner">
+
+<?php if(!isMobile()) {?>		
 	<div class="fixedLeft left">
 		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
 		<br/>
@@ -7,15 +9,20 @@
 			<input id="cb_select_all" type="checkbox" label="X" title="Select All/none"/>
 		</div>
 	</div>
-
 	<div class="fixedRight right">
 		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
 		<br/>
 		<img class="iconTrans" id="rotatorIcon" src="icons/media-play64.png" alt="play" title="rotate pages (P)" onclick="UI.rotatePages()"/>
 	</div>
+<?php }?>
+
 	<div class="floatL toolbar">
 		<input id="cb_searchOptions" type="checkbox" class="lOption" label="S" title="Search" icon="icons/search16.png"/>
 		<input id="cb_displayOptions" type="checkbox" class="lOption" label="O" title="Options"/>
+<?php if(false && isMobile()) {?>
+		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
+		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
+<?php }?>
 	</div>	
 
 	<div id="searchOptions" class="floatL toolbar translucent shadowIn hidden" direction="left">

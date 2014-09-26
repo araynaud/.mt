@@ -1,14 +1,25 @@
-album if youtube not enabled or not ready: do not add youtube media files.
 
+album: if youtube not enabled or not ready: do not add youtube media files.
+use oembed for mediaFile details.
+mobile: disable youtube. links to youtube url => app
+---
 
 H5player:
-pick active player for each media file
+active player for each media file
 if stream==youtube: this.youtubePlayer
 else this.player
 
+
 slideshow: use video player and youtube iframe like slide images
 style, position, size
-select active player
+
+
+---------------
+slideshow with array of URLs.
+
+---------
+add files UI: external images, videos, etc.
+enter URL
 
 image: img.slide
 youtube: iframe.slide

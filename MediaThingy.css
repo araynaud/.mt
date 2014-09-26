@@ -1117,11 +1117,18 @@ input[type=checkbox]:checked + label.tagLabel
 	border: 4px solid #ea6;
 }
 
+.translucent select, .translucent input, .edit input[type=text], .edit select
+{
+	background-color: rgba(0, 0, 0, 0.3);
+	color: white;
+	border: 1px solid gray;
+}
+
 /*========= MOBILE ==============*/
 
 body.mobile
 {
-	font-size: .6cm;
+	font-size: .5cm;
 }
 
 .mobile .title
@@ -1132,14 +1139,7 @@ body.mobile
 /* big UI widgets for mobile */
 .mobile input, .mobile select
 {
-	font-size: .6cm;
-}
-
-.translucent select, .translucent input, .edit input[type=text], .edit select
-{
-	background-color: rgba(0, 0, 0, 0.3);
-	color: white;
-	border: 1px solid gray;
+	font-size: .4cm;
 }
 
 .mobile .small
@@ -1149,27 +1149,35 @@ body.mobile
 
 .mobile label.checkboxLabel img, .mobile label.tagLabel img, .mobile img.icon, .mobile img.icontr, .mobile .controls img
 {
-	min-height: 1cm;
+	min-height: .5cm;
 	max-height: 2cm;
 }
 
 .mobile label.checkboxLabel, .mobile label.tagLabel
-{	min-width: 1cm;
-	height: 1cm;
-	font-size: 0.9cm;
+{	min-width: .6cm;
+	height: .6cm;
+	font-size: .6cm;
 	margin-left: 10px;
-	border: 8px solid #CCC;
+	border: 4px solid #CCC;
 }
 
 .mobile input[type=checkbox]:checked + label.checkboxLabel
 {
-	border: 8px solid #AEA;
+	border: 4px solid #AEA;
 }
 
 .mobile input[type=checkbox]:checked + label.tagLabel
 {
-	border: 8px solid #ea6;
+	border: 4px solid #ea6;
 }
+
+/*TODO media query with screen size*/
+.mobile .desktop
+{
+	display: none;
+}
+
+/*end ========= MOBILE ==============*/
 
 .progressBar
 {

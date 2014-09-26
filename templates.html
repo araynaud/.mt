@@ -30,11 +30,11 @@
 					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else type=="VIDEO" && stream=="youtube" && ~albumVar('config').MediaPlayer.slide.enabled}}
+		{{else type=="VIDEO" && isExternalVideoStream() && ~config("MediaPlayer").slide.enabled && ~config("youtube").mode=="iframe"}}
 				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data)}}" title="play from YouTube"/>
-		{{else type=="VIDEO" && tnsizes && stream && ~albumVar('config').MediaPlayer.slide.enabled}}
+		{{else type=="VIDEO" && tnsizes && isLocalVideoStream() && ~config("MediaPlayer").slide.enabled}}
 				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:stream}}"/>
-		{{else type=="VIDEO" && (tnsizes || stream=="youtube") }}
+		{{else type=="VIDEO" && (tnsizes || isExternalVideoStream() && ~config("youtube").mode=="link") }}
 			<a href="{{:~fileUrl(#data,stream)}}" target="fileDownload">
 				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{:stream}}"/>
 			</a>
@@ -93,7 +93,7 @@
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="floatR" style="margin-left:5px; margin-right:5px; max-width:35%;">
 			{{if duration}}{{:~formatTime(duration)}}{{/if}}
-			{{if stream}}<img class="playLink" src="icons/play.png" title="play {{:stream}}" /><br/>{{/if}}
+			{{if isLocalVideoStream()}}<img class="playLink" src="icons/play.png" title="play {{:stream}}" /><br/>{{/if}}
 			{{if exts}}{{for exts tmpl="extLinkTemplate"/}}{{/if}}
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
