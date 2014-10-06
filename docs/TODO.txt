@@ -1,5 +1,5 @@
 
-album: if youtube not enabled or not ready: do not add youtube media files.
+album: if youtube not enabled or not ready: do not play in iframe, make link
 use oembed for mediaFile details.
 mobile: disable youtube. links to youtube url => app
 ---

@@ -61,7 +61,7 @@ function pathLinks($path, $parentOnly=false)
 	for($i=0;$i<$depth;$i++)
 	{
 		$pp .= $sep. $pathArray[$i];
-		echo	"/ <a href=\"?path=$pp\">$titleArray[$i]</a> ";
+		echo	"/ <a href=\"?$pp\">$titleArray[$i]</a> ";
 		$sep = '/';
 	}
 }

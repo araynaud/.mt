@@ -35,6 +35,6 @@ function redirect()
 	path=trimChar(path,"/");
 		
 	if(path.length>0) 
-		APP_PATH += "?path=" + path;
+		APP_PATH += "?" + path;
 	window.location = APP_PATH;
 }
