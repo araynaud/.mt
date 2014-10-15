@@ -250,7 +250,7 @@ function fractionValue($fraction)
 	$fr = explode(":", $fraction);
 	if(count($fr) == 1)
 		$fr = explode("/", $fraction);
-	if(count($fr) == 1)
+	if(count($fr) == 1 || !$fr[1])
 		return $fr[0];
 	return $fr[0] / $fr[1];
 }
