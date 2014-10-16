@@ -54,7 +54,11 @@ class MediaFile extends BaseObject
 			if($this->isVideo())
 			{
 				$streamTypes = getConfig("TYPES.VIDEO_STREAM");
-				$this->stream = array_values(array_intersect($streamTypes, $this->exts));
+				$this->stream=array();
+				foreach ($this->exts as $ext)
+					if(in_array(strtolower($ext), $streamTypes))
+						$this->stream[]=$ext;
+
 				$this->animated = true;
 			}
 			//thumbnails: image: .tn & .ss, same ext.

@@ -14,7 +14,7 @@ function MediaFile(data)
 	this.getTitle();
 	this.getRatio();
 	this.filename = this.getFilename();
-
+	this.isVideoStream();	
 	this.initTags();
 
 	this.selected=false;
@@ -141,6 +141,11 @@ MediaFile.isVideoStream = function(mediaFile)
 
 MediaFile.prototype.isVideoStream = function(mediaFile)
 {
+	if(isMissing(this.stream) && !isEmpty(this.exts))
+		this.stream = this.exts.intersect(config.TYPES.VIDEO_STREAM, "toLowerCase");
+
+	//$this->stream = array_values(array_intersect($streamTypes, $this->exts));
+
 	if(this.type!="VIDEO" || isEmpty(this.stream)) return false;
 	return isArray(this.stream) ? this.stream[0] : this.stream;
 };

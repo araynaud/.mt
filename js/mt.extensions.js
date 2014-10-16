@@ -498,9 +498,14 @@ Array.intersect = function(array1,array2)
 	});
 };
 
-Array.prototype.intersect = function(array2)
+Array.prototype.intersect = function(array2, funct)
 {
-	return this.filter(function(n) {
+	return this.filter(function(n)
+	{
+		if(isFunction(funct))
+			n = funct(n);
+		if(isString(funct))
+			n = n[funct]();
 	    return array2.indexOf(n) != -1
 	});
 };

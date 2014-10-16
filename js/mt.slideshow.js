@@ -99,8 +99,6 @@ Slideshow.prototype.setMediaPlayer = function(mediaPlayer)
 {
 	this.mplayer = mediaPlayer;
 	mediaPlayer.slideshow = this;
-	if(this.mplayer)
-		this.mplayerSlide = this.mplayer.getElement();
 };
 
 Slideshow.prototype.slideOnClick = function(e, img)
@@ -136,8 +134,6 @@ Slideshow.slideOnHover = function(e)
 Slideshow.getClickCoord = function(e,img)
 {
 	var off=img.offset();
-//	var mx = Math.round(img.borderWidth() / 2);
-//	var my = Math.round(img.borderHeight() / 2);
 	var cx = e.clientX - Math.round(off.left);
 	var cy = e.clientY - Math.round(off.top);
 	return { x: cx, y: cy, rx : Math.roundDigits(cx / img.outerWidth(), 2), ry : Math.roundDigits(cy / img.outerHeight(), 2) };
@@ -259,7 +255,7 @@ Slideshow.prototype.togglePlay = function(playState)
 	icon = String.combine(Album.serviceUrl ,"icons", "media-" + icon);
 	this.elements.playButton.attr("src", icon);
 
-	if(this.currentFile.isVideo())
+	if(this.currentFile.isVideoStream())
 	{
 		this.mplayer.togglePlay(this.play);
 		this.togglePlayAudio(!this.play);
@@ -292,7 +288,7 @@ Slideshow.prototype.toggleOption = function()
 		this.showImage(null,"crossFade");
 	else
 	{
-		this.styleSlide(this.mplayerSlide);
+		this.styleSlide();
 		this.fitVideo();
 	}
 };
@@ -405,6 +401,29 @@ Slideshow.prototype.getPicFilename = function(index)
 //use 2 images alternatively: slide0 , slide1
 //change alt img that is invisible, then fade
 
+Slideshow.prototype.getCurrentSlide = function(next)
+{
+	if(this.mplayer && this.currentFile.isVideoStream())
+		return this.mplayer.getPlayerElement();
+	if(next || !this.currentImg)
+		this.currentImg = this.transition.getNextSlide();
+	return this.currentImg;
+};
+
+Slideshow.prototype.styleSlide = function(next)
+{
+	el = this.getCurrentSlide(next);
+//	this.setStatus("currentSlide: " + el.attr("id"));
+	el.toggleClass("margin", album.margin);
+	el.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
+	el.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
+
+	this.angle = album.rotate ? $.randomBetween(-10, 10) : 0;
+
+	if(window.UI && UI.divStyles)
+		el.attr("style", UI.divStyles(this.angle));
+};
+
 Slideshow.prototype.showImage = function(index, transitionFunction)
 {	
 	if(isEmpty(this.pics)) return;
@@ -415,13 +434,6 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 	this.currentFile = this.pics[this.currentIndex];
 
 	this.preLoadedImage = this.loadImage();
-	if(this.currentFile.isVideo())
-		this.styleSlide(this.mplayerSlide);
-	else
-	{
-		this.currentImg = this.transition.getNextSlide();
-		this.styleSlide(this.currentImg);
-	}
 
 	if(this.preLoadedImage.complete)
 		this.displayLoadedImage(transitionFunction, fileChange);
@@ -433,18 +445,6 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 	if(window.UI && UI.displayEdit)
 		UI.displayEdit("#slideshowControls");
-};
-
-Slideshow.prototype.styleSlide = function(el)
-{
-	el.toggleClass("margin", album.margin);
-	el.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
-	el.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
-
-	this.angle = album.rotate ? $.randomBetween(-10, 10) : 0;
-
-	if(window.UI && UI.divStyles)
-		el.attr("style", UI.divStyles(this.angle));
 };
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange)
@@ -460,6 +460,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 		if(this.mplayer)
 		{
 			this.mplayer.loadMediaFile(this.currentFile);
+			this.styleSlide();
 			this.fitVideo();
 
 			var opts = {duration: this.transition.duration};
@@ -481,15 +482,15 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 			this.mplayer.hide(this.transition.duration);
 		}
 
+		this.styleSlide(true);
 		if(this.animate && this.play && this.animEndZoom != this.zoom)
 		{
 			this.fitImage(false, this.animStartZoom);
 			var sl=this;
-			setTimeout( function() { sl.animateImage(); }, this.transition.duration);
+			setTimeout(function() { sl.animateImage(); }, this.transition.duration);
 		}
 		else
 			this.fitImage();
-
 		this.transition.execute(transitionFunction);
 
 		if(this.play)
@@ -587,12 +588,11 @@ Slideshow.prototype.fitVideo = function ()
 Slideshow.prototype.fitImage = function (animate, zoomLevel) 
 {
 	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
-	var preLoaded = this.preLoadedImage;
 	var image = this.currentImg;
-	if (!preLoaded || !image) return;
+	if (!this.preLoadedImage || !image) return;
 
-	if (image.attr("src") !== preLoaded.src)
-		image.attr("src", preLoaded.src);
+	if (image.attr("src") !== this.preLoadedImage.src)
+		image.attr("src", this.preLoadedImage.src);
 
 	var size = this.getImageSize(zoomLevel);
 	if(animate)

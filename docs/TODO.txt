@@ -1,3 +1,9 @@
+style slide
+
+use fitimage for video
+mplayerslide : use function getCurrentSlide 
+
+------------
 
 album: if youtube not enabled or not ready: do not play in iframe, make link
 use oembed for mediaFile details.

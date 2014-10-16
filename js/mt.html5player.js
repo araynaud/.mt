@@ -63,13 +63,12 @@ Html5Player.playerSettings=
 	{
 		key: "slide",
 		type: "video",
-		id:"videoSlide",
+		id:"slideshowContainer",
 		youtube: true,
 		size: 1,
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
-		class: "hidden",
 		playlist: {	position: "down", showAll: false, maxHeight: 400 }
 	}
 
@@ -199,6 +198,7 @@ Html5Player.prototype.createPlayer = function()
 	this.player = $.makeElement(this.type, {
 		id: this.settings.id + "_" + this.type,
 		controls: true,
+		class: "h5player",
 		preload: "auto"
 	});
 	if(this.settings.style)
@@ -215,7 +215,7 @@ Html5Player.prototype.createPlayer = function()
 
 //	loadJavascript(config.youtube.iframeApiUrl);
 	this.ytid = this.settings.id + "_youtube";
-	this.yt = $.makeElement("div", {id: this.ytid, class: "hidden"}).appendTo(this.container);	
+	this.yt = $.makeElement("div", {id: this.ytid, class: "h5player"}).appendTo(this.container);	
 };
 
 //TODO pass optional controlDiv id 
@@ -397,6 +397,12 @@ Html5Player.prototype.activePlayer = function()
 	return this.isEmbeddedVideo() ? this.youtubePlayer : this.player;
 };
 
+Html5Player.prototype.getPlayerElement = function()
+{
+//	return $(".h5player"); 
+	return this.isEmbeddedVideo() ? this.jqiframe : this.jqplayer;
+};
+
 Html5Player.prototype.inactivePlayer = function()
 { 
 	return this.isEmbeddedVideo() ? this.player : this.youtubePlayer;
@@ -467,17 +473,17 @@ Html5Player.prototype.getElement = function()
 
 Html5Player.prototype.show = function(options)
 {
-	return this.getElement().show(options);
+	return this.getPlayerElement().show(options);
 };
 
 Html5Player.prototype.hide = function(options)
 { 
-	return this.getElement().hide(options);
+	return this.getPlayerElement().hide(options);
 };
 
 Html5Player.prototype.toggle = function(options)
 { 
-	return this.getElement().toggle(options);
+	return this.getPlayerElement().toggle(options);
 };
 
 Html5Player.prototype.initSize = function()
