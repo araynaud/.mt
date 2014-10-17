@@ -69,7 +69,7 @@ Html5Player.playerSettings=
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
-		playlist: {	position: "down", showAll: false, maxHeight: 400 }
+		class: "slide top left",
 	}
 
 };
@@ -195,12 +195,7 @@ Html5Player.prototype.createPlayer = function()
 {
 	this.initSize();
 
-	this.player = $.makeElement(this.type, {
-		id: this.settings.id + "_" + this.type,
-		controls: true,
-		class: "h5player",
-		preload: "auto"
-	});
+	this.player = $.makeElement(this.type, { id: this.settings.id + "_" + this.type, controls: true, preload: "auto" });
 	if(this.settings.style)
 		this.player.css(this.settings.style);
 	if(this.settings.class)
@@ -210,12 +205,11 @@ Html5Player.prototype.createPlayer = function()
 	this.jqplayer = this.player;
 	this.player = this.player[0];
 
-	if(this.type!="video" || !this.settings.youtube
-	 || !Html5Player.YouTubeReady) return;
+	if(this.type!="video" || !this.settings.youtube || !Html5Player.YouTubeReady) return;
 
 //	loadJavascript(config.youtube.iframeApiUrl);
 	this.ytid = this.settings.id + "_youtube";
-	this.yt = $.makeElement("div", {id: this.ytid, class: "h5player"}).appendTo(this.container);	
+	this.yt = $.makeElement("div", {id: this.ytid}).appendTo(this.container);	
 };
 
 //TODO pass optional controlDiv id 
@@ -311,7 +305,7 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 
 	this.mediaFiles = mediaFiles;
 
-	if(!isEmpty(this.playlistDiv)) // && mediaFiles.length>1)
+	if(!isEmpty(this.playlistDiv) && this.settings.playlist)
 	{
 		UI.renderTemplate("playlistLinkTemplate", this.playlistDiv, mediaFiles);
 		this.playlistDiv.width(this.settings.playlist.size);
@@ -328,7 +322,9 @@ Html5Player.prototype.loadMediaFile = Html5Player.prototype.loadPlaylist;
 
 Html5Player.prototype.loadFile = function(index)
 {
-	index = modulo(valueOrDefault(index, this.current), this.mediaFiles.length);
+	index = valueOrDefault(index, this.current);
+	if(!isEmpty(this.mediaFiles))
+		index = modulo(index, this.mediaFiles.length);
 	this.current = index;
 	this.currentFile = this.mediaFiles[this.current];
 	var isEmbedded = this.isEmbeddedVideo();
@@ -377,8 +373,8 @@ Html5Player.prototype.loadYoutubePlayer = function(videoId)
 	{
 	    this.youtubePlayer = new YT.Player(this.ytid,
 	    {
-	          width: this.settings.width, 
-	          height: this.settings.height,
+//	          width: this.settings.width, 
+//	          height: this.settings.height,
 	          videoId: videoId,
 	          playerVars: { 'autoplay': this.settings.autostart}, //, 'controls': 1 },
 	          events: { 'onStateChange': this.ytPlayerStateChange }
@@ -386,6 +382,9 @@ Html5Player.prototype.loadYoutubePlayer = function(videoId)
 	}
 
 	this.jqiframe = $("#"+this.ytid);
+	if(!this.currentFile.width)		this.currentFile.width = this.jqiframe.width();
+	if(!this.currentFile.height)	this.currentFile.height = this.jqiframe.height();
+
 	if(this.settings.style)
 		this.jqiframe.css(this.settings.style);
 	if(this.settings.class)
@@ -399,7 +398,6 @@ Html5Player.prototype.activePlayer = function()
 
 Html5Player.prototype.getPlayerElement = function()
 {
-//	return $(".h5player"); 
 	return this.isEmbeddedVideo() ? this.jqiframe : this.jqplayer;
 };
 
@@ -525,10 +523,11 @@ Html5Player.prototype.resize = function(width, height)
 
 Html5Player.prototype.displaySelectedItem = function(index)
 {
+	if(!this.settings.playlist) return;
+
     var link = this.trackLinks.eq(this.current);
     var selectedItem = link.parent().addClass("selectedItem");
     var otherItems = selectedItem.siblings().removeClass("selectedItem");
-
 	selectedItem.slideDown("slow");
 	otherItems.toggleEffect(this.settings.playlist.showAll, "slow");
 };

@@ -289,7 +289,7 @@ Slideshow.prototype.toggleOption = function()
 	else
 	{
 		this.styleSlide();
-		this.fitVideo();
+		this.fitImage();
 	}
 };
 
@@ -305,10 +305,7 @@ Slideshow.prototype.toggleZoom = function()
 	else
 		this.setStatus("zoom: " + Slideshow.zoom.labels[Slideshow.zoom.types[this.zoom]]);
 
-	if(this.currentFile.isImage())
-		this.fitImage(true);
-	else
-		this.fitVideo();
+	this.fitImage(true);
 };
 
 Slideshow.prototype.toggleAnimate = function(state)
@@ -461,7 +458,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 		{
 			this.mplayer.loadMediaFile(this.currentFile);
 			this.styleSlide();
-			this.fitVideo();
+			this.fitImage();
 
 			var opts = {duration: this.transition.duration};
 			if(this.play)
@@ -552,46 +549,13 @@ Slideshow.prototype.showComments = function(mediaFile)
 //fit long, short side, stretch
 //move small icon thumbnails above caption
 
-
-Slideshow.prototype.fitVideo = function () 
-{
-	if(!this.currentFile.isVideoStream()) return;
-
-	if(!this.zoom)
-		return this.mplayer.setSize();
-
-	var bw = 60; // image.borderMarginWidth();
-	var bh = 80; //image.borderMarginHeight();
-
-	var preRatio = 16/9;
-	if(this.currentFile.width && this.currentFile.height)
-		preRatio = this.currentFile.width / this.currentFile.height;
-	var wWidth  = this.elements.container.width()  - bw;
-	var wHeight = this.elements.container.height() - bh;
-	var wRatio = wWidth / wHeight;
-	var width  = Math.min(wWidth, this.currentFile.width || 0);
-	var height = Math.min(wHeight, this.currentFile.height || 0);
-	if (this.zoom && preRatio > wRatio) //if too wide, fit width
-	{
-		width = wWidth;
-		height = width / preRatio;
-	}
-	else if (this.zoom) //or fit height;
-	{
-		height = wHeight;
-		width = height * preRatio;
-	}
-
-	this.mplayer.resize(width, height);
-};
-
 Slideshow.prototype.fitImage = function (animate, zoomLevel) 
 {
 	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
-	var image = this.currentImg;
+	var image = this.getCurrentSlide();
 	if (!this.preLoadedImage || !image) return;
 
-	if (image.attr("src") !== this.preLoadedImage.src)
+	if(this.currentFile.isImage() && image.attr("src") !== this.preLoadedImage.src)
 		image.attr("src", this.preLoadedImage.src);
 
 	var size = this.getImageSize(zoomLevel);
@@ -599,6 +563,36 @@ Slideshow.prototype.fitImage = function (animate, zoomLevel)
 		image.animate(size, this.interval / 2);
 	else
 		image.css(size);
+};
+
+Slideshow.prototype.getImageSize = function (zoomLevel)
+{
+	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
+
+	var ibm = this.getImageBorderMargins();
+	var size = { height: this.preLoadedImage.height, width: this.preLoadedImage.width };
+	if(this.currentFile.isVideoStream() && this.currentFile.height && this.currentFile.width)
+		size = { height: this.currentFile.height, width: this.currentFile.width};
+	var preRatio = preRatio = size.width / size.height;
+	var wRatio = (this.elements.container.width() - ibm.bmw) / (this.elements.container.height() - ibm.bmh);
+
+	if(zoomLevel)
+	{
+		var zoomType = Slideshow.zoom.types[zoomLevel];
+		var fitWidth = (zoomType == "width") || (preRatio > wRatio && zoomType=="long")  || (preRatio <= wRatio && zoomType=="short");
+		if (fitWidth) //fit width
+		{
+			size.width = this.elements.container.width() - ibm.bmw;
+			size.height = size.width / preRatio;
+		}
+		else //or fit height;
+		{
+			size.height = this.elements.container.height() - ibm.bmh;
+			size.width = size.height * preRatio;
+		}
+	}
+	this.getImageMargins(ibm, size);
+	return size;
 };
 
 Slideshow.prototype.getImageBorderMargins = function () 
@@ -615,49 +609,14 @@ Slideshow.prototype.getImageBorderMargins = function ()
 	return ibm;
 };
 
-Slideshow.prototype.getImageSize = function (zoomLevel)
-{
-	preLoaded = this.preLoadedImage;
-	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
-
-	var ibm = this.getImageBorderMargins();
-	var size = { height: preLoaded.height, width: preLoaded.width };
-
-	var preRatio = preLoaded.width / preLoaded.height;
-	var wRatio = (this.elements.container.width() - ibm.bmw) / (this.elements.container.height() - ibm.bmh);
-
-	if(zoomLevel)
-	{
-		var zoomType = Slideshow.zoom.types[zoomLevel];
-		var fitWidth = zoomType == "width";
-		if(preRatio > wRatio && zoomType=="long")  
-			fitWidth=true;
-		if(preRatio <= wRatio && zoomType=="short") 
-			fitWidth=true;
-
-		if (fitWidth) //fit width
-		{
-			size.width = this.elements.container.width() - ibm.bmw;
-			size.height = size.width / preRatio;
-		}
-		else //or fit height;
-		{
-			size.height = this.elements.container.height() - ibm.bmh;
-			size.width = size.height * preRatio;
-		}
-	}
-	this.getImageMargins(ibm, size);
-	return size;
-};
-
 Slideshow.prototype.getImageMargins = function(ibm, position)
 {
 	position = valueOrDefault(position,{});
 
 	var mx = ibm.mw/2;
 	var my = ibm.mh/2;	
-	var outerWidth = position.width + ibm.bmw;
-	var outerHeight = position.height + ibm.bmh;
+	var outerWidth  = ibm.bmw + position.width;
+	var outerHeight = ibm.bmh + position.height;
 
 	var x = this.elements.container.width() - outerWidth;
 	if (this.alignX == "center") x/=2;

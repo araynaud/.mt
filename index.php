@@ -136,10 +136,8 @@ $(window).resize(function(event)
 {
 	if(!window.album) return;
 	if(UI.mode==="slideshow")
-	{
 		UI.slideshow.fitImage();
-		UI.slideshow.fitVideo();
-	}
+
 	UI.setContentHeight();
 	UI.setContentWidth();
 	UI.setColumnWidths();
