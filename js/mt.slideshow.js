@@ -187,26 +187,26 @@ Slideshow.prototype.slower = function()
 	this.setSpeed(+1);
 };	
 
-//accept filenames or int: if start is a string, find its position in this.pics array
-Slideshow.prototype.setStart = function(start)
-{
-	if(isMissing(start))	
-		return this.currentIndex;
-	if(this.pics.length == 0)
-		this.currentIndex = 0;
-	else
-		this.currentIndex = this.getPicPosition(start);
-	
-	return this.currentIndex;
-};
-
 Slideshow.prototype.setPics = function(mediaFiles)
 {
 	this.pics = mediaFiles;
 };
 
+//accept filenames or int: if start is a string, find its position in this.pics array
+Slideshow.prototype.setStart = function(start)
+{
+	this.currentIndex = this.getPicPosition(start);
+	return this.currentIndex;
+};
+
 Slideshow.prototype.getPicPosition = function(input)
 {
+	if(isEmpty(this.pics.length))
+		return 0;
+	if(isMissing(input) && this.currentIndex > this.pics.length)
+		return 0;
+	if(isMissing(input))
+		return this.currentIndex;
 //object: search by name
 	if(isObject(input))
 		input = input.id || input.name  || input.filename;

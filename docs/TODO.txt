@@ -1,8 +1,9 @@
-style slide
-
-use fitimage for video
-mplayerslide : use function getCurrentSlide 
-
+OK style slide
+OK use fitimage for video
+OK mplayerslide : use function getCurrentSlide 
+K0kopeli
+if video not stream: what do do? display like image ?
+what slide elkement is used?
 ------------
 
 album: if youtube not enabled or not ready: do not play in iframe, make link

@@ -1059,7 +1059,7 @@ function not(funct)
 
 function modulo(i,max)
 {
-	return (i + max) % max;
+	return max ? (i + max) % max : i;
 }
 
 function tryCatchAlert(funct)

@@ -13,7 +13,7 @@ UI.modes=
 			var alt = UI.transition.getNextSlide();
 			alt.html("");
 			alt.hide();
-			//UI.displaySelectedFiles();
+			UI.displaySelectedFiles();
 		},
 		onHide: function()
 		{
