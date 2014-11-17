@@ -76,19 +76,19 @@ function checkUserAgent()
 //get request parameter from query string
 function getParam($name, $default="")
 {	
-	return isset($_GET[$name]) && (@$_GET[$name]!="") ? $_GET[$name] : $default;
+	return isset($_GET[$name]) && (@$_GET[$name]!="") ? utf8_decode($_GET[$name]) : $default;
 }
 
 //get request parameter from GET or POST
 function reqParam($name, $default="")
 {	
-	return isset($_REQUEST[$name]) && (@$_REQUEST[$name]!="") ? $_REQUEST[$name] : $default;
+	return isset($_REQUEST[$name]) && (@$_REQUEST[$name]!="") ? utf8_decode($_REQUEST[$name]) : $default;
 }
 
 //get request parameter from POST body only
 function postParam($name, $default="")
 {	
-	return isset($_POST[$name]) && (@$_POST[$name]!="") ? $_POST[$name] : $default;
+	return isset($_POST[$name]) && (@$_POST[$name]!="") ? utf8_decode($_POST[$name]) : $default;
 }
 
 //get request parameter

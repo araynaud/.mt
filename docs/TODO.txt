@@ -1,3 +1,25 @@
+Search by tags + name on server
+
+data=tags
+list files, search by name + loadTagFile , intersect with Files
+tag name, partial search ?
+
+PS3: fix album display JS error
+
+
+tag=SantaFe,Amy,best
+tag=SantaFe|Amy|best
+
+tag=Amy|Roswell,best
+tag=best,Amy|Roswell
+
+loadTagFiles that match specified name.
+name list = union or intersection of all files
+
+when listing files, check if name in nameList or filename matches
+
+------------
+
 OK style slide
 OK use fitimage for video
 OK mplayerslide : use function getCurrentSlide 
