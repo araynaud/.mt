@@ -7,6 +7,7 @@ startTimer();
 reqPathFile($path, $file);
 $relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
+$fileType=strtolower($mf->getFileType());
 
 $response = array();
 if(!$mf)
@@ -33,7 +34,6 @@ $site = reqParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
 $destPath = combine(@$publish["path"], reqParam("target"));
-
 $filePath = combine($relPath, $file);
 debugVar("filePath");
 
@@ -61,7 +61,7 @@ if($mf->isImage())
 	}
 }
 else if($mf->isVideo())
-{
+{	
 	$stream=$mf->isVideoStream();
 debug("isVideoStream", $stream, "print_r");
 	if(!$stream)
@@ -112,13 +112,16 @@ if($chunk <=1)
 	$descPath = $mf->getDescriptionFilename(true);
 	$postData["version"] = "description";
 	$response["desc"] = uploadFile($publish, $descPath, $destPath);
+}
 
+$uploadThumbs = arrayGet($publish, "$fileType.thumbnails");
+if($chunk <=1 && $uploadThumbs)
+{
 	$filePaths = $mf->getFilePaths(true, false, false, true, false);
 	foreach ($filePaths as $key => $value) 
 		if($filePath!=$value)
 			$response[$key] = uploadFile($publish, $value, "$destPath/.$key");
 }
-
 
 //send metadata row as data, upload.php appends it to index file
 $response["time"] = getTimer();
