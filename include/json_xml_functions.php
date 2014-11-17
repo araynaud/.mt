@@ -179,7 +179,7 @@ function isJsonString($val)
 
 //write JSON array from PHP array
 //recursive, outputs objects
-function jsArray($array, $indent=1, $includeEmpty=false, $private=false)
+function jsArray($array, $indent=1, $includeEmpty=false, $private=false, $perLine=10)
 {
 	if(isAssociativeArray($array))
 		return jsObject($array, $indent, $includeEmpty, $private);
@@ -188,24 +188,27 @@ function jsArray($array, $indent=1, $includeEmpty=false, $private=false)
 		$array=array_filter($array,"isNotEmptyValue");
 
 	$separator = ",";
-	if(isScalarArray($array)) 
+	$scalar = isScalarArray($array);
+	if($indent && $scalar) 
 	{
 		$separator = ", ";
-		$indent=0;
+		if(count($array) <= $perLine)
+			$indent=0;
 	}
 
 	$tab=indent($indent);
 	$indent=nextIndent($indent);		
 	$sep="";
 	$result="";
-	foreach ($array as $value)
+	$n=0;
+	foreach ($array as $key => $value)
 	{
 //debugStack();		
 		$jsValue=jsValue($value,$indent,$includeEmpty,$private);
 		if(!$includeEmpty && isEmptyValue($jsValue)) continue;
 
 		$result .= $sep;
-		if(!is_array($value) && !is_object($value))
+		if($scalar && is_scalar($value) && $n++ % $perLine == 0)
 			$result .= indent($indent);
 		$result .= $jsValue;
 		$sep = $separator;
