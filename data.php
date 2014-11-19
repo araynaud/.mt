@@ -18,8 +18,10 @@ function getFileData(&$getData, $path, $file)
 				$files = groupByName($relPath, $files, true, $details);
 			return $files;
 		case "tags":
-			$tags = loadTagFiles($relPath, $search["depth"]);
-			return $tags;			
+			return listTagFiles($relPath, $search["depth"], @$search["tag"], false);
+		case "taglists":
+			$tags = searchTagFiles($relPath, $search["depth"], @$search["tag"]);
+			return $tags;
 		case "config":
 			return $config;
 		case "size":
@@ -49,6 +51,7 @@ function getFileData(&$getData, $path, $file)
 startTimer();
 
 $getData = reqParam("data", "MediaFile");
+$countTime = reqParamBoolean("counttime", true);
 //output options
 $format=reqParam("format", "json");
 $indent=reqParam("indent", 1);
@@ -71,6 +74,11 @@ if(isAssociativeArray($data))
 {
 	$data["count"] = count($data);
 	$data["time"] = getTimer();
+}
+else if($countTime)
+{
+	$data[] = count($data);
+	$data[] = getTimer();
 }
 
 switch (strtolower($format))

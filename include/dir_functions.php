@@ -40,7 +40,15 @@ function listFiles($dir, $search=array(),$subPath="",$remaining=null,$recurse=nu
 	if(!isset($search["exts"]) && isset($search["type"]))
 		$search["exts"]=getExtensionsForTypes(@$search["type"]);
 
+	if(!@$search["tagfiles"])
+	{
+		$search["tagfiles"] = searchTagFiles($dir, $search["depth"], @$search["tag"]);
+		$cnt=count($search["tagfiles"]);
+		debug("listFiles: files matched by tags ($cnt)", $search["tagfiles"], true);
+	}
+
 debug("listFiles $dir", $search);
+debug("subpath", $subPath);
 
 	//search 1 exact filename
 	if(isset($search["file"]))
@@ -57,7 +65,7 @@ debug("listFiles $dir", $search);
 
 		$relPathG=$dir;
 		loadIgnoreList($dir);	//load from .ignore.txt file only once
-			
+
 		while(($file = readdir($handle))!==false)
 		{
 			//filter by files: works if dir sorted by name and case sensitive
@@ -67,15 +75,21 @@ debug("listFiles $dir", $search);
 			if(ignoreFile($file)) continue;
 
 			if($recurse && fileIsDir("$file"))
-				$subdirs[$file] = $file;
-			splitFilename($file,$key,$ext);
+			{
+				$subdirs[$file] = $file;			
+				debug("fileIsDir $file", fileIsDir("$file"));
+			}
 
-			$hasNameAndType = fileHasNameAndType($file, @$search["name"], @$search["exts"], @$search["starts"], @$search["ends"]);
+			splitFilename($file, $key, $ext);
+
+			$key=combine($subPath, $key);
+			$hasNameAndType = fileMatches($file, $key, $search);
 			if(isset($search["exts"]) && !$hasNameAndType && in_array($ext, @$config["TYPES"]["SPECIAL"])) continue;
-//			if(fileHasType($file, "SPECIAL")) continue;				
+
 			if(!$hasNameAndType) continue;
-//use name as key
+
 			$key=combine($subPath,$file);
+
 //debug("splitFilename", "file=$file / key=$key / ext=$ext");
 			if(@$search["tnDir"])
 			{	
@@ -123,7 +137,7 @@ debug("list files in $newDir", $files);
 			$remaining -= count($files);
 		}
 		$recurse++;
-		$parentFiles=listFiles($newDir, $search, combine($subPath,".."), $remaining, $recurse);
+		$parentFiles = listFiles($newDir, $search, combine($subPath,".."), $remaining, $recurse);
 		if($parentFiles)
 			$files=array_merge($files,$parentFiles);
 	}
@@ -143,7 +157,7 @@ debug("list files in $newDir", $files);
 		{
 			$newDir=combine($dir,$subdir);
 			$nb = ($remaining == 0) ? 0 : max(floor($remaining/$nbDirs), 1);
-			$subdirFiles=listFiles($newDir, $search, combine($subPath,$subdir), $nb, $recurse);
+			$subdirFiles = listFiles($newDir, $search, combine($subPath,$subdir), $nb, $recurse);
 			if(!$subdirFiles) continue;
 			
 			$files=array_merge($files,$subdirFiles); //1 array
@@ -158,11 +172,26 @@ debug("list files in $newDir", $files);
 	return $files;
 }
 
+
+function fileMatches($file, $key, $search)
+{
+	$hasType = fileHasType($file, @$search["exts"]);
+	if(!@$search["name"] && !@$search["tag"]) return $hasType;
+
+	$hasName = $search["name"] && fileHasName($file, @$search["name"] , @$search["start"], @$search["end"]);
+	$hasTag = $search["tagfiles"] && array_key_exists($key, $search["tagfiles"]);
+	$result = ($hasName || $hasTag) && $hasType;
+	if($result)
+		debug("fileMatches $file $key", "name:$hasName | tag:$hasTag & type:$hasType = $result");
+	return $result;
+}
+
 function getSearchParameters()
 {
 	$search = array();		
 	$search["type"]=reqParam("type");
 	$search["name"]=reqParam("name");
+	$search["tag"]=reqParam("tag");
 	$search["sort"]=reqParam("sort");
 	$search["depth"]=reqParam("depth",0);
 	$search["subdir"]=reqParam("subdir");

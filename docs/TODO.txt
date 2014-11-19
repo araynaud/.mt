@@ -6,7 +6,6 @@ tag name, partial search ?
 
 PS3: fix album display JS error
 
-
 tag=SantaFe,Amy,best
 tag=SantaFe|Amy|best
 

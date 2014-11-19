@@ -57,7 +57,8 @@ class Album extends BaseObject
 			$this->getMetadataIndex("VIDEO");
 
 			//Group by name / make MediaFile objects
-			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), $allFiles);
+			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), null, $allFiles);
+			//$this->tags = array_keys($this->tags);
 			$this->youtube = loadYoutubePlaylist($this->relPath);
 debug("youtube", $this->youtube,"print_r");
 			$this->createMediaFiles();
@@ -160,7 +161,7 @@ debug("dateIndex.types", $types);
 		{
 debug($type, count($typeFiles));
 			if($type == $types || in_array($type, $types))
-				$result = arrayReplace($result, $typeFiles);
+				$result = arrayUnion($result, $typeFiles);
 		}
 		return $result;
 	}

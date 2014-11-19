@@ -465,7 +465,7 @@ function csvHeaderRow($data, $writeKey="")
 	//get union of keys in all rows
 	foreach ($data as $key => $row)
 		if($row)
-			$columns = arrayReplace($columns, $row);
+			$columns = arrayUnion($columns, $row);
 
 	$k = array_keys($columns);
 	if($writeKey)

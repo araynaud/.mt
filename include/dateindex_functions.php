@@ -9,20 +9,62 @@ function getTagFilename($relPath, $subdir, $tag)
 }
 
 //get index csv without trying to refresh
-function listTagFiles($relPath, $depth=0, $grouped=true)
+function listTagFiles($relPath, $depth=0, $tags=null, $grouped=true)
 {
-	$search = array("type" => "csv", "depth" => $depth, "subdir" => ".tag");
+	$search = array("type" => "csv", "name" => $tags, "depth" => $depth, "subdir" => ".tag");
+debug("listTagFiles", $search);
 	$tagFiles = listFiles($relPath, $search);
 debug("tagFiles", $tagFiles);
 	if($grouped)
 		$tagFiles = groupByName("$relPath/.tag", $tagFiles);
-debug("tagFiles grouped", $tagFiles, true);
+debug("tagFiles grouped", array_keys($tagFiles), true);
 	return $tagFiles;
 }
 
-function loadTagFiles($relPath, $depth=0, $fileList=null)
+
+function searchTagFiles($relPath, $depth=0, $tags=null)
 {
-	$tagFiles = listTagFiles($relPath, $depth);
+//	$tags = "Arthur,Amy|best,24,B2,3A|fit";
+debug("searchTagFiles", $tags);	
+
+	if(!$tags) return array();
+
+//	$count = preg_match_all("{[\|, ]|\w+}", $tags, $matches);
+//	debug("preg_match_all $tags $count", $matches, true);
+
+	$nbOps = preg_match_all("{[\|, ]}", $tags, $ops);
+debug("searchTagFiles", $ops);	
+
+	$ops=reset($ops);
+	debug("searchTagFiles $tags ($nbOps)", $ops, true);
+
+	$nbWords = preg_match_all("{\w+}", $tags, $words);
+debug("searchTagFiles", $words);	
+	$words=reset($words);
+	debug("searchTagFiles $tags ($nbWords)", $words, true);
+	if(!$words) return array();
+
+debug("searchTagFiles", $words[0]);
+	$result = arrayUnion(loadTagFiles($relPath, $depth, $words[0]));
+	//combine next word search with operators
+	for($i=0; $i < $nbOps; $i++)
+	{
+		if($i >= $nbWords) break;
+		$word = $words[$i+1];
+		$op = $ops[$i]; 
+		$tagFiles = arrayUnion(loadTagFiles($relPath, $depth, $word));
+debug("searchTagFiles", "$op $word");
+		if($op == "|")
+			$result = arrayUnion($result, $tagFiles);
+		else if($op == " " || $op == ",")
+			$result = arrayIntersection($result, $tagFiles);
+	}
+	return $result;
+}
+
+function loadTagFiles($relPath, $depth=0, $tags=null, $fileList=null)
+{
+	$tagFiles = listTagFiles($relPath, $depth, $tags);
 	$tagData=array();
 
 	foreach ($tagFiles as $tag => $file)
@@ -35,7 +77,7 @@ function loadTagFiles($relPath, $depth=0, $fileList=null)
 		if(!isset($tagData[$name]))
 			$tagData[$name] = $data;
 		else
-			$tagData[$name] = arrayReplace($tagData[$name], $data);
+			$tagData[$name] = arrayUnion($tagData[$name], $data);
 	}
 //	debug("loadTagFiles",$tagData,"print_r");
 	return $tagData;
@@ -60,6 +102,7 @@ debug("loadTagFile", $filename);
 
 	if($fileList)
 		$tagList = array_intersect_key($tagList, $fileList);
+debug("loadTagFile", $tagList, true);
 	return $tagList;
 }
 

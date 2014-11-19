@@ -460,15 +460,36 @@ function arrayFilterKeys($a, $funct)
 	return $b;
 }
 
-//array_replace not available in PHP < 5.3.0
-function arrayReplace()
+
+//array intersect by keys
+function arrayIntersection()
 {
 	$args = func_get_args();
-	$ar1 = array();
+	//if only 1 arg, use arrays in this arg 
+	if(count($args) == 1)
+		$args = reset($args);
+
+	$result = array_shift($args);
+	foreach($args as $ar)
+		$result = array_intersect_key($result, $ar);
+
+	return $result;
+}
+
+//array union by keys
+//array_replace not available in PHP < 5.3.0
+function arrayUnion()
+{
+	$args = func_get_args();
+	//if only 1 arg, use arrays in this arg 
+	if(count($args) == 1)
+		$args = reset($args);
+
+	$result = array();
 	foreach($args as $ar)
 		foreach ($ar as $key => $value)
-			$ar1[$key] = $value;
+			$result[$key] = $value;
 
-	return $ar1;
+	return $result;
 }
 ?>
