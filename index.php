@@ -225,7 +225,7 @@ $(window).resize(function(event)
 	<br/>
 	<div class="floatR">
 		<div class="right noprint controls">
-			<img id="ajaxLoader" src="icons/ajax-loader.gif"/>
+			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
 			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>

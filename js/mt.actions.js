@@ -60,7 +60,7 @@ UI.displayEdit = function(filebox)
 	if(!UI.currentFile) return;
 
 	var link=UI.currentFile.getShortUrl();
-	$("a#getFileUrlLink").attr("href", link);
+	UI.fileUrlLink.attr("href", link);
 
 	UI.rotateIcons.toggle(UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());

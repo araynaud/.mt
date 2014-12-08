@@ -548,7 +548,8 @@ UI.setupElements = function()
 	UI.editChoicesList	= $("#choicesList", UI.editDiv);
 	UI.editOKButton		= $("#btn_OK", UI.editDiv);
 	UI.editCancelButton = $("#btn_Cancel", UI.editDiv);
-	
+	UI.fileUrlLink      = $("a#fileUrlLink", UI.editDiv);
+	UI.ajaxLoader       = $("#ajaxLoader");
 	UI.setupTemplates();
 };
 

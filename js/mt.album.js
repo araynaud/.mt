@@ -68,6 +68,7 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	//TODO: pass search as data to $.ajax GET
 	var serviceUrl = String.combine(Album.serviceUrl, "data.php");
 	var startTime = new Date();
+	UI.ajaxLoader.show();
 
 	var albumInstance;
 	$.ajax({
@@ -79,6 +80,7 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 		async: async,
 		success: function(response)
 		{ 
+			UI.ajaxLoader.hide();
 			albumInstance = new Album(response);
 			var endTime = new Date();
 			albumInstance.requestTime = endTime - startTime;
