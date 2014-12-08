@@ -140,11 +140,11 @@ function objToArray($obj, $private=false, $includeEmpty=true, $recursive=false)
 }
 
 //output PHP variable in JS
-function jsVar($name,$newvar=false,$indent=1, $includeEmpty=false, $private=true)
+function jsVar($name, $newvar=false, $indent=1, $includeEmpty=false, $private=true)
 {
 	$result=indent($indent);
 	if($newvar) $result .= "var ";
-	$result.="$name=" .	jsVarValue($name,$indent, $includeEmpty, $private) . ";\n";
+	$result .= "$name=" . jsVarValue($name, $indent, $includeEmpty, $private) . ";\n";
 	return $result;
 }
 
@@ -187,7 +187,7 @@ function jsArray($array, $indent=1, $includeEmpty=false, $private=false, $perLin
 	if(!$includeEmpty)
 		$array=array_filter($array,"isNotEmptyValue");
 
-	$separator = ",";
+	$separator = ", ";
 	$scalar = isScalarArray($array);
 	if($indent && $scalar) 
 	{
@@ -236,7 +236,7 @@ function jsObject($obj, $indent=1, $includeEmpty=false, $private=false)
 
 		$result .= $sep . indent($indent) . "\"$key\": ";
 		$result .= $jsValue;
-		$sep=",";
+		$sep=", ";
 	}
 	if(empty($result))
 		return $includeEmpty ? "{}" : "";	

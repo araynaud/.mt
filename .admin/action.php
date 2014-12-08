@@ -23,9 +23,6 @@ debugVar("to");
 
 $rename = reqParam("rename");
 
-//tag options
-$tag = reqParam("tag", $to);
-
 //output options
 $indent = reqParam("indent", 1);
 $includeEmpty = reqParamBoolean("empty");
@@ -72,8 +69,8 @@ else
 		case "addtag":
 		case "removetag":
 			$state = ($action == "addtag");
-			$result = $mf->setTag($tag, $state);
-			$parameters["tag"] = $tag;
+			$result = $mf->setTag($to, $state);
+			$parameters["tag"] = $to;
 			$parameters["state"] = $state;
 			break;
 		case "refresh":

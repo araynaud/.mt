@@ -59,6 +59,9 @@ UI.displayEdit = function(filebox)
 	UI.currentFile=album.getByAttribute(filebox) || UI.slideshow.currentFile;
 	if(!UI.currentFile) return;
 
+	var link=UI.currentFile.getShortUrl();
+	$("a#getFileUrlLink").attr("href", link);
+
 	UI.rotateIcons.toggle(UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
 	$("#cb_selected").toggleChecked(UI.currentFile.selected, true);

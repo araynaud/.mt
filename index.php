@@ -2,9 +2,10 @@
 require_once("include/config.php");
 session_start();
 reqPathFile($path, $file);
-$params=array("path"=>$path, "file"=>$file);
+$tag = reqParam("tag");
+$depth = reqParam("depth");
+$params=array("path"=>$path, "file"=>$file, "tag"=>$tag, "depth" => $depth);
 debugVar("params");
-
 
 $album = new Album($path, false);
 $relPath=$album->getRelPath();
@@ -77,9 +78,11 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/phpmyvisites.js"></script>
 
 <script type="text/javascript">
-<?php echo jsVar("params", true, true, true); ?>
+<?php echo jsVar("params", true, false, true, false); ?>
 var qs = new Querystring();
+delete qs.params[qs.whole];
 var search = Object.merge(qs.params, params, true);
+
 var config;
 UI.transition = new Transition({elementSelector: "div.mediaFileList", type: 2, clear: true, maxType:3, duration: 1000});
 
@@ -111,8 +114,15 @@ Album.onLoad = function (albumInstance)
 		}
 
 		UI.selectCountPerPage(false);
-		UI.sortFiles(!search.file);
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
+
+		var mf=null;
+		if(location.hash) 
+			search.file = location.hash.substringAfter("#");
+		if(search.file)
+			mf=album.getMediaFileByName(search.file);
+
+		UI.sortFiles(!mf);
 
 		UI.displayTags();
 		UI.styleCheckboxes();
@@ -123,11 +133,7 @@ Album.onLoad = function (albumInstance)
 
 		$(".lOption").each(UI.toggleLayoutOption); 
 
-		if(search.file)
-		{
-			var mf=album.getMediaFileByName(search.file);
-			if(mf) mf.play();
-		}
+		if(mf) mf.play();
 	}
 //	catch(err)	{ alert(Object.toText(err,"\n")); }
 };
@@ -176,7 +182,7 @@ $(window).resize(function(event)
 		<a class="spaceLeft upload" target="test" href="test.php<?php echo qsParameters("path")?>"><img src="icons/testing.png" alt="description"/></a>
 		<a class="spaceLeft upload" href=".upload/description.php<?php echo qsParameters("path")?>"><img src="icons/comment.gif" alt="description"/></a>
 		<a class="spaceLeft" target="xml" href="data.php?data=album&format=xml&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/xml.png" alt="XML" title="XML index"/></a>
-		<a class="spaceLeft" target="json" href="data.php?data=album&format=json&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/json_orange.png" alt="JSON" title="JSON index"/></a>
+		<a class="spaceLeft" target="json" href="data.php?data=album&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/json_orange.png" alt="JSON" title="JSON index"/></a>
 <?php	}?>
 <?php if(isLocal()) {?>		
 		<a class="spaceLeft" href="<?php echo getLocalUrl($relPath)?>"><img src="icons/explorer.gif" alt="Explorer" title="View in explorer"/></a>
@@ -219,6 +225,7 @@ $(window).resize(function(event)
 	<br/>
 	<div class="floatR">
 		<div class="right noprint controls">
+			<img id="ajaxLoader" src="icons/ajax-loader.gif"/>
 			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>

@@ -81,8 +81,10 @@ debug("dirname $dir",dirname($dir));
 $dir = dirname($dir);
 debug("dirname $dir",dirname($dir));
 
-$path=getPath();
+reqPathFile($path, $file);
+//$path=getPath();
 debugVar("path");
+debugVar("file");
 $relPath=getRelPath($path);
 debugVar("relPath");
 $relPath=getDiskPath($path);
@@ -91,6 +93,9 @@ $absPath=diskPathToUrl($path);
 debugVar("absPath");
 debug("currentDir",realpath(""));
 debug("relPath $relPath",realpath($relPath));
+
+$image = getFileByName($relPath, $file);
+debug("getFileByName $relPath $file", $image);
 
 debug("App root", pathToAppRoot());
 debug("App dir", getAppRootDir());
@@ -104,7 +109,6 @@ debug("combine", combine(getAbsoluteDataRoot(), "..","2014/dir/file.jpg"));
 
 debug("isDomainRoot '" . getAbsoluteAppRoot(), isDomainRoot(getAbsoluteAppRoot()));
 debug("isDomainRoot '" . getAbsoluteDataRoot(), isDomainRoot(getAbsoluteDataRoot()));
-
 
 $image = findFirstImage($relPath);
 debug("findFirstImage", $image);

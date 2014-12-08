@@ -6,7 +6,7 @@ function listAllFilesInDir($dir)
 	$files=array();
 	if (!is_dir($dir)) return $files;
 
-	$handle=opendir($dir);	
+	$handle = opendir($dir);	
 	while(($file = readdir($handle))!==false)
 		$files[$file] = $file;
 	closedir($handle);
@@ -15,9 +15,23 @@ function listAllFilesInDir($dir)
 
 function listAllFiles($dir, $maxCount=0)
 {
-	$search=array("maxCount"=>$maxCount);
+	$search = array("maxCount"=>$maxCount);
 	return listFiles($dir, $search);
 }
+
+function getFileByName($dir, $name)
+{
+	$search = array("name" => $name);
+	return listFiles($dir, $search);
+}
+
+function fileExistsByName($dir, $name)
+{
+	$search = array("name" => $name, "maxCount"=>1);
+	$list = listFiles($dir, $search);
+	return count($list) ? reset($list) : false;
+}
+
 
 //if $type=DIR: list subdirs only
 //if $type=FILE: list files without subdirs
@@ -26,7 +40,7 @@ function listAllFiles($dir, $maxCount=0)
 //$sub: subfolder to list (ex: .tn, .ss)
 //$search =  array( "name"=>"","type"=>"","depth"=>0,"maxCount"=>0,"tnDir"=>"");
 
-function listFiles($dir, $search=array(),$subPath="",$remaining=null,$recurse=null)
+function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse=null)
 {
 	global $config;
 	
@@ -35,14 +49,14 @@ function listFiles($dir, $search=array(),$subPath="",$remaining=null,$recurse=nu
 
 	//init recursive variables from search array
 	$subdirs=array();
-	setIfNull($remaining,@$search["maxCount"]);
-	setIfNull($recurse,@$search["depth"]);	
+	setIfNull($remaining, @$search["maxCount"]);
+	setIfNull($recurse, @$search["depth"]);	
 	if(!isset($search["exts"]) && isset($search["type"]))
 		$search["exts"]=getExtensionsForTypes(@$search["type"]);
 
 	if(!@$search["tagfiles"])
 	{
-		$search["tagfiles"] = searchTagFiles($dir, $search["depth"], @$search["tag"]);
+		$search["tagfiles"] = searchTagFiles($dir, $recurse, @$search["tag"]);
 		$cnt=count($search["tagfiles"]);
 		debug("listFiles: files matched by tags ($cnt)", $search["tagfiles"], true);
 	}
@@ -569,11 +583,12 @@ function listHiddenFilesNTFS($dir, $valuesAsKeys=false)
 }
 
 //ext => type
-function getFileType($file)
+function getFileType($file, $checkExists=false)
 {
 	global $config;
-	if(fileIsDir($file))
-		return "DIR";
+	if($checkExists && !file_exists($file))	return false;
+
+	if(fileIsDir($file))	return "DIR";
 
 	$fileExt=strtolower(getFilenameExtension($file));
 	foreach ($config["TYPES"] as $type => $ext)

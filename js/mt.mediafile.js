@@ -276,9 +276,14 @@ MediaFile.prototype.getShortPath = function ()
 	return String.combine(album.path, this.subdir, this.name);
 };
 
+MediaFile.prototype.getHashPath = function ()
+{
+	return String.combine(album.path, this.subdir) + "#" + this.name;
+};
+
 MediaFile.prototype.getShortUrl = function ()
 {
-	return UI.appRootUrl() + "?" + this.getShortPath();
+	return UI.appRootUrl() + "?" + this.getHashPath();
 };
 
 MediaFile.getFileDir = function(mediaFile, subdir)

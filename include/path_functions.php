@@ -74,37 +74,51 @@ function combine()
 //if not, toggle .
 function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 {	
-	debug("reqPathFile request before", $_REQUEST);
-	$path = reqParam("path");
-	$file = reqParam("file");
+	$qs = $_SERVER["QUERY_STRING"];
+	$hasParams = contains($qs, "=");
+	debug("reqPathFile request before ($hasParams)", $_REQUEST);
+	if(!$hasParams)
+		$filePath = urldecode($qs);
+	else
+	{
+		$path = reqParam("path");
+		$file = reqParam("file");
+		$filePath = urldecode(combine($path, $file));
+	}
 
-	if(!$path && $file)
-		splitFilePath($file,$path,$file);
-
-	if(!$path && !$file && isset($_SERVER["QUERY_STRING"]))
-		splitFilePath(urldecode(@$_SERVER["QUERY_STRING"]), $path, $file);
-
-	$filePath = combine($path, $file);
-	$relPath=getDiskPath($path);
-	$filetype = getFileType("$relPath/$file");
+	$relPath = getDiskPath($filePath);
+	$filetype = getFileType($relPath, true);
 	debug("filetype", $filetype);
 	if(!$selectDirAsFile && $filetype=="DIR")
 	{
 		$path = $filePath;
 		$file = "";
 	}
+	else
+		splitFilePath($filePath, $path, $file);
 
-	$file = urldecode($file);
-	$path = urldecode($path);
-	$_REQUEST["path"] = $path;
+	if(endsWith($path, "/*"))
+	{
+		$_REQUEST["depth"] = 3;
+		$path = substringBeforeLast($path, "/*");
+		debug("Depth in", $path);
+	}
+	$_REQUEST["path"] = $path;	
+
+	$fileExists = $file && fileExistsByName($relPath, $file);
+	if(!$fileExists) 
+	{
+		$_REQUEST["tag"] = $_REQUEST["name"] = getFilename($file);
+//		$file = "";
+		return;
+	}
+
 	$_REQUEST["file"] = $file;
 	
-	if($addFilters && $filetype!="FILE" && $filetype!="DIR")
+	if($addFilters && $filetype && $filetype!="FILE" && $filetype!="DIR")
 		$_REQUEST["type"] = $filetype;
 	if($addFilters && $file)
 		$_REQUEST["name"] = getFilename($file);
-
-	debug("reqPathFile request after", $_REQUEST);
 	debug("reqPathFile", "$path / $file");
 }
 

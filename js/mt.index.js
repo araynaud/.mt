@@ -472,7 +472,7 @@ UI.search = function()
 {
 	//make search object from UI, search existing album.mediaFiles
 	var search = UI.getSearchOptions();
-	Album.searchFiles(album.mediaFiles, search);
+	album.searchFiles(album.mediaFiles, search);
 	//or make new Album AJAX request
 	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
 	album.setPageNumber(1);

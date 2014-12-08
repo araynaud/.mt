@@ -264,9 +264,17 @@ Album.searchFiles = function(fileList, search)
 {  
 	//loop through object and restrict selection
 	if(isEmpty(fileList) || isEmpty(search)) return fileList;
-	album.searchResults = Album.selectFiles(fileList, search);
-	return album.searchResults;
+	return Album.selectFiles(fileList, search);
 };
+
+Album.prototype.searchFiles = function(fileList, search)
+{  
+	//loop through object and restrict selection
+	if(isEmpty(fileList) || isEmpty(search)) return fileList;
+	this.searchResults = Album.selectFiles(fileList, search);
+	return this.searchResults;
+};
+
 
 Album.selectFiles = function(fileList, filterValue)
 {  

@@ -28,13 +28,13 @@
 	<div id="searchOptions" class="floatL toolbar translucent shadowIn hidden" direction="left">
 		<div class="inlineBlock nowrap">
 			Search: <input id="search_name" type="text" style="width: 150px" title="Search"/>
-			<!--select id='dd_search_depth'>
+			<select id='dd_search_depth'>
 				<option value="0">this dir only</option>
 				<option value="1">subdirs</option>
 				<option value="t">all subdirs</option>
 				<option value="-1">parent dir</option>
 				<option value="-10">all parent dirs</option>
-			</select-->
+			</select>
 		</div>
 
 		<div class="inlineBlock nowrap">
