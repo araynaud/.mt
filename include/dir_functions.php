@@ -120,8 +120,8 @@ debug("subpath", $subPath);
 	}
 	$relPathG=null;
 //debug("keys", array_keys($files));
-debug("recurse",$recurse);	
-debug("subdirs",$subdirs);	
+//debug("recurse",$recurse);	
+//debug("subdirs",$subdirs);	
 
 //if $subdir:
 //1 list dirs from $relPath to recurse

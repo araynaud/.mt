@@ -56,19 +56,20 @@ function Album(data)
 
 Album.serviceUrl = ""; 
 Album.defaultFilter="type";
+Album.ajaxLoader = $("#ajaxLoader");
 
 // get album data in JSON format
 Album.getAlbumAjax = function(instanceName, search, async, callback)
 {	
 	if(!search) search={};
-	search.format = "json";
 	search.data = "album";	
 	search.debug = "false";
 	async=valueOrDefault(async,false);
 	//TODO: pass search as data to $.ajax GET
 	var serviceUrl = String.combine(Album.serviceUrl, "data.php");
 	var startTime = new Date();
-	UI.ajaxLoader.show();
+
+	Album.ajaxLoader.show();
 
 	var albumInstance;
 	$.ajax({
@@ -80,7 +81,7 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 		async: async,
 		success: function(response)
 		{ 
-			UI.ajaxLoader.hide();
+			Album.ajaxLoader.hide();
 			albumInstance = new Album(response);
 			var endTime = new Date();
 			albumInstance.requestTime = endTime - startTime;

@@ -252,7 +252,7 @@ function getDirConfig($path, $key=null)
 //return csv data as array
 function readCsvFile($filename, $keyColumn=false, $separator=",", $keySeparator=false, &$csvRows = array())
 {
-	debug("readCsvFile",$filename);
+//	debug("readCsvFile",$filename);
 	if(!file_exists($filename))
 		return $csvRows;
 	if (($handle = fopen($filename, "r")) == FALSE)
