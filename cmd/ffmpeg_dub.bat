@@ -1,0 +1,1 @@
+ffmpeg -i %1 -i %2 -c:v copy -c:a aac -strict experimental -shortest %3

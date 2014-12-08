@@ -1,0 +1,1 @@
+ffmpeg -i %1 -vf "setpts=(1/2)*PTS, scale=-1:360, crop=640:200:0:50" %2.gif

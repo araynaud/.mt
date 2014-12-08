@@ -171,8 +171,8 @@ youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
 youtube.embedUrl;http://www.youtube.com/v/{0}
 youtube.iframeUrl;http://www.youtube.com/embed/{0}
 youtube.iframeApiUrl;https://www.youtube.com/iframe_api
-;youtube.oembedUrl;http://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={0}
-youtube.oembedUrl;/proxy.php/www.youtube.com/oembed?url=https://www.youtube.com/watch?v={0}
+;youtube.oembedUrl;http://www.youtube.com/oembed?url=youtu.be/{0}
+youtube.oembedUrl;/proxy.php/www.youtube.com/oembed?url=youtu.be/{0}
 
 ;Vimeo
 vimeo.iframeUrl;http://player.vimeo.com/video/{0}

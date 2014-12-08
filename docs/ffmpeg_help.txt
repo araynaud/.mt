@@ -1220,6 +1220,20 @@ dv AVOptions:
 GIF muxer AVOptions:
 -loop              <int>   E.... Number of times to loop the output.
 
+So to create an animation we use the convert command
+convert -delay 50 frame1.gif frame1.gif frame1.gif -loop 0 animated.gif
+
+This will create an animated gif of 3 frames with 50 ms delay between them looping indefinitely.
+If we need a varied delay between the images we can specify the delay before each seperate frame
+convert -delay 50 frame1.gif -delay 100 frame1.gif -delay 150 frame1.gif -loop 0 animated.gif
+
+Also if we want to add a pause between each loop
+convert -delay 50 frame1.gif -delay 100 frame1.gif -delay 150 frame1.gif -loop 0 -pause 200 animated.gif
+
+Also using convert we can combine 2 animated gifs
+convert anim1.gif anim2.gif combined.gif
+
+
 GXF muxer AVOptions:
 -timecode          <string> E.... set timecode value following hh:mm:ss[:;.]ff format, use ';' or '.' before frame number for drop frame
 

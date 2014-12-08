@@ -1,3 +1,18 @@
+Direct Link to file
+UI for video editor
+
+leave reqPathFile as it is.
+add function parseQueryString, return array(path, file, name, tag, depth)
+link to youtube video : on youtube.
+
+getfilebyname: if 0, search by tag
+if 1: load all, start with file
+if > 1, search by name and tag
+
+twitter share: 
+https://twitter.com/intent/tweet?url=http%3A//youtu.be/EYAZ60S5DOg&text=Lorde%20vs.%20Collective%20Soul%20MashUp%20-%20Shine%20Your%20Royal%20Light:&via=YouTube&related=YouTube,YouTubeTrends,YTCreators
+https://twitter.com/intent/tweet?text=Pasta with Homemade Tomato Sauce&via=PimentDuJour&url=http://pimentdujour.com/pdj/%23/recipe/1
+
 Search by tags + name on server
 
 data=tags
@@ -17,6 +32,9 @@ name list = union or intersection of all files
 
 when listing files, check if name in nameList or filename matches
 
+http://www.labnol.org/internet/useful-ffmpeg-commands/28490/
+
+UI click to save current config for current directory
 ------------
 
 OK style slide
