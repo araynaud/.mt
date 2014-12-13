@@ -320,8 +320,7 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 UI.displayBackground = function(mediaFile, hidden)
 {
 	var background = { url: mediaFile.getThumbnailUrl(1, true), hidden: hidden ? " hidden" : "" };
-	var imgbg=$("#divbg");
-	imgbg.css("background-image", "url({0})".format(background.url) );
+	var imgbg=$("#divbg").backgroundImage(background.url);
 	return background;
 };
 

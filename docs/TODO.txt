@@ -5,6 +5,20 @@ leave reqPathFile as it is.
 add function parseQueryString, return array(path, file, name, tag, depth)
 link to youtube video : on youtube.
 
+UI.search : if file starts with @  path@file or path/@file or if 1 result by name: start at this file, do not restrict by name
+if 0 result: whole dir
+if multiple results: search by name
+
+slideshow: preview previous/next image in prev/next button background, use .tn
++set title
+divbg printable ?
+
+caption: description only, desc + tags, full
+
+TODO: enable irfan view per image type 
+png, gif: GD
+jpeg: Irfan View for rotate, resize
+
 getfilebyname: if 0, search by tag
 if 1: load all, start with file
 if > 1, search by name and tag

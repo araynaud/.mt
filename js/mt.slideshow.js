@@ -330,14 +330,26 @@ Slideshow.prototype.validIndex = function(i)
 	return modulo(i, this.pics.length);
 };
 
-Slideshow.prototype.previousIndex = function()
+Slideshow.prototype.previousIndex = function(incr)
 {
-	return this.validIndex(this.currentIndex - this.increment);
+	incr = valueOrDefault(incr, this.increment);
+	return this.validIndex(this.currentIndex - incr);
 };
 
-Slideshow.prototype.nextIndex = function()
+Slideshow.prototype.nextIndex = function(incr)
 {
-	return this.validIndex(this.currentIndex + this.increment);
+	incr = valueOrDefault(incr, this.increment);
+	return this.validIndex(this.currentIndex + incr);
+};
+
+Slideshow.prototype.previousFile = function(incr)
+{
+	return this.pics[this.previousIndex(incr)];
+};
+
+Slideshow.prototype.nextFile = function(incr)
+{
+	return this.pics[this.nextIndex(incr)];
 };
 
 Slideshow.prototype.loadImage = function(index)
@@ -446,6 +458,9 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange)
 {
+	this.elements.prevButton.parent().backgroundImage(this.previousFile(1).getThumbnailUrl(0));
+	this.elements.nextButton.parent().backgroundImage(this.nextFile(1).getThumbnailUrl(0));
+
 	if(this.currentFile.isVideoStream() && fileChange)
 	{
 		this.hideImage();

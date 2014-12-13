@@ -400,7 +400,7 @@ qt-faststart.exe ..\..\Pictures\f1\2012_Bresil_Dimanche_F1.mp4 df1.mp4
 function isIrfanViewEnabled()
 {
 	$exePath=getExePath("EXE","_IRFANVIEW");
-	return $exePath != false;
+	return $exePath != false && getConfig("_IRFANVIEW.enabled");
 }
 
 
@@ -447,6 +447,20 @@ debug("output",$outputFile);
 	$cmd = makeCommand("[0] [1] /resize=([2],[2]) /resample /aspectratio /jpgq=60 /convert=[3]", $exePath, $file, $size, $outputFile);
 debug("command",$cmd);
 	$output = execCommand($cmd, false, false, false);	
+	return $output;
+}
+
+function openFile($program, $relPath, $file="")
+{
+	$program = "_" . strtoupper($program);
+	$exePath=getExePath("EXE", $program);
+	if(!$exePath) return false;	
+
+	$inputFile = combine($relPath, $file);
+	$cmd = "[0] [1]";
+	$cmd = makeCommand($cmd, $exePath, $inputFile);
+debug("command", $cmd);
+	$output = execCommand($cmd, false); //exec in background
 	return $output;
 }
 

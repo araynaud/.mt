@@ -6,8 +6,9 @@ $path=getPath();
 $relPath=getDiskPath($path);
 $file=getParam("file");
 $filePath=combine($relPath,$file);
-$imageUrl= "../image.php?" . $_SERVER["QUERY_STRING"];
-
+$imageScript= "image_gd2.php"; //"?" . $_SERVER["QUERY_STRING"];
+$imageParams=$_GET;
+//$imageParams["url"] = "image_gd2.php";
 deleteTempImage();
 ?>
 <!DOCTYPE html>
@@ -25,9 +26,9 @@ deleteTempImage();
 	<script type="text/javascript" src="../js/mt.imageEdit.js"></script>
 	<!--script type="text/javascript" src="../js/mt.keys.js"></script-->
 	<script type="text/javascript">
-	var imageParams=<?php echo jsValue($_GET,false);?>;
+	<?php echo jsVar("imageScript", true,  false, true, false); ?>
+	<?php echo jsVar("imageParams", true, false, true, false); ?>
 	imageParams.selectMode=0;
-	//imageParams.edit=true;
 
 	$(document).ready(function()
 	{
@@ -38,6 +39,7 @@ deleteTempImage();
 		$("input:checkbox").click(getFieldValue);
 		$("input:button").click(selectTool);
 		$("input:text").change();
+		refreshImage();
 	});
 	</script>
 </head>
@@ -71,7 +73,7 @@ deleteTempImage();
 	<a id="editLink" href="?<?php echo  $_SERVER["QUERY_STRING"]?>">?<?php echo  $_SERVER["QUERY_STRING"]?></a>
 	<br/>
 	<div class="centered inlineBlock photoBorder shadow margin">
-		<img id="image" src="<?php echo $imageUrl?>" />
+		<img id="image" />
 	</div>
 	<div id="selectZone" class="selection hidden">S</div>
 </body>

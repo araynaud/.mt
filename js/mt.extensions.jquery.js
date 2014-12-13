@@ -63,6 +63,13 @@ $.fn.toggleEffect = function(state, duration, effect, direction, callback)
 	return this.toggle(opts);
 };
 
+$.fn.backgroundImage = function (url)
+{
+	if(!url)
+		return this.css("background-image");
+	else
+		this.css("background-image", "url(" + url + ")");
+};
 
 $.fn.outerHtml = function ()
 {

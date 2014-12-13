@@ -173,7 +173,7 @@ function loadImage($file, &$imageInfo = array())
 {  
     if(!$imageInfo)  $imageInfo = getImageInfo($file);
  	debug("getimagesize $file", getimagesize($file));
-    if(!$imageInfo)	return false;
+//    if(!$imageInfo)	return false;
 
 	$imgType = is_array($imageInfo) ? @$imageInfo["format"] : $imageInfo;
 	if(!$imgType) $imgType = getImageTypeFromExt($file);
@@ -202,7 +202,7 @@ function loadImageForResize($dir, $file, $size, &$imageInfo=array())
 //Save image to file or output to response if dstFilename empty
 function outputImage($img,$dstFilename=null,$imgType="", $destroy=true)
 {
-debug("outputImage $dstFilename", $img);
+debug("outputImage $dstFilename $imgType", $img);
 	if(empty($dstFilename))
 		$dstFilename=null;
 	if(empty($imgType))
@@ -426,6 +426,16 @@ debug("getImageSize", $is);
 	$imageInfo["height"] = $is[1];
 //	if($imageInfo["height"])
 //		$imageInfo["ratio"] =  $imageInfo["width"] / $imageInfo["height"];
+	return $imageInfo;
+}
+
+function getTempImageInfo($img, &$imageInfo=array())
+{
+	$imageInfo["format"] = "gd2";
+	$imageInfo["width"] =  imageSX($img);
+	$imageInfo["height"] = imageSY($img);
+	$imageInfo["transparent"] = TRANSPARENT;
+	$imageInfo["transparentPixels"] = 1;
 	return $imageInfo;
 }
 

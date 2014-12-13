@@ -1,5 +1,6 @@
 <?php
-require_once("include/config.php");
+//generate image for editor / GD2 temp file 
+require_once("../include/config.php");
 session_start(); 
 error_reporting(E_ERROR | E_PARSE | E_WARNING | E_NOTICE);
 
@@ -50,86 +51,9 @@ $filter=getParam("filter");			//image filters
 $info=getParamBoolean("info");		//display debug info
 $tolerance=getParam("tolerance", DEFAULT_TOLERANCE);	//color tolerance for fill/replace
 
-//JPG lossless transform before other operations. if rotate multiple of 90 or flip
-$transform = getParam("transform");
-
 //create output folder if necessary
 createDir($relPath, $saveDir);
 $outputDir = combine($relPath, $saveDir);
-
-$ivEnabled = isIrfanViewEnabled();
-
-if($ivEnabled && $format=="thumbnail")
-{
-	$tnImage = getExifThumbnail($inputFile);
-	if($saveDir)
-	{
-		createDir($relPath, $saveDir);
-		$outputFile = combine($outputDir, $file);
-		writeBinaryFile($outputFile, $tnImage);
-	}
-	if($tnImage)
-		header("Content-Type: image/jpeg");
-	echo $tnImage;
-	return;
-}
-
-preventCaching();
-
-//make configurable: if irfan view is enabled.
-if($ivEnabled && $target && $size)
-{
-	$status = jpegResize($relPath, $file, $saveDir, $size);
-	if($status!==false) 
-	{
-		$imgType=getImageTypeFromExt($file);
-		if($format == "ajax")
-		{
-			$jsonResponse=array();
-			$jsonResponse["file"]=$file;
-			$outputFile = combine($outputDir, $file);
-			$jsonResponse["output"] = diskPathToUrl($outputFile);
-			$jsonResponse["filesize"] = filesize($outputFile);
-			$jsonResponse["time"]=getTimer();
-			echo jsValue($jsonResponse);
-			return;
-		}
-		if(!isDebugMode())
-			sendFileToResponse($outputDir, $file, "image/$imgType");
-		return;
-	}
-}
-
-if($transform) //only for JPEG, angle multiple of 90
-{
-	jpegLosslessRotate($relPath, $file, $transform);
-	$tnPath=findThumbnail($relPath, $file, ".tn");
-	if($tnPath)		deleteFile($tnPath);
-
-	$tnPath=findThumbnail($relPath, $file, ".ss");
-	if($tnPath)		deleteFile($tnPath);
-	resetMedadata($relPath, $file);
-
-	if($format == "ajax")
-	{
-		$jsonResponse=array();
-		$jsonResponse["file"]=$file;
-		$jsonResponse["output"]=$inputFile;
-		$jsonResponse["time"]=getTimer();
-		echo jsValue($jsonResponse);
-		return;
-	}
-	if(!isDebugMode())
-	{
-		$imgType=getImageTypeFromExt($file);
-		sendFileToResponse($outputDir, $file, "image/$imgType");
-//		setContentType("image",$imgType);
-//		$fp = fopen(combine($relPath, $file), 'rb'); //stream the image directly from the generated file
-//		fpassthru($fp);
-//		fclose($fp);	
-	}
-	return;
-}
 
 $imageInfo = getImageInfo($inputFile);
 debug("getImageInfo 1", getTimer());

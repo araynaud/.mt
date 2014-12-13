@@ -4,7 +4,7 @@ session_start();
 reqPathFile($path, $file);
 $tag = reqParam("tag");
 $depth = reqParam("depth");
-$params=array("path"=>$path, "file"=>$file, "tag"=>$tag, "depth" => $depth);
+$params=array("path"=>$path, "file"=>$file, "tag"=>$tag, "depth"=>$depth);
 debugVar("params");
 
 $album = new Album($path, false);

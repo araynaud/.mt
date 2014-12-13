@@ -85,12 +85,12 @@ function displayOption(paramName)
 
 function refreshImage()
 {
-	var qs="?"+Object.toQueryString(imageParams);
-	var imageUrl="../image.php" + qs;
+	var qs = "?" + Object.toQueryString(imageParams);
+	var imageUrl = imageScript + qs;
 	if(!img)		img=$("img#image");
-	img.attr("src",imageUrl);
-	$("#imageLink").attr("href",imageUrl);
-	$("#editLink").attr("href",qs);
+	img.attr("src", imageUrl);
+	$("#imageLink").attr("href", imageUrl);
+	$("#editLink").attr("href", qs);
 	$("#editLink").html(qs);
 	
 	resetSelection();

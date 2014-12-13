@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
+ini_set('display_errors', '1');
 //error_reporting(E_PARSE);
 $configFile="include/config.php";
 if(file_exists("../$configFile"))	$configFile = "../$configFile";

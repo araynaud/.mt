@@ -310,6 +310,15 @@ function metaTag($key, $value)
 	return $result;
 }
 
+function metaTagArray($data)
+{
+	if(!$data) return "";	
+
+	$result="";
+	foreach ($data as $k => $element)
+		$result .= metaTag($k, $element);
+	return $result;
+}
 
 // HTML list for the HTML5 player
 function html5playlist($relPath,$files)

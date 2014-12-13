@@ -153,6 +153,11 @@ _FFMPEG.convert.audio.audio_bitrate;128
 _IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
 _IRFANVIEW.EXE;i_view32.exe
 _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
+_IRFANVIEW.enabled;false
+
+;The Gimp
+_GIMP.PATH;C:\Program Files\GIMP 2\bin
+_GIMP.EXE;gimp-2.8.exe
 
 ;file valid actions
 file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
@@ -179,7 +184,7 @@ vimeo.iframeUrl;http://player.vimeo.com/video/{0}
 vimeo.imageUrl;http://i.vimeocdn.com/video/{0}.jpg?mw=600
 
 ;PHPmyVisites
-visittracker.enabled;true
+;visittracker.enabled;true
 visittracker.siteId;238250
 visittracker.url;http://st.free.fr/
 visittracker.php;phpmyvisites.php
