@@ -357,7 +357,7 @@ UI.selectThumbnailSize = function(img, mediaFile, caption)
 {
 	var imageHeight = img.height();
 	var imageWidth = img.width();
-	var maxStretch = 1.5; //in config
+	var maxStretch = valueOrDefault(config.thumbnails.maxStretch, 1);
 	var imageSize = Math.max(imageWidth,imageHeight) / maxStretch;
 	if(!config || !config.thumbnails || !config.thumbnails.sizes) return;
 	//find right size: take last tn smaller than img or first tn larger than img

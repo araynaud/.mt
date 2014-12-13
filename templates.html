@@ -44,6 +44,7 @@
 			
 		{{if ~albumVar('caption') && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
 		{{else ~albumVar('caption') && type=="DIR" tmpl='#dirCaptionTemplate'}}
+		{{else ~albumVar('caption') tmpl='#descriptionTemplate'}}
 		{{else ~albumVar('caption') tmpl='#imageCaptionTemplate'}}
 		{{/if}}
 </div>{{if ~albumVar('columns')==1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
@@ -58,8 +59,14 @@
 
 <!-- template for photo caption -->
 <script id="descriptionTagTemplate" type="text/x-jsrender"> 
-	<span id="desc_{{:id}}" class="description" contenteditable="false">{{:description}}</span>
+	<span id="desc_{{:id}}" class="description">{{:description}}</span>
 	{{for getTags() tmpl="tagTemplate"/}}
+</script>
+
+<script id="descriptionTemplate" type="text/x-jsrender"> 
+	<div class="captionBelow big">
+		<span id="desc_{{:id}}" class="description">{{:description}}</span>
+	</div>
 </script>
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 

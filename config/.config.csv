@@ -90,6 +90,7 @@ thumbnails.VIDEO.ext;jpg
 thumbnails.VIDEO.max_size;1000
 thumbnails.VIDEO.script;video_thumbnail.php
 thumbnails.AUDIO.ext;jpg
+thumbnails.maxStretch;1
 
 ;background image properties
 background.size;1000

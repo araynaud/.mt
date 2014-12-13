@@ -218,7 +218,7 @@ $(window).resize(function(event)
 <?php include("video.html");?>
 
 <div id="indexContainer" class="nofloat">
-	<div class="centered">
+	<div class="centered noprint">
 		<span id="tagList" class="centered"></span>
 		<spanid="pagesTop" class="pager centered"></span>
 	</div>
