@@ -485,7 +485,7 @@ UI.search = function()
 UI.getSearchOptions = function()
 {
 	obj={};
-	obj.name=$("#search_name").val();
+	obj.searchString=$("#search_name").val();
 //	obj.depth=$("#dd_search_depth").val();
 	$("input.tOption").each(function()
 	{

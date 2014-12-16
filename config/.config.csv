@@ -72,7 +72,7 @@ transition.clear;true
 transition.changeMode;queue
 
 ;file sorting
-SORT.OPTIONS;takenDate;name;type;random;duration;width;height;ratio;title;filename;description;subdir
+SORT.OPTIONS;takenDate;name;type;Tags;random;duration;width;height;ratio;title;filename;description;subdir;searchString
 .DEFAULT;takenDate
 
 ;paginate / count per page
@@ -154,7 +154,7 @@ _FFMPEG.convert.audio.audio_bitrate;128
 _IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
 _IRFANVIEW.EXE;i_view32.exe
 _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
-_IRFANVIEW.enabled;false
+_IRFANVIEW.enabled;true
 
 ;The Gimp
 _GIMP.PATH;C:\Program Files\GIMP 2\bin

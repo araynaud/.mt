@@ -44,8 +44,8 @@
 			
 		{{if ~albumVar('caption') && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
 		{{else ~albumVar('caption') && type=="DIR" tmpl='#dirCaptionTemplate'}}
-		{{else ~albumVar('caption') tmpl='#descriptionTemplate'}}
 		{{else ~albumVar('caption') tmpl='#imageCaptionTemplate'}}
+		{{else ~albumVar('caption') tmpl='#descriptionTemplate'}}
 		{{/if}}
 </div>{{if ~albumVar('columns')==1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
 

@@ -316,7 +316,7 @@ UI.divStyles = function(angle)
 
 UI.divClasses = function(mediaFile)
 {
-	var classes = mediaFile.type.toLowerCase();
+	var classes = mediaFile.type ? mediaFile.type.toLowerCase() : "";
 	classes+=" floater";
 
 	if(mediaFile.selected)

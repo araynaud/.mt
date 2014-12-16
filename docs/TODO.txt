@@ -1,13 +1,30 @@
 Direct Link to file
-UI for video editor
 
 leave reqPathFile as it is.
 add function parseQueryString, return array(path, file, name, tag, depth)
-link to youtube video : on youtube.
 
-UI.search : if file starts with @  path@file or path/@file or if 1 result by name: start at this file, do not restrict by name
+if file starts with @  path@file or path/@file or if 1 result by name: start at this file, do not restrict by name
 if 0 result: whole dir
 if multiple results: search by name
+
+UI.search:  in this dir: use search string
+otherwise : ajax call with depth
+
+autotag based on file:
+youtube, transparent, ext, animated
+
+link to youtube video : on youtube.
+
+---------
+UI for video editor:
+play video. loop?
+convert
+extract sound
+split: tap while playing for start and end.
+play in loop from start to end position. when reaching end, seek to start.
+volume
+reverse
+
 
 slideshow: preview previous/next image in prev/next button background, use .tn
 +set title

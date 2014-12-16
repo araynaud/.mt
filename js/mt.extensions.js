@@ -781,6 +781,8 @@ function sortObjectArray(arr, sortField, reverse, caseSensitive)
 	{
 		if(!sortField) 
 			return compareElements(a, b, reverse, caseSensitive);
+		if(isFunction(a[sortField]))
+			return compareElements(a[sortField](), b[sortField](), reverse, caseSensitive);
 		if(isFunction(sortField))
 			return compareElements(sortField(a), sortField(b), reverse, caseSensitive);
 		return compareElements(valueOrDefault(a[sortField],""), valueOrDefault(b[sortField],""), reverse, caseSensitive);
@@ -939,6 +941,7 @@ Object.values = function (obj, skipNull)
     var vals = [];
     if(!obj) return vals;
     //if array, return obj
+    if(isArray(obj)) return obj;
     if(!isObjectNotArray(obj)) return obj;
     //TODO if not object, return [obj]
     for(var key in obj)

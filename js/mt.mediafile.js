@@ -86,6 +86,13 @@ MediaFile.prototype.getFilename = function(ext)
 	return ext ? this.name + "." + ext : this.name;
 };
 
+MediaFile.prototype.searchString = function()
+{
+	var exts = this.exts ? this.exts.join(" ") : "";
+	var tags = this.Tags().makeTitle();
+	return "{0} {1} {2} {3} {4} {5}".format(this.name, exts, this.getTitle(), tags, this.description || "");
+}
+
 MediaFile.prototype.initTags = function()
 {
 	// array to object.
@@ -220,8 +227,15 @@ MediaFile.prototype.setTag = function(tag, state)
 
 MediaFile.prototype.getTags = function()
 {
-	return Object.values(this.tags);
+	return Object.values(this.tags).sort();
 };
+
+MediaFile.prototype.Tags = function()
+{
+	if(isEmpty(this.tags)) return "";
+	return Object.values(this.tags).sort().join(" ");
+};
+
 
 MediaFile.getTakenDate = function(mediaFile, includeTime)
 {
@@ -626,6 +640,9 @@ MediaFile.testProperty = function(element, key, value)
 	//find value in an element of the array
 	var field = element[key];
 	if(isMissing(field)) return isMissing(value);
+
+	if(isFunction(field)) //call method
+		field = element[key]();
 
 	if(isArray(value))
 	{

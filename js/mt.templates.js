@@ -66,6 +66,12 @@ UI.getGroupTitle = function(mediaFile)
 	if(isMissing(mediaFile)) return false;
 	var value =  mediaFile[album.sort];
 	if(isMissing(value)) return false;
+	if(isFunction(value))
+	{
+	 	value = mediaFile[album.sort]();
+	 	return String.makeTitle(value);
+	}
+
 	if(isNumber(value)) return value;
 	if(album.sort=="takenDate")
 	{
