@@ -1,6 +1,9 @@
 .pw/
-unused/
+.tn/
+.ss/
+.hd/
 .temp/
+unused/
+skins/
 *.mp4
-jwplayer*/
 web.config

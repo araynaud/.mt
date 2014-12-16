@@ -10,10 +10,13 @@ if multiple results: search by name
 UI.search:  in this dir: use search string
 otherwise : ajax call with depth
 
-autotag based on file:
-youtube, transparent, ext, animated
+---------
 
+autotag based on file:
+youtube, transparent, ext, animated, panorama
 link to youtube video : on youtube.
+
+image sizes: add min height, min width for panoramas
 
 ---------
 UI for video editor:

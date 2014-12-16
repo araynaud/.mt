@@ -115,9 +115,9 @@ JWPLAYER.MODES.2.type;download
 MediaPlayer.video.enabled;true
 MediaPlayer.audio.enabled;true
 MediaPlayer.slide.enabled;true
-MediaPlayer.js;js/mt.html5player.js
-;MediaPlayer.js;js/mt.mediaplayer.js
-;MediaPlayer.jwplayer.js;js/lib/jwplayer510.js
+;MediaPlayer.js;js/mt.html5player.js
+MediaPlayer.js;js/mt.mediaplayer.js
+MediaPlayer.jwplayer.js;js/lib/jwplayer510.js
 ;MediaPlayer.jwplayer.flash;jwplayer510/player.swf
 ;MediaPlayer.jwplayer.js;jwplayer6/jwplayer.js
 

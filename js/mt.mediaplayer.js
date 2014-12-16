@@ -59,8 +59,7 @@ MediaPlayer.playerSettings=
 	},
 	slide:
 	{
-		id:"slidePlayer",
-		container: "videoSlide",
+		id:"jwplayerDiv",
 		type: "video",
 		allowHtml5: true,
 		allowFlash: true,
@@ -103,9 +102,17 @@ MediaPlayer.getPlayer = function(key)
 MediaPlayer.prototype.getPlayer = function()
 {
 //	if(!this.player)
-		this.player=jwplayer(this.settings.id);
+	this.player=jwplayer(this.settings.id);
+	this.jqplayer = $("#" + this.settings.id); //this.player;
 	return this.player;
 };
+
+MediaPlayer.prototype.getPlayerElement = function()
+{
+	this.getPlayer();
+	return this.jqplayer;
+};
+
 
 //get skin absolute URL
 MediaPlayer.getSkin = function(key)
@@ -114,9 +121,9 @@ MediaPlayer.getSkin = function(key)
 	var skinName = MediaPlayer.getPlayerConfig(key,"skinName");
 	if(!skinName) return "";
 
-	var skinFile= String.combine(skinName, skinName) + ".xml" ;
+	var skinFile = String.combine("skins", skinName, skinName) + ".xml" ;
 	//allowFlash ? skinName + ".zip" :
-	var skinUrl= "/" + String.combine(window.location.pathname,"jwplayer",skinFile);
+	var skinUrl = "/" + String.combine(window.location.pathname,"jwplayer",skinFile);
 	return skinUrl;
 };
 
@@ -227,11 +234,11 @@ MediaPlayer.prototype.loadVideoPlaylist = function(mediaFiles)
 
 MediaPlayer.prototype.loadMusicPlaylist = function(audioFiles)
 {
-	var hasOgg=Album.selectFiles(audioFiles, {exts:"ogg"});
-	if(($.browser.mozilla || $.browser.webkit) && hasOgg.length>0)
-		allowFlash=false;
-	else if($.browser.msie && hasOgg.length>0)
-		audioFiles=Album.excludeFiles(audioFiles, {exts:"ogg"});
+//	var hasOgg=Album.selectFiles(audioFiles, {exts:"ogg"});
+//	if(($.browser.mozilla || $.browser.webkit) && hasOgg.length>0)
+//		allowFlash=false;
+//	else if($.browser.msie && hasOgg.length>0)
+//		audioFiles=Album.excludeFiles(audioFiles, {exts:"ogg"});
 
 	return this.loadPlaylist(audioFiles);
 };
@@ -710,8 +717,14 @@ MediaPlayer.prototype.onClose = function()
 
 MediaPlayer.prototype.getElement = function()
 {
-	var el  = this.settings.container || this.settings.id;
-	return $("#"+el);
+	var el;
+	if(this.settings.container)
+		el = $("#" + this.settings.container);
+	else
+		el  = $("#" + this.settings.id + "_wrapper");
+	if(isEmpty(el))
+		el  = $("#" + this.settings.id);
+	return el;
 };
 
 MediaPlayer.prototype.show = function(options)
