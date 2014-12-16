@@ -96,8 +96,12 @@ MediaFile.prototype.searchString = function()
 MediaFile.prototype.initTags = function()
 {
 	// array to object.
+	if(isEmpty(this.tags))
+		this.tags = {};
+
 	if(isArray(this.tags))
 		this.tags=this.tags.toMap();
+	return this.tags;
 };
 
 MediaFile.isDir = function(mediaFile)
