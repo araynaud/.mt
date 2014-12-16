@@ -2,6 +2,5 @@
 unused/
 .temp/
 *.mp4
-jwplayer510/
-jwplayer/
+jwplayer*/
 web.config
