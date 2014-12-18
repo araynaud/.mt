@@ -2,6 +2,7 @@
 TITLE;Media Thingy
 debug.output;false
 debug.ajax;false
+COPY_REDIRECT;false
 
 USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
 ;USER_AGENT.FORCE;mobile android
