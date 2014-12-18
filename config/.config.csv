@@ -12,7 +12,7 @@ SPECIAL_FILES;config/special.txt
 EXIF_SUPPORTED_TYPES;IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
 DEFAULT_TIMEZONE;America/Los_Angeles
 JQUERYFX;true
-
+COPY_REDIRECT;false
 downloads.enabled;true
 downloads.interval;5000
 
@@ -153,7 +153,7 @@ _FFMPEG.convert.audio.audio_bitrate;128
 _IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
 _IRFANVIEW.EXE;i_view32.exe
 _IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
-_IRFANVIEW.enabled;true
+;_IRFANVIEW.enabled;true
 
 ;The Gimp
 _GIMP.PATH;C:\Program Files\GIMP 2\bin

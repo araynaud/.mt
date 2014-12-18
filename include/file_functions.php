@@ -495,9 +495,11 @@ function mergeCsv($filename, $data)
 
 function copyRedirect($relPath)
 {
+	if(!getConfig("COPY_REDIRECT")) return;
 	//copy redirect.htm to $relPath/index.htm
 	if(!file_exists("$relPath/index.php") && !file_exists("$relPath/index.htm")
-	&& (!file_exists("$relPath/index.html")	|| filemtime("$relPath/index.html") < filemtime("redirect.html") ))
+	&& file_exists("redirect.html")
+	&& (!file_exists("$relPath/index.html")	|| filemtime("$relPath/index.html") < filemtime("redirect.html")))
 		@copy("redirect.html", "$relPath/index.html");
 }
 
