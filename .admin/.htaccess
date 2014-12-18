@@ -1,5 +1,5 @@
 AuthName "MinorArt admin"
-PerlSetVar AuthFile "/.mp/.admin/.pw/.htpasswd"
+PerlSetVar AuthFile "/.mt/.admin/.pw/.htpasswd"
 AuthType Basic
 Require valid-user
 ErrorDocument 401 "Login failed.

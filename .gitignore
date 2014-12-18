@@ -1,9 +1,9 @@
-.pw/
 .tn/
 .ss/
 .hd/
 .temp/
 unused/
 skins/
+.htpasswd
 *.mp4
 web.config
