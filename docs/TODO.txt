@@ -1,19 +1,32 @@
-Direct Link to file
+blog articles:
+/path/article.txt
 
+getArticle 
+ajax => text
+parseKeywords with files
+use file templates, slideshows, video player.
+call UI.setupFileEvents
+
+$.ajax: change  success => done, error=> fail
+
+paragraphe > <br/>
+filenames -> use tn or ss
+
+Direct Link to file
 leave reqPathFile as it is.
 add function parseQueryString, return array(path, file, name, tag, depth)
 
-if file starts with @  path@file or path/@file or if 1 result by name: start at this file, do not restrict by name
-if 0 result: whole dir
-if multiple results: search by name
+1 name matched: load this file, then load rest of album after displaying.
 
 UI.search:  in this dir: use search string
 otherwise : ajax call with depth
 
 ---------
 
-autotag based on file:
-youtube, transparent, ext, animated, panorama
+autotag based on file: type
+video: stream / nostream / youtube
+image: transparent, ext, animated, panorama
+
 link to youtube video : on youtube.
 
 image sizes: add min height, min width for panoramas

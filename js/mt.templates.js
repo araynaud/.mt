@@ -15,6 +15,7 @@ UI.setupTemplates = function()
 	UI.linkTemplate("versionLinkTemplate");
 	UI.linkTemplate("tagTemplate");
 	UI.linkTemplate("descriptionTagTemplate");
+	UI.linkTemplate("descriptionTemplate");
 //	$.views.activeViews = false;
 
 if($.views)
@@ -47,18 +48,27 @@ if($.views)
 
 UI.renderTemplate = function(templateId, targetId, data, funct, params)
 {
-	var target = $(targetId);
-	if(!target.length && isString(targetId))
+	var target = null;
+	if(!isMissing(targetId))
+		target = $(targetId);
+	if(isEmpty(target) && isString(targetId))
 		target = $("#"+targetId);
-	if(!target.length)		return;
-	funct= valueOrDefault(funct,"html");
+
 	var html="";
 	if(data)
-		html = $("#"+templateId).render(data,params);
+		html = $("#"+templateId).render(data, params);
+
+	if(isEmpty(target))	return html;
+
+	funct = valueOrDefault(funct, "html");
+	if(funct===true) 
+		funct="append";
 	if(isFunction(target[funct]))
 		target[funct](html);
 	else
 		target.html(html);	
+
+	return html;
 };
 
 UI.getGroupTitle = function(mediaFile)
@@ -110,7 +120,28 @@ UI.getGroup = function(mediaFile)
 };
 	
 // TO TEST
-function getTemplateAjax(file, templateId, targetDivId)
+UI.getTextAjax = function (path, file, targetDivId)
+{
+	var url = path + "/" + file + ".txt";
+	var result = null;
+	var async = !isEmpty(targetDivId); 
+	$.ajax({ url: url, async: async, dataType: 'text'})
+	.done(function(contents)
+	{
+		result = contents;
+		if(targetDivId)
+			$("#"+targetDivId).html(contents);
+	})
+	.fail(function(jqXHR, textStatus, errorThrown)
+	{
+		result = textStatus + "\n" + errorThrown;
+		if(targetDivId)
+			$("#"+targetDivId).html("failed:" + textStatus + "\n" + errorThrown);
+	});
+	return result;
+}
+
+UI.getTemplateAjax = function(file, templateId, targetDivId)
 {
 //	var file = 'views/my_template_file.html';
 	$.ajax({
@@ -132,10 +163,51 @@ UI.getTemplateUrl = function(name)
 
 UI.renderExtTemplate = function(item)
 {
-	var file = my.getTemplateUrl( item.name );
+	var file = UI.getTemplateUrl( item.name );
 	$.when($.get(file)).done(function(tmplData)
 	 {
 		 $.templates({ tmpl: tmplData });
 		 $(item.selector).html($.render.tmpl(item.data));
 	 });    
 };
+
+UI.displayArticle = function(mediaFile)
+{
+//	getArticle	ajax => text
+//	parseKeywords with files
+//	use file templates, slideshows, video player.
+	if(isString(mediaFile))
+		mediaFile=album.getMediaFileByName(mediaFile);
+
+	mediaFile = valueOrDefault(mediaFile, UI.currentArticle);
+	if(!mediaFile) return;
+
+	UI.getDisplayOptions(album);
+	UI.currentArticle = mediaFile;
+	
+	if(window.UI && UI.setMode)
+		UI.setMode("article");
+
+	if(isEmpty(mediaFile.description))
+		mediaFile.descripton = UI.getTextAjax(album.urlAbsPath, mediaFile.name);
+
+	var article = "<p class='title'>{0}</p>".format(mediaFile.title);
+	article += "<p>" + mediaFile.description.replace("/\n/g", "<br/>") + "</p>";
+	article = article.parseKeywords(album.getFileNamesByType("IMAGE"), UI.displayMediaFile);
+	article = article.parseKeywords(album.getFileNamesByType("VIDEO"), UI.displayMediaFile);
+	UI.articleContainer.html(article);
+
+	UI.setupFileEvents(UI.articleContainer);
+
+	return article;
+};
+
+UI.displayMediaFile = function(mediaFile)
+{
+	if(isString(mediaFile))
+		mediaFile=album.getMediaFileByName(mediaFile);
+	if(!mediaFile) return;
+
+	html = UI.renderTemplate("fileboxTemplate", null, mediaFile);
+	return html;
+}

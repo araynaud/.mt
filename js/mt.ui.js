@@ -7,7 +7,7 @@ window.UI = window.UI || {};
 
 UI.modes=
 {
-	index: { scrollable: true, show: ["#titleContainer", "#indexContainer", "#optionsContainer"], 
+	index: { scrollable: true, show: ["#titleContainer", "#indexContainer", "#optionsContainer", ".fixedRight", ".fixedLeft"], 
 		onShow: function() 
 		{
 			var alt = UI.transition.getNextSlide();
@@ -20,6 +20,12 @@ UI.modes=
 			if(UI.rotatePages)	UI.rotatePages(false);
 		}
 	},
+	article: { scrollable: true, show: ["#titleContainer", "#articleContainer", "#optionsContainer"],
+		onShow: function() 
+		{
+			UI.setDisplayOptions({ columns: 0 });
+		}
+	 },
 	video: { scrollable: true, show: ["#titleContainer", "#videoContainer"],
 		onHide: function() { MediaPlayer.video.pause(); }
 	 },
@@ -47,6 +53,7 @@ UI.sizes.large  = {"divClasses": "largeImage", tnIndex: 1, fixedHeight: true};
 UI.sizes.full  = {"divClasses": "fullImage", tnIndex: 1};
 
 UI.mode="index";
+UI.prevMode="index";
 UI.statusBar=".status";
 
 UI.initSizes = function()
@@ -73,19 +80,26 @@ UI.initSizes = function()
 };
 UI.initSizes();
 
+UI.setPrevMode = function()
+{
+	return UI.setMode(UI.prevMode);
+}
+
 UI.setMode = function(mode)
 {
-	if(!mode) mode="index";
+	mode = valueOrDefault(mode, "index");
 	if(UI.mode===mode) return;
-	
-	UI.currentMode=UI.modes[UI.mode];
-	var newMode=UI.modes[mode];
+
+	UI.prevMode = UI.mode;
+	UI.currentMode = UI.modes[UI.mode];
+	var newMode = UI.modes[mode];
 
 	UI.changeMode(UI.currentMode, newMode);
 	$("body").toggleClass("noscroll", !newMode.scrollable);
 
-	UI.currentMode=newMode;
-	UI.mode=mode;
+	UI.currentMode = newMode;
+	UI.mode = mode;
+	return UI.mode;
 };
 
 UI.setColumns = function(keyCode)
@@ -136,8 +150,7 @@ UI.setDisplayOptions = function(obj)
 
 UI.setOption = function(option, value, noEvent)
 {
-	UI.setStatus("UI.setOption " + option + " = " + value);
-
+//	UI.setStatus("UI.setOption " + option + " = " + value);
 	var dd = $("#dd_" + option);
 	if(!isEmpty(dd))
 		return dd.selectOption(value, noEvent);

@@ -296,6 +296,7 @@ MediaFile.prototype.getShortPath = function ()
 
 MediaFile.prototype.getHashPath = function ()
 {
+	if(this.isDir()) return this.getShortPath();
 	return String.combine(album.path, this.subdir) + "#" + this.name;
 };
 
@@ -769,6 +770,8 @@ MediaFile.prototype.play = function()
 			if(window.MediaPlayer && MediaPlayer.audio)
 				return MediaPlayer.audio.loadMediaFile(this);
 			break;
+		case "TEXT":
+			UI.displayArticle(this);
 	}
 	return false;
 };

@@ -342,13 +342,22 @@ function convertImageToTrueColor($srcImg, $imageInfo, $destroy=true)
 	return $dstImg;
 }
 
-function cropImage($srcImg, $imageInfo, &$x1,&$y1,&$x2,&$y2,$destroy=true)
+function cropImage($srcImg, $imageInfo, &$x1, &$y1, &$x2, &$y2, $destroy=true)
 {
-	if($x1==$x2 || $y1==$y2)// || !isInImage($srcImg,$x1,$y1) || !isInImage($srcImg,$x2,$y2))
-		return $srcImg;
+//	if($x1==$x2 || $y1==$y2)// || !isInImage($srcImg,$x1,$y1) || !isInImage($srcImg,$x2,$y2))
+//		return $srcImg;
 
 	$maxX = $imageInfo["width"] - 1;
 	$maxY = $imageInfo["height"] - 1; 
+
+	if($x1==$x2)
+	{
+		$x1 = 0; $x2 = $maxX;
+	}
+	if($y1==$y2)
+	{
+		$y1 = 0; $y2 = $maxY;
+	}
 
 	sortMinMax($x1,$x2);
 	sortMinMax($y1,$y2);
@@ -356,6 +365,8 @@ function cropImage($srcImg, $imageInfo, &$x1,&$y1,&$x2,&$y2,$destroy=true)
 	setBetween($x2,0,$maxX);
 	setBetween($y1,0,$maxY);
 	setBetween($y2,0,$maxY);
+debug("cropImage", "$x1, $y1, $x2, $y2");
+debug("imageInfo", $imageInfo);
 	$width=$x2-$x1;
 	$height=$y2-$y1;
 	$dstImg=imageCreateTransparent($width,$height, @$imageInfo["transparent"]);
@@ -375,8 +386,8 @@ function rotateImage($srcImg, $imageInfo, $rotateAngle, $destroy=true)
 		debug("rotateImage convertImageToTrueColor", $srcImg);
 	}
 
-	$dstImg = imagerotate($srcImg, $rotateAngle, $imageInfo["transparent"]-1);
-	makeImageTransparent($dstImg,$imageInfo["transparent"]);
+	$dstImg = imagerotate($srcImg, $rotateAngle, @$imageInfo["transparent"]-1);
+	makeImageTransparent($dstImg, @$imageInfo["transparent"]);
 debug("rotateImage $srcImg", $dstImg);
 	if($destroy)	imagedestroy($srcImg); 
 	return $dstImg;

@@ -21,21 +21,20 @@ UI.keys =
 		// on index page : left and right to go to previous/next page
 		 37: function() { UI.selectNextPage(-1); },	//left arrow: previous
 		 39: function() { UI.selectNextPage(1); },	//right arrow: next
-		'I': function() { $("#cb_reverse").toggleChecked(); },	//reverse sort
-		'D': function() { $("#cb_dirsFirst").toggleChecked(); },	//sort with dirs first
-		'G': function() { $("#cb_group").toggleChecked(); },	//group by sort field
-		'R': function() { $("#cb_rotate").toggleChecked(); },	//rotate images
-		'C': function() { $("#cb_caption").toggleChecked(); },	//captions
-		'B': function() { $("#cb_border").toggleChecked(); },	//borders
-		'M': function() { $("#cb_margin").toggleChecked(); },	//margins
-		'T': function() { $("#cb_transpose").toggleChecked(); },	//T: transpose columns
-		'O': function() { $('#cb_displayOptions').toggleChecked(); }, //options
-		'S': function() { $('#cb_searchOptions').toggleChecked(); }, //search options
+		'I': function() { UI.setOption("reverse"); },	//reverse sort
+		'D': function() { UI.setOption("dirsFirst"); },	//sort with dirs first
+		'G': function() { UI.setOption("group"); },	//group by sort field
+		'R': function() { UI.setOption("rotate"); },	//rotate images
+		'C': function() { UI.setOption("caption"); },	//captions
+		'B': function() { UI.setOption("border"); },	//borders
+		'M': function() { UI.setOption("margin"); },	//margins
+		'T': function() { UI.setOption("transpose"); },	//T: transpose columns
+		'O': function() { UI.setOption("displayOptions"); }, //options
+		'S': function() { UI.setOption("searchOptions"); }, //search options
 		'X': function() { $('#dd_sort').selectNextOption(); },
 		'Z': function() { $('#dd_fit').selectNextOption(); },
 		'P': function() { UI.rotatePages(); },
 
-		' ': function() { UI.slideshow.display();  },	 //SPACE: slideshow
 		'0': UI.setColumns,
 		'1': UI.setColumns,
 		'2': UI.setColumns,
@@ -62,13 +61,21 @@ UI.keys =
 		61: function() { $('#dd_page').selectNextOption(); },
 		189: function() { $('#dd_page').selectNextOption(-1); },
 		187: function() { $('#dd_page').selectNextOption(); },
-		// numpad:	107:+	109:-	106:*	111:/(FF:quick find)
-		107: function() { UI.zoom(); },
-		109: function() { UI.zoom(-1); },
 		//192:~`
 		//46:delete, 45:insert
 		'E': function() { UI.setColumnWidths(); } 
 	},
+	"article":
+	 {
+		'R': function() { UI.setOption("rotate"); },	//rotate images
+		'C': function() { UI.setOption("caption"); },	//captions
+		'B': function() { UI.setOption("border"); },	//borders
+		'M': function() { UI.setOption("margin"); },	//margins
+		'O': function() { UI.setOption("displayOptions"); }, //options
+		'S': function() { UI.setOption("searchOptions"); }, //search options
+		'H': function() { UI.setOption("shadow"); },	//shadow
+		'F': function() { UI.setOption("fadeIn"); }	//fade
+	 },
 	"slideshow":
 	{
 		37: function() { UI.slideshow.showNextImage(-1) },	//left arrow: previous
@@ -77,8 +84,8 @@ UI.keys =
 		40:	function() { UI.slideshow.slower(); },	//down: interval * 2
 		36: function() { UI.slideshow.showImage(0);	},//home: first
 		35: function() { UI.slideshow.showImage(-1); },	//end: last
-		27: function() { UI.setMode(); },		// ESC key: close slideshow
-		32: function() {
+		27: function() { UI.setPrevMode(); },		// ESC key: close slideshow
+		' ': function() {
 			if(UI.slideshow.mplayer && UI.slideshow.mplayer.playerFocus()) return;
 			UI.addStatus("active: " +document.activeElement.id);
 			UI.slideshow.togglePlay(); 
@@ -107,7 +114,7 @@ UI.keys =
 	},
 	"video": 
 	{
-		32: function()
+		' ': function()
 		{ 
 			if(!MediaPlayer.video.playerFocus())
 				MediaPlayer.video.togglePlay();
@@ -124,13 +131,13 @@ UI.keys =
 		189: function() { MediaPlayer.video.nextSize(-1); },
 		187: function() { MediaPlayer.video.nextSize(1); },
 
-		'V': function() { UI.setMode(); },		// V key: same
+		'V': function() { UI.setPrevMode(); },		// V key: same
 		// ESC key: back to index, close player?
 		27 : function()
 		{ 
 			// if just exiting fullscreen player with ESC, do not go back to index
 			if(!UI.preventEsc) 
-				 UI.setMode();
+				 UI.setPrevMode();
 			//do it next time
 			UI.preventEsc=false;
 		}
@@ -140,7 +147,8 @@ UI.keys =
 	{
 	//M: play/pause music function(state, duration, effect, direction, callback)
 		'H': function() { UI.toggleOption("titleContainer"); },	//header
-		' ': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.togglePlay(); },
+		' ': function() { UI.slideshow.display();  },	 //SPACE: slideshow
+//		' ': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.togglePlay(); },
 		'A': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.togglePlay(); },
 	//N: next music track
 		'N': function() { if(window.MediaPlayer && MediaPlayer.audio) MediaPlayer.audio.playNext(); },
@@ -151,7 +159,11 @@ UI.keys =
 		'V': function() { UI.playAllVideos() },
 	//F: Facebook
 //		'F': function() { if(window.toggleFacebookComments) toggleFacebookComments(); }
-		'F': function() { UI.toggleOption("downloadFileList"); }
+		'F': function() { UI.toggleOption("downloadFileList"); },
+
+		// numpad:	107:+	109:-	106:*	111:/(FF:quick find)
+		107: function() { UI.zoom(); },
+		109: function() { UI.zoom(-1); }
 	}
 };
 

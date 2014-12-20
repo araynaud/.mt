@@ -128,7 +128,6 @@ Album.onLoad = function (albumInstance)
 		UI.styleCheckboxes();
 		UI.setupEvents();
 
-		//pmv append to footer
 		pmv(UI.visitImg);
 
 		$(".lOption").each(UI.toggleLayoutOption); 
@@ -213,16 +212,17 @@ $(window).resize(function(event)
 		<span id="indexStatus" class="status text translucent"></span>
 	</div>
 	<div id="pageCounts" class="floatR small bold"></div>
+	<div id="tagList" class="centered"></div>
 </div>
-	
+
 <?php include("video.html");?>
+<div id="articleContainer" class="hidden translucent centered left" style="width: 90%; max-width:1000px;">
+</div>
 
 <div id="indexContainer" class="nofloat">
 	<div class="centered noprint">
-		<span id="tagList" class="centered"></span>
 		<spanid="pagesTop" class="pager centered"></span>
 	</div>
-	<br/>
 	<div class="floatR">
 		<div class="right noprint controls">
 			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>

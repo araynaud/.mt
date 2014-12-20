@@ -103,7 +103,8 @@ TYPES.IMAGE_NOTHUMB;bmp;svg
 TYPES.AUDIO;mp3;wav;m4a;aac;ogg
 TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm
 TYPES.VIDEO_STREAM;m4v;mp4;flv;3gp;webm;ogm;ogv
-TYPES.SPECIAL;txt;xml;php;chunk;js;css
+TYPES.SPECIAL;xml;php;chunk;js;css
+TYPES.TEXT;txt
 
 ;JW Player options
 JWPLAYER.allowHtml5;true

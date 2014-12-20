@@ -49,6 +49,7 @@ function Album(data)
 		}
 
 	this.otherFiles = this.getFilesByType("FILE");
+	this.articleFiles = this.getFilesByType("TEXT");
 	this.musicFiles = this.getFilesByType("AUDIO");
 	this.mediaFiles = this.getFilesByType(["DIR", "IMAGE", "VIDEO"]);
 	this.initTags();
@@ -504,6 +505,13 @@ Album.prototype.getFilesByType = function(type)
 
 	return files;
 };
+
+Album.prototype.getFileNamesByType = function(type)
+{
+	var tfiles=this.groupedFiles[type];
+	if(!tfiles) return [];
+	return Object.keys(tfiles);
+}
 
 //get files for current page
 //depending on countPerPage and pageNumber

@@ -232,7 +232,8 @@ String.toLink = function (text)
 
 String.parseKeywords = function(text, words, format)
 {
-	if(isEmpty(text)||isEmpty(words)) return text;
+	if(isEmpty(text) || isEmpty(words)) return text;
+	
 	format = valueOrDefault(format, String.toBold);
 	//format: if function, call it, if string: use as format string, otherwise, default function
 	//in replace: format(match, position, text);

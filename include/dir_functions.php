@@ -438,6 +438,18 @@ function groupByName($relPath, $files, $byType=false, $details=true)
 		else
 			$distinct[$key] = $element;
 	}
+
+	//article files: remove description files that have same name as another mediaFile
+	if($byType && isset($distinct["TEXT"])) 
+	{
+		$articleFiles = $distinct["TEXT"];
+		foreach ($distinct as $type => $typeFiles)
+		{
+			if($type=="TEXT") continue;
+			$articleFiles = array_diff_key($articleFiles, $typeFiles);
+		}
+		$distinct["TEXT"] = $articleFiles;
+	}
 	return $distinct;
 }
 

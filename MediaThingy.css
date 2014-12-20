@@ -197,7 +197,7 @@ div.file .edit, .captionTop
 	width: 100%;	
 }
 
-.caption, .captionBelow, .edit
+.caption, .captionBelow, .edit, a.article
 {
 	font-weight:bold;
 	text-align: center;
@@ -215,7 +215,7 @@ div.file .edit, .captionTop
 	color: orange;
 }
 
-.title a, .small a, li a, .caption a, .captionTop a, .captionBelow a, .translucent a, .pages a, .pager a
+.title a, .small a, li a, .caption a, .captionTop a, .captionBelow a, .translucent a, .pages a, .pager a, a.article
 {
 	text-decoration: none;
 }
@@ -391,11 +391,6 @@ img.icontr, img.iconTrans
 	display: block;
 }
 
-.inlineBlock
-{
-	display: inline-block;
-}
-
 .floater, .inlineBlock
 {
 	display: inline-block;
@@ -408,15 +403,24 @@ img.icontr, img.iconTrans
 	vertical-align: top;
 }
 
-.floaterLeft {
+.floatL, .floaterLeft
+{
 	float: left;
 	display: block;
 }
 
-.floaterRight {
+.floatR, .floaterRight
+{
 	float: right;
 	display: block;
 }
+
+.nofloat, br
+{
+	float: none;
+	clear: both;
+}
+
 
 .file /*.floater, .floaterRight, .floaterLeft*/
 {
@@ -856,24 +860,6 @@ ul.noBullet
 
 .stretchH50 {
     height:50%;
-}
-
-.floatL
-{
-	float: left;
-	display: block;
-}
-
-.floatR
-{
-	float: right;
-	display: block;
-}
-
-.nofloat, br
-{
-	float: none;
-	clear: both;
 }
 
 .left

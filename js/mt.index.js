@@ -107,7 +107,7 @@ UI.displayFiles = function(selectedFiles, transition, append)
 UI.setupFileEvents = function(mediaFile)
 {
 	UI.displayEditEvent();
-	var div = mediaFile ? mediaFile.getDiv() : UI.pageDiv;
+	var div = mediaFile instanceof MediaFile ? mediaFile.getDiv() : valueOrDefault(mediaFile, UI.pageDiv); 
 
 	var imgThumbs = div.find("img.thumbnail");
 	imgThumbs.load(UI.imageOnLoad);
@@ -123,8 +123,11 @@ UI.setupFileEvents = function(mediaFile)
 //call when initial display, and when tag list changes: new tag word created or removed.
 UI.displayTags = function()
 {
+	UI.renderTemplate("articleLinkTemplate", UI.tagListDiv, album.articleFiles);
+
 	if(isEmpty(album.tags)) return;
-	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags));
+	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags), "append");
+
 	$("input.tagOption, input.operator").bindReset("click", UI.search);		
 	UI.styleCheckboxes("", "tagOption", "tagLabel");
 };
@@ -478,6 +481,7 @@ UI.search = function()
 	album.setPageNumber(1);
 
 	UI.slideshow.pics =  album.selectSlideshowFiles();
+	UI.setMode();
 	return UI.displaySelectedFiles();
 };
 
@@ -535,6 +539,7 @@ UI.setupElements = function()
 	UI.tagListDiv = $("#tagList");
 	UI.pagers = $(".pager");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
+	UI.articleContainer = $("#articleContainer");
 
 
 //edit div elements
@@ -557,8 +562,14 @@ UI.setupEvents = function()
 {
 	$(".sOption").change(UI.sortFiles);	
 	$("#dd_page").change(UI.selectCountPerPage);
-	$(".dOption").change(function() { if(!UI.noRefresh) UI.displaySelectedFiles(true); } );
 	$(".lOption").change(UI.toggleLayoutOption);
+	$(".dOption").change(function()
+	{
+		if(UI.mode == "article") 
+			UI.displayArticle();
+		else if(!UI.noRefresh)
+			UI.displaySelectedFiles(true);
+	} );
 
 	$("div#searchOptions input:checkbox, div#searchOptions select").change(UI.search);
 	$("div#searchOptions input:text").change(UI.search);
@@ -577,6 +588,7 @@ UI.setupEvents = function()
 	$(window).scroll(function()
 	{
 		if($(window).scrollTop() + $(window).height() < $(document).height() - 1) return;
+		if(UI.mode != "index") return;
 		UI.appendNextPage();
 	});
 
@@ -630,20 +642,14 @@ UI.playAllVideos = function()
 UI.scrollPages = function(page)
 {	
 	page = valueOrDefault(page, album.pageNum);
-//	UI.scrollPageDiv = UI.pageDiv;
 //is next page visible?
 	var nextPage = album.getPageNumber(page+1);
 	if(!UI.isPageVisible(nextPage))
 		more = UI.appendNextPage();
 
-//	UI.scrollPageDiv = $("div.file[page={0}]".format(page)).last();
 	UI.scrollPageDiv = $("div.file[page={0}]".format(nextPage)).eq(0);
 	var top = UI.scrollPageDiv.offset().top;
-//	top += UI.scrollPageDiv.outerHeight(true);
-//	alert("scrollPages: {0} {1}".format(album.pageNum, top));
 	var options = {duration: UI.slideshow.interval };
-	//if(!UI.allPagesVisible())
-	//	options.complete =  function () { UI.scrollPages(nextPage) };
 	$("html,body").animate({scrollTop: top}, options);
 };
 
