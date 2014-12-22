@@ -179,7 +179,6 @@ Album.prototype.loadTags = function()
 	}
 };
 
-
 Album.prototype.contains = function(key)
 {
 	return !isMissing(this[key]);
@@ -525,12 +524,12 @@ Album.prototype.selectCurrentPageFiles = function()
 
 Album.getFileIndex = function(index)
 {
-	return album.startFileIndex+index;
+	return album.getFileIndex(index);
 };
 
 Album.prototype.getFileIndex = function(index)
 {
-	return this.startFileIndex+index;
+	return this.startFileIndex + (index || 0);
 };
 
 Album.prototype.selectAll = function(state)

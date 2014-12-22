@@ -191,10 +191,13 @@ UI.displayArticle = function(mediaFile)
 	if(isEmpty(mediaFile.description))
 		mediaFile.descripton = UI.getTextAjax(album.urlAbsPath, mediaFile.name);
 
-	var article = "<p class='title'>{0}</p>".format(mediaFile.title);
-	article += "<p>" + mediaFile.description.replace("/\n/g", "<br/>") + "</p>";
-	article = article.parseKeywords(album.getFileNamesByType("IMAGE"), UI.displayMediaFile);
-	article = article.parseKeywords(album.getFileNamesByType("VIDEO"), UI.displayMediaFile);
+	var desc = mediaFile.description;
+//	desc = desc.replace(new RegExp("\n\n", "g"), "</div><div class='nofloat left margin'>");
+//	desc = desc.replace(new RegExp("\n", "g"), "</div><div>");
+	desc = desc.parseKeywords(album.getFileNamesByType("IMAGE"), UI.renderMediaFile);
+	desc = desc.parseKeywords(album.getFileNamesByType("VIDEO"), UI.renderMediaFile);
+
+	var article = "<div class='title'>{0}</div><div class'margin'>{1}</div>".format(mediaFile.title, desc);
 	UI.articleContainer.html(article);
 
 	UI.setupFileEvents(UI.articleContainer);
@@ -202,12 +205,29 @@ UI.displayArticle = function(mediaFile)
 	return article;
 };
 
-UI.displayMediaFile = function(mediaFile)
+UI.renderMediaFile = function(match, capture, position, text)
 {
-	if(isString(mediaFile))
-		mediaFile=album.getMediaFileByName(mediaFile);
-	if(!mediaFile) return;
+	if(isString(match))
+		mediaFile = album.getMediaFileByName(match);
+	else 
+		mediaFile = match;
 
-	html = UI.renderTemplate("fileboxTemplate", null, mediaFile);
+	if(!mediaFile) return "";
+
+	var before = text[position-1];
+	var after = text[position + match.length];
+	var lineStart = !before || before == "\n";
+	var lineEnd = !after || after == "\n";
+
+	var nextDivClass = "";
+	if(lineStart && lineEnd)
+		nextDivClass = "nofloat centered"; 
+	else if(lineStart)
+		nextDivClass = "floaterLeft"; 
+	else if(lineEnd)
+		nextDivClass = "floaterRight"; 
+
+	var html = UI.renderTemplate("fileboxTemplate", null, mediaFile);
+	html = "<div class='{0}'>{1}{2}</div>".format(nextDivClass, html);
 	return html;
 }

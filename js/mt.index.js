@@ -278,6 +278,8 @@ UI.imageOnError = function()
 	var img=$(this);
 	var filebox=img.parents("div.file");
 	var mediaFile = album.getByAttribute(filebox);
+	if(!mediaFile) return;
+
 	mediaFile.tnIndex = img.attr("tn") || album.tnIndex;
 	mediaFile.setTnExists(false, mediaFile.tnIndex);
 
@@ -298,6 +300,7 @@ UI.imageOnLoad = function()
 	var img=$(this);
 	var filebox=img.parents("div.file");
 	var mediaFile = album.getByAttribute(filebox);
+	if(!mediaFile) return;
 	mediaFile.tnIndex = img.attr("tn") || album.tnIndex;
 	mediaFile.setTnExists(true, mediaFile.tnIndex);
 

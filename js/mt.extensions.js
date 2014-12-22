@@ -230,7 +230,7 @@ String.toLink = function (text)
 	return 	"<a href='{1}'>{0}</a>".format(text, href);
 };
 
-String.parseKeywords = function(text, words, format)
+String.parseKeywords = function(text, words, format, multiple)
 {
 	if(isEmpty(text) || isEmpty(words)) return text;
 	
@@ -242,16 +242,23 @@ String.parseKeywords = function(text, words, format)
 		formatString = format;
 		format = function(word) { return formatString.format(word); };
 	}
-	if(isArray(words))	words = words.join("|");
 
-	var reg = new RegExp("\\b(" + words + ")\\b", "gi");
-	text = text.replace(reg, format);
+	if(isArray(words))	
+		words = words.join("|");
+
+	var regex = "\\b(" + words + ")\\b";
+//	if(multiple)
+//		regex = "\\b(" + words + ")\\b(" + words + ")\\b";
+
+	console.log(regex);
+	regex = new RegExp(regex, "gi");
+	text = text.replace(regex, format);
 	return text;
 };
 
-String.prototype.parseKeywords = function(words, format)
+String.prototype.parseKeywords = function(words, format, multiple)
 {
-	return String.parseKeywords(this, words, format);
+	return String.parseKeywords(this, words, format, multiple);
 };
 
 String.makeTitle = function(str)

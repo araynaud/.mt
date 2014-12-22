@@ -10,9 +10,7 @@
 <script id="downloadFileTemplate" type="text/x-jsrender"> 
 <div class="small">
 	<div class="floatR">
-		{{if exts}}
-			{{:exts.join(", ")}}
-		{{/if}}
+		{{if exts}}{{:exts.join(", ")}}{{/if}}
 		{{:takenDate}}
 	</div>
 	<a href="{{:~fileUrl(#data)}}">{{:title}}</a>
@@ -20,7 +18,7 @@
 </script>
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
-	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}">
+	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
 		{{if type=="DIR" && thumbnails}}
 			<a href="?{{:~filePath(#data)}}" title="{{>title}}">
 				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">

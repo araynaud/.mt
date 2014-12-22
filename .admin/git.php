@@ -2,7 +2,7 @@
 require_once("../include/config.php");
 setContentType("text", "plain");
 
-$gitPath = getConfig("_GIT.PATH");
+$gitPath = getExePath($exe="GIT", $key="_GIT");
 
 if(!$gitPath || !file_exists($gitPath)) 
 {
@@ -11,7 +11,7 @@ if(!$gitPath || !file_exists($gitPath))
 }
 
 echo "\nstatus:\n";
-echo execCommand("$gitPath status");
+echo execCommand(makeCommand("[0] status", $gitPath));
 echo "\npull:\n";
-echo execCommand("$gitPath pull --rebase");
+echo execCommand(makeCommand("[0] pull --rebase", $gitPath));
 ?>

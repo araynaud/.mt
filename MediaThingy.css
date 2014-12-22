@@ -426,6 +426,7 @@ img.icontr, img.iconTrans
 {
 	padding: 0px;
 	position:relative;
+	white-space: normal;
 }
 
 /*.file.margin, .slide.margin, .column.margin*/

@@ -216,7 +216,7 @@ $(window).resize(function(event)
 </div>
 
 <?php include("video.html");?>
-<div id="articleContainer" class="hidden translucent centered left" style="width: 90%; max-width:1000px;">
+<div id="articleContainer" class="hidden translucent centered left text" style="width: 90%; max-width:1000px; padding: 20px;">
 </div>
 
 <div id="indexContainer" class="nofloat">
