@@ -1,15 +1,11 @@
 parse query string:
-path=2014/cookies&tag=best&file=DSC_0764
-
-2014/december/cookies/best|amy/DSC_0764
-
-2014/december/cookies:1:best|amy:DSC_0764
-
-2014.december.cookies/1/best,amy/DSC_0764
+OK path=2014/cookies&tag=best&file=DSC_0764
+OK 2014/december/DSC_0764
+OK 2014/december:1:best|amy:DSC_0764
+OK 2014.december.cookies/1/best,amy/DSC_0764
 path / depth / tags / filename
 path / depth / tags 
 path / filename
-
 last: filename
 2nd last: tags
 before: path
@@ -17,6 +13,7 @@ before: path
 
 blog articles:
 /path/article.txt
+add share link
 
 getArticle 
 ajax => text

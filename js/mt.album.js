@@ -566,3 +566,19 @@ Album.prototype.loadDisplayOptions = function()
 	}
 	return config.DISPLAY;
 };
+
+
+Album.getShortPath = function ()
+{
+	return album.path;
+};
+
+Album.prototype.getShortPath = function ()
+{
+	return this.path;
+};
+
+Album.prototype.getShortUrl = function ()
+{
+	return UI.appRootUrl() + "?" + this.getShortPath();
+};

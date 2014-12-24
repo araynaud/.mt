@@ -118,7 +118,8 @@ Album.onLoad = function (albumInstance)
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
 
 		var mf=null;
-		//if(location.hash) 			search.file = location.hash.substringAfter("#");
+		if(location.hash)
+			search.file = location.hash.substringAfter("#");
 		if(search.file)
 			mf=album.getMediaFileByName(search.file);
 
@@ -131,8 +132,6 @@ Album.onLoad = function (albumInstance)
 		pmv(UI.visitImg);
 
 		$(".lOption").each(UI.toggleLayoutOption); 
-
-		console.log(search);
 
 		if(mf) mf.play();
 	}
@@ -199,10 +198,10 @@ $(window).resize(function(event)
 		</span>
 		<a class="spaceLeft" href="<?php echo "?$path"?>"><?php echo $title?></a>
 		<span class="small" id="counts"></span>
+		<img class="icon" src="icons/thumbnails.png" id="thumbnailsIcon" alt="thumbnails" onclick="UI.setMode()"/>
 		<img class="icon" src="icons/slideshow.png" id="slideshowIcon" alt="Slide show" title="Slide show (Space)" onclick="UI.slideshow.display()" />
 		<img class="icon" src="icons/play.png" id="playIcon" alt="Play videos" title="Play all videos (V)" onclick="UI.playAllVideos()"/>
-		<img class="icon" src="icons/music.png" id="playMusicIcon" alt="Music" onclick="MediaPlayer.audio.loadMusicPlaylist(album.musicFiles)"/>
-		<img class="icon" src="icons/thumbnails.png" id="makeThumbnailsIcon" alt="thumbnails" onclick="Album.createMissingThumbnails(album.mediaFiles);"/>
+		<img class="icon" id="fbIconAlbum" src="icons/fb.png" alt="share" title="share on facebook" onclick="UI.fbShare()"/>
 	</div>
 	<div id="description" class="centered text"></div>
 	<div id="dateRange" class="centered text"></div>

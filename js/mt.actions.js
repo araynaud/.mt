@@ -217,12 +217,19 @@ UI.appRootUrl = function()
 	return window.location.href.substringBefore("?");
 };
 
-UI.fbShare = function()
+UI.fbShare = function(mediaFile)
 {
-	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;
-	if(!mediaFile) return false;
+	if(!config || !config.fb || !config.fb.shareUrl) return false;
 
-	var link="https://www.facebook.com/sharer/sharer.php".appendQueryString({u: mediaFile.getShortUrl()});
+	if(!mediaFile)
+	{
+		mediaFile = UI.currentFile;
+		if(UI.mode==="slideshow")  mediaFile = UI.slideshow.currentFile;
+		if(UI.mode==="article")  mediaFile = UI.currentArticle;
+	}
+	if(!mediaFile) mediaFile = album;
+
+	var link = config.fb.shareUrl.appendQueryString({u: mediaFile.getShortUrl()});
 	return UI.goToUrl(link, 'fb');
 };
 

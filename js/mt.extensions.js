@@ -250,7 +250,7 @@ String.parseKeywords = function(text, words, format, multiple)
 //	if(multiple)
 //		regex = "\\b(" + words + ")\\b(" + words + ")\\b";
 
-	console.log(regex);
+//	console.log(regex);
 	regex = new RegExp(regex, "gi");
 	text = text.replace(regex, format);
 	return text;
