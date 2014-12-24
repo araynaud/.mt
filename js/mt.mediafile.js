@@ -302,7 +302,7 @@ MediaFile.prototype.getHashPath = function ()
 
 MediaFile.prototype.getShortUrl = function ()
 {
-	return UI.appRootUrl() + "?" + this.getHashPath();
+	return UI.appRootUrl() + "?" + this.getShortPath();
 };
 
 MediaFile.getFileDir = function(mediaFile, subdir)

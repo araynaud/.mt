@@ -25,11 +25,17 @@ function getFileByName($dir, $name)
 	return listFiles($dir, $search);
 }
 
-function fileExistsByName($dir, $name)
+//find if name is matched  0 times, 1 time or multiple times
+function countFilesByName($dir, $name, $group=true)
 {
-	$search = array("name" => $name, "maxCount"=>1);
+	$search = array("name" => $name, "maxCount" => 4);
 	$list = listFiles($dir, $search);
-	return count($list) ? reset($list) : false;
+	if($group)
+		$list = groupByName($dir, $list);
+	if(array_key_exists($name, $list)) 
+		return array(key($list));
+
+	return array_keys($list);
 }
 
 
@@ -203,17 +209,17 @@ function fileMatches($file, $key, $search)
 function getSearchParameters()
 {
 	$search = array();		
-	$search["type"]=reqParam("type");
-	$search["name"]=reqParam("name");
-	$search["tag"]=reqParam("tag");
-	$search["sort"]=reqParam("sort");
-	$search["depth"]=reqParam("depth",0);
-	$search["subdir"]=reqParam("subdir");
-	$search["maxCount"]=reqParam("count",0);
-	$search["config"]=reqParamBoolean("config",true);
+	$search["type"] = reqParam("type");
+	$search["name"] = reqParam("name", reqParam("search"));
+	$search["tag"]  = reqParam("tag", reqParam("search"));
+	$search["sort"] = reqParam("sort");
+	$search["depth"]  = reqParam("depth", 0);
+	$search["subdir"] = reqParam("subdir");
+	$search["maxCount"] = reqParam("count", 0);
+	$search["config"] = reqParamBoolean("config", true);
 	parseWildcards($search);
 
-debug("getSearchParameters",$search);
+	debug("getSearchParameters", $search);
 	return $search;
 }
 
@@ -231,7 +237,7 @@ function parseWildcards(&$search)
 	if(!$search["ends"])
 		$name=substr($name, 0, strlen($name)-1);
 	$search["name"] = $name;
-debug("parseWildcards",$search);
+	debug("parseWildcards", $search);
 }
 
 function sortFiles($files,$sort,$dateIndex=array())

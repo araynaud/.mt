@@ -2,9 +2,11 @@
 require_once("include/config.php");
 session_start();
 reqPathFile($path, $file);
-$tag = reqParam("tag");
+
+$tag = reqParam("search");
 $depth = reqParam("depth");
-$params=array("path"=>$path, "file"=>$file, "tag"=>$tag, "depth"=>$depth);
+$params=array("path" => $path, "file" => $file, "search" => $tag, "depth" => $depth);
+
 debugVar("params");
 
 $album = new Album($path, false);
@@ -98,7 +100,6 @@ Album.onLoad = function (albumInstance)
 //	try
 	{
 		if(!window.album) return;
-
 		config = album.config;
 		UI.displayUser();
 		UI.slideshow = new Slideshow(config.slideshow);
@@ -117,8 +118,7 @@ Album.onLoad = function (albumInstance)
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
 
 		var mf=null;
-		if(location.hash) 
-			search.file = location.hash.substringAfter("#");
+		//if(location.hash) 			search.file = location.hash.substringAfter("#");
 		if(search.file)
 			mf=album.getMediaFileByName(search.file);
 
@@ -131,6 +131,8 @@ Album.onLoad = function (albumInstance)
 		pmv(UI.visitImg);
 
 		$(".lOption").each(UI.toggleLayoutOption); 
+
+		console.log(search);
 
 		if(mf) mf.play();
 	}
@@ -195,7 +197,7 @@ $(window).resize(function(event)
 		<span class="small" id="pathLinks">
 			<?php pathLinks($path,true)?>
 		</span>
-		<a class="spaceLeft" href="<?php echo $urlPath?>"><?php echo $title?></a>
+		<a class="spaceLeft" href="<?php echo "?$path"?>"><?php echo $title?></a>
 		<span class="small" id="counts"></span>
 		<img class="icon" src="icons/slideshow.png" id="slideshowIcon" alt="Slide show" title="Slide show (Space)" onclick="UI.slideshow.display()" />
 		<img class="icon" src="icons/play.png" id="playIcon" alt="Play videos" title="Play all videos (V)" onclick="UI.playAllVideos()"/>

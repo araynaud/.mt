@@ -69,7 +69,7 @@ class MediaFile extends BaseObject
     public static function getMediaFile()
     {    	
 		$path=reqPath();
-		$details=reqParam("name");
+		$details=reqParam("file") || reqParam("name") || reqParam("search");
 debug("MediaFile::getMediaFile name", $details);
 		$album = new Album($path, $details);
 debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());

@@ -1,4 +1,4 @@
-AuthName "MinorArt admin"
+AuthName "Media Thingy admin"
 PerlSetVar AuthFile "/.mt/.admin/.pw/.htpasswd"
 AuthType Basic
 Require valid-user

@@ -1,3 +1,20 @@
+parse query string:
+path=2014/cookies&tag=best&file=DSC_0764
+
+2014/december/cookies/best|amy/DSC_0764
+
+2014/december/cookies:1:best|amy:DSC_0764
+
+2014.december.cookies/1/best,amy/DSC_0764
+path / depth / tags / filename
+path / depth / tags 
+path / filename
+
+last: filename
+2nd last: tags
+before: path
+
+
 blog articles:
 /path/article.txt
 
@@ -7,8 +24,18 @@ parseKeywords with files
 use file templates, slideshows, video player.
 call UI.setupFileEvents
 
-$.ajax: change  success => done, error=> fail
+use tag or file group
 
+slideshow Amy
+slideshow[image1 image2 image3 image4 image5]
+columns 3[image1 image2 image3 image4 image5]
+videoplayer file1 file2 file3
+audioplayer file1 file2 file3
+
+reuse UI.displayfiles for multiple files in article
+
+$.ajax: change  success => done, error=> fail
+UI.setMode
 paragraphe > <br/>
 filenames -> use tn or ss
 

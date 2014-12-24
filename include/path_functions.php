@@ -74,20 +74,26 @@ function combine()
 //if not, toggle .
 function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 {	
-	$qs = $_SERVER["QUERY_STRING"];
+	$qs = urldecode($_SERVER["QUERY_STRING"]);
 	$hasParams = contains($qs, "=");
-	debug("reqPathFile request before ($hasParams)", $_REQUEST);
+	debug("reqPathFile qs", $qs);
+	debug("reqPathFile request before " . btos($hasParams), $_REQUEST);
 	if(!$hasParams)
-		$filePath = urldecode($qs);
-	else
 	{
+		parseQueryString($qs, $_REQUEST);
 		$path = reqParam("path");
 		$file = reqParam("file");
-		$filePath = urldecode(combine($path, $file));
 	}
+	else
+	{
+		$path = urldecode(reqParam("path"));
+		$file = urldecode(reqParam("file"));
+	}
+	$filePath = combine($path, $file);
 
-	$relPath = getDiskPath($filePath);
-	$filetype = getFileType($relPath, true);
+	// test file or tag
+	$realPath = getDiskPath($filePath);
+	$filetype = getFileType($realPath, true);
 	debug("filetype", $filetype);
 	if(!$selectDirAsFile && $filetype=="DIR")
 	{
@@ -97,29 +103,64 @@ function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 	else
 		splitFilePath($filePath, $path, $file);
 
-	if(endsWith($path, "/*"))
-	{
-		$_REQUEST["depth"] = 3;
-		$path = substringBeforeLast($path, "/*");
-		debug("Depth in", $path);
-	}
-	$_REQUEST["path"] = $path;	
-
-	$fileExists = $file && fileExistsByName($relPath, $file);
-	if(!$fileExists) 
-	{
-		$_REQUEST["tag"] = $_REQUEST["name"] = getFilename($file);
-//		$file = "";
-		return;
-	}
-
-	$_REQUEST["file"] = $file;
-	
-	if($addFilters && $filetype && $filetype!="FILE" && $filetype!="DIR")
-		$_REQUEST["type"] = $filetype;
-	if($addFilters && $file)
-		$_REQUEST["name"] = getFilename($file);
 	debug("reqPathFile", "$path / $file");
+
+	$_REQUEST["path"] = $path;
+	if(!$file) return;
+
+	$realDir = getDiskPath($path);
+	$name = getFilename($file);
+
+	//is the file parameter a file name, a partial name, a tag ?
+	//only use in getSearchParameters
+	$fileExists = countFilesByName($realDir, $name);
+	debug("countFilesByName $realDir $name", $fileExists);
+
+	if(count($fileExists) == 1)
+	{
+		$file = reset($fileExists);
+		$_REQUEST["file"] = $name;
+		if($addFilters)
+			$_REQUEST["name"] = $name;
+	}
+	else
+	{
+		$_REQUEST["search"] = $name;
+		$_REQUEST["file"] = "";
+	}
+	debug("reqPathFile request after", $_REQUEST);
+}
+
+
+//2014/december/cookies:1:best|amy:DSC_0764
+function parseQueryString($qs, 	&$result = array())
+{	
+	setIfNull($qs, urldecode($_SERVER["QUERY_STRING"]));
+
+	$params = explode(":", $qs);
+//2014/december/cookies 	1	best|amy	DSC_0764
+
+//	2014/december/cookies/DSC_0764
+	$result["path"] = $params[0];
+
+	if(count($params) == 2)
+		$result["file"] = $params[1];
+	else if(count($params) == 3)
+	{
+		if(is_numeric($params[1]) || $params[1]=="*")
+			$result["depth"] = $params[1];
+		else
+			$result["search"]   = $params[1];
+
+		$result["file"] = $params[2];
+	}
+	else if(count($params) >= 4)
+	{
+		$result["depth"] = $params[1];
+		$result["search"]   = $params[2];
+		$result["file"]  = $params[3];
+	}
+	return $result;
 }
 
 function postPath()

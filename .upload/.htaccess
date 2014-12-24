@@ -1,4 +1,4 @@
-AuthName "MinorArt upload"
+AuthName "Media Thingy upload"
 PerlSetVar AuthFile "/.mt/.upload/.pw/.htpasswd"
 AuthType Basic
 Require valid-user
