@@ -118,7 +118,7 @@ function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 
 	if(count($fileExists) == 1)
 	{
-		$file = reset($fileExists);
+		$name = reset($fileExists);
 		$_REQUEST["file"] = $name;
 		if($addFilters)
 			$_REQUEST["name"] = $name;

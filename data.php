@@ -18,16 +18,25 @@ function getFileData(&$getData, $path, $file)
 				$files = groupByName($relPath, $files, true, $details);
 			return $files;
 		case "tags":
-			return listTagFiles($relPath, $search["depth"], @$search["tag"], false);
+			return array_keys(listTagFiles($relPath, $search["depth"], @$search["tag"], true));
 		case "taglists":
-			$tags = searchTagFiles($relPath, $search["depth"], @$search["tag"]);
+			if(@$search["tag"])
+				$tags = searchTagFiles($relPath, $search["depth"], @$search["tag"]);
+			else
+				$tags = loadTagFiles($relPath, $search["depth"]);
 			return $tags;
+		case "tablefile":
+			return readCsvTableFile($filePath, 0, true);
+		case "datafile":
+			return readCsvFile($filePath, 0, ";", ".");
 		case "config":
 			return $config;
 		case "size":
 			return getImageSize($filePath);
 		case "info":
 			return getImageInfo($filePath);
+		case "metadataindex":
+			return getMetadataIndex($relPath, $search["type"], null, true);
 		case "metadata":
 		case "exif":
 			return getMediaFileInfo($filePath);

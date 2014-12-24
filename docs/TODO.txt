@@ -11,6 +11,17 @@ last: filename
 before: path
 
 
+rewrite image.php 
+using MediaFile objects
+
+rewrite album using AJAX:
+get grouped files by type
+get tag lists
+get config
+get metadata for image / video
+get youtube
+assemble using JS.
+
 blog articles:
 /path/article.txt
 add share link

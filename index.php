@@ -201,7 +201,7 @@ $(window).resize(function(event)
 		<img class="icon" src="icons/thumbnails.png" id="thumbnailsIcon" alt="thumbnails" onclick="UI.setMode()"/>
 		<img class="icon" src="icons/slideshow.png" id="slideshowIcon" alt="Slide show" title="Slide show (Space)" onclick="UI.slideshow.display()" />
 		<img class="icon" src="icons/play.png" id="playIcon" alt="Play videos" title="Play all videos (V)" onclick="UI.playAllVideos()"/>
-		<img class="icon" id="fbIconAlbum" src="icons/fb.png" alt="share" title="share on facebook" onclick="UI.fbShare()"/>
+		<img class="icon" id="fbIconAlbum" src="icons/fb.png" alt="share" title="share on facebook" onclick="UI.fbShare(album)"/>
 	</div>
 	<div id="description" class="centered text"></div>
 	<div id="dateRange" class="centered text"></div>
