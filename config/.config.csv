@@ -72,7 +72,7 @@ transition.clear;true
 transition.changeMode;queue
 
 ;file sorting
-SORT.OPTIONS;takenDate;name;type;Tags;random;duration;width;height;ratio;title;filename;description;subdir;searchString
+SORT.OPTIONS;takenDate;name;title;type;Tags;description;subdir;random;duration;width;height;ratio
 .DEFAULT;takenDate
 
 ;paginate / count per page

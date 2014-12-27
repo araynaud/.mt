@@ -10,11 +10,24 @@ last: filename
 2nd last: tags
 before: path
 
+----------
+in root: add links to mapping dirs
+----------
 
 Audio / video splitter
 2:34,4:45,10:23,42:23,55:42
 parse durations
-generate n files with filename.N.ext
+generate n files with filename_partN.ext
+
+angular UI.
+display bar below player
+[--------I---------I--------I-------]
+
+space: set new marker at current position
+click on marker: change marker position
+delete marker
+
+-----------
 
 rewrite image.php 
 using MediaFile objects

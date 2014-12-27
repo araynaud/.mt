@@ -258,7 +258,7 @@ String.parseKeywords = function(text, words, format, multiple)
 
 String.prototype.parseKeywords = function(words, format, multiple)
 {
-	return String.parseKeywords(this, words, format, multiple);
+	return String.parseKeywords(this.toString(), words, format, multiple);
 };
 
 String.makeTitle = function(str)

@@ -198,10 +198,11 @@ UI.displayArticle = function(mediaFile)
 	desc = desc.parseKeywords(album.getFileNamesByType("VIDEO"), UI.renderMediaFile);
 
 	var article = "<div class='title'>{0}</div><div class'margin'>{1}</div>".format(mediaFile.title, desc);
-	UI.articleContainer.html(article);
-
-	UI.setupFileEvents(UI.articleContainer);
-
+	if(UI.articleContainer)
+	{
+		UI.articleContainer.html(article);
+		UI.setupFileEvents(UI.articleContainer);
+	}
 	return article;
 };
 

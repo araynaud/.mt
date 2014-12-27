@@ -49,6 +49,8 @@ class Album extends BaseObject
 			$this->dirs=selectDirs($this->relPath, $allFiles);
 			$this->groupedFiles=groupByName($this->relPath, $allFiles, true);
 			$allFiles=groupByName($this->relPath, $allFiles);
+			if(!$this->path)
+				$this->addMappedDirs();
 //debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();
@@ -177,14 +179,15 @@ debug($type, count($typeFiles));
 			foreach ($typeFiles as $name => $file)
 			{
 	 			// if file in different dir: load new date index
-				$fileDir=combine($this->path, @$file["subdir"]);
-	 			if($file["subdir"] != $prevDir && $this->_dateIndexEnabled)
+				$fileDir = coalesce(@$file["filePath"], combine($this->path, @$file["subdir"]));
+
+	 			if($fileDir != $prevDir && $this->_dateIndexEnabled)
 					$dateIndex = loadDateIndex($fileDir);
 				$mf = new MediaFile($this, $file);
 				$this->checkDateRange($mf);
 				$this->setMediaFileTags($mf);
 				$this->groupedFiles[$type][$name] = $mf;
-				$prevDir = $file["subdir"];
+				$prevDir = $fileDir;
 			}
 			debug("createMediaFiles $type", array_keys($this->groupedFiles[$type]));
 		}
@@ -207,6 +210,26 @@ debug($type, count($typeFiles));
 		}
 	}
 
+	private function addMappedDirs()
+	{
+		$mappings = getConfig("_mapping");
+		if(!$mappings) return;
+
+		$rootMapping = getConfig("_mapping._root");
+debug("addMappedDirs", $mappings, true);
+debug("rootMapping", $rootMapping);
+		foreach ($mappings as $key => $path)
+		{
+			if($key==$rootMapping) continue;
+
+			$dir = array();
+			$dir["name"] = $key;
+			$dir["type"] = "DIR";
+			$dir["filePath"] = $path;
+			$this->groupedFiles["DIR"][$key] = $dir;
+debug("adding", $dir);
+		}
+	}
 
 //TODO store date range
 //propagate to parent dirs.

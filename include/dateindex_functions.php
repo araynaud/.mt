@@ -326,17 +326,30 @@ function updateIndex($relPath, $files, &$dateIndex=array())
 	foreach ($files as $name => $file)
 	{
 		//take oldest date for this file name
-		$key=$file["name"];
-		foreach($file["exts"] as $ext)
+		$key = $file["name"];
+		if(!@$file["exts"])
 		{
-			$filename = getFilename($file["name"], $ext, true);
-			$filedate = getFileDate("$relPath/$filename");
+			$filename = $file["name"];
+			$filePath = coalesce(@$file["filePath"], combine($relPath, $filename));
+			$filedate = getFileDate($filePath);
 			if(!isset($dateIndex[$key]) || empty($dateIndex[$key]) || $filedate < $dateIndex[$key])
 			{
-debug("updateIndex $key $name $filename", $filedate);
+				debug("updateIndex $key $name $filename", $filedate);
 				$dateIndex[$key]=$filedate;
 			}
 		}
+		else
+			foreach($file["exts"] as $ext)
+			{
+				$filename = getFilename($file["name"], $ext, true);
+				$filePath = coalesce(@$file["filePath"], combine($relPath, $filename));
+				$filedate = getFileDate($filePath);
+				if(!isset($dateIndex[$key]) || empty($dateIndex[$key]) || $filedate < $dateIndex[$key])
+				{
+					debug("updateIndex $key $name $filename", $filedate);
+					$dateIndex[$key]=$filedate;
+				}
+			}
 
 		if(!$dateIndex[$key])
 			unset($dateIndex[$key]);
