@@ -11,6 +11,11 @@ last: filename
 before: path
 
 
+Audio / video splitter
+2:34,4:45,10:23,42:23,55:42
+parse durations
+generate n files with filename.N.ext
+
 rewrite image.php 
 using MediaFile objects
 

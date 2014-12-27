@@ -119,15 +119,15 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		debug("thumbnails.sizes", $sizes);
 	
 		//use original file
-		if(!$sizes || $this->imageIsSmaller($maxSize))
+		if(!$sizes || $this->isImage() && $this->imageIsSmaller($maxSize))
 			return false;
 
-		$tnIndex = 0;
 		foreach($sizes as $dir => $size)
 		{
 			if($size <= $maxSize)
 			 return $dir;
 		}
+		return $dir;
 	}
 	
 	public function getName()
@@ -250,6 +250,7 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
     public function thumbnailExists($subdir="")
 	{
 		$tnPath = $this->getThumbnailFilePath($subdir);
+debug("MediaFile.thumbnailExists $subdir $tnPath", file_exists($tnPath));
 		return file_exists($tnPath);
 	}
 
@@ -257,6 +258,7 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
     public function getBestImage($maxSize)
 	{
 		$dir = $this->selectThumbnail($maxSize);
+debug("MediaFile.getBestImage $dir");
 		if($this->thumbnailExists($dir))
 			return $this->getThumbnailFilename($dir);
 		if($this->isImage()) 
