@@ -45,17 +45,19 @@ function getVarType($var)
 	return gettype($var);	
 }
 
-function indent($indentLevel,$char="\t")
+function indent($indentLevel, $newLine=true, $char="\t")
 {
 	if($indentLevel==false || $indentLevel<=0) 
 		return "";
 	if($indentLevel===true || !is_numeric($indentLevel)) 
 		$indentLevel=1;
 
-	return "\n" . str_repeat ($char, $indentLevel-1);
+	$tabs = str_repeat ($char, $indentLevel-1);
+	if($newLine) return "\n$tabs";
+	return $tabs;
 }
 
-function nextIndent($indentLevel,$char="\t")
+function nextIndent($indentLevel)
 {
 	return $indentLevel > 0 ? $indentLevel+1 : $indentLevel;
 }
@@ -143,9 +145,20 @@ function objToArray($obj, $private=false, $includeEmpty=true, $recursive=false)
 function jsVar($name, $newvar=false, $indent=1, $includeEmpty=false, $private=true)
 {
 	$result=indent($indent);
-	if($newvar) $result .= "var ";
-	$result .= "$name=" . jsVarValue($name, $indent, $includeEmpty, $private) . ";\n";
+	if($newvar)
+		$result .= "var ";
+
+	$value = jsVarValue($name, $indent, $includeEmpty, $private);
+	if(startsWith($value, "\n"))
+		$value = substr($value, 1);
+	$result .= "$name = $value;\n";
 	return $result;
+}
+
+
+function echojsVar($name)
+{
+	echo jsVar($name, true, true, true, false); 
 }
 
 //output variable value in javascript syntax
