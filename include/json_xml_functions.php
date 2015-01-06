@@ -152,7 +152,7 @@ function jsVar($name, $newvar=false, $indent=1, $includeEmpty=false, $private=tr
 //TODO: recursive, outputs objects { key: value, etc: other }
 function jsVarValue($name,$indent=1, $includeEmpty=false, $private=true)
 {
-	return jsValue($GLOBALS[$name],$indent, $includeEmpty, $private);
+	return jsValue(@$GLOBALS[$name], $indent, $includeEmpty, $private);
 }
 
 function jsValue($val, $indent=1, $includeEmpty=false, $private=true)

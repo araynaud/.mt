@@ -758,7 +758,7 @@ function findFirstImages($relPath, $maxCount=1)
 		unset($search["tnDir"]);
 		$pics=listFiles($relPath,$search);
 	}
-	debug("findFirstImage", $pics);
+//	debug("findFirstImage", $pics);
 	return $pics;
 }
 

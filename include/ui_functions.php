@@ -153,8 +153,7 @@ function displayBackground($path, $hidden=false)
 	$style = "";
 	if ($background) $style = "style=\"background-image: url($background)\"";
 ?>
-	<div id="divbg" class="bg <?php echo $class?>" <?php echo $style?>/>
-	</div>
+	<div id="divbg" class="bg <?php echo $class?>" <?php echo $style?>></div>
 <?php
 	return $background;
 }
