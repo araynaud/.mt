@@ -2,37 +2,24 @@
 //splits file into $name.$ext
 function splitFilename($file,&$name,&$ext)
 {	
-	$len = strrpos($file,'.');
-	//if no dot: ext empty, name=file
-	if($len==false)
-	{
-		$ext="";
-		$name=$file;
-		return $len;
-	}	
-	$ext = strrchr($file,'.');
-	$ext=substr($ext,1);
-	if(contains($ext,':'))
-		$ext=explode(':',$ext);
-	$name=substr($file,0,$len);
-	return true;
+	$arr = splitBeforeAfter($file, ".", true);
+	$name = $arr[0];
+	$ext = $arr[1];
+	return !empty($ext);
 }
 
 //split file and parent path
 function splitFilePath($file,&$parent,&$filename)
 {	
-	$len = strrpos($file,'/');
-	//if no slash: parent empty, filename=file
-	if($len===false)
-	{
-		$parent="";
-		$filename=$file;
-		return $len;
-	}	
-	$filename = strrchr($file,'/');
-	$filename=substr($filename,1);
-	$parent=substr($file,0,$len);
-	return true;
+	$arr = splitBeforeAfter($file, "/", true);
+	$parent = $arr[0];
+	$filename = $arr[1];
+	if(!$filename) 
+	{	
+		$filename = $parent;
+		$parent = "";
+	}
+	return !empty($parent);
 }
 
 function getFilenameExtension($file)
@@ -169,31 +156,31 @@ function readArray($filename, $valuesAsKeys=false)
 // in .mp/config, then data root, then subdirs to current path
 function LoadConfiguration($path=null, &$configData = array())
 {
-	$appRootDir=pathToAppRoot();
+	$appRootDir = pathToAppRoot();
 //1 default config in .mp/config
-	$configFilename=combine($appRootDir,"config",".config.csv");
-	$configData=readCsvFile($configFilename, 0, ";", ".");
+	$configFilename = combine($appRootDir, "config", ".config.csv");
+	$configData = readConfigFile($configFilename); 
 
 //2 site root config: should contain directory mappings.
-	$configFilename=combine(pathToDataRoot(),".config.csv");
-	readCsvFile($configFilename, 0, ";", ".", $configData);
+	$configFilename = combine(pathToDataRoot(), ".config.csv");
+	readConfigFile($configFilename, $configData);
 
 //3 default config by path depth
 	$depth=pathDepth($path);
-	$configFilename=combine($appRootDir,"config",".config.$depth.csv");
-	readCsvFile($configFilename, 0, ";", ".", $configData);
+	$configFilename = combine($appRootDir, "config", ".config.$depth.csv");
+	readConfigFile($configFilename, $configData);
 
-	$relPath=getDiskPath($path);
+	$relPath = getDiskPath($path);
 //4 supersede values with folder specific config file in $relPath 
 // find in parents and load from root to current dir
 //debug("LoadConfiguration", $relPath);	
 	if($relPath)
-		$configFilenames=findFilesInParent($relPath,".config.csv");
+		$configFilenames = findFilesInParent($relPath, ".config.csv");
 	if($configFilenames) 
 	{
 		sort($configFilenames);
 		foreach($configFilenames as $configFilename)
-			readCsvFile($configFilename, 0, ";", ".", $configData);
+			readConfigFile($configFilename, $configData);
 	}
 //debug("2: $configFilename", $configData);
 
@@ -202,8 +189,8 @@ function LoadConfiguration($path=null, &$configData = array())
 	if(is_array($devices))
 		foreach($devices as $dev)
 		{
-			$configFilename=combine($appRootDir,"config",".config.$dev.csv");
-			readCsvFile($configFilename, 0, ";", ".", $configData);
+			$configFilename = combine($appRootDir, "config", ".config.$dev.csv");
+			readConfigFile($configFilename, $configData);
 		}
 
 //finally add some keys to output
@@ -232,17 +219,62 @@ function getDirConfig($path, $key=null)
 
 //1 default config by path depth
 	$appRootDir=pathToAppRoot();
-	$configFilename=combine($appRootDir,"config",".config.$depth.csv");
-	$configData = readCsvFile($configFilename, 0, ";", ".");
+	$configFilename = combine($appRootDir,"config",".config.$depth.csv");
+	$configData = readConfigFile($configFilename);
 
 //2 supersede values with folder specific config file in $relPath 
-	$configFilename=combine($relPath,".config.csv");
-	readCsvFile($configFilename, 0, ";", ".", $configData);
+	$configFilename = combine($relPath, ".config.csv");
+	readConfigFile($configFilename, $configData);
 	if(!isset($key)) return $configData;
 
 //debug("getDirConfig", $configData);
 	
 	return isset($configData[$key]) ? $configData[$key] : "";
+}
+
+function readConfigFile($filename, &$csvRows = array())
+{
+	$lines = readArray($filename);
+	if(!$lines)
+		return $csvRows;
+
+	$prevKey=null;
+	foreach ($lines as $n => $line)
+	{
+		$rowData = parseConfigLine($line, $key);
+		//key: always a string
+		if($key==="")	continue;
+		//parse other columns
+		foreach($rowData as $i => $column)
+			$rowData[$i] = parseValue($rowData[$i]);
+
+		//value = single value or array?
+		if(is_array($rowData) && count($rowData)==1)
+			$rowData = $rowData[0];
+		
+		$key = getKeyArray($key, $prevKey);
+		setNestedArrayValue($csvRows,$key,$rowData);
+		$prevKey=$key;
+	}
+	return $csvRows;
+}
+
+function parseConfigLine($line, &$key, &$rowData=array())
+{
+	$rowData = explode(";", $line);
+	if(contains($rowData[0], "="))
+	{
+		$key = substringBefore($rowData[0], "=");
+		$rowData[0] = substringAfter($rowData[0], "=");
+	}
+	else
+	{
+		$key = $rowData[0]; 
+		unset($rowData[0]);
+		$rowData=array_values($rowData);
+	}
+	$key = trim($key);
+	return $rowData;
 }
 
 //$filename: csv file to open
@@ -270,21 +302,21 @@ function readCsvFile($filename, $keyColumn=false, $separator=",", $keySeparator=
 		}
 
 		//key: always a string
-		$key=trim($rowData[$keyColumn]);
+		$key = trim($rowData[$keyColumn]);
 		if($key==="")	continue;
 		//parse other columns
 		unset($rowData[$keyColumn]);
-		$rowData=array_values($rowData);
+		$rowData = array_values($rowData);
 		foreach($rowData as $i => $column)
-			$rowData[$i]=parseValue($rowData[$i]);
+			$rowData[$i] = parseValue($rowData[$i]);
 
 		//value = single value or array?
 		if(is_array($rowData) && count($rowData)==1)
 			$rowData = $rowData[0];
 		
 		if($keySeparator)
-			$key=getKeyArray($key,$prevKey,$keySeparator);
-		setNestedArrayValue($csvRows,$key,$rowData);
+			$key=getKeyArray($key, $prevKey, $keySeparator);
+		setNestedArrayValue($csvRows, $key, $rowData);
 		$prevKey=$key;
 	}
 	fclose($handle);
@@ -293,14 +325,17 @@ function readCsvFile($filename, $keyColumn=false, $separator=",", $keySeparator=
 
 function getKeyArray($key, $prevKey=null, $keySeparator=".")
 {
-	if(!is_array($key))	$key=explode($keySeparator, $key);
-	if(!$prevKey) return $key;
-	if(!is_array($prevKey))	$prevKey=explode($keySeparator, $prevKey);
+	if(!is_array($key))	
+		$key = explode($keySeparator, $key);
+	if(!$prevKey)
+		return $key;
+	if(!is_array($prevKey))
+		$prevKey = explode($keySeparator, $prevKey);
 	//if empty element in the key: take it from previous key
 	$c=count($key);
-	for($i=0;$i<$c;$i++)
+	for($i = 0; $i < $c; $i++)
 		if($key[$i]==="" && isset($prevKey[$i]))
-			$key[$i]=$prevKey[$i];
+			$key[$i] = $prevKey[$i];
 	return $key;
 }
 

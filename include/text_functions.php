@@ -53,24 +53,35 @@ function toggleDot($str)
 		return "." . $str;
 }
 
-function substringBefore($string,$char,$stringOrEmpty=true,$include=false)
+
+function splitBeforeAfter($string, $char, $last=false)
 {	
 	if(empty($char)) 
-		return $string;
-	$pos=strpos($string,$char);
-	if ($pos===false ) 
-		return $stringOrEmpty ? $string : "";		
-	if($include)
-		$pos+=strlen($char);
+		$pos = false;
+	else
+		$pos = $last ? strrpos($string, $char) : strpos($string, $char);
 
-	return substr($string, 0, $pos);
+	if ($pos===false)
+	{
+		$before = $string;
+		$after = "";
+	}
+	else
+	{
+		$before = substr($string, 0, $pos);
+		$pos += strlen($char);
+		$after = substr($string, $pos);
+	}
+
+	return array($before, $after);
 }
 
-function substringBeforeLast($string,$char,$stringOrEmpty=true,$include=false)
+
+function substringBefore($string, $char, $stringOrEmpty=true, $include=false, $last=false)
 {	
 	if(empty($char)) 
 		return $string;
-	$pos=strrpos($string,$char);
+	$pos = $last ? strrpos($string, $char) : strpos($string, $char);
 	if ($pos===false) 
 		return $stringOrEmpty ? $string : "";		
 	if($include)
@@ -79,31 +90,29 @@ function substringBeforeLast($string,$char,$stringOrEmpty=true,$include=false)
 	return substr($string, 0, $pos);
 }
 
-function substringAfter($string,$char,$stringOrEmpty=false,$include=false)
+function substringBeforeLast($string, $char, $stringOrEmpty=true, $include=false)
+{	
+	return substringBefore($string, $char, $stringOrEmpty, $include, true);
+}
+
+function substringAfter($string, $char, $stringOrEmpty=false, $include=false, $last=false)
 {	
 	if(empty($char)) 
 		return $string;
-	$pos=strpos($string,$char);
-	if ($pos===false ) 
+	$pos = $last ? strrpos($string, $char) : strpos($string, $char);
+	if ($pos===false) 
 		return $stringOrEmpty ? $string : "";		
 	if(!$include)
 		$pos+=strlen($char);
-	return substr($string,$pos);
+	return substr($string, $pos);
 }
 
-function substringAfterLast($string,$char,$stringOrEmpty=false,$include=false)
+function substringAfterLast($string, $char, $stringOrEmpty=false, $include=false)
 {	
-	if(empty($char)) 
-		return $string;
-	$pos=strrpos($string,$char);
-	if ($pos===false ) 
-		return $stringOrEmpty ? $string : "";		
-	if(!$include)
-		$pos+=strlen($char);
-	return substr($string,$pos);
+	return substringAfter($string, $char, $stringOrEmpty, $include, true);
 }
 
-function trimChar($str,$ch,$left=true,$right=true)
+function trimChar($str, $ch, $left=true, $right=true)
 {	
 	if(empty($str) || empty($ch)) 
 		return $str;

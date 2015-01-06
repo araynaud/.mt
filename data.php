@@ -28,7 +28,7 @@ function getFileData(&$getData, $path, $file)
 		case "tablefile":
 			return readCsvTableFile($filePath, 0, true);
 		case "datafile":
-			return readCsvFile($filePath, 0, ";", ".");
+			return readConfigFile($filePath);
 		case "config":
 			return $config;
 		case "size":

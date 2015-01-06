@@ -12,10 +12,20 @@ header("Content-Type: text/plain");
 session_start();
 
 debug();
+
+debug("substringBefore", substringBefore("somebody new to shine", " "));
+debug("substringAfter",  substringAfter("somebody new to shine", " "));
+debug("substringBeforeLast", substringBeforeLast("somebody new to shine", " "));
+debug("substringAfterLast",  substringAfterLast("somebody new to shine", " "));
+debug("splitBeforeAfter",  splitBeforeAfter("somebody new to shine", " "));
+debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", true));
+
+$pdjConfig2 = readConfigFile("../ng/pdj/pdj.config");
+echoJsVar("pdjConfig2");
+
 $meta = metaTags($path);
 echo jsValue($meta, true, true);
 debug("arrayGet", arrayGet($config,"TYPES.VIDEO"));
-
 debug();
 debug("publish");
 $publish = getConfig("_publish");
