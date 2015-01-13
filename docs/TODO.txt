@@ -1,3 +1,49 @@
+image_collage.php?
+size=
+border =
+margin = 
+
+tag = (Select images by tag)
+sort = date, ratio, height, random
+rows=3
+columns=2
+
+rows=img1,img2,img3;img6;img4,img5
+columns=img1,img2,img3;img6;img4,img5
+
+ratio = 
+default: keep each image ratio compute rows/columns automatically
+ratio = 1
+force ratio; crop each image to fit in box (1=square)
+ratio = 1;1.78;.75 force ratio for images in each row/column
+
+use .ss images
+
+rows: 
+img1  img2  img3
+----- img6 -----
+-img4--  --img5-
+
+columns:
+img1    |   img4
+img2  img6   |
+img3    |   img5
+
+
+1 - calculate row heights and column widths based on image ratios and borders/margins
+2 - create blank image with right size to contain all
+3 - load each image, copy, dispose after copying
+4 - add text
+5 - save collage
+
+------------
+
+ng querty string
+$location.search()
+https://code.angularjs.org/1.2.23/docs/guide/$location#-location-service-configuration
+
+------------
+
 parse query string:
 OK path=2014/cookies&tag=best&file=DSC_0764
 OK 2014/december/DSC_0764
@@ -11,7 +57,8 @@ last: filename
 before: path
 
 ----------
-in root: add links to mapping dirs
+OK in root: add links to other mapping dirs
+get thumbnails and metadata
 ----------
 
 Audio / video splitter

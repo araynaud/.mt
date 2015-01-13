@@ -161,10 +161,21 @@ function setContentType($ct="text", $type="")
 		header("Content-Type: $contentType");
 }
 
+function setHeader($header, $value="")
+{
+	if(isDebugMode()) 
+		debug($name, $value);
+	else if($value)
+		header("$header: $value");
+	else
+		header($header);
+}
+
+
 function sendFileToResponse($relPath,$file,$contentType="",$attachment=true)
 {
 	$filePath=combine($relPath,$file);
-	if(filesize($filePath)===0) return;
+	if(!file_exists($filePath) || filesize($filePath)===0) return;
 	
 	$src_info = getimagesize($filePath);
 	$img_type=$src_info["mime"];
@@ -172,11 +183,11 @@ function sendFileToResponse($relPath,$file,$contentType="",$attachment=true)
 	if($contentType)
 		 setContentType($contentType);
 	//return;
-	header('Content-Length: ' . filesize($filePath));
+	setHeader("Content-Length", filesize($filePath));
 	if($attachment)
 	{
 		$file=cleanupFilename($file);
-		header("Content-Disposition: attachment; filename=$file");
+		setHeader("Content-Disposition", "attachment; filename=$file");
 	}
 	$fp = fopen($filePath, 'rb'); 
 	//stream the image directly from the generated file
@@ -279,6 +290,8 @@ debug("POST data",$postData);
 // send headers to prevent caching
 function preventCaching()
 {
+	if(isDebugMode()) return;
+	
 	$date = microtime(true) - 24*60*60;
     header('Last-Modified: '.gmdate('D, d M Y H:i:s', $date).' GMT', true, 200);
     header('Content-transfer-encoding: binary');

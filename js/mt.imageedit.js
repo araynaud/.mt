@@ -1,5 +1,6 @@
 var selectZone;
 var img;
+var dstImg;
 
 function imageClick(e)
 {
@@ -23,7 +24,7 @@ function changeSelectMode(mode)
 
 function getImageCoord(e)
 {
-	if(!img)		img=$("img#image");
+//	if(!img)		img=$("img#image");
 	var off=img.offset();
 	var mx = e.pageX - off.left - img.borderWidth()/2;
 	var my = e.pageY - off.top - img.borderHeight()/2;
@@ -66,13 +67,21 @@ function resetSelection()
 function displaySelectZone()
 {
 	if(!selectZone)		selectZone=$("#selectZone");
-	if(!img)		img=$("img#image");
+//	if(!img)		img=$("img#image");
 
 	selectZone.show();
-	selectZone.offset({left: img.offset().left + Math.min(imageParams.x2,imageParams.x1), top: img.offset().top + Math.min(imageParams.y2,imageParams.y1) })
-	selectZone.width(Math.abs(imageParams.x2-imageParams.x1));
-	selectZone.height(Math.abs(imageParams.y2-imageParams.y1));
-	selectZone.html( (selectZone.offset().left -img.offset().left) +"," + (selectZone.offset().top - img.offset().top) + " " + selectZone.width()  + "x" + selectZone.height());
+	var left = img.offset().left + Math.min(imageParams.x2,imageParams.x1);
+	var top = img.offset().top + Math.min(imageParams.y2,imageParams.y1);
+	var width = Math.abs(imageParams.x2 - imageParams.x1);
+	var height = Math.abs(imageParams.y2 - imageParams.y1);
+	selectZone.offset({left: left, top: top }).width(width).height(height);
+
+	left = selectZone.offset().left - img.offset().left;
+	top = selectZone.offset().top - img.offset().top;
+	width = selectZone.width()
+	height = selectZone.height();
+	var ratio = width ? toFraction(width, height) : "";
+	selectZone.html("{0},{1} {2}x{3} ({4})".format(left, top, width, height, ratio));
 }
 
 function displayOption(paramName)
@@ -87,8 +96,8 @@ function refreshImage()
 {
 	var qs = "?" + Object.toQueryString(imageParams);
 	var imageUrl = imageScript + qs;
-	if(!img)		img=$("img#image");
-	img.attr("src", imageUrl);
+//	if(!img)		img=$("img#image");
+	dstImg.attr("src", imageUrl);
 	$("#imageLink").attr("href", imageUrl);
 	$("#editLink").attr("href", qs);
 	$("#editLink").html(qs);

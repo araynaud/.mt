@@ -25,6 +25,22 @@ class BaseObject
 	}
 
 //merge properties from array
+	public function getMultiple($keys)
+	{
+		if(!$keys) return false;
+
+		$data=array();
+		if(is_string($keys))
+			$keys = explode(",", $keys);
+
+		foreach ($keys as $key)
+			if(property_exists($this, $key))
+				$data[$key] = $this->$key;
+
+		return $data;
+	}
+
+
 	public function setMultiple($data)
 	{
 		if(!$data) return false;

@@ -32,6 +32,7 @@ class RgbColor
 //First two are alpha, then triplet
 define("TRANSPARENT", 0X0040FFFF); 
 define("DEFAULT_TOLERANCE", 10); 
+define("BLACK", 0x00000000); 
 define("PINK", 0x00E020B0); 
 define("RED", 0x00FF0000); 
 define("GREEN", 0x0000FF00); 
@@ -39,7 +40,7 @@ define("BLUE", 0x000000FF);
 define("CYAN", (BLUE + GREEN) / 2); 
 define("WHITE", 0x00FFFFFF); 
 define("YELLOW", 0x00FFFF00); 
-define("GREY", 0x003E3E3E); 
+define("GREY", 0x00808080); 
 define("TRANSPARENT_TYPES", "gif,png"); 
 $TRANSPARENT_TYPES=explode(",", TRANSPARENT_TYPES);
 //image functions using GD
@@ -274,6 +275,13 @@ function saveTempImage($img)
 }
 
 //create image with alpha channel or 1 transparent color
+function createImage($width, $height, $bgColor=0)
+{
+	$img = imagecreatetruecolor($width, $height);
+	imagefill($img, 0, 0, $bgColor);
+	return $img;
+}
+
 function imageCreateTransparent($width, $height, $transparentColor=0)
 {
 	$img = imagecreatetruecolor($width, $height);
@@ -322,6 +330,8 @@ function resizeImage($srcImg,$imageInfo,$dstW,$dstH,$destroy=true)
 		return $srcImg;
 
 	$dstImg=imageCreateTransparent($dstW, $dstH, @$imageInfo["transparent"]);
+//bool imagecopyresampled(resource $dst_image, resource $src_image, int $dst_x, int $dst_y, int $src_x, int $src_y, int $dst_w, int $dst_h , int $src_w, int $src_h)
+
 	if(@$imageInfo["transparent"])
 		imagecopyresized($dstImg,$srcImg,0,0,0,0,$dstW,$dstH,$srcW,$srcH); 
 	else
@@ -329,6 +339,72 @@ function resizeImage($srcImg,$imageInfo,$dstW,$dstH,$destroy=true)
 //	imagestring($dstImg, 5, 90, 5, "$srcW x $srcH - $dstW x $dstH", PINK);
 	if($destroy)	imagedestroy($srcImg); 
 	return $dstImg;
+}
+
+function copyResizedImage($dstImg, $srcImg, $x, $y, $dstW, $dstH, $destroy=true)
+{
+	debug("copyResizedImage", "$x,$y $dstW x $dstH");
+
+	$srcW=imageSX($srcImg);
+	$srcH=imageSY($srcImg);
+
+//bool imagecopyresampled(resource $dst_image, resource $src_image, 
+//	int $dst_x, int $dst_y, int $src_x, int $src_y, 
+//	int $dst_w, int $dst_h , int $src_w, int $src_h)
+
+	imagecopyresampled($dstImg, $srcImg, $x, $y, 0, 0, $dstW, $dstH, $srcW, $srcH); 
+//	imagestring($dstImg, 5, $x+5, $y +17, "$dstW x $dstH", PINK);
+	if($destroy)	imagedestroy($srcImg); 
+	return $dstImg;
+}
+
+function imageWriteTextCentered($img, $text, $textSize=50, $outline=false)
+{
+	$font = "verdana";
+	$box = imagettfbbox($textSize, 0, $font, $text);
+	$textWidth = $box[2] - $box[0];
+	$textHeight = $box[3] - $box[5];
+	debug("imagettfbbox", "$textWidth * $textHeight");	
+
+	$imageWidth = imageSX($img);
+	//if text too wide, reduce text size to fit in image.
+	if($textWidth > $imageWidth)
+	{
+		//$text = str_replace(" ", "\n ", $text);
+		$textSize *= $imageWidth / $textWidth *.9; 
+		$box = imagettfbbox($textSize, 0, $font, $text);
+		$textWidth = $box[2] - $box[0];
+		$textHeight = $box[3] - $box[5];
+	}
+
+	$x = ($imageWidth - $textWidth) / 2;
+	$y = (imageSY($img) - $textHeight) / 2;
+
+	return imageWriteText($img, $text, $textSize, $x, $y, $outline);
+}
+
+function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
+{
+	$font = "verdana";
+	debug("imageWriteText", "$text, size:$textSize, $x,$y");
+
+//array imagettftext ( resource image, int size, 
+//	int angle, int x, int y, int color, 
+//	string fontfile, string text)
+	if($outline)
+	{
+		imagettftext($img, $textSize, 0, $x - $outline, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x + $outline, $y + $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x + $outline, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x - $outline, $y + $outline + $textSize, BLACK, $font, $text);
+
+		imagettftext($img, $textSize, 0, $x, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x + $outline, $y + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x - $outline, $y + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, 0, $x, $y + $outline + $textSize, BLACK, $font, $text);
+
+	}
+	return imagettftext($img, $textSize, 0, $x, $y + $textSize, WHITE, $font, $text);
 }
 
 function convertImageToTrueColor($srcImg, $imageInfo, $destroy=true)
@@ -350,14 +426,12 @@ function cropImage($srcImg, $imageInfo, &$x1, &$y1, &$x2, &$y2, $destroy=true)
 	$maxX = $imageInfo["width"] - 1;
 	$maxY = $imageInfo["height"] - 1; 
 
-	if($x1==$x2)
-	{
-		$x1 = 0; $x2 = $maxX;
-	}
-	if($y1==$y2)
-	{
-		$y1 = 0; $y2 = $maxY;
-	}
+	if(!$x2)	$x2 = $maxX;
+	if(!$y2)	$y2 = $maxY;
+	if($x1<0)	$x1 += $maxX;
+	if($y1<0)	$y1 += $maxY;
+	if($x2<0)	$x2 += $maxX;
+	if($y2<0)	$y2 += $maxY;
 
 	sortMinMax($x1,$x2);
 	sortMinMax($y1,$y2);
@@ -365,12 +439,12 @@ function cropImage($srcImg, $imageInfo, &$x1, &$y1, &$x2, &$y2, $destroy=true)
 	setBetween($x2,0,$maxX);
 	setBetween($y1,0,$maxY);
 	setBetween($y2,0,$maxY);
-debug("cropImage", "$x1, $y1, $x2, $y2");
+debug("cropImage", "$x1,$y1 to $x2,$y2");
 debug("imageInfo", $imageInfo);
-	$width=$x2-$x1;
-	$height=$y2-$y1;
-	$dstImg=imageCreateTransparent($width,$height, @$imageInfo["transparent"]);
-	imagecopy($dstImg,$srcImg,0,0,$x1,$y1,$width,$height); 
+	$width =  $x2 - $x1 + 1;
+	$height = $y2 - $y1 + 1;
+	$dstImg = imageCreateTransparent($width,$height, @$imageInfo["transparent"]);
+	imagecopy($dstImg, $srcImg, 0, 0, $x1, $y1,$width, $height); 
 
 	if($destroy)	imagedestroy($srcImg); 
 	return $dstImg;

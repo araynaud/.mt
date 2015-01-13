@@ -985,17 +985,42 @@ function plural(nb, word, pluralWord)
 	return nb + " " + word;
 }
 
-Math.roundMultiple = function(value,multiple)
+Math.roundMultiple = function(value, multiple)
 {
 	return multiple * Math.ceil(value/multiple);
 }
 
-Math.roundDigits = function(value,digits)
+Math.roundDigits = function(value, digits)
 {
 	var power=1;
 	if(digits) power = Math.pow(10,digits);
 	return Math.round(value*power)/power; 
 };
+
+function toFraction(num, den, max)
+{
+	den=valueOrDefault(den, 1);
+	max=valueOrDefault(max, 100);
+	var rest = num % den;
+	var div = num / den;
+	var frac = div % 1;
+	if(!rest) return div;
+
+	var fraction = div;
+	var incr=1;
+	for(i=2; i <= max; i+=incr)
+	{
+		rest = num * i % den;
+		div = num * i / den;
+		frac = div % 1;
+		frac = Math.abs(frac - 1);
+		fraction = (num * i / den).toFixed(0); 
+		if(!rest || frac < .01)
+			return fraction +"/"+ i;
+	}
+	return fraction + "%";
+}
+
 
 Number.prototype.leftZeroPad = function(numZeros) 
 {

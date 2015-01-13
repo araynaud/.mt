@@ -72,7 +72,6 @@ debug("youtube", $this->youtube,"print_r");
 			if($this->search["config"])			
 				$this->config = $config;
 		}
-		//$this->jquery = allowJqueryFX();
 		$this->private = isPrivate($path);
 		$this->buildTime=getTimer();
     }

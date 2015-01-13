@@ -3,11 +3,14 @@ require_once("../include/config.php");
 session_start(); 
 
 $path=getPath();
-$relPath=getDiskPath($path);
-$file=getParam("file");
-$filePath=combine($relPath, $file);
-$imageScript= "image_gd2.php"; //"?" . $_SERVER["QUERY_STRING"];
+$file = getParam("file");
+$relPath = getDiskPath($path);
+$urlPath = diskPathToUrl($relPath);
+$filePath = combine($relPath, $file);
+$fileUrl = combine($urlPath, $file);
+$imageScript= "../image_auto.php"; //"?" . $_SERVER["QUERY_STRING"];
 $imageParams=$_GET;
+//$imageParams["url"] = "image_gd2.php";
 deleteTempImage();
 ?>
 <!DOCTYPE html>
@@ -36,9 +39,9 @@ deleteTempImage();
 		if(!img.length) img = dstImg;
 
 		UI.makeBackgroundGradients();		
-		$("img#image,div#selectZone").click(imageClick);
-		$("img#image,div#selectZone").mousemove(imageSelect);
-		$("input:text").change(getFieldValue);
+		$("img#originalImage, div#selectZone").click(imageClick);
+		$("img#originalImage, div#selectZone").mousemove(imageSelect);
+		$("input:text, select").change(getFieldValue);
 		$("input:checkbox").click(getFieldValue);
 		$("input:button").click(selectTool);
 		$("input:text").change();
@@ -47,34 +50,36 @@ deleteTempImage();
 	</script>
 </head>
 <body>
-<?php displayBackground($relPath);?>
+	<?php displayBackground($relPath);?>
 	<div id="toolbar">
 		<a href="./?path=<?php echo $path?>"><img src="../icons/home.gif"/></a>
-		<a id="imageLink" href="../image.php?<?php echo  $_SERVER["QUERY_STRING"]?>">view</a>
+		<a id="imageLink" href="#">view</a>
 		&nbsp;
 		<input type="button" id="bt_select" value="Select"/>
-		<input type="button" id="bt_crop" value="Crop" class="immediate"/>
+		<input type="button" id="bt_crop" value="Transform" class="immediate"/>
 		&nbsp;
 		Size: <input type="text" id="tb_size" class="numericField"/>
-		<input type="button" id="bt_resize" value="Resize" class="immediate"/>
 		&nbsp;
-		Angle: <input type="text" id="tb_rotate" class="numericField"/>
-		<input type="button" id="bt_rotate" value="Rotate" class="immediate"/>
+		Angle: <input type="text" id="tb_angle" class="numericField"/>
 		&nbsp;
-		<input type="button" id="bt_clear" value="Clear"/>
-		<input type="button" id="bt_replace" value="Replace"/>
-		Tolerance: <input type="text" id="tb_tolerance" class="numericField" value="<?php echo DEFAULT_TOLERANCE?>"/>
+		Filter: <select id="dd_filter">
+			<option></option>
+			<option>grayscale</option>
+			<option>sepia</option>
+			<option>negative</option>
+		</select> 
 		&nbsp;
 		Debug info <input type="checkbox" id="cb_info"/>
-		<input type="button" id="bt_undo" value="Undo" class="immediate"/>
-
-		Save as: <input type="text" id="tb_save" value="<?php echo getFilename($file,"png");?>"/>
+		Save as: <input type="text" id="tb_save" value="<?php echo "edit-$file";?>"/>
 		<input type="button" id="bt_save" value="Save" class="immediate"/>
 	</div>
 	<span id="status"><?php echo jsValue($_GET);?></span>
 	<br/>
-	<a id="editLink" href="?<?php echo  $_SERVER["QUERY_STRING"]?>">?<?php echo  $_SERVER["QUERY_STRING"]?></a>
+	<a id="editLink" href="?<?php echo  $_SERVER["QUERY_STRING"]?>">?<?php echo $_SERVER["QUERY_STRING"]?></a>
 	<br/>
+	<div class="centered inlineBlock photoBorder shadow margin">
+		<img id="originalImage" src="<?php echo "/$fileUrl" ?>" />
+	</div>
 	<div class="centered inlineBlock photoBorder shadow margin">
 		<img id="image" />
 	</div>

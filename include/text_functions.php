@@ -334,12 +334,23 @@ function parseValue($var, $separator="")
 //convert to defined constant value if it exists
 function parseConstant($name)
 {
-	$constants=get_defined_constants();
-	if(isset($constants[$name]))
-		return $constants[$name];
+	if(defined($name))
+		return constant($name);
 	return $name;
 }
 
+function parseColor($color)
+{
+	if(defined($color))
+		return constant($color);
+	if(defined(strtoupper($color)))
+		return constant(strtoupper($color));
+
+	$color = hexdec($color);
+	debug("parseColor int color", $color); 
+	debug("parseColor hex color", dechex($color)); 
+	return $color;
+}
 
 // ARRAY functions
 

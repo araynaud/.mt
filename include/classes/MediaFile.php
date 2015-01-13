@@ -24,6 +24,9 @@ class MediaFile extends BaseObject
     protected $duration;
     protected $animated;
     protected $alpha;
+
+    protected $gdimage;
+
 	private $tnsizes=array(); //array of thumbnail file sizes
 	private $vsizes=array(); //array of thumbnail file sizes
 	private $tags=array();
@@ -135,6 +138,20 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return $this->name;
 	}
 
+	public function getRatio()
+	{
+		if(!$this->height || !$this->width) 
+			$this->ratio = 0;
+		$this->ratio = $this->width / $this->height;
+		return $this->ratio;
+	}
+
+	public function getImageInfo()
+	{
+		$this->getRatio();
+		return $this->getMultiple("width,height,ratio,format");
+	}
+
 	public function getTitle()
 	{
 		if(!$this->title)
@@ -146,8 +163,7 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 	{
 		return $this->type;
 	}
-	
-	
+		
 	public function getSubdir()
 	{
 		return $this->subdir;
@@ -258,15 +274,29 @@ debug("MediaFile.thumbnailExists $subdir $tnPath", file_exists($tnPath));
     public function getBestImage($maxSize)
 	{
 		$dir = $this->selectThumbnail($maxSize);
-debug("MediaFile.getBestImage $dir");
+debug("MediaFile.getBestImage $maxSize", $dir);
 		if($this->thumbnailExists($dir))
-			return $this->getThumbnailFilename($dir);
+			return $this->getThumbnailFilePath($dir);
 		if($this->isImage()) 
-			return $this->getFilename();
+			return $this->getFilePath();
 		return false;
 	}
 
 
+    public function loadImage($maxSize)
+	{
+		$imageFileName = $this->getBestImage($maxSize);
+debug("loadImage",$imageFileName);		
+		$this->gdimage = loadImage($imageFileName);
+		return $this->gdimage;
+	}
+
+    public function unloadImage()
+	{
+		if($this->gdimage)
+			imagedestroy($this->gdimage);
+		$this->gdimage = null;
+	}
 
     public function createThumbnail($tndir)
 	{
