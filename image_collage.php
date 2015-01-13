@@ -179,14 +179,21 @@ $tag = getParam("tag");
 $album = new Album($path, true);
 if($files)
 	$mediaFiles = getImages($album, $files);
-else if($tag)
+else
 {
-	$tagFiles = $album->getFilesByTag($tag);
+	if($tag)
+		$tagFiles = $album->getFilesByTag($tag);
+	else
+		$tagFiles = ($album->getMediaFiles("IMAGE|VIDEO"));
 	if(!$nb)
 		$nb = round(sqrt(count($tagFiles)));
+
+	shuffle($tagFiles);
 debug("tagFiles " . count($tagFiles), $nb);
+debug("tagFiles", $tagFiles);
 	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
 }
+
 
 $bgcolor = getParam("bg", "WHITE");
 debugVar($bgcolor);

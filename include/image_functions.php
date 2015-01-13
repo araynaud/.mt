@@ -386,6 +386,9 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false)
 function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 {
 	$font = "verdana";
+	$angle = 0;
+	$color= WHITE;
+
 	debug("imageWriteText", "$text, size:$textSize, $x,$y");
 
 //array imagettftext ( resource image, int size, 
@@ -393,18 +396,18 @@ function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 //	string fontfile, string text)
 	if($outline)
 	{
-		imagettftext($img, $textSize, 0, $x - $outline, $y - $outline + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x + $outline, $y + $outline + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x + $outline, $y - $outline + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x - $outline, $y + $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x - $outline, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x + $outline, $y + $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x + $outline, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x - $outline, $y + $outline + $textSize, BLACK, $font, $text);
 
-		imagettftext($img, $textSize, 0, $x, $y - $outline + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x + $outline, $y + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x - $outline, $y + $textSize, BLACK, $font, $text);
-		imagettftext($img, $textSize, 0, $x, $y + $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x, $y - $outline + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x + $outline, $y + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x - $outline, $y + $textSize, BLACK, $font, $text);
+		imagettftext($img, $textSize, $angle, $x, $y + $outline + $textSize, BLACK, $font, $text);
 
 	}
-	return imagettftext($img, $textSize, 0, $x, $y + $textSize, WHITE, $font, $text);
+	return imagettftext($img, $textSize, $angle, $x, $y + $textSize, $color, $font, $text);
 }
 
 function convertImageToTrueColor($srcImg, $imageInfo, $destroy=true)
