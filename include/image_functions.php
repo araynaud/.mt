@@ -358,15 +358,16 @@ function copyResizedImage($dstImg, $srcImg, $x, $y, $dstW, $dstH, $destroy=true)
 	return $dstImg;
 }
 
-function imageWriteTextCentered($img, $text, $textSize=50, $outline=false)
+function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos="center")
 {
-	$font = "verdana";
+	$font = "fonts/impact";
 	$box = imagettfbbox($textSize, 0, $font, $text);
 	$textWidth = $box[2] - $box[0];
 	$textHeight = $box[3] - $box[5];
 	debug("imagettfbbox", "$textWidth * $textHeight");	
 
 	$imageWidth = imageSX($img);
+	$imageHeight = imageSY($img);
 	//if text too wide, reduce text size to fit in image.
 	if($textWidth > $imageWidth)
 	{
@@ -378,14 +379,18 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false)
 	}
 
 	$x = ($imageWidth - $textWidth) / 2;
-	$y = (imageSY($img) - $textHeight) / 2;
+	$y=10;
+	if($pos=="center")
+		$y = ($imageHeight - $textHeight) / 2;
+	else if($pos=="bottom")
+		$y = $imageHeight - $textHeight - 10;
 
 	return imageWriteText($img, $text, $textSize, $x, $y, $outline);
 }
 
 function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 {
-	$font = "verdana";
+	$font = "fonts/impact";
 	$angle = 0;
 	$color= WHITE;
 
@@ -400,7 +405,9 @@ function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 		imagettftext($img, $textSize, $angle, $x + $outline, $y + $outline + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x + $outline, $y - $outline + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x - $outline, $y + $outline + $textSize, BLACK, $font, $text);
-
+	}
+	if($outline)
+	{
 		imagettftext($img, $textSize, $angle, $x, $y - $outline + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x + $outline, $y + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x - $outline, $y + $textSize, BLACK, $font, $text);

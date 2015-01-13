@@ -318,7 +318,8 @@ MediaFile.prototype.getFileDir = function(subdir)
 MediaFile.getScriptUrl = function(mediaFile, scriptName, params)
 {
 	scriptName = String.combine(Album.serviceUrl,scriptName);
-	var url = "{0}?path={1}&file={2}".format(scriptName, String.combine(album.path, mediaFile.subdir), String.urlEncode(mediaFile.filename));
+	var url = mediaFile ? "{0}?path={1}&file={2}".format(scriptName, String.combine(album.path, mediaFile.subdir), String.urlEncode(mediaFile.filename))
+		: "{0}?path={1}".format(scriptName, album.path);
 	if(!params) return url;
 	return url + "&" + Object.toQueryString(params);
 };

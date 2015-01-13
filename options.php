@@ -10,6 +10,9 @@
 		</div>
 	</div>
 	<div class="fixedRight right">
+		<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
+		<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
+		<br/>
 		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
 		<br/>
 		<img class="iconTrans" id="rotatorIcon" src="icons/media-play64.png" alt="play" title="rotate pages (P)" onclick="UI.rotatePages()"/>

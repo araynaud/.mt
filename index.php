@@ -213,7 +213,13 @@ $(window).resize(function(event)
 		<span id="indexStatus" class="status text translucent"></span>
 	</div>
 	<div id="pageCounts" class="floatR small bold"></div>
-	<div id="tagList" class="centered"></div>
+		<div class="centered noprint controls">
+			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
+			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
+			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
+			<div id="tagList" class="inlineBlock"></div>
+			<img class="upload icon" src="icons/collage.png" title="Make collage" id="collageIcon" alt="collage" onclick="UI.collage()"/>
+		</div>
 </div>
 
 <?php include("video.html");?>
@@ -225,13 +231,6 @@ $(window).resize(function(event)
 		<spanid="pagesTop" class="pager centered"></span>
 	</div>
 	<div class="floatR">
-		<div class="right noprint controls">
-			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
-			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
-			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
-			<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
-			<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
-		</div>
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="setContentWidth"></div>
 	</div>
 

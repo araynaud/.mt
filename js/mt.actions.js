@@ -197,6 +197,20 @@ UI.fileAction = function(params)
 	return true;
 };
 
+UI.collage = function()
+{
+
+// http://localhost/mt/image_collage.php
+//?path=2015/January &tag=cat&maxfiles=7
+// &columns=3&&margin=10& 
+// &top=EUREKAbottom=you%27re%20a%20cat!
+// &save=cover.jpg
+	var tags = UI.getSelectedTags();
+	params = { margin: album.border? 10 : 0, tag: tags[0] };
+	var link = MediaFile.getScriptUrl(null, "image_collage.php", params);
+	return UI.goToUrl(link, "collage");
+}
+
 UI.goToPage = function(scriptName, params, windowName)
 {
 	var mediaFile = (UI.mode==="slideshow") ? UI.slideshow.currentFile : UI.currentFile;

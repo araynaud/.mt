@@ -488,6 +488,17 @@ UI.search = function()
 	return UI.displaySelectedFiles();
 };
 
+UI.getSelectedTags = function()
+{
+	var tags=[];
+	$("input.tagOption").each(function()
+	{
+		if($(this).is(":checked"))
+			tags.push(this.id.substringAfter("cb_tag_")); 
+	});
+	return tags;
+};
+
 //index display methods
 UI.getSearchOptions = function()
 {
@@ -505,12 +516,7 @@ UI.getSearchOptions = function()
 
 //add tag checkboxes
 //if several: AND / OR : All/any ?
-	$("input.tagOption").each(function()
-	{
-		if(!$(this).is(":checked")) return;
-		if(!obj["tags"]) obj.tags=[];
-		obj.tags.push(this.id.substringAfter("cb_tag_")); 
-	});
+	obj.tags = UI.getSelectedTags();
 
 	$("input.operator").each(function()
 	{

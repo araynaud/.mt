@@ -155,19 +155,24 @@ $relPath = getDiskPath($path);
 //input file
 $size    = getParam("size", 1000);				//new size (max dimension)
 $target  = getParam("target");
-$margin  = getParam("margin",0);
+$margin  = getParam("margin", 0);
 $format  = getParam("format");
 $angle   = getParam("angle");			//rotation angle
 $filter  = getParam("filter");			//image filters
 $text    = getParam("text");
+$textTop    = getParam("top");
+$textBottom  = getParam("bottom");
+$nb      = getParam("groups");
+$maxfiles = getParam("maxfiles", 0);
 $info    = getParamBoolean("info");		//display debug info
-$iscolumn = getParamBoolean("columns");		//images as rows or as columns
-$transpose = getParamBoolean("transpose");		//images as rows or as columns
 
-if($iscolumn)
-	$nb = getParam("columns");
-else
-	$nb = getParam("rows");
+$nb = getParam("columns", 0);
+$iscolumn = getParamBoolean("columns");
+if(!$nb)
+	$nb = getParam("rows", 0);
+else if($nb=="true")
+	$nb = 0;
+$transpose = getParamBoolean("transpose");		//images as rows or as columns
 
 $saveFile = getParam("save");
 $saveDir = getParam("to");
@@ -185,10 +190,14 @@ else
 		$tagFiles = $album->getFilesByTag($tag);
 	else
 		$tagFiles = ($album->getMediaFiles("IMAGE|VIDEO"));
+
+	shuffle($tagFiles);
+	if($maxfiles > 0 && $maxfiles < count($tagFiles))
+		$tagFiles = array_slice($tagFiles, 0, $maxfiles);
+
 	if(!$nb)
 		$nb = round(sqrt(count($tagFiles)));
 
-	shuffle($tagFiles);
 debug("tagFiles " . count($tagFiles), $nb);
 debug("tagFiles", $tagFiles);
 	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
@@ -227,11 +236,13 @@ copyImages($img, $mediaFiles, $dimensions, $iscolumn, $margin);
 
 debug();
 if($text)
-{
-//	imageWriteText($img, $text);
 	$box = imageWriteTextCentered($img, $text, 100, 2);
-	debug("imagettfbbox", $box);
-}
+if($textTop)
+	$box = imageWriteTextCentered($img, $textTop, 100, 2, "top");
+if($textBottom)
+	$box = imageWriteTextCentered($img, $textBottom, 100, 2, "bottom");
+
+
 
 //output file
 if($target!=="")
