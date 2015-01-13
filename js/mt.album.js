@@ -474,10 +474,11 @@ Album.prototype.getSelectedFileNamesArray = function()
 	return names;
 };
 
-Album.prototype.getSelectedFileNames = function()
+Album.prototype.getSelectedFileNames = function(separator)
 {
+	separator = valueOrDefault(separator,"|");
 	var names = this.getSelectedFileNamesArray();
-	return names.join("|");
+	return names.join(separator);
 };
 
 Album.prototype.selectSlideshowFiles = function()

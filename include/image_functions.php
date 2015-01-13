@@ -358,9 +358,16 @@ function copyResizedImage($dstImg, $srcImg, $x, $y, $dstW, $dstH, $destroy=true)
 	return $dstImg;
 }
 
+function getFont($name="")
+{
+	if(!$name)
+		$name =	getConfig("fonts.default");
+	return combine(getConfig("fonts.dir"), $name);
+}
+
 function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos="center")
 {
-	$font = "fonts/impact";
+	$font = getFont();
 	$angle = 0;
 
 	$box = imagettfbbox($textSize, $angle, $font, $text);
@@ -392,7 +399,7 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 
 function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 {
-	$font = "fonts/impact";
+	$font = getFont();
 	$angle = 0;
 	$color= WHITE;
 
