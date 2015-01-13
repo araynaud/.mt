@@ -275,9 +275,14 @@ if($info)
 //if target dir specified, write file or output directly to response
 $outputFile = NULL;
 if($saveFile)
+{
+	$saveFile = getFilename($saveFile, "jpg");
 	$outputFile = combine($relPath, $saveDir, $saveFile);
-else if($saveDir)
-	$outputFile = combine($relPath, $saveDir, $file);
+}
+//else if($saveDir)
+//	$outputFile = combine($relPath, $saveDir, $file);
+//if($outputFile)
+
 
 //for AJAX: output image file Url when image ready
 if($outputFile && ($format=="ajax" || $format=="json"))
