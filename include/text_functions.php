@@ -512,4 +512,40 @@ function arrayUnion()
 
 	return $result;
 }
+
+//divide array into N slices
+//take every Nth element
+function arrayDivide($array, $nb = 1, $transpose = false)
+{
+	//divide in 1 or more than length = same array
+	$nb=round($nb);
+	if($nb <=1) //|| nb > this.length)
+		return array($array);
+	$len = count($array);
+	$nb = min($nb, $len);
+//	if($nb > count($array))	$nb = count($array);
+
+	$result = array();
+	$i=0;
+	if($transpose)
+	{
+		$remainingElements=$array;
+		for($i=0; $i < $nb; $i++)
+		{
+			$perCol = round(count($remainingElements) / ($nb - $i));
+			$result[$i] = array_slice($remainingElements, 0, $perCol);
+			$remainingElements = array_slice($remainingElements, $perCol);
+		}
+	}
+	else
+	{
+		for($i = 0; $i < $nb; $i++)
+			$result[] = array();
+		for($i = 0; $i< $len; $i++)
+			$result[$i % $nb][] = $array[$i];
+	}
+	return $result;
+};
+
+
 ?>

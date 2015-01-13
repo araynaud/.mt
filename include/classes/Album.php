@@ -283,6 +283,19 @@ debug("adding", $dir);
 		return $mediaFiles;
 	}
 
+	public function getFilesByTag($tag)
+	{
+		$tagList = $this->tags[$tag];
+		$fileList = array();
+		foreach ($tagList as $name)
+		{
+			$mf = $this->getFileByName($name);
+			if($mf)
+				$fileList[] = $mf;
+		}
+		return $fileList;
+	}
+
 	public function countMediaFiles()
 	{
 		return count($this->getMediaFiles());

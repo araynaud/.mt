@@ -13,6 +13,13 @@ session_start();
 
 debug();
 
+$data = [0, 1, 2, 3, 4 ,5, 6];
+$dataSplit = arrayDivide($data, 3, false);
+debugVar("dataSplit");
+$dataSplit = arrayDivide($data, 3, true);
+debugVar("dataSplit");
+
+
 debug("substringBefore", substringBefore("somebody new to shine", " "));
 debug("substringAfter",  substringAfter("somebody new to shine", " "));
 debug("substringBeforeLast", substringBeforeLast("somebody new to shine", " "));

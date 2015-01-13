@@ -117,6 +117,8 @@ function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0
 			debug("row $key", $height);
 		}
 
+	debug("copyImages ", "$margin / $x,$y");
+
 		foreach ($group as $ind => $mf)
 		{
 			if($iscolumn)
@@ -151,23 +153,40 @@ startTimer();
 $path = reqPath();
 $relPath = getDiskPath($path);
 //input file
-$size=getParam("size", 1000);				//new size (max dimension)
-$target = getParam("target");
-$margin=getParam("margin");
-$format=getParam("format");
-$angle=getParam("angle");			//rotation angle
-$filter=getParam("filter");			//image filters
-$text = getParam("text");
-$info=getParamBoolean("info");		//display debug info
-$iscolumn=getParamBoolean("columns");		//images as rows or as columns
+$size    = getParam("size", 1000);				//new size (max dimension)
+$target  = getParam("target");
+$margin  = getParam("margin",0);
+$format  = getParam("format");
+$angle   = getParam("angle");			//rotation angle
+$filter  = getParam("filter");			//image filters
+$text    = getParam("text");
+$info    = getParamBoolean("info");		//display debug info
+$iscolumn = getParamBoolean("columns");		//images as rows or as columns
+$transpose = getParamBoolean("transpose");		//images as rows or as columns
+
+if($iscolumn)
+	$nb = getParam("columns");
+else
+	$nb = getParam("rows");
 
 $saveFile = getParam("save");
 $saveDir = getParam("to");
 debugVar("target");
 
 $files = getParam("files");
+$tag = getParam("tag");
+
 $album = new Album($path, true);
-$mediaFiles = getImages($album, $files);
+if($files)
+	$mediaFiles = getImages($album, $files);
+else if($tag)
+{
+	$tagFiles = $album->getFilesByTag($tag);
+	if(!$nb)
+		$nb = round(sqrt(count($tagFiles)));
+debug("tagFiles " . count($tagFiles), $nb);
+	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
+}
 
 $bgcolor = getParam("bg", "WHITE");
 debugVar($bgcolor);
