@@ -274,11 +274,14 @@ function metaImage($path, $relPath, $image)
 		return;
 	}
 
-	$is = @getimagesize(combine($relPath, $image));
+	if(!startsWith($image, $relPath))
+		$image = combine($relPath, $image);
+debug("metaImage", $image);
+	$is = @getimagesize($image);
 	if(!$is) return;
 debug("getimagesize", $is);
 	$meta=array();
-	$meta["og:image"] = getAbsoluteFileUrl($path, $image);
+	$meta["og:image"] = getAbsoluteFileUrl($image);
 	$meta["og:image:width"]  = $is[0];
 	$meta["og:image:height"] = $is[1];
 	$meta["og:image:type"] = $is["mime"];
