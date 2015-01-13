@@ -361,7 +361,9 @@ function copyResizedImage($dstImg, $srcImg, $x, $y, $dstW, $dstH, $destroy=true)
 function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos="center")
 {
 	$font = "fonts/impact";
-	$box = imagettfbbox($textSize, 0, $font, $text);
+	$angle = 0;
+
+	$box = imagettfbbox($textSize, $angle, $font, $text);
 	$textWidth = $box[2] - $box[0];
 	$textHeight = $box[3] - $box[5];
 	debug("imagettfbbox", "$textWidth * $textHeight");	
@@ -373,7 +375,7 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 	{
 		//$text = str_replace(" ", "\n ", $text);
 		$textSize *= $imageWidth / $textWidth *.9; 
-		$box = imagettfbbox($textSize, 0, $font, $text);
+		$box = imagettfbbox($textSize, $angle, $font, $text);
 		$textWidth = $box[2] - $box[0];
 		$textHeight = $box[3] - $box[5];
 	}
