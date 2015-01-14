@@ -491,13 +491,31 @@ UI.search = function()
 UI.getSelectedTags = function()
 {
 	var tags=[];
-	$("input.tagOption").each(function()
+	$("input.tagOption:checked").each(function()
 	{
-		if($(this).is(":checked"))
-			tags.push(this.id.substringAfter("cb_tag_")); 
+		tags.push(this.id.substringAfter("cb_tag_")); 
 	});
+
+	//tag checkboxes: AND / OR : All/any ?
+	if(tags.length==1)
+		tags=tags[0];
+	else
+		tags.matchAll = $("input#cb_all_tags").is(":checked");
+
 	return tags;
 };
+
+UI.getSelectedTypes = function()
+{
+	var type=[];
+	$("input.typeOption:checked").each(function()
+	{
+		type.push(this.id.substringAfter("cb_search_type_")); 
+	});
+	if(type.length==1)
+		type=type[0];
+	return type;
+}
 
 //index display methods
 UI.getSearchOptions = function()
@@ -505,25 +523,13 @@ UI.getSearchOptions = function()
 	obj={};
 	obj.searchString=$("#search_name").val();
 //	obj.depth=$("#dd_search_depth").val();
-	$("input.tOption").each(function()
-	{
-		if(!$(this).is(":checked")) return;
-		if(!obj["type"]) obj.type=[];
-		obj.type.push(this.id.substringAfter("cb_search_type_")); 
-	});
-	if(obj["type"] && obj.type.length==1)
-		obj.type=obj.type[0];
+	var t = UI.getSelectedTypes();
+	if(!isEmpty(t))
+		obj.type = t;
 
-//add tag checkboxes
-//if several: AND / OR : All/any ?
-	obj.tags = UI.getSelectedTags();
-
-	$("input.operator").each(function()
-	{
-		var prop = this.id.substringAfter("cb_all_");
-		if(isArray(obj[prop]))
-			obj[prop].matchAll = $(this).is(":checked");
-	});
+	t = UI.getSelectedTags();
+	if(!isEmpty(t))
+		obj.tags = t;
 
 	return obj;
 };

@@ -41,11 +41,11 @@
 		</div>
 
 		<div class="inlineBlock nowrap">
-			<input class="tOption spaceLeft" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
-			<input class="tOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
-			<!--input class="tOption" id="cb_search_type_AUDIO" type="checkbox" label="Audio" title="Audio"/-->
-			<input class="tOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
-			<!--input class="tOption" id="cb_search_type_FILE" type="checkbox" label="File" title="Other files"/-->
+			<input class="typeOption spaceLeft" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
+			<input class="typeOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
+			<!--input class="typeOption" id="cb_search_type_AUDIO" type="checkbox" label="Audio" title="Audio"/-->
+			<input class="typeOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
+			<!--input class="typeOption" id="cb_search_type_FILE" type="checkbox" label="File" title="Other files"/-->
 		</div>
 		<img id="searchIcon" alt="search" src="icons/search24.png"/>
 		<img id="clearSearchIcon" alt="clear" src="icons/delete.png"/>
