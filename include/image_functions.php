@@ -207,7 +207,7 @@ debug("outputImage $dstFilename $imgType", $img);
 	if(empty($dstFilename))
 		$dstFilename=null;
 	if(empty($imgType))
-		$imgType=strtolower(getFilenameExtension($dstFilename));
+		$imgType=getImageTypeFromExt($dstFilename);
 
 	if(is_string($img) && $outputFile)
 	 	writeBinaryFile($outputFile, $img);
@@ -353,7 +353,7 @@ function copyResizedImage($dstImg, $srcImg, $x, $y, $dstW, $dstH, $destroy=true)
 //	int $dst_w, int $dst_h , int $src_w, int $src_h)
 
 	imagecopyresampled($dstImg, $srcImg, $x, $y, 0, 0, $dstW, $dstH, $srcW, $srcH); 
-//	imagestring($dstImg, 5, $x+5, $y +17, "$dstW x $dstH", PINK);
+//	imagestring($dstImg, 5, $x+5, $y +17, "$dstW x $dstH", YELLOW);
 	if($destroy)	imagedestroy($srcImg); 
 	return $dstImg;
 }
@@ -509,6 +509,7 @@ function getColor($img, $r,$g,$b,$a=0)
 
 function getImageTypeFromExt($file)
 {
+	if(!$file) return "";
 	$ext = strtolower(getFilenameExtension($file));
 	return ($ext==="jpg") ? "jpeg" : $ext;
 }

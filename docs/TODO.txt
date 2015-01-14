@@ -1,8 +1,5 @@
 image_collage.php?
-size=
-border =
-margin = 
-
+size=  border = margin = 
 tag = (Select images by tag)
 sort = date, ratio, height, random
 rows=3
@@ -29,16 +26,25 @@ img1    |   img4
 img2  img6   |
 img3    |   img5
 
-
 1 - calculate row heights and column widths based on image ratios and borders/margins
 2 - create blank image with right size to contain all
 3 - load each image, copy, dispose after copying
 4 - add text
 5 - save collage
 
+TODO; shadow=size with grey rectangle gradient
+   123
+111123
+222223
+333333
+
+gradient background  
+11111111   12344321
+22222222   12344321
+33333333   12344321
 ------------
 
-ng querty string
+ng query string
 $location.search()
 https://code.angularjs.org/1.2.23/docs/guide/$location#-location-service-configuration
 

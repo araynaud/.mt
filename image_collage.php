@@ -58,30 +58,61 @@ function getImages($album, $files)
 
 //compute rows or column dimensions 
 //TODO: add margin, border size as parameter
-function computeDimensions($mediaFiles, $iscolumn=false)
+function computeRatios($mediaFiles, $iscolumn=false)
 {
-	$dimensions = array();
+	$ratios = array();
 	foreach ($mediaFiles as $key => $row)
 	{
-		$dimensions[$key] = 0;
-		$ratios = array();
+		$mfratios = array();
 		foreach ($row as $key2 => $mf)
-			$ratios[] = $mf->getRatio();
+			$mfratios[] = $mf->getRatio();
 
-		$dimensions[$key] = totalRatio($ratios, $iscolumn);
+		$ratios[$key] = totalRatio($mfratios, $iscolumn);
 	}
+	return $ratios;
+}
+
+function computeImageSize($mediaFiles, $size, $margin, $iscolumn=false)
+{
+	$ratios = computeRatios($mediaFiles, $iscolumn);
+	$ratioSum = totalRatio($ratios, !$iscolumn);
+	debug("computeImageSize overall ratio:", $ratioSum);
+	debug("computeImageSize ratios", $ratios);
+
+	//total number of spaces
+	$fixedSize = array();
+	$variableSize = array();
+	$dim = array();
+
+	foreach ($mediaFiles as $key => $group)
+	{
+		$fixedSize[$key] = $margin * (1 + count($group));
+		$variableSize[$key] = $size - $fixedSize[$key];
+		$dim[$key] = $iscolumn ? round($variableSize[$key] * $ratios[$key])
+			: round($variableSize[$key] / $ratios[$key]);
+	}
+
+	debug("fixed", $fixedSize);
+	debug("variable", $variableSize);
+	debug($iscolumn ? "column widths" : "row heights", $dim);
+//total Height
+	$computedSize = array_sum($dim);
+	$computedSize += $margin * (1 + count($ratios));
+
+	$dimensions = $iscolumn ? array($computedSize, $size) : array($size, $computedSize);
+	debug("computeImageSize: dimensions", $dimensions);
 	return $dimensions;
 }
 
 //compute total ratio
 //$is column
-function totalRatio($dimensions, $iscolumn)
+function totalRatio($ratios, $iscolumn)
 {
 	if(!$iscolumn)
-		return array_sum($dimensions);
+		return array_sum($ratios);
 
 	$total = 0;
-	foreach ($dimensions as $ratio)
+	foreach ($ratios as $ratio)
 		if($ratio)
 			$total += 1/$ratio;
 
@@ -90,7 +121,8 @@ function totalRatio($dimensions, $iscolumn)
 	return $total;
 }
 
-
+//todo use ratio + count for fixed margins
+//last col/row: fill rest of image
 function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0)
 {
 	$x = $margin;
@@ -122,14 +154,14 @@ function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0
 		foreach ($group as $ind => $mf)
 		{
 			if($iscolumn)
-				$height = intval($width / $mf->getRatio());
+				$height = round($width / $mf->getRatio());
 			else
-				$width = intval($height * $mf->getRatio());
+				$width = round($height * $mf->getRatio());
 
 			$mfimg = $mf->loadImage($maxSize);
 			copyResizedImage($img, $mfimg, $x, $y, $width, $height, false);
-			//imagerectangle ($img , $x, $y, $x + $width - 1, $y + $height - 1, WHITE);
-			//imagestring($img, 5, $x+5, $y+5, $mf->getTitle() , PINK);
+//			imagerectangle ($img , $x-1, $y-1, $x + $width, $y + $height, BLACK);
+//			imagestring($img, 5, $x+5, $y+5, $mf->getName() , YELLOW);
 
 			$mf->unloadImage();
 			if($iscolumn)
@@ -165,7 +197,7 @@ $textBottom  = getParam("bottom");
 $nb      = getParam("groups");
 $maxfiles = getParam("maxfiles", 0);
 $info    = getParamBoolean("info");		//display debug info
-
+$sort = getParam("sort");
 $nb = getParam("columns", 0);
 $iscolumn = getParamBoolean("columns");
 if(!$nb)
@@ -191,7 +223,9 @@ else
 	else
 		$tagFiles = ($album->getMediaFiles("IMAGE|VIDEO"));
 
-	shuffle($tagFiles);
+	if($sort=="random");
+		shuffle($tagFiles);
+
 	if($maxfiles > 0 && $maxfiles < count($tagFiles))
 		$tagFiles = array_slice($tagFiles, 0, $maxfiles);
 
@@ -203,18 +237,23 @@ debug("tagFiles", $tagFiles);
 	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
 }
 
-
+debug();
 $bgcolor = getParam("bg", "WHITE");
-debugVar($bgcolor);
+debugVar("bgcolor");
 $bgcolor = parseColor($bgcolor);
-debugVar($bgcolor);
+debugVar("bgcolor");
 
-$dimensions = computeDimensions($mediaFiles, $iscolumn);
-debug($iscolumn ? "column widths" : "row heights", $dimensions);
-$ratioSum = totalRatio($dimensions, !$iscolumn);
+$ratios = computeRatios($mediaFiles, $iscolumn);
+debug($iscolumn ? "column widths" : "row heights", $ratios);
+$ratioSum = totalRatio($ratios, !$iscolumn);
 debugVar("ratioSum");
 
-$totalMargin = $margin * (1 + count($dimensions));
+debugVar("size");
+$dim = computeImageSize($mediaFiles, $size, $margin, $iscolumn);
+debugVar("dim");
+$img = createImage($dim[0], $dim[1], $bgcolor);
+
+/*$totalMargin = $margin * (1 + count($ratios));
 $size -= $totalMargin;
 $totalWidth = $totalHeight = $size;
 if($ratioSum > 1)
@@ -229,10 +268,11 @@ debug("dimensions", "$totalWidth x $totalHeight");
 
 //for each image, load it and copy it
 $img = createImage($totalWidth, $totalHeight, $bgcolor);
-debug("imageCreate", $img);
+debug("createImage", $img);
+*/
 
 //copy images;
-copyImages($img, $mediaFiles, $dimensions, $iscolumn, $margin);
+copyImages($img, $mediaFiles, $ratios, $iscolumn, $margin);
 
 debug();
 if($text)
@@ -241,8 +281,6 @@ if($textTop)
 	$box = imageWriteTextCentered($img, $textTop, 100, 2, "top");
 if($textBottom)
 	$box = imageWriteTextCentered($img, $textBottom, 100, 2, "bottom");
-
-
 
 //output file
 if($target!=="")
@@ -291,11 +329,10 @@ if($outputFile && ($format=="ajax" || $format=="json"))
 	debugVar("url");
 	debugVar("img");
 	debug("img", gettype($img));
-	outputImage($img, $outputFile, $imageInfo["format"]);
+	outputImage($img, $outputFile);
 
 	$jsonResponse=array();
 	$jsonResponse["file"]=$file;
-	$jsonResponse["info"]=$imageInfo;
 	$jsonResponse["output"] = diskPathToUrl($outputFile);
 	$jsonResponse["filesize"] = filesize($outputFile);
 	$jsonResponse["mediafile"]=$mf;
@@ -312,7 +349,7 @@ $format=getImageTypeFromExt($outputFile);
 debugVar("format");
 
 if($outputFile || !isDebugMode())
-	outputImage($img, $outputFile, $format);
+	outputImage($img, $outputFile);
 
 if($outputFile && !isDebugMode()) //to response only
 	sendFileToResponse($outputFile,"","",false);
