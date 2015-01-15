@@ -367,6 +367,7 @@ function getFont($name="")
 
 function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos="center")
 {
+	if(!$img || !$text) return;
 	$font = getFont();
 	$angle = 0;
 
@@ -397,8 +398,9 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 	return imageWriteText($img, $text, $textSize, $x, $y, $outline);
 }
 
-function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
+function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=0)
 {
+	if(!$img || !$text) return;
 	$font = getFont();
 	$angle = 0;
 	$color= WHITE;
@@ -415,7 +417,7 @@ function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=false)
 		imagettftext($img, $textSize, $angle, $x + $outline, $y - $outline + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x - $outline, $y + $outline + $textSize, BLACK, $font, $text);
 	}
-	if($outline)
+	if($outline > 5)
 	{
 		imagettftext($img, $textSize, $angle, $x, $y - $outline + $textSize, BLACK, $font, $text);
 		imagettftext($img, $textSize, $angle, $x + $outline, $y + $textSize, BLACK, $font, $text);

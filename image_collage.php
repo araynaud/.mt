@@ -123,7 +123,7 @@ function totalRatio($ratios, $iscolumn)
 
 //todo use ratio + count for fixed margins
 //last col/row: fill rest of image
-function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0)
+function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0, $caption = false)
 {
 	$x = $margin;
 	$y = $margin;
@@ -159,11 +159,12 @@ function copyImages($img, $mediaFiles, $dimensions, $iscolumn=false, $margin = 0
 				$width = round($height * $mf->getRatio());
 
 			$mfimg = $mf->loadImage($maxSize);
+			if(!$mfimg) continue;
 			copyResizedImage($img, $mfimg, $x, $y, $width, $height, false);
-//			imagerectangle ($img , $x-1, $y-1, $x + $width, $y + $height, BLACK);
-//			imagestring($img, 5, $x+5, $y+5, $mf->getName() , YELLOW);
-
 			$mf->unloadImage();
+			if($caption)
+				imageWriteText($img, $mf->getDescription(), 20, $x+2, $y+5, 2);
+
 			if($iscolumn)
 				$y += $height + $margin;
 			else
@@ -198,6 +199,7 @@ $page   = getParam("page");
 $nb      = getParam("groups");
 $maxfiles = getParam("maxfiles", 0);
 $info    = getParamBoolean("info");		//display debug info
+$caption = getParamBoolean("caption");
 $sort = getParam("sort");
 $nb = getParam("columns", 0);
 $iscolumn = getParamBoolean("columns");
@@ -234,7 +236,6 @@ else
 	}
 	if(!$nb)
 		$nb = round(sqrt(count($tagFiles)));
-
 debug("tagFiles " . count($tagFiles), $nb);
 debug("tagFiles", $tagFiles);
 	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
@@ -275,7 +276,7 @@ debug("createImage", $img);
 */
 
 //copy images;
-copyImages($img, $mediaFiles, $ratios, $iscolumn, $margin);
+copyImages($img, $mediaFiles, $ratios, $iscolumn, $margin, $caption);
 
 debug();
 if($text)

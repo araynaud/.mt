@@ -213,6 +213,7 @@ UI.collage = function()
 		tranpose: album.tranpose,
 		columns: album.columns,
 		sort: album.sort,
+		caption: album.caption,
 		page: album.pageNum,
 		save: "collage_" + +(new Date())
 	};
