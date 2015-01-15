@@ -194,6 +194,7 @@ $filter  = getParam("filter");			//image filters
 $text    = getParam("text");
 $textTop    = getParam("top");
 $textBottom  = getParam("bottom");
+$page   = getParam("page");
 $nb      = getParam("groups");
 $maxfiles = getParam("maxfiles", 0);
 $info    = getParamBoolean("info");		//display debug info
@@ -223,12 +224,14 @@ else
 	else
 		$tagFiles = ($album->getMediaFiles("IMAGE|VIDEO"));
 
-	if($sort=="random");
+	if($sort=="random")
 		shuffle($tagFiles);
 
 	if($maxfiles > 0 && $maxfiles < count($tagFiles))
-		$tagFiles = array_slice($tagFiles, 0, $maxfiles);
-
+	{
+		$start = $page ? ($page-1)*$maxfiles : 0;
+		$tagFiles = array_slice($tagFiles, $start, $maxfiles);
+	}
 	if(!$nb)
 		$nb = round(sqrt(count($tagFiles)));
 

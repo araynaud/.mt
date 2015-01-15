@@ -271,10 +271,10 @@ debug("MediaFile.thumbnailExists $subdir $tnPath", file_exists($tnPath));
 	}
 
 
-    public function getBestImage($maxSize)
+    public function getBestImagePath($maxSize)
 	{
 		$dir = $this->selectThumbnail($maxSize);
-debug("MediaFile.getBestImage $maxSize", $dir);
+debug("MediaFile.getBestImagePath $maxSize", $dir);
 		if($this->thumbnailExists($dir))
 			return $this->getThumbnailFilePath($dir);
 		if($this->isImage()) 
@@ -282,12 +282,23 @@ debug("MediaFile.getBestImage $maxSize", $dir);
 		return false;
 	}
 
+    public function getBestImage($maxSize)
+	{
+		$dir = $this->selectThumbnail($maxSize);
+debug("MediaFile.getBestImage $maxSize", $dir);
+		if($this->thumbnailExists($dir))
+			return $this->getThumbnailFilename($dir);
+		if($this->isImage()) 
+			return $this->getFilename();
+		return false;
+	}
+
 
     public function loadImage($maxSize)
 	{
-		$imageFileName = $this->getBestImage($maxSize);
-debug("loadImage",$imageFileName);		
-		$this->gdimage = loadImage($imageFileName);
+		$imagePath = $this->getBestImagePath($maxSize);
+debug("MediaFile.loadImage",$imagePath);		
+		$this->gdimage = $imagePath ? loadImage($imagePath) : null;
 		return $this->gdimage;
 	}
 

@@ -205,15 +205,19 @@ UI.collage = function()
 // &top=EUREKAbottom=you%27re%20a%20cat!
 // &save=cover.jpg
 	var tags = UI.getSelectedTags();
+	var types = UI.getSelectedTypes();
 	var files = album.getSelectedFileNames(",");
 	params = { 
 		margin: album.border || album.margin ? 10 : 0, 
 		maxfiles: album.countPerPage,
 		tranpose: album.tranpose,
 		columns: album.columns,
+		sort: album.sort,
+		page: album.pageNum,
 		save: "collage_" + +(new Date())
 	};
-	if(!isEmpty(tags)) params.tag = tags[0];
+	if(!isEmpty(tags))  params.tag = tags[0];
+	if(!isEmpty(types)) params.type = types;
 	if(!isEmpty(files)) params.files = files;
 
 	var link = MediaFile.getScriptUrl(null, "image_collage.php", params);
