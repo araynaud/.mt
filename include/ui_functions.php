@@ -227,7 +227,7 @@ function metaTags($album, $article=true)
 
 	$meta=array();
 	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
-	$meta["og:site_name"] = getDirConfig("", "TITLE"); //get root dir title	
+	$meta["og:site_name"] = getSiteName(); //get root dir title	
 	$meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
 

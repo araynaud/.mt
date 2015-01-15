@@ -16,7 +16,9 @@ $urlPath = coalesce($urlPath, $relPath);
 debugVar("relPath");
 debugVar("urlPath");
 
-$title=$album->getTitle();
+$title= $album->getTitle();
+$siteName = getSiteName();
+$pageTitle = ($title == $siteName) ? $title : "$title - $siteName";
 $description=$album->getDescription();
 $depth=$album->getDepth();
 
@@ -27,7 +29,7 @@ $allowFacebook=allowFacebook($path);
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title><?php echo $title?></title>
+	<title><?php echo $pageTitle?></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <?php

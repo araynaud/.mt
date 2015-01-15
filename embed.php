@@ -32,7 +32,7 @@ if(!$description) $description = $mf->getAlbumDescription();
     <link type="text/css" rel="stylesheet" href="<?php echo $stylesheetUrl?>" />
     <meta property="og:type" content="movie" /> 
     <meta property="og:url" content="<?php echo $embedUrl ?>" /> 
-    <meta property="og:site_name" content="<?php echo getDirConfig("", "TITLE")?>" /> 
+    <meta property="og:site_name" content="<?php echo getSiteName() ?>" /> 
     <meta property="og:title" content="<?php echo $mf->getTitle() ?>" /> 
     <meta property="og:description" content="<?php echo $description ?>" />
     <meta property="og:video:height" content="260" /> 

@@ -197,7 +197,7 @@ function LoadConfiguration($path=null, &$configData = array())
 
 	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]), true);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
-
+	$configData ["SITE_NAME"] = getSiteName();
 	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);
 
 //output config for default site
@@ -230,6 +230,11 @@ function getDirConfig($path, $key=null)
 //debug("getDirConfig", $configData);
 	
 	return isset($configData[$key]) ? $configData[$key] : "";
+}
+
+function getSiteName()
+{
+	return getDirConfig("", "TITLE"); //get root dir title	
 }
 
 function readConfigFile($filename, &$csvRows = array())
