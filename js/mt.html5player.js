@@ -41,7 +41,7 @@ Html5Player.playerSettings=
 		key: "audio",	
 		type: "audio",
 		id:"musicPlayer",
-		autostart: false,		
+		autostart: true,		
 		repeat: true,
 		style: { width: "100%" },
 		playlist: {	position: "top", showAll: false, maxHeight: 200 }
@@ -162,6 +162,26 @@ Html5Player.prototype.setupEvents = function()
 		}
 	};
 };
+
+Html5Player.seekLoopStart = function(e)
+{
+	if(this.currentTime>= this.loopEnd) 
+		this.currentTime= this.loopStart; 
+}
+
+Html5Player.prototype.loop = function(start, end)
+{
+	this.player.loopStart = start;
+	this.player.loopEnd = end;
+	this.player.currentTime = start;
+    this.player.addEventListener("timeupdate", Html5Player.seekLoopStart);
+};
+
+Html5Player.prototype.disableLoop = function()
+{
+  this.player.removeEventListener("timeupdate", Html5Player.seekLoopStart);
+};
+
 
 Html5Player.getInstance = function(playerKey)
 {

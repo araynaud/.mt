@@ -228,7 +228,7 @@ $(window).resize(function(event)
 
 <div id="indexContainer" class="nofloat">
 	<div class="centered noprint">
-		<spanid="pagesTop" class="pager centered"></span>
+		<span id="pagesTop" class="pager centered"></span>
 	</div>
 	<div class="floatR">
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="setContentWidth"></div>

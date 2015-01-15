@@ -1,4 +1,6 @@
-image_collage.php?
+---------------------
+
+OK image_collage.php?
 size=  border = margin = 
 tag = (Select images by tag)
 sort = date, ratio, height, random
@@ -69,8 +71,14 @@ get thumbnails and metadata
 
 Audio / video splitter
 2:34,4:45,10:23,42:23,55:42
-parse durations
+parse duration / start time (sum)
 generate n files with filename_partN.ext
+
+seek: player.currentTime = 300
+
+Mark start/ end.
+Loop: when end, back to start
+player.ontimeupdate = { if(this.currentTime>= end) this.currentTime>= start; }
 
 angular UI.
 display bar below player
@@ -79,6 +87,7 @@ display bar below player
 space: set new marker at current position
 click on marker: change marker position
 delete marker
+
 
 -----------
 
