@@ -88,11 +88,6 @@ pre
 	position: absolute;
 }
 
-.desktop .slide
-{
-	z-index: -2;
-}
-
 .bg
 {
 	position: fixed;
@@ -108,11 +103,6 @@ pre
     background-repeat:no-repeat;
     background-position: left top fixed;
     background-size: cover;
-}
-
-.bg img
-{
-	z-index: -3;
 }
 
 div#files
@@ -183,10 +173,9 @@ div#files
 {
 	/* fix it at the bottom */
 	position:absolute;
-	bottom: 0px; /* fix IE issue */
+	bottom: 0px;
 	left: 0px;
 	width: 100%;
-	
 }
 
 div.file .edit, .captionTop
@@ -427,6 +416,7 @@ img.icontr, img.iconTrans
 	padding: 0px;
 	position:relative;
 	white-space: normal;
+	min-width: 120px;
 }
 
 /*.file.margin, .slide.margin, .column.margin*/

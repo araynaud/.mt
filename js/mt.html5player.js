@@ -41,7 +41,7 @@ Html5Player.playerSettings=
 		key: "audio",	
 		type: "audio",
 		id:"musicPlayer",
-		autostart: true,		
+		autostart: false,		
 		repeat: true,
 		style: { width: "100%" },
 		playlist: {	position: "top", showAll: false, maxHeight: 200 }
