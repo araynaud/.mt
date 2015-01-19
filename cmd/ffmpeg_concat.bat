@@ -1,5 +1,23 @@
-ffmpeg -i 5-0-40.mp4 -i 6-40-82.mp4 -filter_complex concat=n=2:v=1:a=1 56.mp4
+setlocal enabledelayedexpansion
+@echo off
+set argC=0
+for %%x in (%*) do Set /A argC+=1
+echo argc: %argC%
 
-ffmpeg -i 20140504163400.m4v -i 20140504184428.mp4 -i 20140504180307.mp4 -i 20140504181534.mp4 -filter_complex concat=n=4:v=1:a=1 concat.mp4
+set output=%1
+:loop1
+	if "%2"=="" goto after_loop
+	echo one:%1 two:%2
+	set input=%input% %2
+	shift
+	goto loop1
+:after_loop
 
-ffmpeg -i concat:"20140504163400.m4v|20140504184428.mp4|20140504180307.mp4|20140504181534.mp4" -codec copy concat2.mp4
+for %%a in (%input%) do (
+	ffmpeg -i %%a -c copy -an -bsf:v h264_mp4toannexb -f mpegts %%a.ts
+	SET filenames=!filenames!^|%%a.ts
+)
+ffmpeg -i "concat:%filenames:~1%" -c copy -bsf:a aac_adtstoasc -movflags faststart %output%
+echo input: "%filenames:~1%"
+echo output: %output%
+del *.ts

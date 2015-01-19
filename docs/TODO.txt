@@ -1,3 +1,13 @@
+video edit:
+select files. playlist
+file;start;end
+file1;13;45
+file2;;  whole file
+file3;13; 13s to end
+
+copy to mpegts selected segments
+concat all of them
+set music track
 ---------------------
 
 OK image_collage.php?
