@@ -28,6 +28,8 @@ function combine()
 	if(contains($argArray[0],"\\"))
 		$sep="\\";
 	
+	$isRoot = startsWith($argArray[0], $sep) ? $sep : "";
+
 	//explode all into elements
 	$strArray=array();
 	foreach($argArray as $str)
@@ -43,7 +45,7 @@ function combine()
 
 	$depth=count($strArray);
 	if($depth==0)	return "";
-	if($depth==1)	return $strArray[0];
+	if($depth==1)	return $isRoot . $strArray[0];
 
 //to resolve parent: handle .. elements => remove this element + previous
 //except in first element
@@ -64,7 +66,7 @@ function combine()
 			$i++;
 	}
 	$strArray=array_filter($strArray);
-	return implode($sep,$strArray);
+	return $isRoot . implode($sep, $strArray);
 }
 
 
