@@ -13,6 +13,11 @@ function isLocal()
 	 || isset($_SERVER["LOCAL_ADDR"]) && $_SERVER["REMOTE_ADDR"] == $_SERVER["LOCAL_ADDR"];
 }
 
+function isUnix()
+{
+	return contains($_SERVER["SERVER_SOFTWARE"], "unix");
+}
+
 function clientIs($str)
 {
 	global $config;

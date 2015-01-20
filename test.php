@@ -5,21 +5,22 @@ ini_set('display_errors', '1');
 $configFile="include/config.php";
 if(file_exists("../$configFile"))	$configFile = "../$configFile";
 require_once($configFile);
-
 //startTimer();
 
 header("Content-Type: text/plain");
 session_start();
 
 debug();
+debug("PHP OS", PHP_OS);
+debugVar("_SERVER", true);
+debug("is Unix", isUnix());
 
+debug();
 $data = [0, 1, 2, 3, 4 ,5, 6];
 $dataSplit = arrayDivide($data, 3, false);
 debugVar("dataSplit");
 $dataSplit = arrayDivide($data, 3, true);
 debugVar("dataSplit");
-
-
 debug("substringBefore", substringBefore("somebody new to shine", " "));
 debug("substringAfter",  substringAfter("somebody new to shine", " "));
 debug("substringBeforeLast", substringBeforeLast("somebody new to shine", " "));

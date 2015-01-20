@@ -1,4 +1,6 @@
 TITLE=Media Thingy for Mac/Linux
-_FFMPEG.PATH=/usr/local/bin
+_FFMPEG.PATH=/usr/bin
 _FFMPEG.FFMPEG=ffmpeg
 _FFMPEG.PROBE=ffprobe
+
+_FFMPEG.scripts=shell

@@ -303,10 +303,17 @@ debug("getVideoProperties", $prop, true);
 	$scriptDir = getConfig("_FFMPEG.scripts");
 debug("scriptDir", $scriptDir);
 	$scriptName = arrayGetCoalesce($convert, "$inputExt.script", "script");
+
+//default extension: .bat / .sh	
+	$ext = isUnix() ? "sh" : "bat";
+	if(getFilenameExtension($scriptName)=="")
+		$scriptName = getFilename($scriptName, $ext);
+
 	$script = combine(pathToAppRoot(), $scriptDir, $scriptName);
 debug("script", $script);
 	$script = realpath($script);
 debug("script", $script);
+if(!$script) return;
 
 	$cmd = "$script [0] [1] [2] [3]";
 	$cmd = makeCommand($cmd, $relPath, $inputFile, $outputFilename, $size);
