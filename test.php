@@ -28,11 +28,15 @@ debug("substringAfterLast",  substringAfterLast("somebody new to shine", " "));
 debug("splitBeforeAfter",  splitBeforeAfter("somebody new to shine", " "));
 debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", true));
 
-$tracklistStart = readPlaylistFile("docs/tracks.txt");
-echoJsVar("tracklistStart");
+$tracklist = readPlaylistFile("docs/tracks.csv");
+echoJsVar("tracklist");
+$batch = splitTracks("GTA V RADIO Soulwax FM.mp3", $tracklist);
+debugVar("batch");
 
-$tracklistDurations = readPlaylistFile("docs/tracks2.txt", true);
-echoJsVar("tracklistDurations");
+$tracklist = readPlaylistFile("docs/tracks2.csv", true);
+echoJsVar("tracklist");
+$batch = splitTracks("GTA V Soundtrack - Volume 2 The Score.mp3", $tracklist, "split");
+debugVar("batch");
 
 $pdjConfig2 = readConfigFile("../ng/pdj/pdj.config");
 echoJsVar("pdjConfig2");

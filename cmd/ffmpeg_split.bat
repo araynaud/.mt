@@ -1,2 +1,7 @@
 rem input, output, start time, length
-ffmpeg -i %1 -acodec copy -vcodec copy -ss %3 -t %4 %2
+
+SETLOCAL
+IF NOT (%3) == () set ss=-ss %3
+IF NOT (%4) == () set length=-t %4
+echo from %ss% length %length%
+ffmpeg -i %1 -acodec copy -vcodec copy %ss% %length% %2

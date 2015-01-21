@@ -379,6 +379,27 @@ function remuxVideo($relPath, $video, $format)
 	return $outputFile;
 }
 
+function makeSplitCommand($inputFile, $track, $outputDir="")
+{
+	$ext = getFilenameExtension($inputFile);
+	$filename = getFilename($track['title'], "mp3");
+	if(isset($track['number']))
+		$filename = $track['number'] . " $filename";
+	$filename = combine($outputDir, $filename);
+
+	$cmd = makeCommand("call ffmpeg_split_to [0] [1] [2] [3]", $inputFile, $filename, @$track["start"], @$track["end"]);
+	return $cmd;
+}
+
+function splitTracks($inputFile, $tracks, $outputDir="split")
+{
+	$batch="";
+	foreach ($tracks as $i => $track)
+		$batch .= "\n" . makeSplitCommand($inputFile, $track, $outputDir);
+//	debug("tracks", $tracks, true);
+	return $batch;
+}
+
 /*
 convert to mp4 no resize:
 %ffmpeg% -i %1\\%2 -b 600k %1\\%3.mp4

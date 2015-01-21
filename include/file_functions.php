@@ -389,10 +389,13 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = array())
 {
 	$separator=";";
-	$separator2=":";
+	$separator2="";
 	if(!$text)		return $csvRows;
 	$lines = explode("\n", $text);
 	if(!$lines)		return $csvRows;
+	if($columnNames && is_string($columnNames))
+		array_unshift($lines, $columnNames);
+//debug("parseCsvTable lines",$lines,"print_r");
 	$header=array();
 	$key="";
 	if($columnNames)
@@ -470,63 +473,53 @@ function writeCsvFile($filename, $data, $includeEmpty=false, $separator=";")
 	return writeTextFile($filename, $csv);
 }
 
-function makeSplitCommand($track)
-{
-	$filename = @$track['title'] . ".mp3";
-	$start = @$track["start"]; 
-	$end = @$track["end"]; 
-	$duration = @$track["duration"];
-	$cmd = makeCommand("ffmpeg_split inputfile.mp3 [0] [1] [2]", $filename, $start, $end);
-	return $cmd;
-}
-
 //sum: false if key = start time
 //true: if key = duration
-function readPlaylistFile($filename, $sumTimes=false)
+function readPlaylistFile($filename, $durations=false, $format=false)
 {
-	readConfigFile($filename, $playlist, " ");
-	debug("playlist", $playlist, true);
-	$prevSec = 0;
-	$tracks = array();
-	$i=0;
-	$start = 0;
-	$end = 0;
-	foreach ($playlist as $time => $title)
-	{
-		$sec = parseTime($time);
-		$tracks[$i]["number"] = $i+1;
-		$tracks[$i]["title"] = $title;
+	$columnNames = $durations ? "duration" : "start";
+	$columnNames = "$columnNames;title";
 
-		if($sumTimes)
+	$playlist = readCsvTableFile($filename, false, $columnNames);
+//	debug("readCsvTableFile", $playlist, true);
+	$prevSec = 0;
+	$end=0;
+	$start=0;
+
+	foreach ($playlist as $i => $item)
+	{
+		$seconds = parseTime(reset($item));
+		$playlist[$i]["number"] = str_pad($i+1, 2, "0", STR_PAD_LEFT);
+		$playlist[$i]["title"] = trim($playlist[$i]["title"]);
+		$playlist[$i]["title"] = str_replace(".", "", $playlist[$i]["title"]);
+		if($durations)
 		{
-			$duration = $sec;
-			$end += $sec;
-			$start = $end - $sec;
-			$tracks[$i]["start"] = $start;
-			$tracks[$i]["duration"] = $duration;
-			$tracks[$i]["end"] = $end;
+			$duration = $seconds;
+			$end += $seconds;
+			$start = $end - $seconds;
+			$playlist[$i]["duration"] = $format ? formatTime($duration) : $duration;
+			$playlist[$i]["start"] = $format ? formatTime($start) : $start;
+			$playlist[$i]["end"] = $format ? formatTime($start + $duration) : $start + $duration;
 		}
 		else
 		{
-			$start = $sec;
-			$duration = $sec - $prevSec;
-
-			$tracks[$i]["start"] = $sec;
+			$start = $seconds;
+			$duration = $seconds - $prevSec;
+			$playlist[$i]["start"] = $format ? formatTime($seconds) : $seconds;
 			if($i>0)
 			{
-				$tracks[$i-1]["duration"] = $duration;
-				$tracks[$i-1]["end"] = $sec;
+				$playlist[$i-1]["duration"] = $format ? formatTime($duration) : $duration;
+				$playlist[$i-1]["end"] = $format ? formatTime($seconds) : $seconds;
 			}
 		}
-		$prevSec = $sec;
+		$prevSec = $seconds;
 		$i++;
 	}
 
-	foreach ($tracks as $i => $track)
-		debug("command $i", makeSplitCommand($track));
-//	debug("tracks", $tracks, true);
-	return $tracks;
+	return $playlist;
 }
+
+
 
 //write table data
 //$data must be 2 dimensional array
