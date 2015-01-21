@@ -28,6 +28,9 @@ debug("substringAfterLast",  substringAfterLast("somebody new to shine", " "));
 debug("splitBeforeAfter",  splitBeforeAfter("somebody new to shine", " "));
 debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", true));
 
+$tracklist = readPlaylistFile("docs/tracks.txt");
+echoJsVar("tracklist");
+
 $pdjConfig2 = readConfigFile("../ng/pdj/pdj.config");
 echoJsVar("pdjConfig2");
 

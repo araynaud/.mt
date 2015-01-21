@@ -448,6 +448,48 @@ function formatString()
 	return $cmd;
 }
 
+function formatDate($mtime,$xml=false)
+{
+	if(!$mtime) return "";
+	$date = date("Y-m-d H:i:s", $mtime);
+	if($xml)
+		$date = str_replace(" ", "T", $date);
+	return $date;
+}
+
+//hh:mm:ss => number of seconds
+function parseTime($time)
+{
+	if(is_numeric($time)) return $time;
+	$arr = explode(":", $time);
+	$days = $hours = 0;
+	if(count($arr) == 4)
+		$days = array_shift($arr);
+	if(count($arr) == 3)
+		$hours = array_shift($arr);
+	$minutes = array_shift($arr);
+	$seconds = array_shift($arr);
+
+	return $seconds + 60*$minutes + 60*60*$hours + 60*60*24*$days;
+}
+
+function formatTime($seconds)
+{
+	$seconds = round($seconds);
+	$minutes = floor($seconds / 60);
+	$hours = floor($minutes / 60);
+	$seconds = $seconds % 60;
+	$minutes = $minutes % 60;
+	if($minutes < 10 && $hours > 0)
+		$minutes = "0$minutes";
+	if($seconds < 10)
+		$seconds = "0$seconds";
+	$timeString="$minutes:$seconds";
+	if($hours > 0)
+	 	$timeString="$hours:$timeString";
+	return $timeString;
+}
+
 //return 1st non null argument
 function coalesce()
 {

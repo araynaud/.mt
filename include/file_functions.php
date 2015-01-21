@@ -237,16 +237,19 @@ function getSiteName()
 	return getDirConfig("", "TITLE"); //get root dir title	
 }
 
-function readConfigFile($filename, &$csvRows = array())
+function readConfigFile($filename, &$csvRows = NULL, $separator="=")
 {
 	$lines = readArray($filename);
 	if(!$lines)
 		return $csvRows;
 
+	if(!$csvRows)
+		$csvRows = array();
+
 	$prevKey=null;
 	foreach ($lines as $n => $line)
 	{
-		$rowData = parseConfigLine($line, $key);
+		parseConfigLine($line, $key, $rowData, $separator);
 		//key: always a string
 		if($key==="")	continue;
 		//parse other columns
@@ -264,13 +267,13 @@ function readConfigFile($filename, &$csvRows = array())
 	return $csvRows;
 }
 
-function parseConfigLine($line, &$key, &$rowData=array())
+function parseConfigLine($line, &$key, &$rowData=array(), $separator="=")
 {
 	$rowData = explode(";", $line);
-	if(contains($rowData[0], "="))
+	if(contains($rowData[0], $separator))
 	{
-		$key = substringBefore($rowData[0], "=");
-		$rowData[0] = substringAfter($rowData[0], "=");
+		$key = substringBefore($rowData[0], $separator);
+		$rowData[0] = substringAfter($rowData[0], $separator);
 	}
 	else
 	{
@@ -467,6 +470,46 @@ function writeCsvFile($filename, $data, $includeEmpty=false, $separator=";")
 	return writeTextFile($filename, $csv);
 }
 
+function makeSplitCommand($track)
+{
+	$filename = $track['title'] . ".mp3";
+	$start = $track["startSec"]; 
+	$end =  $track["durationSec"];
+	$cmd = makeCommand("ffmpeg_split inputfile.mp3 [0] [1] [2]", $filename, $start, $end);
+	return $cmd;
+}
+
+function readPlaylistFile($filename)
+{
+	$playlist = array();
+	readConfigFile("docs/tracks.txt", $playlist, " ");
+	$prevSec = 0;
+	$tracks = array();
+	debug("playlist", $playlist, true);
+	$i=0;
+	foreach ($playlist as $time => $title)
+	{
+	//	parse duration
+		$sec = parseTime($time);
+		$duration = $sec - $prevSec;
+		if($title)
+			$tracks[$i] = array("number" => $i+1, "startTime"=>$time, "startSec"=>$sec, "title"=>$title);
+		if($i>0)
+		{
+			$tracks[$i - 1]["endSec"] = $sec;
+			$tracks[$i - 1]["end"] = formatTime($sec);
+
+			$tracks[$i - 1]["durationSec"] = $duration;
+			$tracks[$i - 1]["duration"] =  formatTime($duration);
+			$tracks[$i - 1]["command"] = makeSplitCommand($tracks[$i-1]);
+		}
+		$prevSec = $sec;
+		$i++;
+	}
+	debug("tracks", $tracks, true);
+	return $tracks;
+}
+
 //write table data
 //$data must be 2 dimensional array
 function writeCsvTableFile($filename, $data, $columnNames=false, $writeKey="")
@@ -604,15 +647,6 @@ function formatFilemtime($filename)
 	if(!file_exists($filename))
 		return;
 	return formatDate(filemtime($filename));
-}
-
-function formatDate($mtime,$xml=false)
-{
-	if(!$mtime) return "";
-	$date = date("Y-m-d H:i:s", $mtime);
-	if($xml)
-		$date = str_replace(" ", "T", $date);
-	return $date;
 }
 
 function deleteFile($relPath, $file="")
