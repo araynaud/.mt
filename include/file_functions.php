@@ -472,41 +472,59 @@ function writeCsvFile($filename, $data, $includeEmpty=false, $separator=";")
 
 function makeSplitCommand($track)
 {
-	$filename = $track['title'] . ".mp3";
-	$start = $track["startSec"]; 
-	$end =  $track["durationSec"];
+	$filename = @$track['title'] . ".mp3";
+	$start = @$track["start"]; 
+	$end = @$track["end"]; 
+	$duration = @$track["duration"];
 	$cmd = makeCommand("ffmpeg_split inputfile.mp3 [0] [1] [2]", $filename, $start, $end);
 	return $cmd;
 }
 
-function readPlaylistFile($filename)
+//sum: false if key = start time
+//true: if key = duration
+function readPlaylistFile($filename, $sumTimes=false)
 {
-	$playlist = array();
-	readConfigFile("docs/tracks.txt", $playlist, " ");
+	readConfigFile($filename, $playlist, " ");
+	debug("playlist", $playlist, true);
 	$prevSec = 0;
 	$tracks = array();
-	debug("playlist", $playlist, true);
 	$i=0;
+	$start = 0;
+	$end = 0;
 	foreach ($playlist as $time => $title)
 	{
-	//	parse duration
 		$sec = parseTime($time);
-		$duration = $sec - $prevSec;
-		if($title)
-			$tracks[$i] = array("number" => $i+1, "startTime"=>$time, "startSec"=>$sec, "title"=>$title);
-		if($i>0)
-		{
-			$tracks[$i - 1]["endSec"] = $sec;
-			$tracks[$i - 1]["end"] = formatTime($sec);
+		$tracks[$i]["number"] = $i+1;
+		$tracks[$i]["title"] = $title;
 
-			$tracks[$i - 1]["durationSec"] = $duration;
-			$tracks[$i - 1]["duration"] =  formatTime($duration);
-			$tracks[$i - 1]["command"] = makeSplitCommand($tracks[$i-1]);
+		if($sumTimes)
+		{
+			$duration = $sec;
+			$end += $sec;
+			$start = $end - $sec;
+			$tracks[$i]["start"] = $start;
+			$tracks[$i]["duration"] = $duration;
+			$tracks[$i]["end"] = $end;
+		}
+		else
+		{
+			$start = $sec;
+			$duration = $sec - $prevSec;
+
+			$tracks[$i]["start"] = $sec;
+			if($i>0)
+			{
+				$tracks[$i-1]["duration"] = $duration;
+				$tracks[$i-1]["end"] = $sec;
+			}
 		}
 		$prevSec = $sec;
 		$i++;
 	}
-	debug("tracks", $tracks, true);
+
+	foreach ($tracks as $i => $track)
+		debug("command $i", makeSplitCommand($track));
+//	debug("tracks", $tracks, true);
 	return $tracks;
 }
 
