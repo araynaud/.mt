@@ -490,8 +490,7 @@ function readPlaylistFile($filename, $durations=false, $format=false)
 	{
 		$seconds = parseTime(reset($item));
 		$playlist[$i]["number"] = str_pad($i+1, 2, "0", STR_PAD_LEFT);
-		$playlist[$i]["title"] = trim($playlist[$i]["title"]);
-		$playlist[$i]["title"] = str_replace(".", "", $playlist[$i]["title"]);
+		$playlist[$i]["title"] = cleanupFilenameCmd($playlist[$i]["title"]);
 		if($durations)
 		{
 			$duration = $seconds;

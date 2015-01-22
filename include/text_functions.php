@@ -282,6 +282,19 @@ function cleanupFilename($filename)
 	return $filename;
 }
 
+function cleanupFilenameCmd($filename)
+{
+	$filename = str_replace("  ", " ", $filename);
+	$filename = str_replace(":", "-", $filename);
+	$filename = str_replace("/", "-", $filename);
+
+	$filename = str_replace(";", "", $filename);
+	$filename = str_replace(",", "", $filename);
+	$filename = str_replace(".", "", $filename);
+	$filename = str_replace("?", "", $filename);
+	return trim($filename);
+}
+
 //encode to UTF8 only if not already encoded
 function encodeUtf8($string)
 {

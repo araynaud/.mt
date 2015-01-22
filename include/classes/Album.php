@@ -259,8 +259,11 @@ debug("adding", $dir);
 		return count(@$this->groupedFiles[$type]);
 	}
 
-	public function getFileByName($name)
+	public function getFileByName($name, $type="")
 	{
+		if($type)
+			return arrayGet($this->groupedFiles, "$type.$name");
+
 		foreach ($this->groupedFiles as $type => $files)
 			if(isset($files[$name]))
 				return $files[$name];

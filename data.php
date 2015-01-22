@@ -27,6 +27,8 @@ function getFileData(&$getData, $path, $file)
 			return $tags;
 		case "tablefile":
 			return readCsvTableFile($filePath, 0, true);
+		case "playlist":
+			return readPlaylistFile($filePath); //, 0, true);
 		case "datafile":
 			return readConfigFile($filePath);
 		case "config":

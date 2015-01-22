@@ -1,25 +1,31 @@
-audio splitter
+audio/video splitter
 use -to
 time: start time (ffmpeg_split_to) / duration (ffmpeg_split)
 or subtract
-0:00:00 Mitch Murder - Night Train
-0:03:55 Tesla Boy - Rebecca
-0:08:00 Jordan F - Abandoned Streets (Short Version)
-0:10:07 Kavinsky - Nightcall
-0:14:10 Lazerhawk - Overdrive
-0:18:38 Miami Nights 1984 - Early Summer
-0:21:40 Lifelike - So Electric
-0:27:53 Kavinsky - Protovision
-0:30:58 Mitch Murder - Remember When
-0:36:46 Scattle - Knock Knock
-0:40:57 Garth Knight - Silent Strike
-0:45:45 Lazerhawk - So Far Away
-0:49:40 Flashworx - Futurisma
-0:55:19 Com Truise - Fightwave
-0:59:30 Linea Aspera - Synapse
-1:03:38 Miami Nights 1984 - Clutch
-1:07:36 Kavinsky - Odd Look
-1:12:17 Futurecop! feat. Cavaliers of Fun - Atlantis 1997
+0:00:00;Mitch Murder - Night Train
+0:03:55;Tesla Boy - Rebecca
+0:08:00;Jordan F - Abandoned Streets (Short Version)
+0:10:07;Kavinsky - Nightcall
+0:14:10;Lazerhawk - Overdrive
+0:18:38;Miami Nights 1984 - Early Summer
+0:21:40;Lifelike - So Electric
+0:27:53;Kavinsky - Protovision
+0:30:58;Mitch Murder - Remember When
+0:36:46;Scattle - Knock Knock
+0:40:57;Garth Knight - Silent Strike
+0:45:45;Lazerhawk - So Far Away
+0:49:40;Flashworx - Futurisma
+0:55:19;Com Truise - Fightwave
+0:59:30;Linea Aspera - Synapse
+1:03:38;Miami Nights 1984 - Clutch
+1:07:36;Kavinsky - Odd Look
+1:12:17;Futurecop! feat. Cavaliers of Fun - Atlantis 1997
+
+http://localhost/mt/.upload/split_tracks.php?path=music/GTA&file=GTA%20V%20Radio%20Worldwide%20FM.mp4&type=video&list=WorldwideFM&output=WFM&debug=true
+
+read file with space or tab : splitBeforeAfter
+1:07:36  Kavinsky - Odd Look
+
 
 ---------------------
 video edit:
