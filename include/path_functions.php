@@ -124,6 +124,8 @@ function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 		$_REQUEST["file"] = $name;
 		if($addFilters)
 			$_REQUEST["name"] = $name;
+		if($addFilters && $filetype)
+			$_REQUEST["type"] = $filetype;
 	}
 	else
 	{
@@ -132,7 +134,6 @@ function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 	}
 	debug("reqPathFile request after", $_REQUEST);
 }
-
 
 //2014/december/cookies:1:best|amy:DSC_0764
 function parseQueryString($qs, 	&$result = array())

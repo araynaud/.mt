@@ -79,6 +79,17 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return $album->getMediaFile();
 	}
 
+    public static function getMediaFiles()
+    {    	
+		$path=reqPath();
+		$details=reqParam("file") || reqParam("name") || reqParam("search");
+debug("MediaFile::getMediaFile name", $details);
+		$album = new Album($path, $details);
+debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
+		return $album->getMediaFiles();
+	}
+
+
     public function addImageThumbnails()
     {
     	$tnSizes = getConfig("thumbnails.sizes");
