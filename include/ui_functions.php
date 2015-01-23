@@ -148,6 +148,7 @@ function displayBackground($path, $hidden=false)
 {
 	$background = findInParent($path, ".bg.jpg", false);
 	$background = diskPathToUrl($background);
+	$background = str_replace(' ', '%20', $background);
 	$class="";
 	if($hidden) $class .= " hidden";
 	$style = "";

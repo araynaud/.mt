@@ -177,7 +177,7 @@ String.urlEncode = function(url)
 	return encodeURIComponent(url).replace("&", "%26");
 };
 
-String.prototype.urlEncode = function(url) 
+String.prototype.urlEncode = function() 
 {
 	return encodeURIComponent(this).replace("&", "%26");
 };
