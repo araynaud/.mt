@@ -67,7 +67,7 @@ $.fn.backgroundImage = function(url)
 {
 	if(isMissing(url))
 		return this.css("background-image");
-	url = url.replace(" ", "%20");
+	url = url.replace(/ /g, "%20");
 	return this.css("background-image", "url(" + url + ")");
 };
 
