@@ -311,6 +311,12 @@ function xmlArray($name, $array, $indent=1, $includeEmpty=true, $private=false, 
 	return "$tab<$name>$result$tab</$name>";
 }
 
+//must be non-empty and start with a letter
+function isValidElementName($name)
+{
+	return !empty($name) && ctype_lower($name[0]) || ctype_upper($name[0]);
+}
+
 //Serialize object to XML. output private variables?
 function xmlObject($name, $obj, $indent=1, $includeEmpty=false, $private=true, $outputAttributes=true)
 {
@@ -319,7 +325,8 @@ debug("xmlObject $name", $obj);
 	$tab=indent($indent);
 	$indent=nextIndent($indent);
 	$vars=objToArray($obj, $private, $includeEmpty);
-	if(!$name) $name=getVarType($obj);
+	if(!isValidElementName($name))
+		$name=getVarType($obj);
 debug("xmlObject vars", $vars);
 			
 	$result="";
