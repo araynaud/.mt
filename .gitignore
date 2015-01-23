@@ -7,3 +7,4 @@ skins/
 .htpasswd
 *.mp4
 web.config
+.DS_Store
