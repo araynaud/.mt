@@ -22,7 +22,7 @@ function quoteFilename($filename)
 {
 	if(contains($filename," "))
 		$filename = escapeshellarg($filename);
-	if(PHP_OS === "WINNT")
+	if(isWindows())
 		$filename = str_replace("/", "\\", $filename);
 
 	//TODO if windows, replace / by \\ in filenames
@@ -46,15 +46,17 @@ function makeCommand()
 
 function execCommand($cmd, $background=false, $toString=true, $redirectError=true)
 {
-	if($background)
-		$cmd='start "proc title" ' . $cmd;
 	if($redirectError)
 		$cmd .= " 2>&1";
+	if($background && isWindows())
+		$cmd="start \"proc title\" $cmd";
+	else if($background && isUnix())
+		$cmd .= " &";
 	debugText("execCommand", $cmd);
 	exec($cmd, $output, $cmdReturn);
 	if($output && $toString)
-		$output=implode("\n",$output);
-	debugText("Output", $output,true);
+		$output=implode("\n", $output);
+	debugText("Output", $output, true);
 	debug("Return", $cmdReturn);
 	debug();
 	return $output;

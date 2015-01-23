@@ -18,6 +18,11 @@ function isUnix()
 	return contains($_SERVER["SERVER_SOFTWARE"], "unix");
 }
 
+function isWindows()
+{
+	return contains(PHP_OS, "winnt") || contains(PHP_OS, "windows") || contains($_SERVER["SERVER_SOFTWARE"], "win");
+}
+
 function clientIs($str)
 {
 	global $config;

@@ -14,6 +14,7 @@ debug();
 debug("PHP OS", PHP_OS);
 debugVar("_SERVER", true);
 debug("is Unix", isUnix());
+debug("is Windows", isWindows());
 
 debug();
 $data = [0, 1, 2, 3, 4 ,5, 6];
