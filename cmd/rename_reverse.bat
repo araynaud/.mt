@@ -1,4 +1,5 @@
 rem rename_reverse dir filename
+SETLOCAL
 SET TMP_DIR=%1
 SET FILENAME=%2
 rem count files

@@ -26,6 +26,8 @@ http://localhost/mt/.upload/split_tracks.php?path=music/GTA&file=GTA%20V%20Radio
 read file with space or tab : splitBeforeAfter
 1:07:36  Kavinsky - Odd Look
 
+---------
+add method MediaFile->setBackground($dir)
 
 ---------------------
 video edit:
@@ -35,9 +37,13 @@ file1;13;45
 file2;;  whole file
 file3;13;13 to end
 
+ffmpeg -i 5-0-40.mp4 -i 6-40-82.mp4 -filter_complex concat=n=2:v=1:a=1 56.mp4
+ffmpeg -i 20140504163400.m4v -i 20140504184428.mp4 -i 20140504180307.mp4 -i 20140504181534.mp4 -filter_complex concat=n=4:v=1:a=1 concat.mp4
+ffmpeg -i concat:"20140504163400.m4v|20140504184428.mp4|20140504180307.mp4|20140504181534.mp4" -codec copy concat2.mp4
+
 copy to mpegts selected segments
 concat all of them
-set music track
+set music track: ffmpeg_dub
 ---------------------
 
 OK image_collage.php?

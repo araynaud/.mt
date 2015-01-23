@@ -65,6 +65,8 @@ $getData = reqParam("data", "MediaFile");
 $countTime = reqParamBoolean("counttime", true);
 //output options
 $format=reqParam("format", "json");
+$format=strtolower($format);
+
 $indent=reqParam("indent", 1);
 $includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
@@ -81,21 +83,25 @@ $data=objToArray($data, true, true);
 $save=getParamBoolean("save");
 if($save)
 	saveImageInfo($relPath, $file, $data);
-if(isAssociativeArray($data))
+
+//XML: ensure single root element
+$count=count($data);
+if($format == "xml" && !isAssociativeArray($data))
 {
-	$data["count"] = count($data);
-	$data["time"] = getTimer();
-}
-else if($countTime)
-{
-	$data[] = count($data);
-	$data[] = getTimer();
+	$data = array($getData."_item" => $data);
 }
 
-switch (strtolower($format))
+if($countTime)
+{
+	$data["count"] = $count;
+	$data["time"] = getTimer();
+}
+
+switch ($format)
 {
 	case "xml":
 		setContentType("text", $format);
+		echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 		echo xmlValue($getData, $data, $indent, $includeEmpty, true, $attributes);
 		break;
 	case "csv":
