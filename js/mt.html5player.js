@@ -70,6 +70,7 @@ Html5Player.playerSettings=
 		repeat: false,
 		uiMode: "slideshow",
 		class: "slide top left",
+		hidden:true
 	}
 
 };
@@ -195,7 +196,7 @@ Html5Player.prototype.loadFromHtml = function()
 {
 	if(isEmpty(this.mediaFiles))
 	{
-		$(this.player).hide();
+		this.jqplayer.hide();
 		return;
 	}
 
@@ -220,8 +221,10 @@ Html5Player.prototype.createPlayer = function()
 		this.player.css(this.settings.style);
 	if(this.settings.class)
 		this.player.addClass(this.settings.class);
+	if(this.settings.hidden)
+		this.player.hide();
 
-	this.player.appendTo(this.container);
+	this.player.prependTo(this.container);
 	this.jqplayer = this.player;
 	this.player = this.player[0];
 
