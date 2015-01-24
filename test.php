@@ -29,8 +29,13 @@ debug("substringAfterLast",  substringAfterLast("somebody new to shine", " "));
 debug("splitBeforeAfter",  splitBeforeAfter("somebody new to shine", " "));
 debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", true));
 
-debug()
-//debug("GD Info", gd_info(), true);
+debug();
+debug("GD Info", gd_info(), true);
+
+debug("Definded functions", get_defined_functions(), true);
+
+
+
 
 $pdjConfig2 = readConfigFile("../ng/pdj/pdj.config");
 echoJsVar("pdjConfig2");

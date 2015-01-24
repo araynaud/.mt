@@ -371,21 +371,29 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 	$font = getFont();
 	$angle = 0;
 
-	$box = imagettfbbox($textSize, $angle, $font, $text);
-	$textWidth = $box[2] - $box[0];
-	$textHeight = $box[3] - $box[5];
-	debug("imagettfbbox", "$textWidth * $textHeight");	
-
 	$imageWidth = imageSX($img);
 	$imageHeight = imageSY($img);
-	//if text too wide, reduce text size to fit in image.
-	if($textWidth > $imageWidth)
+
+	if(!function_exists("imagettftbbox"))
 	{
-		//$text = str_replace(" ", "\n ", $text);
-		$textSize *= $imageWidth / $textWidth *.9; 
+		$textWidth = 10 * strlen($text);
+		$textHeight = 10;
+	}
+	else
+	{
 		$box = imagettfbbox($textSize, $angle, $font, $text);
 		$textWidth = $box[2] - $box[0];
 		$textHeight = $box[3] - $box[5];
+		debug("imagettfbbox", "$textWidth * $textHeight");	
+		//if text too wide, reduce text size to fit in image.
+		if($textWidth > $imageWidth)
+		{
+			//$text = str_replace(" ", "\n ", $text);
+			$textSize *= $imageWidth / $textWidth *.9; 
+			$box = imagettfbbox($textSize, $angle, $font, $text);
+			$textWidth = $box[2] - $box[0];
+			$textHeight = $box[3] - $box[5];
+		}
 	}
 
 	$x = ($imageWidth - $textWidth) / 2;
@@ -393,7 +401,7 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 	if($pos=="center")
 		$y = ($imageHeight - $textHeight) / 2;
 	else if($pos=="bottom")
-		$y = $imageHeight - $textHeight - 10;
+		$y = $imageHeight - 2 * $textHeight;
 
 	return imageWriteText($img, $text, $textSize, $x, $y, $outline);
 }
@@ -404,6 +412,11 @@ function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=0)
 	$font = getFont();
 	$angle = 0;
 	$color= WHITE;
+
+	if(!function_exists("imagettftext"))
+	{
+		return imagestring($img, 3, $x, $y, $text, WHITE);
+	}
 
 	debug("imageWriteText", "$text, size:$textSize, $x,$y");
 
