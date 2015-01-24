@@ -9,4 +9,4 @@ else
 	echo "resize Height: $4"
 fi
 
-ffmpeg -i $1/$2 $filter -b:v 800k -ab 128k -ac 2 -strict -2 -movflags faststart -y $1/$3.m4v
+ffmpeg -i "$1/$2" $filter -b:v 800k -ab 128k -ac 2 -strict -2 -movflags faststart -y "$1/$3.m4v"
