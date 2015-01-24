@@ -5,6 +5,7 @@
 .hd
 .mp
 .mt
+mt
 .tag
 .temp
 .bg.jpg
