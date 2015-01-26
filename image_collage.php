@@ -280,11 +280,11 @@ copyImages($img, $mediaFiles, $ratios, $iscolumn, $margin, $caption);
 
 debug();
 if($text)
-	$box = imageWriteTextCentered($img, $text, 100, 2);
+	$box = imageWriteTextCentered($img, $text, 100, 2, $margin);
 if($textTop)
-	$box = imageWriteTextCentered($img, $textTop, 100, 2, "top");
+	$box = imageWriteTextCentered($img, $textTop, 100, 2, $margin, "top");
 if($textBottom)
-	$box = imageWriteTextCentered($img, $textBottom, 100, 2, "bottom");
+	$box = imageWriteTextCentered($img, $textBottom, 100, 2, $margin, "bottom");
 
 //output file
 if($target!=="")

@@ -365,7 +365,7 @@ function getFont($name="")
 	return combine(getConfig("fonts.dir"), $name);
 }
 
-function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos="center")
+function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $margin=0, $pos="center")
 {
 	if(!$img || !$text) return;
 	$font = getFont();
@@ -374,14 +374,16 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 	$imageWidth = imageSX($img);
 	$imageHeight = imageSY($img);
 
-	if(!function_exists("imagettftbbox"))
+	$useTTF = getConfig("fonts.useTTF") && function_exists("imagettfbbox");
+	if(!$useTTF)
 	{
 		$textWidth = 10 * strlen($text);
-		$textHeight = 10;
+		$textSize = $textHeight = 16;
 	}
 	else
 	{
 		$box = imagettfbbox($textSize, $angle, $font, $text);
+		debug("imagettfbbox", $box);
 		$textWidth = $box[2] - $box[0];
 		$textHeight = $box[3] - $box[5];
 		debug("imagettfbbox", "$textWidth * $textHeight");	
@@ -396,12 +398,16 @@ function imageWriteTextCentered($img, $text, $textSize=50, $outline=false, $pos=
 		}
 	}
 
+debug("image size: $imageWidth x $imageHeight");
+debug("text size $text: $textWidth x $textHeight");
 	$x = ($imageWidth - $textWidth) / 2;
-	$y=10;
+	$y= 10 + $margin;
 	if($pos=="center")
 		$y = ($imageHeight - $textHeight) / 2;
 	else if($pos=="bottom")
-		$y = $imageHeight - 2 * $textHeight;
+		$y = $imageHeight - $textHeight - $margin;
+
+debug("text position: $x, $y");
 
 	return imageWriteText($img, $text, $textSize, $x, $y, $outline);
 }
@@ -413,9 +419,18 @@ function imageWriteText($img, $text, $textSize=50, $x=0, $y=0, $outline=0)
 	$angle = 0;
 	$color= WHITE;
 
-	if(!function_exists("imagettftext"))
+	$useTTF = getConfig("fonts.useTTF") && function_exists("imagettfbbox");
+	if(!$useTTF)
 	{
-		return imagestring($img, 3, $x, $y, $text, WHITE);
+		if($outline)
+		{
+			$outline=1;
+			imagestring($img, 5, $x - $outline, $y - $outline, $text, BLACK);
+			imagestring($img, 5, $x + $outline, $y + $outline, $text, BLACK);
+			imagestring($img, 5, $x + $outline, $y - $outline, $text, BLACK);
+			imagestring($img, 5, $x - $outline, $y + $outline, $text, BLACK);
+		}
+		return imagestring($img, 5, $x, $y, $text, WHITE);
 	}
 
 	debug("imageWriteText", "$text, size:$textSize, $x,$y");

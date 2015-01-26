@@ -10,6 +10,7 @@ USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playst
 TEMP_DIR;.temp
 fonts.dir;fonts
 fonts.default;impact
+fonts.useTTF;true
 SPECIAL_FILES;config/special.txt
 EXIF_SUPPORTED_TYPES;IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
 DEFAULT_TIMEZONE;America/Los_Angeles
