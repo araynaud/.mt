@@ -126,7 +126,7 @@
 
 <!-- template for video download links by extension -->
 <script id="extLinkTemplate" type="text/x-jsrender"> 
-	<a class="download" title="{{:~formatSize(#parent.parent.data.vsizes[#data])}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
+	<a class="download" title="{{:#parent.parent.data.width}}x{{:#parent.parent.data.height}} {{:~formatSize(#parent.parent.data.vsizes[#data])}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
 </script>
 
 <!-- template for playlist items -->

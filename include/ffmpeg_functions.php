@@ -267,7 +267,7 @@ debug("estimateFileSize", "($duration, $videoBitrate, $audioBitrate)");
 	return $bps * $duration;
 }
 
-function convertVideo($relPath, $inputFile, $to, $size=0)
+function convertVideo($relPath, $inputFile, $to, $size=0, $start=0, $end=0)
 {
 //calculate height from display_aspect_ratio
 	$convert = getConfig("_FFMPEG.convert.$to");
@@ -317,8 +317,8 @@ debug("script", $script);
 debug("script", $script);
 if(!$script) return;
 
-	$cmd = "$script [0] [1] [2] [3]";
-	$cmd = makeCommand($cmd, $relPath, $inputFile, $outputFilename, $size);
+	$cmd = "$script [0] [1] [2] [3] [4] [5]";
+	$cmd = makeCommand($cmd, $relPath, $inputFile, $outputFilename, $size, $start, $end);
 debug("command", $cmd);
 	$output = execCommand($cmd, false); //exec in background
 	

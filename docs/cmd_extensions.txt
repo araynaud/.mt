@@ -1,0 +1,19 @@
+If you use the Command Processor Extensions (which is default on Windows 2000 and later) then you can use the following optional syntax:
+
+%~1         - expands %1 removing any surrounding quotes (")
+%~f1        - expands %1 to a fully qualified path name
+%~d1        - expands %1 to a drive letter only
+%~p1        - expands %1 to a path only
+%~n1        - expands %1 to a file name only
+%~x1        - expands %1 to a file extension only
+%~s1        - expanded path contains short names only
+%~a1        - expands %1 to file attributes
+%~t1        - expands %1 to date/time of file
+%~z1        - expands %1 to size of file
+The modifiers can be combined to get compound results:
+
+%~dp1       - expands %1 to a drive letter and path only
+%~nx1       - expands %1 to a file name and extension only
+So your command would look something like this:
+
+if exist %2\%~nx1 ren %2\%~nx1 %~n1_standby%~x1

@@ -13,7 +13,7 @@ do
 	echo $1
 	input="$input \"$1\""
 
-	ffmpeg -i "$1" -c copy -an -bsf:v h264_mp4toannexb -f mpegts "$1.ts"
+	ffmpeg -i "$1" -c copy -bsf:v h264_mp4toannexb -f mpegts "$1.ts"
 	filenames=$filenames$sep"$1.ts"
 	sep="|"
 	shift

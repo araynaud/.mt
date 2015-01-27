@@ -10,6 +10,11 @@ $debug=getParamBoolean("debug");
 $format=getParam("format", "ajax");
 $convertTo = getParam("to", "stream");
 $mode = getParam("mode");
+$start = getParam("start");
+$end = getParam("end");
+//$length = getParam("length");
+//if(!$end)	$end=$start+$length;
+
 //if metadata / stream[0] is mp4 format 
 //if (fileHasType($file,"mts"))
 //	$outputFile=remuxVideo($relPath, $file, "mp4");
@@ -21,7 +26,7 @@ $progress="";
 if($mode=="progress")
 	$progress=convertVideoProgress($relPath, $file, $convertTo);
 else
-	$outputFile=convertVideo($relPath, $file, $convertTo, $size);
+	$outputFile=convertVideo($relPath, $file, $convertTo, $size, $start, $end);
 
 $imgType=getImageTypeFromExt($outputFile);
 
