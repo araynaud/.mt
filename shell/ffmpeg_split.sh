@@ -4,7 +4,7 @@
 if [ "$3" = "" ]; then
 	ss=""
 else
-	ss="-to $3"
+	ss="-ss $3"
 fi
 
 if [ "$4" = "" ]; then
