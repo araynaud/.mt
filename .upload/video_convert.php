@@ -12,8 +12,9 @@ $convertTo = getParam("to", "stream");
 $mode = getParam("mode");
 $start = getParam("start");
 $end = getParam("end");
-//$length = getParam("length");
-//if(!$end)	$end=$start+$length;
+$length = getParam("length");
+if(!$end && $length)
+	$end = $start ? $start + $length : $length;
 
 //if metadata / stream[0] is mp4 format 
 //if (fileHasType($file,"mts"))
