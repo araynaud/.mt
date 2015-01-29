@@ -104,7 +104,7 @@ Html5Player.prototype.setupEvents = function()
 	    var sl=hp.slideshow;
    		if(sl && sl.play)
 			sl.showNextImage();
-    	else if(hp.repeat || !hp.isLastItem())
+    	else if(hp.settings.repeat || !hp.isLastItem())
 	    	hp.playNext();
  	});
 
@@ -158,7 +158,7 @@ Html5Player.prototype.setupEvents = function()
 				var sl=hp.slideshow;
 		   		if(sl && sl.play)
 					sl.showNextImage();
-		    	else if(hp.repeat || !hp.isLastItem())
+		    	else if(hp.settings.repeat || !hp.isLastItem())
 			    	hp.playNext();
 		}
 	};
@@ -343,12 +343,42 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 
 Html5Player.prototype.loadMediaFile = Html5Player.prototype.loadPlaylist;
 
+Html5Player.prototype.getFilePosition = function(input)
+{
+	if(isEmpty(this.mediaFiles.length))
+		return 0;
+	if(isMissing(input) && this.current > this.mediaFiles.length)
+		return 0;
+	if(isMissing(input))
+		return this.current;
+//object: search by name
+	if(isObject(input))
+		input = input.id || input.name  || input.filename;
+//string: search by name
+	if(isString(input))
+	{
+		var i=this.mediaFiles.getElementPosition(input,["id","name"]);
+		return i>=0 ? i : 0;
+	}
+//number
+	return this.validIndex(input);
+};
+
+Html5Player.prototype.validIndex = function(i)
+{
+	return modulo(i, this.mediaFiles.length);
+};
+
 Html5Player.prototype.loadFile = function(index)
 {
+/*
 	index = valueOrDefault(index, this.current);
 	if(!isEmpty(this.mediaFiles))
 		index = modulo(index, this.mediaFiles.length);
 	this.current = index;
+*/
+	this.current = this.getFilePosition(index);
+
 	this.currentFile = this.mediaFiles[this.current];
 	var isEmbedded = this.isEmbeddedVideo();
 	if(isEmbedded)
