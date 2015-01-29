@@ -1,11 +1,11 @@
-TITLE;(PS3)
-DISPLAY.group;false
-DISPLAY.border;true
-DISPLAY.fadeIn;false
-DISPLAY.shadow;false
-DISPLAY.displayOptions;false
-DISPLAY.searchOptions;true
-;DISPLAY.titleContainer;false
+TITLE=(PS3)
+display.group;false
+.border;true
+.fadeIn;false
+.shadow;false
+.displayOptions;false
+.searchOptions;true
+.titleContainer;false
 
 transition.changeMode;false
 slideshow.changeMode;false

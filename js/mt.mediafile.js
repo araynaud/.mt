@@ -762,8 +762,10 @@ MediaFile.prototype.play = function()
 		case "VIDEO":
 			if(this.isExternalVideoStream() && (config.youtube.mode!="iframe" || !MediaPlayer.YouTubeReady))
 				return false;
-			if(!window.MediaPlayer || !MediaPlayer.slide || !this.isVideoStream())
+			if(!window.MediaPlayer || !this.isVideoStream())
 				return false;
+			if(config.display.playVideo=="video")
+				return MediaPlayer.loadPlaylist("video", album.mediaFiles, this);
 		case "IMAGE":
 			if(window.UI)
 				return UI.slideshow.display(this);

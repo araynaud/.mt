@@ -1,78 +1,86 @@
 ;app global default config
-TITLE;Media Thingy
-debug.output;false
-debug.ajax;false
+TITLE=Media Thingy
+debug.output=false
+debug.ajax=false
 
-USER_AGENT.DEVICES;mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
-;USER_AGENT.FORCE;mobile android
+USER_AGENT.DEVICES=mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
+;USER_AGENT.FORCE=mobile android
 
 ;relative path from app root dir to data files root
-TEMP_DIR;.temp
-fonts.dir;fonts
-fonts.default;impact
-fonts.useTTF;true
-SPECIAL_FILES;config/special.txt
-EXIF_SUPPORTED_TYPES;IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
-DEFAULT_TIMEZONE;America/Los_Angeles
-JQUERYFX;true
-COPY_REDIRECT;false
-downloads.enabled;true
-downloads.interval;5000
+TEMP_DIR=.temp
+SPECIAL_FILES=config/special.txt
+EXIF_SUPPORTED_TYPES=IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
+DEFAULT_TIMEZONE=America/Los_Angeles
+JQUERYFX=true
+COPY_REDIRECT=false
+downloads.enabled=true
+downloads.interval=5000
 
-encoding;UTF-8
-language;EN
-keyboard;true
+files.tempDir=.temp
+files.copyRedirect=false
+;multi download
+
+;fonts for image and video text
+fonts.dir=fonts
+fonts.default=impact
+fonts.useTTF=true
+
+encoding=UTF-8
+language=EN
+keyboard=true
 
 ;index options
-depth;0
-dateIndex.enabled;true
-dateIndex.types;IMAGE;VIDEO;DIR
+depth=0
+dateIndex.enabled=true
+dateIndex.types=IMAGE;VIDEO;DIR
 
 ;display sizes
-SIZE.OPTIONS;tiny;small;medium;large;full
-SIZE.DEFAULT;small
+SIZE.OPTIONS=tiny;small;medium;large;full
+SIZE.DEFAULT=small
 
-;thumbnail display
-display.types;IMAGE;VIDEO;AUDIO
-DISPLAY.size;small
-.reverse;false
-.dirsFirst;true
-.group;false
-.border;true
-.rotate;false
-.shadow;true
-.fadeIn;true
-.margin;true
-.caption;true
-.columns;0
-.fit;width
-.percent;true
-.transpose;false
-.maxTnIndex;2
-.displayOptions;true
-.searchOptions;false
-.titleContainer;true
-.downloadFileList;false
-.tagList;true
+;album display options
+display.types=IMAGE;VIDEO;AUDIO
+.size=small
+.reverse=false
+.dirsFirst=true
+.group=false
+.border=true
+.rotate=false
+.shadow=true
+.fadeIn=true
+.margin=true
+.caption=true
+.columns=0
+.fit=width
+.percent=true
+.transpose=false
+.maxTnIndex=2
+.displayOptions=true
+.searchOptions=false
+.titleContainer=true
+.downloadFileList=false
+.tagList=true
+.playVideo=slideshow
+.playVideo=video
 
 ;slideshow
-;slideshow.interval;5000
-;slideshow.alignX;right
-;slideshow.alignY;bottom
-slideshow.changeMode;true
-slideshow.tnIndex;1
-slideshow.animate;true
-slideshow.zoom;1
-slideshow.animStartZoom;1
-slideshow.animEndZoom;2
-slideshow.autoPlayAudio;false
+;slideshow.interval=5000
+;slideshow.alignX=right
+;slideshow.alignY=bottom
+slideshow.changeMode=true
+slideshow.tnIndex=1
+slideshow.animate=true
+slideshow.zoom=1
+slideshow.animStartZoom=1
+slideshow.animEndZoom=2
+slideshow.autoPlayAudio=false
 
 ;UI transition
-transition.type;1
-transition.duration;1000
-transition.increment;1
-transition.clear;true
-transition.changeMode;queue
+transition.type=1
+transition.duration=1000
+transition.increment=1
+transition.clear=true
+transition.changeMode=queue
 
 ;file sorting
 SORT.OPTIONS;takenDate;name;title;type;Tags;description;subdir;random;duration;width;height;ratio
@@ -85,45 +93,44 @@ PAGINATE.OPTIONS;1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all
 .MIN_LAST_PAGE;.5
 
 ;image thumbnail generation
-thumbnails.sizes.tn;225
-thumbnails.sizes.ss;1000
-thumbnails.sizes.hd;1920
-thumbnails.IMAGE.script;image.php
-thumbnails.VIDEO.ext;jpg
-thumbnails.VIDEO.max_size;1000
-thumbnails.VIDEO.script;video_thumbnail.php
-thumbnails.AUDIO.ext;jpg
-thumbnails.maxStretch;1
+thumbnails.sizes.tn=225
+thumbnails.sizes.ss=1000
+thumbnails.sizes.hd=1920
+thumbnails.IMAGE.script=image.php
+thumbnails.VIDEO.ext=jpg
+thumbnails.VIDEO.max_size=1000
+thumbnails.VIDEO.script=video_thumbnail.php
+thumbnails.AUDIO.ext=jpg
+thumbnails.maxStretch=1
 
 ;background image properties
-background.size;1000
-background.fit;stretch
+background.size=1000
+background.fit=stretch
 
 ;file types // different files depending on device? .config.iPad.csv; ;special file types not listed
-TYPES.IMAGE;jpg;jpeg;png;gif;bmp;svg
-TYPES.IMAGE_NOTHUMB;bmp;svg
-TYPES.AUDIO;mp3;wav;m4a;aac;ogg
-TYPES.VIDEO;avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
-TYPES.VIDEO_STREAM;m4v;mp4;flv;3gp;webm;ogm;ogv
-TYPES.SPECIAL;xml;php;chunk;js;css
-TYPES.TEXT;txt
+TYPES.IMAGE=jpg;jpeg;png;gif;bmp;svg
+TYPES.IMAGE_NOTHUMB=bmp;svg
+TYPES.AUDIO=mp3;wav;m4a;aac;ogg
+TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
+TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
+TYPES.SPECIAL=xml;php;chunk;js;css
+TYPES.TEXT=txt
 
 ;JW Player options
-JWPLAYER.allowHtml5;true
-JWPLAYER.allowFlash;true
-JWPLAYER.MODES.0.type;flash
-JWPLAYER.MODES.0.src;jwplayer510/player.swf
-JWPLAYER.MODES.1.type;html5
-JWPLAYER.MODES.2.type;download
+JWPLAYER.allowHtml5=true
+JWPLAYER.allowFlash=true
+JWPLAYER.MODES.0.type=flash
+JWPLAYER.MODES.0.src=jwplayer510/player.swf
+JWPLAYER.MODES.1.type=html5
+JWPLAYER.MODES.2.type=download
 
-MediaPlayer.video.enabled;true
-MediaPlayer.audio.enabled;true
-MediaPlayer.slide.enabled;true
-MediaPlayer.js;js/mt.html5player.js
-;MediaPlayer.js;js/mt.mediaplayer.js
-;MediaPlayer.jwplayer.js;js/lib/jwplayer510.js
-;MediaPlayer.jwplayer.flash;jwplayer510/player.swf
-
+MediaPlayer.video.enabled=true
+MediaPlayer.audio.enabled=true
+MediaPlayer.slide.enabled=true
+MediaPlayer.js=js/mt.html5player.js
+;MediaPlayer.js=js/mt.mediaplayer.js
+;MediaPlayer.jwplayer.js=js/lib/jwplayer510.js
+;MediaPlayer.jwplayer.flash=jwplayer510/player.swf
 
 ;FFMPEG scripts
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin
@@ -152,19 +159,19 @@ _FFMPEG.convert.audio.script=ffmpeg2mp3
 _FFMPEG.convert.audio.audio_bitrate=128
 
 ;Irfan View
-_IRFANVIEW.PATH;C:\Program Files (x86)\IrfanView
-_IRFANVIEW.EXE;i_view32.exe
-_IRFANVIEW.JPG_ROTATE;0;v;h;90;180;-90;auto
-_IRFANVIEW.enabled;true
+_IRFANVIEW.PATH=C:\Program Files (x86)\IrfanView
+_IRFANVIEW.EXE=i_view32.exe
+_IRFANVIEW.JPG_ROTATE=0;v;h;90;180;-90;auto
+_IRFANVIEW.enabled=true
 
 ;The Gimp
-_GIMP.PATH;C:\Program Files\GIMP 2\bin
-_GIMP.EXE;gimp-2.8.exe
+_GIMP.PATH=C:\Program Files\GIMP 2\bin
+_GIMP.EXE=gimp-2.8.exe
 
 ;file valid actions
-file.actions;move;delete;background;rename;addtag;removetag;descrption;convert
+file.actions=move;delete;background;rename;addtag;removetag;descrption;convert
 ;delete: move to this directory. if blank: delete files 
-file.delete.to;.bad
+file.delete.to=.bad
 
 ;EXTERNAL API INTEGRATION
 ;Facebook
@@ -174,21 +181,21 @@ fb.shareUrl;https://www.facebook.com/sharer/sharer.php
 ;YouTube
 youtube.mode;iframe
 ;youtube.mode;link
-youtube.videoUrl;http://www.youtube.com/watch?v={0}
-youtube.imageUrl;http://img.youtube.com/vi/{0}/0.jpg
-youtube.embedUrl;http://www.youtube.com/v/{0}
-youtube.iframeUrl;http://www.youtube.com/embed/{0}
-youtube.iframeApiUrl;https://www.youtube.com/iframe_api
-;youtube.oembedUrl;http://www.youtube.com/oembed?url=youtu.be/{0}
-youtube.oembedUrl;/proxy.php/www.youtube.com/oembed?url=youtu.be/{0}
+youtube.videoUrl=http://www.youtube.com/watch?v={0}
+youtube.imageUrl=http://img.youtube.com/vi/{0}/0.jpg
+youtube.embedUrl=http://www.youtube.com/v/{0}
+youtube.iframeUrl=http://www.youtube.com/embed/{0}
+youtube.iframeApiUrl=https://www.youtube.com/iframe_api
+;youtube.oembedUrl=http://www.youtube.com/oembed?url=youtu.be/{0}
+youtube.oembedUrl=/proxy.php/www.youtube.com/oembed?url=youtu.be/{0}
 
 ;Vimeo
-vimeo.iframeUrl;http://player.vimeo.com/video/{0}
-vimeo.imageUrl;http://i.vimeocdn.com/video/{0}.jpg?mw=600
+vimeo.iframeUrl=http://player.vimeo.com/video/{0}
+vimeo.imageUrl=http://i.vimeocdn.com/video/{0}.jpg?mw=600
 
 ;PHPmyVisites
-;visittracker.enabled;true
-visittracker.siteId;238250
-visittracker.url;http://st.free.fr/
-visittracker.php;phpmyvisites.php
-visittracker.js;phpmyvisites.js
+;visittracker.enabled=true
+visittracker.siteId=238250
+visittracker.url=http://st.free.fr/
+visittracker.php=phpmyvisites.php
+visittracker.js=phpmyvisites.js

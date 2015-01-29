@@ -556,16 +556,17 @@ Album.prototype.selectRange = function(from, to, state)
 Album.prototype.loadDisplayOptions = function()
 {
 	config = this.config; //global config
-	if(!config.DISPLAY) return;
-	config.DISPLAY.size=valueOrDefault(config.DISPLAY.size,0);
-	for(var key in config.DISPLAY)
+	var displayConfig = config.DISPLAY || config.display;
+	if(!displayConfig) return;
+	displayConfig.size=valueOrDefault(displayConfig.size,0);
+	for(var key in displayConfig)
 	{
-		var value=config.DISPLAY[key];
+		var value=displayConfig[key];
 		this[key]=value;
 		$("input#cb_" + key).prop("checked",value);
 		$("select#dd_" + key).val(value);
 	}
-	return config.DISPLAY;
+	return displayConfig;
 };
 
 

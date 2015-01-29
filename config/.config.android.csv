@@ -1,15 +1,15 @@
-TITLE;(android)
-DISPLAY.group;false
-DISPLAY.border;true
-DISPLAY.fadeIn;false
-DISPLAY.displayOptions;false
-DISPLAY.searchOptions;false
-;DISPLAY.titleContainer;false
+TITLE=(android)
+display.group=false
+.border=true
+.fadeIn=false
+.displayOptions=false
+.searchOptions=false
+;.titleContainer=false
 
-transition.changeMode;false
-slideshow.changeMode;false
-slideshow.zoomFunction;crossFade
+transition.changeMode=false
+slideshow.changeMode=false
+slideshow.zoomFunction=crossFade
 
-MediaPlayer.video.enabled;true
-MediaPlayer.audio.enabled;true
-MediaPlayer.slide.enabled;true
+MediaPlayer.video.enabled=true
+MediaPlayer.audio.enabled=true
+MediaPlayer.slide.enabled=true

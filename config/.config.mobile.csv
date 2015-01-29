@@ -1,22 +1,22 @@
-TITLE;(mobile)
-DISPLAY.size;small
-DISPLAY.maxTnIndex;1
-DISPLAY.border;true
-DISPLAY.fadeIn;false
-DISPLAY.displayOptions;false
-DISPLAY.searchOptions;false
-DISPLAY.downloadFileList;false
+TITLE=(mobile)
+display.size=small
+.maxTnIndex=1
+.border=true
+.fadeIn=false
+.displayOptions=false
+.searchOptions=false
+.downloadFileList=false
 
-SIZE.OPTIONS;tiny;small;full
-SIZE.DEFAULT;small
+SIZE.OPTIONS=tiny;small;full
+SIZE.DEFAULT=small
 
-PAGINATE.DEFAULT;10
+PAGINATE.DEFAULT=10
 
-keyboard;false
-transition.changeMode;false
-slideshow.changeMode;false
-slideshow.zoomFunction;crossFade
-slideshow.autoPlayAudio;false
-slideshow.animate;false
+keyboard=false
+transition.changeMode=false
+slideshow.changeMode=false
+slideshow.zoomFunction=crossFade
+slideshow.autoPlayAudio=false
+slideshow.animate=false
 
-youtube.mode;link
+youtube.mode=link

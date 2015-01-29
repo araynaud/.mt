@@ -52,7 +52,7 @@ Html5Player.playerSettings=
 		type: "video",
 		id:"videoPlayer",
 		youtube: true,
-		size: 1,
+		size: 2,
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
@@ -88,12 +88,12 @@ Html5Player.init = function(playerKey)
 	return Html5Player.getInstance(playerKey).loadFromHtml();
 };
 
-Html5Player.loadPlaylist = function(playerKey, mediaFiles)
+Html5Player.loadPlaylist = function(playerKey, mediaFiles, start)
 {
 	var hp = Html5Player.getInstance(playerKey);
 	if(hp.type=="video")
 		mediaFiles=mediaFiles.filter(MediaFile.isVideoStream); 
-	return hp.loadPlaylist(mediaFiles);
+	return hp.loadPlaylist(mediaFiles, start);
 };
 
 Html5Player.prototype.setupEvents = function()
@@ -192,7 +192,7 @@ Html5Player.getInstance = function(playerKey)
 };
 
 //create playlist from HTML
-Html5Player.prototype.loadFromHtml = function()
+Html5Player.prototype.loadFromHtml = function(start)
 {
 	if(isEmpty(this.mediaFiles))
 	{
@@ -209,7 +209,7 @@ Html5Player.prototype.loadFromHtml = function()
         hp.loadFile(link.parent().index());
     });
 
-	return this.loadFile();
+	return this.loadFile(start);
 };
 
 Html5Player.prototype.createPlayer = function()
@@ -315,7 +315,7 @@ Html5Player.prototype.getPlayPauseIcon = function()
 };
 
 //render playlist from mediaFiles array
-Html5Player.prototype.loadPlaylist = function(mediaFiles)
+Html5Player.prototype.loadPlaylist = function(mediaFiles, start)
 {
 	if(isEmpty(mediaFiles))
 	{
@@ -338,7 +338,7 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles)
 	if(mediaFiles.length>1)
 		this.setupIcons();
 
-	return this.loadFromHtml();
+	return this.loadFromHtml(start);
 }
 
 Html5Player.prototype.loadMediaFile = Html5Player.prototype.loadPlaylist;

@@ -1,6 +1,6 @@
-;TITLE;(root)
-SIZE.DEFAULT;medium
-DISPLAY.size;medium
-DISPLAY.reverse;true
-DISPLAY.group;true
-DISPLAY.dirsFirst;true
+;TITLE=(root)
+SIZE.DEFAULT=medium
+display.size=medium
+.reverse=true
+.group=true
+.dirsFirst=true

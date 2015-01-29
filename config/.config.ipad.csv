@@ -1,17 +1,17 @@
 ;app global default config
-TITLE;iPad Thingy
+TITLE=iPad Thingy
 
 ;thumbnail display
-DISPLAY.rotate;false
-DISPLAY.reverse;false
-DISPLAY.downloadFileList;false
-DISPLAY.searchOptions;true
+display.rotate=false
+.reverse=false
+.downloadFileList=false
+.searchOptions=true
 
 slideshow.zoomFunction;crossFade
 
 ;paginate / count per page
 
 ;file types // different files depending on device?
-TYPES.AUDIO;mp3;m4a;aac
-TYPES.VIDEO;mp4;m4v;mov;3gp
-TYPES.VIDEO_STREAM;m4v;mp4;3gp
+TYPES.AUDIO=mp3;m4a;aac
+TYPES.VIDEO=mp4;m4v;mov;3gp
+TYPES.VIDEO_STREAM=m4v;mp4;3gp
