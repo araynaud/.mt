@@ -49,7 +49,9 @@ function countFilesByName($dir, $name, $group=true)
 function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse=null)
 {
 	global $config;
-	
+	$specialTypes = getConfig("TYPES.SPECIAL");
+
+debug("listFiles $dir", $search);
 	$files=array();
 	if (!is_dir($dir))	return $files;
 
@@ -58,18 +60,18 @@ function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse
 	setIfNull($remaining, @$search["maxCount"]);
 	setIfNull($recurse, @$search["depth"]);	
 	if(!isset($search["exts"]) && isset($search["type"]))
+	{
 		$search["exts"]=getExtensionsForTypes(@$search["type"]);
-
-	if(!@$search["tagfiles"])
+		debug("search exts " . $search["type"], @$search["exts"]);
+	}
+	if(@$search["tag"] && !@$search["tagfiles"])
 	{
 		$search["tagfiles"] = searchTagFiles($dir, $recurse, @$search["tag"]);
 		$cnt=count($search["tagfiles"]);
 		debug("listFiles: files matched by tags ($cnt)", $search["tagfiles"], true);
 	}
 
-debug("listFiles $dir", $search);
 debug("subpath", $subPath);
-
 	//search 1 exact filename
 	if(isset($search["file"]))
 	{
@@ -81,6 +83,7 @@ debug("subpath", $subPath);
 	{
 		global $relPathG;
 		$handle=opendir($dir);	
+debug("opendir $dir", $handle);
 		if(!$handle)	return $files;
 
 		$relPathG=$dir;
@@ -104,7 +107,7 @@ debug("subpath", $subPath);
 
 			$key=combine($subPath, $key);
 			$hasNameAndType = fileMatches($file, $key, $search);
-			if(isset($search["exts"]) && !$hasNameAndType && in_array($ext, @$config["TYPES"]["SPECIAL"])) continue;
+			if(isset($search["exts"]) && !$hasNameAndType && $specialTypes && in_array($ext, $specialTypes)) continue;
 
 			if(!$hasNameAndType) continue;
 
@@ -198,8 +201,8 @@ function fileMatches($file, $key, $search)
 	$hasType = fileHasType($file, @$search["exts"]);
 	if(!@$search["name"] && !@$search["tag"]) return $hasType;
 
-	$hasName = $search["name"] && fileHasName($file, @$search["name"] , @$search["start"], @$search["end"]);
-	$hasTag = $search["tagfiles"] && array_key_exists($key, $search["tagfiles"]);
+	$hasName = @$search["name"] && fileHasName($file, @$search["name"] , @$search["start"], @$search["end"]);
+	$hasTag = @$search["tagfiles"] && array_key_exists($key, $search["tagfiles"]);
 	$result = ($hasName || $hasTag) && $hasType;
 	if($result)
 		debug("fileMatches $file $key", "name:$hasName | tag:$hasTag & type:$hasType = $result");
@@ -318,11 +321,11 @@ function loadIgnoreList($dir)
 //function with condition to exclude file before adding it to array
 function ignoreFile($file)
 {
-	global $config, $ignoreList, $relPathG;
+	global $ignoreList, $relPathG;
 	//always ignore $specialDirs and file names and types
 	if(isSpecialFile($file)) return true;
 	//list hidden and ignored files for admin
-	if(is_admin()) return false;
+	if(function_exists("is_admin") && is_admin()) return false;
 	if(isset($ignoreList[$file])) return true;
 
 	return fileIsHidden($file);
@@ -330,8 +333,9 @@ function ignoreFile($file)
 
 function isSpecialFile($file)
 {
-	global $config;
-	$specialFiles = @$config["SPECIAL_FILES"];
+	$specialFiles = getConfig("SPECIAL_FILES");
+	if(!$specialFiles) return false;
+
 	$file=strtolower($file);
 	if(isset($specialFiles[$file])) return true;
 	foreach ($specialFiles as $value)
@@ -758,7 +762,7 @@ function findFirstImages($relPath, $maxCount=1)
 		unset($search["tnDir"]);
 		$pics=listFiles($relPath,$search);
 	}
-//	debug("findFirstImage", $pics);
+	debug("findFirstImage", $pics);
 	return $pics;
 }
 

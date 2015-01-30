@@ -32,12 +32,9 @@ debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", t
 debug();
 debug("GD Info", gd_info(), true);
 
-debug("Definded functions", get_defined_functions(), true);
+//debug("Defined functions", get_defined_functions(), true);
 
-
-
-
-$pdjConfig2 = readConfigFile("../ng/pdj/pdj.config");
+$pdjConfig2 = readConfigFile("../pdj/pdj.config");
 echoJsVar("pdjConfig2");
 
 $meta = metaTags($path);
@@ -139,7 +136,7 @@ debug("isDomainRoot '" . getAbsoluteAppRoot(), isDomainRoot(getAbsoluteAppRoot()
 debug("isDomainRoot '" . getAbsoluteDataRoot(), isDomainRoot(getAbsoluteDataRoot()));
 
 $image = findFirstImage($relPath);
-debug("findFirstImage", $image);
+debug("findFirstImage $relPath", $image);
 $imageUrl = getAbsoluteFileUrl($path, $image);
 debug("getAbsoluteFileUrl", $imageUrl);
 

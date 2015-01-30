@@ -701,11 +701,35 @@ debug("createDir $dir in ",$relPath);
 	return @mkdir($outputDir, 0700);
 }
 
-
 function updateFileMetadata()
 {
 	//load MetaData file
 	setNestedArrayValue($metadata, $key ,$rowData);
 //save file
+}
+
+function findThumbnails($dir, $file, $appendPath=true)
+{
+	$sizes = getConfig("thumbnails.sizes");
+	if(!$sizes) return false;
+	$thumbnails = array();
+	foreach($sizes as $tnDir => $size)
+		$thumbnails[$tnDir] = findThumbnail($dir, $file, ".$tnDir", $appendPath);
+
+	return $thumbnails;
+}
+
+function findThumbnail($dir, $file, $tnDir, $appendPath=true)
+{
+//for image, get .tn/image
+	$thumb=combine($dir,$tnDir,$file);
+	if(file_exists($thumb))
+		return $appendPath ? $thumb : $file;
+//for video, get .tn/name.jpg
+	$file=getFilename($file,"jpg");
+	$thumb=combine($dir,$tnDir,$file);
+	if(file_exists($thumb))	
+		return $appendPath ? $thumb : $file;
+	return false;
 }
 ?>

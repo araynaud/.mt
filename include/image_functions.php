@@ -67,31 +67,6 @@ function createThumbnails($dir,$subfolder,$size,$force=false)
 	}
 }
 
-function findThumbnails($dir, $file, $appendPath=true)
-{
-	$sizes = getConfig("thumbnails.sizes");
-	if(!$sizes) return false;
-	$thumbnails = array();
-	foreach($sizes as $tnDir => $size)
-		$thumbnails[$tnDir] = findThumbnail($dir, $file, ".$tnDir", $appendPath);
-
-	return $thumbnails;
-}
-
-function findThumbnail($dir, $file, $tnDir, $appendPath=true)
-{
-//for image, get .tn/image
-	$thumb=combine($dir,$tnDir,$file);
-	if(file_exists($thumb))
-		return $appendPath ? $thumb : $file;
-//for video, get .tn/name.jpg
-	$file=getFilename($file,"jpg");
-	$thumb=combine($dir,$tnDir,$file);
-	if(file_exists($thumb))	
-		return $appendPath ? $thumb : $file;
-	return false;
-}
-
 function createThumbnail($relPath, $file, $tndir, $size)
 {
 	if(!$tndir) return false;
