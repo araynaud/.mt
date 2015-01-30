@@ -48,7 +48,6 @@ function countFilesByName($dir, $name, $group=true)
 
 function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse=null)
 {
-	global $config;
 	$specialTypes = getConfig("TYPES.SPECIAL");
 
 debug("listFiles $dir", $search);
@@ -622,7 +621,7 @@ function getFileType($file, $checkExists=false)
 
 function fileHasType($file, $ext="")
 {
-	global $extG, $config;
+	global $extG;
 	setIfEmpty($ext,$extG);
 	if(is_array($ext) && count($ext)==1) $ext=$ext[0];
 

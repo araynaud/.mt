@@ -93,6 +93,8 @@ debug();
 debug("PATH");
 debug("PHP_SELF", $_SERVER['PHP_SELF']);
 debug("REQUEST_URI", $_SERVER['REQUEST_URI']);
+debug("Current Url", currentUrl());
+debug("Current Url dir", currentUrlDir());
 debug("Current Script Name", currentScriptName());
 debug("Current Script Path", currentScriptPath());
 debug("FILE",__FILE__);

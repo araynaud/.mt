@@ -352,6 +352,11 @@ function currentUrl()
 	return getServerRoot() . $_SERVER['REQUEST_URI'];
 }
 
+function currentUrlDir()
+{	
+	return getServerRoot() . currentScriptPath();
+}
+
 function currentScriptName()
 {	
 	return basename($_SERVER['PHP_SELF']);

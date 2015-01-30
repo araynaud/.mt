@@ -243,6 +243,8 @@ $(window).resize(function(event)
 	<div id="contentFooter" class="wrapper"><?php echo getConfig("FOOTER");?></div>
 </div>
 
+<?php include("slideshow.html");?>
+
 <div id="audioContainer" class="footerRightCorner right noprint" style="width:200px">
 	<div id="musicPlayerMessage" class="text"></div>
 	<div id="musicPlayerControls"></div>	
@@ -250,7 +252,6 @@ $(window).resize(function(event)
 	<div id="musicPlayer"></div>
 </div>
 
-<?php include("slideshow.html");?>
 <?php include("options.php");?>
 <?php include("edit.html");?>
 

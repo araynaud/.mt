@@ -61,7 +61,7 @@ display.types=IMAGE;VIDEO;AUDIO
 .downloadFileList=false
 .tagList=true
 .playVideo=slideshow
-.playVideo=video
+;.playVideo=video
 
 ;slideshow
 ;slideshow.interval=5000
