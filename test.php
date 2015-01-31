@@ -95,12 +95,33 @@ debug("PHP_SELF", $_SERVER['PHP_SELF']);
 debug("REQUEST_URI", $_SERVER['REQUEST_URI']);
 debug("Current Url", currentUrl());
 debug("Current Url dir", currentUrlDir());
+debug("Current Script Url", currentScriptUrl());
 debug("Current Script Name", currentScriptName());
 debug("Current Script Path", currentScriptPath());
+debug();
+
+$url = "https://pimentdujour.com/api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+$url = "//pimentdujour.com/api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+$url = "//pimentdujour.com";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+$url = "/api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+$url = "pdj/api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+
+$url = "../api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+$url = "./pdj/api";
+debug("toAbsoluteUrl $url", toAbsoluteUrl($url));
+
+
+debug();
 debug("FILE",__FILE__);
 debug("dirname",dirname(__FILE__));
 debug("basename",basename(__FILE__));
-
+debug();
 $dir = $path;
 debug("dirname $dir",dirname($dir));
 $dir = dirname($dir);

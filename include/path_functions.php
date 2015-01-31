@@ -346,7 +346,6 @@ function getPathAfter($path,$dir)
 }
 
 //Absolute URL functions
-
 function currentUrl()
 {	
 	return getServerRoot() . $_SERVER['REQUEST_URI'];
@@ -355,6 +354,11 @@ function currentUrl()
 function currentUrlDir()
 {	
 	return getServerRoot() . currentScriptPath();
+}
+
+function currentScriptUrl()
+{	
+	return getServerRoot() . $_SERVER['PHP_SELF'];
 }
 
 function currentScriptName()
@@ -408,4 +412,28 @@ function getAbsoluteFileUrl($path="",$file="")
 debug ("getAbsoluteFileUrl", $absPath);
 	 return combine(getServerRoot(), $absPath, $file);
 }
+
+function toAbsoluteUrl($url)
+{
+	if(startsWith($url, "//"))
+		return getProtocol() . substringAfter($url,"//");
+
+	if(contains($url, "://"))
+		return $url;
+
+	if(startsWith($url, "/"))
+		return getServerRoot() . $url;
+
+	if(startsWith($url, "./"))
+		$url = substringAfter($url,"./");
+
+	if(startsWith($url, ".."))
+	{
+		$url = substringAfter($url,"../");
+		return getParent(currentUrlDir()) . "/$url";
+	}
+
+	return currentUrlDir() . "/$url";
+}
+
 ?>
