@@ -82,8 +82,11 @@ debug("subpath", $subPath);
 	{
 		global $relPathG;
 		$handle=opendir($dir);	
-debug("opendir $dir", $handle);
-		if(!$handle)	return $files;
+		if(!$handle)	
+		{
+			debug("opendir $dir failed", $handle);
+			return $files;
+		}
 
 		$relPathG=$dir;
 		loadIgnoreList($dir);	//load from .ignore.txt file only once

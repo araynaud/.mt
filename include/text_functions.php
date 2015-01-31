@@ -172,6 +172,12 @@ function deleteChars($string, $start, $end=null)
 	return "$before$after";
 }
 
+function cutAfterSentence($text, $maxLength)
+{
+	$before = substr($text, 0, $maxLength);
+	return substringBeforeLast($before, ".", true, true);
+}
+
 // filename to title
 // transform _ into spaces
 // insert spaces between a and A or digit
