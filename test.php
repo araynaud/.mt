@@ -28,6 +28,14 @@ debug("substringBeforeLast", substringBeforeLast("somebody new to shine", " "));
 debug("substringAfterLast",  substringAfterLast("somebody new to shine", " "));
 debug("splitBeforeAfter",  splitBeforeAfter("somebody new to shine", " "));
 debug("splitBeforeAfter last",  splitBeforeAfter("somebody new to shine", " ", true));
+debug();
+$text = "I came up with this recipe when I had some leftover canned tomatoes and decided to come up with a quick pasta sauce.
+Normally I would have added basil to the sauce, but since I had some oregano on hand and I decided to use it instead. 
+I also threw in a few sundried tomatoes to sweeten the sauce a bit.";
+
+debug("cutAfterSentence 100", cutAfterSentence($text, 100));
+debug("cutAfterSentence 200", cutAfterSentence($text, 200));
+debug("cutAfterSentence 300", cutAfterSentence($text, 300));
 
 debug();
 debug("GD Info", gd_info(), true);
