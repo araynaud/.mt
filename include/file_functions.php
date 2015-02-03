@@ -239,6 +239,7 @@ function getSiteName()
 
 function readConfigFile($filename, &$csvRows = NULL, $separator="=")
 {
+//	debug("readConfigFile $filename", realpath($filename));
 	$lines = readArray($filename);
 	if(!$lines)
 		return $csvRows;
@@ -662,8 +663,8 @@ function formatFilemtime($filename)
 function deleteFile($relPath, $file="")
 {
 	$file = combine($relPath, $file);
-	if(file_exists($file))
-		return unlink($file);
+	if(is_dir($file))		return rmdir($file);
+	if(file_exists($file))	return unlink($file);
 	return false;
 }
 

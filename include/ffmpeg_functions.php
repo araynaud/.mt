@@ -176,7 +176,7 @@ function getVideoDuration($output)
 
 function randomSecond($duration)
 {
-	return rand(1, ($total - 1));
+	return rand(1, ($duration - 1));
 }
 
 function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
@@ -216,15 +216,19 @@ function getVideoProperties($relPath, $file="", $convertTo="")
 //debug("getMediaFileInfo", $metadata, true);
 	$data = array();
 
+	$nbStreams = arrayGet($metadata, "FORMAT.nb_streams");
 	//Find video stream: 0 or 1: with codec_type": "video", width and height > 0
-	$streams= array();
-	$codecType=arrayGet($metadata, "STREAM.0.codec_type");
+	$streams = array();
+	$codecType = arrayGetCoalesce($metadata, "STREAM.0.codec_type", "STREAM.codec_type");
 	if($codecType) $streams[$codecType]=0;
+debug("codecType 0", $codecType);
 
-	$codecType=arrayGet($metadata, "STREAM.1.codec_type");
+	$codecType = arrayGet($metadata, "STREAM.1.codec_type");
 	if($codecType) $streams[$codecType]=1;
-	$audio=$streams["audio"];
-	$video=$streams["video"];
+debug("codecType 1", $codecType);
+
+	$audio=arrayGet($streams, "audio");
+	$video=arrayGet($streams, "video");
 
 	//$data["source"] = arrayGet($metadata, "source");
 	$data["duration"] = arrayGet($metadata, "FORMAT.duration");

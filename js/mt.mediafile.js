@@ -556,15 +556,25 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 		},
 		error:   function(xhr, textStatus, errorThrown)
 		{ 
-			result = false;
+			var response = Album.parseErrorResponse(xhr.responseText);
+			result=response;
+
+			//result = false;
 			if(window.UI)
 			{
 				UI.setStatus(textStatus + " " + errorThrown);
-				UI.addStatus(link.outerHtml());
-				UI.addStatus(xhr.responseText);
+				UI.addStatus(response.serverError);
+				if(config.debug.ajax && link)
+					UI.addStatus(link.outerHtml());
 			}
  			if(callbacks && callbacks.error)
 				callbacks.error(xhr, mediaFile);
+
+			if(callbacks && callbacks.success)
+				callbacks.success(response, mediaFile, params);
+			if(callbacks && callbacks.next)
+				callbacks.next(response, script, params, callbacks);
+
 		}
 	});
 	return result;

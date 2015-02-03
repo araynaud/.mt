@@ -286,8 +286,11 @@ UI.imageOnError = function()
 	img.removeClass("loading");
 	img.addClass("error");
 	var src= img.attr("src");
-	var imageLink = $.makeElement("a", {href: src.appendQueryString({debug: true}), target: "image"}).html(src);
-	UI.addStatus(imageLink.outerHtml());
+	if(config.debug.ajax)
+	{
+		var imageLink = $.makeElement("a", {href: src.appendQueryString({debug: true}), target: "image"}).html(src);
+		UI.addStatus(imageLink.outerHtml());
+	}
 	img.unbind("error"); //to avoid infinite loop
 	img.attr("src","icons/delete128.png").show();
 	var caption=filebox.children(".caption, .captionBelow");	

@@ -1,3 +1,12 @@
+JSON parse error:
+take response text
+extract substring before <br/> or [ or { : display error message UI.setStatus
+parse the rest of response as JSON
+
+delete: use rmdir() for directories.
+
+------------
+
 audio/video splitter
 use -to
 time: start time (ffmpeg_split_to) / duration (ffmpeg_split)

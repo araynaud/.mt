@@ -524,6 +524,7 @@ debug("targetDir", $targetDir);
 	public function delete()
 	{
 		$moveTo=getConfig("file.delete.to");
+debug("file.delete.to", $moveTo);		
 		if($moveTo)
 			return $this->move($moveTo);
 

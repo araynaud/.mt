@@ -18,7 +18,16 @@ function getTimer()
 {
 	global $startTime, $endTime;
 	$endTime = microtime(true);
-	return $endTime  - $startTime;
+	return $endTime - $startTime;
+}
+
+function getTimerSinceLast()
+{
+	global $endTime;
+	$time = microtime(true);
+	$result = $time - $endTime;
+	$endTime = $time;
+	return $result;
 }
 
 function debugVar($name, $indent=0)

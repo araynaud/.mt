@@ -93,7 +93,28 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 			else if(Album.onLoad)
 			    Album.onLoad(albumInstance);
 		},
-		error: Album.onError
+		error: function(xhr, textStatus, errorThrown)
+		{ 
+			var response = Album.parseErrorResponse(xhr.responseText);
+			Album.ajaxLoader.hide();
+			if(!response.jsonError)
+			{
+				albumInstance = new Album(response);
+				var endTime = new Date();
+				albumInstance.requestTime = endTime - startTime;
+				window[instanceName] = albumInstance;
+				if(callback) 
+					callback();
+				else if(Album.onLoad)
+				    Album.onLoad(albumInstance);
+			}
+			if(window.UI && UI.setStatus)
+			{
+				UI.setStatus(response.jsonError);
+				UI.addStatus(response.serverError);
+			}
+		}
+
 	});
 	return albumInstance; //only valid if async=false
 };
@@ -103,11 +124,35 @@ Album.onLoad = function (albumInstance)
 {
 };
 
-Album.onError = function(xhr, textStatus, errorThrown)
-{ 
-	if(window.UI && UI.setStatus)
-		UI.setStatus(textStatus +"\n" +errorThrown);
+Album.onError = function (albumInstance) 
+{
 };
+
+//JSON parse error:
+//take response text
+//extract substring before <br/> or [ or { : display error message UI.setStatus
+//parse the rest of response as JSON
+Album.parseErrorResponse = function(responseText)
+{
+	var sep='"';
+	if(responseText.endsWith("}"))
+		sep = "{";
+	else if(responseText.endsWith("]"))
+		sep = "[";
+
+	var json = responseText.substringAfter(sep, false, false, true);
+	var obj = {};
+	try{
+		obj = JSON.parse(json);
+	}
+	catch(err)
+	{
+		obj.jsonError = err.message;
+	}
+	obj.serverError = responseText.substringBefore(sep);
+	return obj;
+}
+
 
 Album.getConfig = function(key)
 {	
