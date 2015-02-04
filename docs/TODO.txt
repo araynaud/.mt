@@ -1,10 +1,16 @@
+list files:
+use scandir, then filter and array_combine
+
 JSON parse error:
 take response text
 extract substring before <br/> or [ or { : display error message UI.setStatus
 parse the rest of response as JSON
 
 delete: use rmdir() for directories.
+empty dir first ? .tn and .ss
 
+--------
+use different image scripts for resize and lossless rotate, for jpg and gif/png image.php / image_auto.php 
 ------------
 
 audio/video splitter
