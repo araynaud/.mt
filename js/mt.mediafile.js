@@ -562,7 +562,8 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 			//result = false;
 			if(window.UI)
 			{
-				UI.setStatus(textStatus + " " + errorThrown);
+				if(response.jsonError)
+					UI.setStatus(response.jsonError);
 				UI.addStatus(response.serverError);
 				if(config.debug.ajax && link)
 					UI.addStatus(link.outerHtml());

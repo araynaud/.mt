@@ -663,10 +663,41 @@ function formatFilemtime($filename)
 function deleteFile($relPath, $file="")
 {
 	$file = combine($relPath, $file);
-	if(is_dir($file))		return rmdir($file);
-	if(file_exists($file))	return unlink($file);
-	return false;
+	$result = false;
+	if(is_dir($file))
+	{
+		$result = deleteDir($file);
+		debug("deleteDir", $result);
+	}
+	else if(file_exists($file))
+	{
+		$result = unlink($file);
+		debug("deleteFile", $result);
+	}
+	return $result;
 }
+
+//rmdir always returns false on windows
+function deleteDir($dir)
+{
+	if(!is_dir($dir)) return false;
+	rmdir($dir);
+	return !file_exists($dir);
+}
+
+function delTree($dir) 
+{
+   $files = array_diff(scandir($dir), array('.','..'));
+    foreach ($files as $file)
+    {
+      $filePath = combine($dir, $file);
+      if(is_dir($filePath))
+      	delTree($filePath);
+      else
+     	deleteFile($filePath);
+    }
+    return deleteDir($dir);
+} 
 
 //move file and create target directory if necessary
 function moveFile($relPath, $file, $relTarget, $newName="")

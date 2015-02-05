@@ -5,10 +5,6 @@ ini_set('display_errors', '1');
 $configFile="include/config.php";
 if(file_exists("../$configFile"))	$configFile = "../$configFile";
 require_once($configFile);
-//startTimer();
-
-header("Content-Type: text/plain");
-session_start();
 
 debug();
 debug("PHP OS", PHP_OS);
@@ -17,7 +13,7 @@ debug("is Unix", isUnix());
 debug("is Windows", isWindows());
 
 debug();
-$data = [0, 1, 2, 3, 4 ,5, 6];
+$data = array(0, 1, 2, 3, 4 ,5, 6);
 $dataSplit = arrayDivide($data, 3, false);
 debugVar("dataSplit");
 $dataSplit = arrayDivide($data, 3, true);
@@ -130,6 +126,7 @@ debug("FILE",__FILE__);
 debug("dirname",dirname(__FILE__));
 debug("basename",basename(__FILE__));
 debug();
+
 $dir = $path;
 debug("dirname $dir",dirname($dir));
 $dir = dirname($dir);
@@ -139,12 +136,14 @@ debug("dirname $dir",dirname($dir));
 
 reqPathFile($path, $file);
 //$path=getPath();
-debugVar("path");
 debugVar("file");
 $relPath=getRelPath($path);
 debugVar("relPath");
+debug("is_dir $relPath", is_dir($relPath));
 $relPath=getDiskPath($path);
 debugVar("relPath");
+debug("is_dir $relPath", is_dir($relPath));
+
 $absPath=diskPathToUrl($path);
 debugVar("absPath");
 debug("currentDir",realpath(""));

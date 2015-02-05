@@ -530,15 +530,16 @@ debug("file.delete.to", $moveTo);
 
 		$filePath = $this->getFilePath();
 		if(is_dir($filePath))
-			$result = rmdir ($filePath);
+			$result = deltree($filePath);
 
 		$filenames=$this->getFilenames();
 		$dir = $this->getFileDir();
 		$result=0;
 		foreach ($filenames as $key => $file)
 		{
-debug("deleteFile", "($dir, $file)");
-			$result += deleteFile(combine($dir, $file));
+			$status = deleteFile(combine($dir, $file));
+			debug("deleteFile($dir, $file)", $status);
+			$result += $status ? 1 : 0;
 		}			
 		return $result;
 	}

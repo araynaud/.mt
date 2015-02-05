@@ -261,6 +261,7 @@ debug("adding", $dir);
 
 	public function getFileByName($name, $type="")
 	{
+debug("Album.getFileByName", "name=$name type=$type");
 		if($type)
 			return arrayGet($this->groupedFiles, "$type.$name");
 
@@ -306,6 +307,9 @@ debug("adding", $dir);
 
 	public function getMediaFile($index=0)
 	{
+		if($this->search["name"] && $mf = $this->getFileByName($this->search["name"], $this->search["type"]))
+				return $mf;
+
 		$files=$this->getMediaFiles();
 		return @$files[$index];
 	}
