@@ -225,22 +225,26 @@ debug();
 
 // $cmdOutput=shell_exec("dir ..\\$path");
 // debug("command", $cmdOutput)";
-//startTimer();
-getTimer();
-$files = scandir($relPath);
-debug("scandir $relPath Time", getTimerSinceLast());
+startTimer();
+$files = listAllFilesInDir($relPath);
+debug("listAllFilesInDir $relPath Time", getTimer());
+debug(count($files) . " files");
 debugVar("files", true);
 
+startTimer();
 $files = scandir($relPath);
-debug("listAllFilesInDir $relPath Time", getTimerSinceLast());
+debug("scandir $relPath Time", getTimer());
+debug(count($files) . " files");
 debugVar("files", true);
 
+startTimer();
+$files = listFiles($relPath, $search);
+debug("listFiles $relPath Time elapsed", getTimer());
+debug(count($files) . " files");
+debugVar("files", true);
+startTimer();
 $tagData = loadTagFiles($relPath, @$search["depth"]);
 debugVar("tagData", true);
-
-$files = listFiles($relPath, $search);
-debug("listFiles $relPath Time elapsed", getTimerSinceLast());
-debugVar("files", true);
 
 $winfiles = listFilesNTFS($relPath, true);
 debug("listFilesNTFS $relPath Time elapsed", getTimerSinceLast());

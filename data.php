@@ -11,6 +11,13 @@ function getFileData(&$getData, $path, $file)
 	$search = getSearchParameters();
 	switch ($getData)
 	{
+		case "groupedscandir":
+		case "scandir":
+			$files = scandir($relPath); 
+			if($getData == "groupedscandir")
+				$files = groupByName($relPath, $files, true, $details);
+			return $files;
+
 		case "groupedfiles":
 		case "files":
 			$files = listFiles($relPath, $search); 
@@ -93,8 +100,14 @@ if($format == "xml" && !isAssociativeArray($data))
 
 if($countTime)
 {
-	$data["count"] = $count;
-	$data["time"] = getTimer();
+//	if(!isAssociativeArray($data))
+		array_unshift($data, array("count"=>$count, "time"=>getTimer()));
+/*	else
+	{
+		$data["count"] = $count;
+		$data["time"] = getTimer();
+	}
+*/
 }
 
 switch ($format)

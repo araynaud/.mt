@@ -221,7 +221,7 @@ function getDiskPath($path)
 	$mapping = isMappedPath($path);
 	$root = getConfig("_mapping._root");
 
-	if($root && !$mapping && !startsWith($path,$root))
+	if($root && !$mapping && !startsWith($path, $root))
 	{
 		$path = combine($root, $path);
 		$mapping = isMappedPath($path);
@@ -229,8 +229,8 @@ function getDiskPath($path)
 
 	if(!$mapping) return getRelPath($path);
 
-	$path2 = substringAfter($path,"/");
-	$diskPath = combine($mapping,$path2);
+	$path2 = substringAfter($path, "/");
+	$diskPath = combine($mapping, $path2);
 	return $diskPath;		
 }
 

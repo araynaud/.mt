@@ -207,6 +207,7 @@ Html5Player.prototype.loadFromHtml = function(start)
         e.preventDefault();
         link = $(this);
         hp.loadFile(link.parent().index());
+        hp.play();
     });
 
 	return this.loadFile(start);

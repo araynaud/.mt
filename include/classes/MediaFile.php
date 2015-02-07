@@ -24,7 +24,9 @@ class MediaFile extends BaseObject
     protected $duration;
     protected $animated;
     protected $alpha;
-
+    protected $mapped;
+    protected $_mappedPath;
+    protected $urlAbsPath;
     protected $gdimage;
 
 	private $tnsizes=array(); //array of thumbnail file sizes
@@ -46,10 +48,15 @@ class MediaFile extends BaseObject
 
 		if($this->isDir())
 		{
+			$_mappedPath = isMappedPath($this->name);
+			if($_mappedPath)
+				$this->urlAbsPath = diskPathToUrl($_mappedPath);
+
 			$this->oldestDate=getOldestFileDate($this->_filePath);
 			$this->newestDate=getNewestFileDate($this->_filePath);
 			$this->takenDate=$this->newestDate;
 			$this->thumbnails=subdirThumbs($this->_filePath, 4);
+debug("dates " . $this->oldestDate, $this->newestDate);
 		}
 		else
 		{
@@ -187,13 +194,6 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return "";
 	}
 	
-	public function getRelPath()
-	{
-		if($this->_parent)
-			return $this->_parent->getRelPath();
-		return "";
-	}
-
     public function getTakenDate()
 	{
 		$dateIndex = $this->_parent->getDateIndex();
@@ -218,7 +218,23 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 
     public function getFilePath($ext=0)
 	{
+		$path = $this->getPath();
+		if(!$path)
+			return $this->getDiskPath();
+
 		return combine($this->getRelPath(), $this->subdir, $this->getFilename($ext));
+	}
+
+	public function getDiskPath()
+	{
+		return getDiskPath($this->name);
+	}
+
+	public function getRelPath()
+	{
+		if($this->_parent)
+			return $this->_parent->getRelPath();
+		return "";
 	}
 
     public function getFileUrl($ext=0)

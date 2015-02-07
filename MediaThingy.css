@@ -443,12 +443,18 @@ img.icontr, img.iconTrans
 }
 
 .photoBorder, .dir.photoBorder
-
 {
 	border: 10px solid white;
 }
 
 /* ---------------- file templates ---------------- */
+
+.article
+{
+	border: 1px solid black;
+	padding: 2px;
+	margin: 3px;
+}
 
 div.dir
 {
@@ -1029,6 +1035,21 @@ input.numericField
 {
 	padding: 4px;
 	vertical-align: middle;
+}
+
+.vTop
+{
+	vertical-align: top;
+}
+
+.vMiddle
+{
+	vertical-align: middle;
+}
+
+.vBottom
+{
+	vertical-align: bottom;
 }
 
 .toolbar > div, .toolbar img

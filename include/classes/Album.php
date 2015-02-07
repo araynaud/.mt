@@ -219,12 +219,14 @@ debug("addMappedDirs", $mappings, true);
 debug("rootMapping", $rootMapping);
 		foreach ($mappings as $key => $path)
 		{
-			if($key==$rootMapping) continue;
+			if($key =="_root" || $key == $rootMapping || !file_exists($path)) 
+				continue;
 
 			$dir = array();
 			$dir["name"] = $key;
+			$dir["mapped"] = true;
 			$dir["type"] = "DIR";
-			$dir["filePath"] = $path;
+			//$dir["filePath"] = $path;
 			$this->groupedFiles["DIR"][$key] = $dir;
 debug("adding", $dir);
 		}

@@ -8,7 +8,6 @@ USER_AGENT.DEVICES=mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playst
 
 ;relative path from app root dir to data files root
 TEMP_DIR=.temp
-SPECIAL_FILES=config/special.txt
 EXIF_SUPPORTED_TYPES=IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
 DEFAULT_TIMEZONE=America/Los_Angeles
 JQUERYFX=true
@@ -114,8 +113,10 @@ TYPES.IMAGE_NOTHUMB=bmp;svg
 TYPES.AUDIO=mp3;wav;m4a;aac;ogg
 TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
-TYPES.SPECIAL=xml;php;chunk;js;css
 TYPES.TEXT=txt
+TYPES.SPECIAL=xml;php;chunk;js;css
+SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.bg.jpg;.ignore.txt;.dateIndex.csv;.config.csv;youtube.csv;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_
+
 
 ;JW Player options
 JWPLAYER.allowHtml5=true

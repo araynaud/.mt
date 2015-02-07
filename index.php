@@ -217,6 +217,7 @@ $(window).resize(function(event)
 	<div id="pageCounts" class="floatR small bold"></div>
 		<div class="centered noprint controls">
 			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
+			<div id="textList" class="inlineBlock"  style="vertical-align:middle"></div>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
 			<div id="tagList" class="inlineBlock"></div>

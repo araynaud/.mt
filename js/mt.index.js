@@ -123,7 +123,7 @@ UI.setupFileEvents = function(mediaFile)
 //call when initial display, and when tag list changes: new tag word created or removed.
 UI.displayTags = function()
 {
-	UI.renderTemplate("articleLinkTemplate", UI.tagListDiv, album.articleFiles);
+	UI.renderTemplate("articleLinkTemplate", UI.textListDiv, album.articleFiles);
 
 	if(isEmpty(album.tags)) return;
 	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags), "append");
@@ -292,7 +292,7 @@ UI.imageOnError = function()
 		UI.addStatus(imageLink.outerHtml());
 	}
 	img.unbind("error"); //to avoid infinite loop
-	img.attr("src","icons/delete128.png").show();
+//	img.attr("src","icons/delete128.png").show();
 	var caption=filebox.children(".caption, .captionBelow");	
 	caption.show();
 	filebox.show();
@@ -552,6 +552,7 @@ UI.setupElements = function()
 	UI.userDiv=$('#userLabel');
 	UI.visitImg=$('#visitImg');
 	UI.downloadFileDiv = $("div#downloadFileList");
+	UI.textListDiv = $("#textList");
 	UI.tagListDiv = $("#tagList");
 	UI.pagers = $(".pager");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});

@@ -252,7 +252,7 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 
 	if(isEmpty(mediaFiles)) return;
 
-	var playlist=MediaPlayer.makePlaylist(album.relPath, mediaFiles);
+	var playlist=MediaPlayer.makePlaylist(mediaFiles);
 	if(!playlist.length) return;
 
 	this.initSize();
@@ -304,7 +304,7 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
   	return this;
 };
 
-MediaPlayer.makePlaylist = function(relPath, mediaFiles, filterStream)
+MediaPlayer.makePlaylist = function(mediaFiles, filterStream)
 {
 	var playlist=[];
 	for(var k=0;k<mediaFiles.length;k++)

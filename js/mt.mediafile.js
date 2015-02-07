@@ -65,7 +65,7 @@ MediaFile.prototype.getTitle = function()
 
 MediaFile.prototype.getRatio = function()
 {
-	if(!this.ratio)
+	if(!this.ratio && this.height)
 		this.ratio = this.width / this.height;
 	return this.ratio;
 };
@@ -276,7 +276,10 @@ MediaFile.getFileUrl = function (mediaFile, ext)
 		ext=mediaFile.exts[ext];
 	if(ext)
 		filename=mediaFile.name+"."+ext;
-	return String.combine(album.relPath, mediaFile.subdir, filename);
+	if(mediaFile.isDir() && mediaFile.urlAbsPath)
+		return mediaFile.urlAbsPath;
+	var baseUrl = mediaFile.urlAbsPath || album.relPath;
+	return String.combine(baseUrl, mediaFile.subdir, filename);
 };
 
 MediaFile.prototype.getFileUrl = function (ext)
@@ -307,7 +310,8 @@ MediaFile.prototype.getShortUrl = function ()
 
 MediaFile.getFileDir = function(mediaFile, subdir)
 {
-	return String.combine(album.relPath, mediaFile.subdir, subdir);
+	var baseUrl = mediaFile.urlAbsPath || album.relPath;
+	return String.combine(baseUrl, mediaFile.subdir, subdir);
 };
 
 MediaFile.prototype.getFileDir = function(subdir)
@@ -345,10 +349,11 @@ MediaFile.prototype.makePostData = function (params)
 
 MediaFile.getThumbnailDir = function(mediaFile, tnIndex)
 {
+	var baseUrl = mediaFile.urlAbsPath || album.relPath;
 	if(isMissing(tnIndex) || isEmpty(mediaFile.tnsizes) || isMissing(mediaFile.tnsizes[tnIndex]))
-		return String.combine(album.relPath, mediaFile.subdir);
+		return String.combine(baseUrl, mediaFile.subdir);
 	
-	return String.combine(album.relPath, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex]);	
+	return String.combine(baseUrl, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex]);	
 };
 
 MediaFile.prototype.getThumbnailDir = function(tnIndex)
@@ -375,7 +380,8 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 		var ext = config.thumbnails[mediaFile.type].ext;
 		if(ext)
 			filename = mediaFile.name + "." + ext;
-		return String.combine(album.relPath, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex], filename);
+		var baseUrl = mediaFile.urlAbsPath || album.relPath;
+		return String.combine(baseUrl, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex], filename);
 	}
 
 //if not already exists => create script url

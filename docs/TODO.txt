@@ -1,5 +1,7 @@
 list files:
 use scandir, then filter and array_combine
+file: by exact name and type
+name: by partial name. debug regex, hasName, end, start
 
 JSON parse error:
 take response text

@@ -224,8 +224,9 @@ else
 	if($tag)
 		$tagFiles = $album->getFilesByTag($tag);
 	else
-		$tagFiles = ($album->getMediaFiles("IMAGE|VIDEO"));
+		$tagFiles = $album->getMediaFiles("IMAGE|VIDEO");
 
+	$tagFiles = array_values($tagFiles);
 	if($sort=="random")
 		shuffle($tagFiles);
 
@@ -237,7 +238,7 @@ else
 	if(!$nb)
 		$nb = round(sqrt(count($tagFiles)));
 debug("tagFiles " . count($tagFiles), $nb);
-debug("tagFiles", $tagFiles);
+debug("tagFiles", $tagFiles, true);
 	$mediaFiles = arrayDivide($tagFiles, $nb, $transpose);
 }
 
