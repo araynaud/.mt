@@ -38,7 +38,6 @@ function countFilesByName($dir, $name, $group=true)
 	return array_keys($list);
 }
 
-
 //if $type=DIR: list subdirs only
 //if $type=FILE: list files without subdirs
 //0 or false: this dir only, +N into subdirs N levels, -N into parents N levels
@@ -52,8 +51,11 @@ function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse
 
 debug("listFiles $dir", $search);
 	$files=array();
-	if (!is_dir($dir))	return $files;
-
+	if (!is_dir($dir))
+	{
+		debug("listFiles $dir", "not found");
+		return $files;
+	}
 	//init recursive variables from search array
 	$subdirs=array();
 	setIfNull($remaining, @$search["maxCount"]);
@@ -70,19 +72,24 @@ debug("listFiles $dir", $search);
 		debug("listFiles: files matched by tags ($cnt)", $search["tagfiles"], true);
 	}
 
+	$allfiles = scandir($dir); 
+debug("listFiles scandir", count($allfiles));			
+
 debug("subpath", $subPath);
 	//search 1 exact filename
 	if(isset($search["file"]))
 	{
 		$file=$search["file"];
-		if(file_exists(combine($dir,$file)))
+		$filePath = combine($dir, $file);
+debug("file_exists $filePath", file_exists($filePath));
+		if(file_exists($filePath))
 			$files[]=combine($subPath,$file);
 	}
 	else
 	{
 		global $relPathG;
-		$handle=opendir($dir);	
-		if(!$handle)	
+
+		if(!$allfiles)
 		{
 			debug("opendir $dir failed", $handle);
 			return $files;
@@ -91,7 +98,7 @@ debug("subpath", $subPath);
 		$relPathG=$dir;
 		loadIgnoreList($dir);	//load from .ignore.txt file only once
 
-		while(($file = readdir($handle))!==false)
+		foreach ($allfiles as $file)
 		{
 			//filter by files: works if dir sorted by name and case sensitive
 			// if($first && $file < $first) continue;
@@ -127,7 +134,6 @@ debug("subpath", $subPath);
 
 			if(count($files)==$remaining) break;
 		}
-		closedir($handle);
 	}
 	$relPathG=null;
 //debug("keys", array_keys($files));
@@ -215,6 +221,8 @@ function getSearchParameters()
 {
 	$search = array();		
 	$search["type"] = reqParam("type");
+	if($file = reqParam("file"))
+		$search["file"] = $file;
 	$search["name"] = reqParam("name", reqParam("search"));
 	$search["tag"]  = reqParam("tag", reqParam("search"));
 	$search["sort"] = reqParam("sort");

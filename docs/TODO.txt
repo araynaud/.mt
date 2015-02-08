@@ -3,6 +3,14 @@ use scandir, then filter and array_combine
 file: by exact name and type
 name: by partial name. debug regex, hasName, end, start
 
+
+rewrite listFiles and reqPathFile
+path/file
+if file exists: get file=name
+this only files by exact name
+or search by partial name or by tag
+search=
+
 JSON parse error:
 take response text
 extract substring before <br/> or [ or { : display error message UI.setStatus

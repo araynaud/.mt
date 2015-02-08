@@ -8,3 +8,4 @@ skins/
 *.mp4
 web.config
 .DS_Store
+.dateIndex.csv

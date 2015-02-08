@@ -195,7 +195,9 @@ function LoadConfiguration($path=null, &$configData = array())
 
 //finally add some keys to output
 
-	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]), true);
+//debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
+//	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]), true);
+debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
 	$configData ["SITE_NAME"] = getSiteName();
 	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);
@@ -239,7 +241,7 @@ function getSiteName()
 
 function readConfigFile($filename, &$csvRows = NULL, $separator="=")
 {
-//	debug("readConfigFile $filename", realpath($filename));
+	debug("readConfigFile $filename", realpath($filename));
 	$lines = readArray($filename);
 	if(!$lines)
 		return $csvRows;
@@ -682,12 +684,13 @@ function deleteDir($dir)
 {
 	if(!is_dir($dir)) return false;
 	rmdir($dir);
-	return !file_exists($dir);
+	return true; //!file_exists($dir);
 }
 
 function delTree($dir) 
 {
-   $files = array_diff(scandir($dir), array('.','..'));
+	$files = scandir($dir);
+	$files = array_diff($files, array('.','..'));
     foreach ($files as $file)
     {
       $filePath = combine($dir, $file);
