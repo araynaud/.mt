@@ -55,6 +55,7 @@ class MediaFile extends BaseObject
 			$this->oldestDate=getOldestFileDate($this->_filePath);
 			$this->newestDate=getNewestFileDate($this->_filePath);
 			$this->takenDate=$this->newestDate;
+debug("MediaFile " . $this->name , $this->_filePath);
 			$this->thumbnails=subdirThumbs($this->_filePath, 4);
 debug("dates " . $this->oldestDate, $this->newestDate);
 		}
@@ -76,23 +77,21 @@ debug("dates " . $this->oldestDate, $this->newestDate);
 		}
 	}
 
-    public static function getMediaFile()
-    {    	
-		$path=reqPath();
-		$details=reqParam("file") || reqParam("name") || reqParam("search");
-debug("MediaFile::getMediaFile name", $details);
-		$album = new Album($path, $details);
+    public static function getMediaFile($search=null)
+    {
+		if(!$search) $search = getSearchParameters();
+debug("MediaFile::getMediaFile", $search);
+		$album = new Album($search);
 debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return $album->getMediaFile();
 	}
 
-    public static function getMediaFiles()
+    public static function getMediaFiles($search=null)
     {    	
-		$path=reqPath();
-		$details=reqParam("file") || reqParam("name") || reqParam("search");
-debug("MediaFile::getMediaFile name", $details);
-		$album = new Album($path, $details);
-debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
+		if(!$search) $search = getSearchParameters();
+debug("MediaFile::getMediaFiles", $search);
+		$album = new Album($search);
+debug("MediaFile::getMediaFiles countMediaFiles", $album->countMediaFiles());
 		return $album->getMediaFiles();
 	}
 

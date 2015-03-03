@@ -4,19 +4,19 @@ setContentType("text", "plain");
 
 startTimer();
 
-reqPathFile($path, $file);
-$relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
-$fileType=strtolower($mf->getFileType());
+$file = $mf->getFilename();
 
 $response = array();
 if(!$mf)
 {	
-	$response["message"] = "file $path/$file does not exist.";
+	$response["message"] = "file $file does not exist.";
 	echo jsValue($response);
 	return;	
 }
 
+$relPath = $mf->getRelPath();
+$fileType = strtolower($mf->getFileType());
 
 $publish = getConfig("_publish");
 if(!$publish)
@@ -34,7 +34,7 @@ $site = reqParam("site", $publish["default"]);
 $publish = getConfig("_publish.$site");
 debugVar("publish");
 $destPath = combine(@$publish["path"], reqParam("target"));
-$filePath = combine($relPath, $file);
+$filePath = $mf->getFilePath();
 debugVar("filePath");
 
 //if file is image, check if width or height > max dimension

@@ -70,48 +70,43 @@ function combine()
 }
 
 
-//get current relative path
-//split into array /
-//test if each level exists is_dir
-//if not, toggle .
-function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
+//return filters from request: path, name, tag, search, file?
+function requestFilters($addFilters=true, $selectOneFile = false)
 {	
 	$qs = urldecode($_SERVER["QUERY_STRING"]);
 	$hasParams = contains($qs, "=");
-	debug("reqPathFile qs", $qs);
-	debug("reqPathFile request before " . btos($hasParams), $_REQUEST);
+	debug("requestFilters qs", $qs);
 	if(!$hasParams)
 	{
-		parseQueryString($qs, $_REQUEST);
-		$path = reqParam("path");
-		$file = reqParam("file");
+		$params = parseQueryString($qs);
 	}
 	else
 	{
-		$path = urldecode(reqParam("path"));
-		$file = urldecode(reqParam("file"));
+		$params = arrayCopyMultiple($_REQUEST, "name,type,tag,search,count");
+		$params["path"] = urldecode(reqParam("path"));
+		$params["file"] = urldecode(reqParam("file"));
+		$params["depth"] = reqParam("depth", 0);
 	}
-	$filePath = combine($path, $file);
+	debug("requestFilters", $params);
 
-	// test file or tag
+	$filePath = combine(@$params["path"], @$params["file"]);
 	$realPath = getDiskPath($filePath);
 	$filetype = getFileType($realPath, true);
 	debug("filetype", $filetype);
-	if(!$selectDirAsFile && $filetype=="DIR")
+	if($filetype=="DIR" && !$selectOneFile)
 	{
-		$path = $filePath;
-		$file = "";
+		$params["path"] = $filePath;
+		$params["file"] = "";
 	}
 	else
-		splitFilePath($filePath, $path, $file);
+		splitFilePath($filePath, $params["path"], $params["file"]);
 
-	debug("reqPathFile", "$path / $file");
+//	debug("requestFilters", $params);
+	if(!@$params["file"]) 
+		return $params;
 
-	$_REQUEST["path"] = $path;
-	if(!$file) return;
-
-	$realDir = getDiskPath($path);
-	$name = getFilename($file);
+	$realDir = getDiskPath($params["path"]);
+	$name = getFilename($params["file"]);
 
 	//is the file parameter a file name, a partial name, a tag ?
 	//only use in getSearchParameters
@@ -121,21 +116,54 @@ function reqPathFile(&$path, &$file, $addFilters=true, $selectDirAsFile = false)
 	if(count($fileExists) == 1)
 	{
 		$name = reset($fileExists);
-		$_REQUEST["file"] = $name;
 		if($addFilters)
-			$_REQUEST["name"] = $name;
+			$params["name"] = $name;
+		else
+			$params["file"] = $name;
+
 		if($addFilters && $filetype)
-			$_REQUEST["type"] = $filetype;
+			$params["type"] = $filetype;
 	}
 	else
 	{
-		$_REQUEST["search"] = $name;
-		$_REQUEST["file"] = "";
+		$params["search"] = $name;
+		$params["file"] = "";
 	}
-	debug("reqPathFile request after", $_REQUEST);
+//	debug("requestFilters", $params);
+	return $params;
 }
 
-//2014/december/cookies:1:best|amy:DSC_0764
+function getSearchParameters($filters=null)
+{
+	if(!$filters) 
+		$filters = requestFilters(true);
+
+	$search = array();	
+	$search = arrayCopyMultiple($filters, "path,file,depth,count");	
+	if($type = $search["type"] = arrayGet($filters, "type"))
+		$search["exts"] = getExtensionsForTypes($type);
+
+	$search["name"] = arrayGetCoalesce($filters, "name", "search");
+	$search["tag"]  = arrayGetCoalesce($filters, "tag", "search");
+
+	$search["sort"] = arrayGet($filters, "sort");
+	$search["depth"]  = arrayGet($filters, "depth");
+	setIfEmpty($search["depth"], 0);
+	$search["subdir"] = arrayGet($filters, "subdir");
+	$search["subpath"] = "";
+	$search["count"] = arrayGet($filters, "count");
+	setIfEmpty($search["count"], 0);
+	$search["config"] = reqParamBoolean("config", true);
+	$search["nested"] = reqParamBoolean("nested");
+	parseWildcards($search);
+
+	debug("getSearchParameters", $search);
+	return $search;
+}
+
+
+//query string: path:depth:search:start
+//example: 2014/december/cookies:1:best|amy:DSC_0764
 function parseQueryString($qs, 	&$result = array())
 {	
 	setIfNull($qs, urldecode($_SERVER["QUERY_STRING"]));
@@ -147,7 +175,7 @@ function parseQueryString($qs, 	&$result = array())
 	$result["path"] = $params[0];
 
 	if(count($params) == 2)
-		$result["file"] = $params[1];
+		$result["start"] = $params[1];
 	else if(count($params) == 3)
 	{
 		if(is_numeric($params[1]) || $params[1]=="*")
@@ -155,13 +183,13 @@ function parseQueryString($qs, 	&$result = array())
 		else
 			$result["search"]   = $params[1];
 
-		$result["file"] = $params[2];
+		$result["start"] = $params[2];
 	}
 	else if(count($params) >= 4)
 	{
 		$result["depth"] = $params[1];
 		$result["search"]   = $params[2];
-		$result["file"]  = $params[3];
+		$result["start"]  = $params[3];
 	}
 	return $result;
 }
@@ -178,19 +206,13 @@ function reqPath()
 
 function getPath($path="")
 {	
-	if(empty($path))
-	{
-		if(isset($_GET["path"]))
-			$path=$_GET["path"];
-		//else if(isset($_SERVER["QUERY_STRING"]))
-		//	$path=$_SERVER["QUERY_STRING"];
-	}
-	if(empty($path))	return "";
-	$path=urldecode($path);
+	if(!$path)	$path = @$_GET["path"];
+	if(!$path)	return "";
+	$path = urldecode($path);
 	return $path;
 
 	//if not, parse level by level
-	$defaultRoot=pathToDataRoot();
+	$defaultRoot = pathToDataRoot();
 	$pathArray = pathFragments($path); //remove empty between //
 	$path="";
 	$sep="";
@@ -242,6 +264,16 @@ debug("_mapping.$path1", $mapping);
 	if(!$mapping) return false;
 	return $mapping;
 }
+
+function getMappedRoot($dir)
+{	
+	$mappings = getConfig("_mapping");
+	foreach ($mappings as $key => $value) 
+		if(startsWith($dir, $value))
+			return $value;
+	return "";
+}
+
 
 //disk path to /absPath
 //search in mappings for 1st value starting with this path

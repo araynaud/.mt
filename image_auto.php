@@ -33,25 +33,21 @@ require_once("include/config.php");
 session_start(); 
 error_reporting(E_ERROR | E_PARSE | E_WARNING | E_NOTICE);
 
-startTimer();
-
-reqPathFile($path, $file);
-
 $mf = MediaFile::getMediaFile();
 debugVar("mf", true);
-if($mf)
-{
-	$mfInfo = $mf->getImageInfo();
-	debugVar("mfInfo", true);
+if(!$mf) return;
 
-	$mfiles = $mf->getFilenames(true,false,false);
-	$file = reset($mfiles);
-	debugVar("file");
+$mfInfo = $mf->getImageInfo();
+debugVar("mfInfo", true);
 
-	$mfiles = $mf->getFilePaths();
-	debugVar("mfiles", true);
-}
-$relPath=getDiskPath($path);
+$mfiles = $mf->getFilenames(true,false,false);
+$file = reset($mfiles);
+debugVar("file");
+
+$mfiles = $mf->getFilePaths();
+debugVar("mfiles", true);
+
+$relPath = $mf->getRelPath();
 //input file
 $url=getParam("url");
 $inputFile=combine($relPath, $file);

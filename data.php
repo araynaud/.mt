@@ -1,29 +1,27 @@
 <?php session_start(); 
 require_once("include/config.php");
 
-function getFileData(&$getData, $path, $file)
+function getFileData(&$getData)
 {
 	global $config;
-	$details=reqParamBoolean("details");
-	$relPath=getDiskPath($path);
-	$filePath=combine($relPath, $file);
 	$getData = strtolower($getData);
 	$search = getSearchParameters();
+	$details = reqParamBoolean("details");
+	$relPath = getDiskPath($search["path"]);
+	$filePath=combine($relPath, $search["file"]);
+
 	switch ($getData)
 	{
-		case "groupedscandir":
 		case "scandir":
+			return scandir($relPath); 
+		case "groupedscandir":
 			$files = scandir($relPath); 
-			if($getData == "groupedscandir")
-				$files = groupByName($relPath, $files, true, $details);
-			return $files;
-
-		case "groupedfiles":
+			return groupByName($relPath, $files, true, $details);
 		case "files":
-			$files = listFiles($relPath, $search); 
-			if($getData == "groupedfiles")
-				$files = groupByName($relPath, $files, true, $details);
-			return $files;
+			return listFilesRecursive($relPath, $search); 
+		case "groupedfiles":
+			$files = listFilesRecursive($relPath, $search); 
+			return groupByName($relPath, $files, true, $details);
 		case "tags":
 			return array_keys(listTagFiles($relPath, $search["depth"], @$search["tag"], true));
 		case "taglists":
@@ -51,7 +49,7 @@ function getFileData(&$getData, $path, $file)
 			return getMediaFileInfo($filePath);
 		case "album":
 			$getData="Album";
-			return new Album($path, true);
+			return new Album($search);
 		case "mediafile":
 		default:
 			$getData="MediaFile";
@@ -66,7 +64,7 @@ function getFileData(&$getData, $path, $file)
 	}
 }
 
-startTimer();
+//startTimer();
 
 $getData = reqParam("data", "MediaFile");
 $countTime = reqParamBoolean("counttime", true);
@@ -78,18 +76,8 @@ $indent=reqParam("indent", 1);
 $includeEmpty=reqParamBoolean("empty");
 $attributes=getParamBoolean("attributes", true);
 
-reqPathFile($path, $file, false);
-$name = reqParam("name");
-debugVar("name");
-$relPath=getDiskPath($path);
-
-$filePath=combine($relPath, $file);
-$data=getFileData($getData, $path, $file);
+$data=getFileData($getData);
 $data=objToArray($data, true, true);
-
-$save=getParamBoolean("save");
-if($save)
-	saveImageInfo($relPath, $file, $data);
 
 //XML: ensure single root element
 $count=count($data);
@@ -100,14 +88,11 @@ if($format == "xml" && !isAssociativeArray($data))
 
 if($countTime)
 {
-//	if(!isAssociativeArray($data))
-		array_unshift($data, array("count"=>$count, "time"=>getTimer()));
-/*	else
-	{
-		$data["count"] = $count;
-		$data["time"] = getTimer();
-	}
-*/
+	$ct = array("count"=>$count, "time"=>getTimer());
+	if(!isAssociativeArray($data))
+		array_push($data,$ct);
+	else
+		array_unshift($data, $ct);
 }
 
 switch ($format)
@@ -124,7 +109,6 @@ switch ($format)
 	default:
 		setContentType("text", "plain");
 		$json = jsValue($data, $indent, $includeEmpty);
-		//writeTextFile("$relPath/.album.json", $json);
 		echo $json;
 }
 

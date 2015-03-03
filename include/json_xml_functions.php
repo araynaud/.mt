@@ -176,6 +176,7 @@ function jsValue($val, $indent=1, $includeEmpty=false, $private=true)
 	if(is_object($val)) return jsObject($val, $indent, $includeEmpty, $private);
 	if(isJsonString($val)) return $val;
 	if(is_string($val)) return '"' . escapeNewLine(encodeUtf8($val)) . '"';	//string between quotes. utf8_encode
+	if(is_numeric($val)) return formatNumber($val);
 	return $val;			//number, no quote
 }
 
@@ -270,13 +271,22 @@ function jsObject($obj, $indent=1, $includeEmpty=false, $private=false)
 </MediaFile>
 */
 
+//avoid scientific notation for high integer typed as double
+function formatNumber($value)
+{
+	if(fmod($value,1))
+		return $value;
+	return number_format($value, 0, ".", "");
+}
+
 function xmlValue($name, $value, $indent=1, $includeEmpty=true, $private=false, $outputAttributes=true)
 {
 //debug("outputAttributes", $outputAttributes);
 	$tab=indent($indent);
 	if(is_object($value))	return xmlObject($name, $value, $indent, $includeEmpty, $private, $outputAttributes);
 	if(is_array($value))	return xmlArray($name, $value, $indent, $includeEmpty, $private, $outputAttributes);
-	if(is_numeric($value)|| is_bool($value))		return "$tab<$name>$value</$name>";
+	if(is_numeric($value)) 	return "$tab<$name>". formatNumber($value) ."</$name>";
+	if(is_bool($value))		return "$tab<$name>". BtoS($value) ."</$name>";
 
 	$strValue =  utf8_encode(escapeAmp(removeControlChars($value)));
 	if(!isEmptyValue($strValue))		return "$tab<$name>$strValue</$name>";
@@ -353,7 +363,12 @@ debug($elementName, isAttribute($key, $value));
 
 function xmlAttribute($name, $value)
 {
-	$value=escapeAmp(utf8_encode($value));
+	if(is_numeric($value))
+	 	$value = formatNumber($value);
+	else if(is_bool($value))
+		$value = BtoS($value);
+	else
+		$value=escapeAmp(utf8_encode($value));
 	return " $name=\"$value\"";
 }
 

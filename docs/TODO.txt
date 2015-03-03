@@ -1,8 +1,29 @@
+bugs:
+fix action_multiple
+
+qs: path:depth:search:start
+
+transition.type
+
+Album, MediaFile->getRelPath -> geDiskPath
+
+filter by name: scandir files are sorted by name ascending
+if start or exact name : while $n < $name continue
+if $n > $name break;
+if contains or endswith: array_filter
+
+------------
+
+reqPathFile: do not modify REQUEST => requestFilters()
+request["file"]: do not use in search parameters
+for action.php, when selecting 1 file:
+search["name"] = request["file"];
+for album: search["name"] can have * and | for multiple names
+ 
 list files:
 use scandir, then filter and array_combine
 file: by exact name and type
 name: by partial name. debug regex, hasName, end, start
-
 
 rewrite listFiles and reqPathFile
 path/file

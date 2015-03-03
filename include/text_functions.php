@@ -533,6 +533,21 @@ function arrayGetCoalesce()
 	return null;
 }
 
+//get or copy multiple properties from array
+function arrayCopyMultiple($from, $keys, $to=array())
+{
+	if(!$from || !$keys) return $to;
+
+	if(is_string($keys))
+		$keys = explode(",", $keys);
+
+	foreach ($keys as $key)
+		if(array_key_exists($key, $from))
+			$to[$key] =	$from[$key];
+
+	return $to;
+}
+
 //filter array by keys, not values.
 function arrayFilterKeys($a, $funct)
 {

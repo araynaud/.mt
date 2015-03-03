@@ -14,21 +14,66 @@ function startTimer()
 	return $startTime;
 }
 
-function getTimer()
+function getTimer($ms=false)
 {
 	global $startTime, $endTime;
 	$endTime = microtime(true);
-	return $endTime - $startTime;
+	$time = $endTime - $startTime;
+	return $ms ? formatMs($time) : $time;  
 }
 
-function getTimerSinceLast()
+function getTimerSinceLast($ms=false)
 {
 	global $endTime;
 	$time = microtime(true);
 	$result = $time - $endTime;
 	$endTime = $time;
+	return $ms ? formatMs($result) : $result;  
 	return $result;
 }
+
+function formatMs($time, $digits=3)
+{
+	return round($time * 1000, $digits) . "ms";
+}
+
+function testFunction()
+{
+	$args = func_get_args();
+	$funct = array_shift($args);
+
+	debug("Test $funct args", $args);
+	$time = getTimer();
+	$result = call_user_func_array($funct, $args);
+	$time = formatMs(getTimer() - $time);
+	$nb="";
+	if(is_array($result))
+		$nb = count($result);
+
+	debug("Test $funct", "$nb in $time");
+	debug();
+	return $result;
+}
+
+function testFunctionResult()
+{
+	$args = func_get_args();
+	$funct = array_shift($args);
+	debug("Test $funct args", $args);
+
+	$time = getTimer();
+	$result = call_user_func_array($funct, $args);
+	$time = formatMs(getTimer() - $time);
+	$nb="";
+	if(is_array($result))
+		$nb = count($result);
+	
+	debug("Test $funct result", $result, true);
+	debug("Test $funct", "$nb in $time");
+	debug();
+	return $result;
+}
+
 
 function debugVar($name, $indent=0)
 {

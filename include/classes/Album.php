@@ -30,23 +30,35 @@ class Album extends BaseObject
     private $config;
 	private $tags;
 
-    public function __construct($path="", $details=false)
+    public function __construct($filters="", $details=false)
 	{
 		global $config;
+
+debug("new Album", $filters);
 	
+		if(is_array($filters))
+		{
+			$this->search = $filters;
+			$details = true;
+			$path = $filters["path"];
+		}
+		else
+			$path = $filters;
+
         $this->user = new User();
         $this->path = $path;
 		$this->getRelPath();
 		$this->getAbsPath();
 		$this->getTitle();
 		$this->getDescription();
+debug("new Album", $details);
 		if($details)
 		{
 			$this->getSearchParameters();
 			//list files according to search, etc.		
-			$allFiles=listFiles($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
+			$allFiles=listFilesRecursive($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
 //debug("allFiles", $allFiles, true);
-			$this->dirs=selectDirs($this->relPath, $allFiles);
+//			$this->dirs=selectDirs($this->relPath, $allFiles);
 			$this->groupedFiles=groupByName($this->relPath, $allFiles, true);
 			$allFiles=groupByName($this->relPath, $allFiles);
 			if(!$this->path)
@@ -87,7 +99,7 @@ debug("Album::getSearchParameters", $this->search);
 
 	public function isCompleteIndex()
 	{
-		$this->isCompleteIndex = !$this->search["type"] && !$this->search["name"] && !$this->search["maxCount"];
+		$this->isCompleteIndex = !@$this->search["type"] && !@$this->search["name"] && !@$this->search["count"];
 		return $this->isCompleteIndex;
 	}
 
@@ -267,9 +279,10 @@ debug("Album.getFileByName", "name=$name type=$type");
 		if($type)
 			return arrayGet($this->groupedFiles, "$type.$name");
 
-		foreach ($this->groupedFiles as $type => $files)
-			if(isset($files[$name]))
-				return $files[$name];
+		if($this->groupedFiles)
+			foreach ($this->groupedFiles as $type => $files)
+				if(isset($files[$name]))
+					return $files[$name];
 		return null;
 	}
 	

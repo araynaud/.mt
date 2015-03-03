@@ -1,4 +1,182 @@
 <?php 
+function listFilesRecursive($dir, $search=array())
+{
+	$subdirs = true;
+debug("listFilesRecursive $dir", $search);
+
+	$files = listFilesDir($dir, $search, $subdirs);
+	$root = getMappedRoot($dir);
+	debug("mapped root $dir", $root);
+
+	if(!@$search["depth"]) return $files;
+
+	//loop for dirs with depth-1, subpath
+	if(@$search["depth"] > 0 && $subdirs)
+	{
+		$search["depth"]--;
+		$subpath = @$search["subpath"];
+		foreach ($subdirs as $subdir)
+		{
+			$subdirPath = combine($dir, $subdir);
+			$search["subpath"] = combine($subpath, $subdir);
+	debug("subpath", $search["subpath"]);
+			$subdirFiles = listFilesRecursive($subdirPath, $search);
+			if($subdirFiles && @$search["nested"]) //nested subdirs or flat array
+				$files[$subdir] = $subdirFiles; 
+			else if ($subdirFiles)
+				$files = array_merge($files, $subdirFiles);
+		}
+	}
+	//recursion in parent dir
+	else if(@$search["depth"] < 0 && $dir != $root)
+	{
+		$search["depth"]++;
+		$search["subpath"] = combine(@$search["subpath"], "..");
+		$parentDir = getParent($dir);
+		$parentFiles = listFilesRecursive($parentDir, $search);
+		if($parentFiles)
+			$files=array_merge($files, $parentFiles);
+	}
+
+	return $files;
+}
+
+function listFilesDir($dir, $search=array(), &$subdirs=false)
+{
+	$files = array();
+	$tndir = arrayGetCoalesce($search, "tnDir", "subdir");
+	$tndir = combine($dir, $tndir);
+	if(!is_dir($tndir))
+	{
+		debug("scandir $tndir", "not a dir");
+		$subdirs = false;
+		return $files;
+	}
+
+	//search for 1 exact file
+	if(@$search["file"])
+	{
+		$filePath = combine($tndir, $search["file"]);
+		if(file_exists($filePath))
+		{
+			$files[]=combine(@$search["subpath"], $search["file"]);
+			return $files;
+		}
+	}
+
+	$allFiles = scandir($tndir);
+	if(!$allFiles)
+	{
+		debug("scandir $tndir", "no files");
+		$subdirs = false;
+		return $files;
+	}
+
+	$files = $allFiles;
+	$ignoreList = loadIgnoreList($dir);
+	if(@$search["tag"])
+		$search["tagfiles"] = searchTagFiles($dir, 0, $search["tag"]);
+
+	$specialFiles = getConfig("SPECIAL_FILES");
+	$specialTypes = getConfig("TYPES.SPECIAL");
+
+	//filter allFiles
+	$files = array_diff($files, $ignoreList);
+	$files = array_diff($files, $specialFiles);
+
+debug("listFilesDir subdirs", $subdirs);	
+	if($subdirs!==false)
+		$subdirs = selectDirs($dir, $files);
+
+	$files = filterFiles($files, $search);
+
+	if(@$search["subpath"] && !@$search["nested"] || @$search["tnDir"])
+		array_walk($files, "addSubpath", $search);
+
+	return $files;
+}
+
+function addSubpath(&$item, $key, $search)
+{
+	$item = combine(@$search["subpath"], @$search["tnDir"], $item);
+}
+
+function filterFiles($files, $search)
+{
+	global $searchG;
+	if(empty($search))
+		return $files;
+
+	if(@$search["type"])
+		$search["exts"] = getExtensionsForTypes($search["type"]);
+
+//debug("filterFiles", $search);
+	$searchG = $search;
+	$files = array_filter($files, "fileIsSelected");
+
+debug("filterFiles count", @$search["count"]);
+	if(@$search["count"])
+	{
+		$files = array_slice($files, 0, $search["count"]);
+debug("filterFiles files", $files);
+		$search["count"] -= count($files);
+	}
+	$searchG = null;
+
+	//array_slice with maxcount
+	return $files;
+}
+
+//$result = ($hasName || $hasTag) && $hasType;
+function fileIsSelected($file, $search=null)
+{
+	global $searchG;
+	setIfNull($search, $searchG);
+	$result=true;
+	splitFilename($file, $name, $ext);
+//debug("fileIsSelected $file", $search);
+	if(@$search["file"])
+		return equals($file, @$search["file"]) || equals($name, @$search["file"]);
+
+	if(@$search["name"])
+		$hasName = $result = fileHasName($file, $search);
+
+	if(@$search["tagfiles"])
+	{
+		$hasTag = array_key_exists($name, $search["tagfiles"]);
+		$result = $result || $hasTag;
+	}
+
+	if(@$search["exts"] || @$search["type"] )
+	{
+		$hasType = @$search["exts"] && in_array(strtolower($ext), @$search["exts"]);
+		$result = $result && $hasType;
+	}
+
+	if(function_exists("is_admin") && !is_admin())
+		$result = $result && fileIsNotHidden($file);
+
+	return $result;
+}
+
+function fileHasName($file, $search=null)
+{
+	global $searchG;
+	setIfEmpty($search, $searchG);
+	if(empty($search)) return true;
+	$name = @$search["name"]; 
+	if(!$name) return true;
+
+	$file=getFilename($file);
+
+	if(@$search["regex"])
+		$result = preg_match($search["regex"], $file);
+	else
+		$result = equals($file, $name);
+//	if ($result)	debug("fileHasName " . @$search["regex"], $result);
+	return $result;
+}
+
 
 // dir listing functions with readdir
 function listAllFilesInDir($dir)
@@ -15,21 +193,22 @@ function listAllFilesInDir($dir)
 
 function listAllFiles($dir, $maxCount=0)
 {
-	$search = array("maxCount"=>$maxCount);
-	return listFiles($dir, $search);
+	$search = array("count"=>$maxCount);
+	return listFilesDir($dir, $search);
 }
 
 function getFileByName($dir, $name)
 {
-	$search = array("name" => $name);
-	return listFiles($dir, $search);
+	$search = array("name" => "*$name*");
+	return listFilesDir($dir, $search);
 }
 
 //find if name is matched  0 times, 1 time or multiple times
 function countFilesByName($dir, $name, $group=true)
 {
-	$search = array("name" => $name, "maxCount" => 4);
-	$list = listFiles($dir, $search);
+	$search = array("name" => $name, "count" => 4);
+	parseWildcards($search);
+	$list = listFilesDir($dir, $search);
 	if($group)
 		$list = groupByName($dir, $list);
 	if(array_key_exists($name, $list)) 
@@ -38,219 +217,29 @@ function countFilesByName($dir, $name, $group=true)
 	return array_keys($list);
 }
 
-//if $type=DIR: list subdirs only
-//if $type=FILE: list files without subdirs
-//0 or false: this dir only, +N into subdirs N levels, -N into parents N levels
-//true: no depth limit, recurse in all subdirs
-//$sub: subfolder to list (ex: .tn, .ss)
-//$search =  array( "name"=>"","type"=>"","depth"=>0,"maxCount"=>0,"tnDir"=>"");
-
-function listFiles($dir, $search=array(), $subPath="", $remaining=null, $recurse=null)
-{
-	$specialTypes = getConfig("TYPES.SPECIAL");
-
-debug("listFiles $dir", $search);
-	$files=array();
-	if (!is_dir($dir))
-	{
-		debug("listFiles $dir", "not found");
-		return $files;
-	}
-	//init recursive variables from search array
-	$subdirs=array();
-	setIfNull($remaining, @$search["maxCount"]);
-	setIfNull($recurse, @$search["depth"]);	
-	if(!isset($search["exts"]) && isset($search["type"]))
-	{
-		$search["exts"]=getExtensionsForTypes(@$search["type"]);
-		debug("search exts " . $search["type"], @$search["exts"]);
-	}
-	if(@$search["tag"] && !@$search["tagfiles"])
-	{
-		$search["tagfiles"] = searchTagFiles($dir, $recurse, @$search["tag"]);
-		$cnt=count($search["tagfiles"]);
-		debug("listFiles: files matched by tags ($cnt)", $search["tagfiles"], true);
-	}
-
-	$allfiles = scandir($dir); 
-debug("listFiles scandir", count($allfiles));			
-
-debug("subpath", $subPath);
-	//search 1 exact filename
-	if(isset($search["file"]))
-	{
-		$file=$search["file"];
-		$filePath = combine($dir, $file);
-debug("file_exists $filePath", file_exists($filePath));
-		if(file_exists($filePath))
-			$files[]=combine($subPath,$file);
-	}
-	else
-	{
-		global $relPathG;
-
-		if(!$allfiles)
-		{
-			debug("opendir $dir failed", $handle);
-			return $files;
-		}
-
-		$relPathG=$dir;
-		loadIgnoreList($dir);	//load from .ignore.txt file only once
-
-		foreach ($allfiles as $file)
-		{
-			//filter by files: works if dir sorted by name and case sensitive
-			// if($first && $file < $first) continue;
-			// if($last && $file > $last && !startsWith($file,$last) ) break; 
-			//pass function with condition to filter file before adding to array		
-			if(ignoreFile($file)) continue;
-
-			if($recurse && fileIsDir("$file"))
-			{
-				$subdirs[$file] = $file;			
-				debug("fileIsDir $file", fileIsDir("$file"));
-			}
-
-			splitFilename($file, $key, $ext);
-
-			$key=combine($subPath, $key);
-			$hasNameAndType = fileMatches($file, $key, $search);
-			if(isset($search["exts"]) && !$hasNameAndType && $specialTypes && in_array($ext, $specialTypes)) continue;
-
-			if(!$hasNameAndType) continue;
-
-			$key=combine($subPath,$file);
-
-//debug("splitFilename", "file=$file / key=$key / ext=$ext");
-			if(@$search["tnDir"])
-			{	
-				$thumb=findThumbnail($dir, $file, $search["tnDir"], false);
-				if($thumb)
-					$files[$key] = combine($subPath,$search["tnDir"],$thumb);
-			}
-			else
-				$files[$key] = $key; //combine($subPath,$file);
-
-			if(count($files)==$remaining) break;
-		}
-	}
-	$relPathG=null;
-//debug("keys", array_keys($files));
-//debug("recurse",$recurse);	
-//debug("subdirs",$subdirs);	
-
-//if $subdir:
-//1 list dirs from $relPath to recurse
-//2 list files from $relPath/$subdir
-	if(@$search["subdir"])
-	{
-debug("files in $dir", $files);		
-debug("subdir", @$search["subdir"]);	
-		$subdir = $search["subdir"];
-		$newDir = combine($dir, @$search["subdir"]);
-		unset($search["subdir"]);
-		$files=listFiles($newDir, $search, combine($subPath, @$search["subdir"]), $remaining, 0);
-debug("list files in $newDir", $files);		
-		$search["subdir"]=$subdir;
-	}
-
-	if($recurse==0 || $remaining>0 && count($files)==$remaining)
-		return $files;
-
-	//recursion in parent dir
-	if($recurse < 0 && $dir!=pathToDataRoot())
-	{
-		$newDir=getParent($dir);
-		if($remaining)
-		{
-			if(count($files) >= $remaining) break;
-			$remaining -= count($files);
-		}
-		$recurse++;
-		$parentFiles = listFiles($newDir, $search, combine($subPath,".."), $remaining, $recurse);
-		if($parentFiles)
-			$files=array_merge($files,$parentFiles);
-	}
-	//recursion in subdirs
-	//if maxcount, split results in subdirs, pick random subdir
-	else if($recurse > 0 && $subdirs)
-	{
-		if(is_numeric($recurse)) $recurse--;
-		$nbDirs=max(count($subdirs),1);
-		if(@$search["tnDir"])
-			shuffle($subdirs);
-
-		if($remaining > 0)
-			$remaining -= count($files);
-			
-		foreach($subdirs as $subdir)
-		{
-			$newDir=combine($dir,$subdir);
-			$nb = ($remaining == 0) ? 0 : max(floor($remaining/$nbDirs), 1);
-			$subdirFiles = listFiles($newDir, $search, combine($subPath,$subdir), $nb, $recurse);
-			if(!$subdirFiles) continue;
-			
-			$files=array_merge($files,$subdirFiles); //1 array
-			//if enough files, do not look into other subdirs
-			if($remaining > 0)
-			{	
-				if(count($subdirFiles) >= $remaining) break; 
-				$remaining -= count($subdirFiles);
-			}
-		}
-	}
-	return $files;
-}
-
-
-function fileMatches($file, $key, $search)
-{
-	$hasType = fileHasType($file, @$search["exts"]);
-	if(!@$search["name"] && !@$search["tag"]) return $hasType;
-
-	$hasName = @$search["name"] && fileHasName($file, @$search["name"] , @$search["start"], @$search["end"]);
-	$hasTag = @$search["tagfiles"] && array_key_exists($key, $search["tagfiles"]);
-	$result = ($hasName || $hasTag) && $hasType;
-	if($result)
-		debug("fileMatches $file $key", "name:$hasName | tag:$hasTag & type:$hasType = $result");
-	return $result;
-}
-
-function getSearchParameters()
-{
-	$search = array();		
-	$search["type"] = reqParam("type");
-	if($file = reqParam("file"))
-		$search["file"] = $file;
-	$search["name"] = reqParam("name", reqParam("search"));
-	$search["tag"]  = reqParam("tag", reqParam("search"));
-	$search["sort"] = reqParam("sort");
-	$search["depth"]  = reqParam("depth", 0);
-	$search["subdir"] = reqParam("subdir");
-	$search["maxCount"] = reqParam("count", 0);
-	$search["config"] = reqParamBoolean("config", true);
-	parseWildcards($search);
-
-	debug("getSearchParameters", $search);
-	return $search;
-}
-
 function parseWildcards(&$search)
 {
-	$name = @$search["name"];
-	if(!$name) return;
+	if(!@$search["name"]) return;
+	$name = $search["name"];
 
-	$search["starts"]=!startsWith($name, "*");
-	if(!$search["starts"])
-		$name=substr($name, 1);
-	if(!$name) return;
+	$starts = !startsWith($name, "*");
+	if(!$starts)
+		$name = substringAfter($name, "*");
+	$search["name"]=$name;
+	if(!$name)
+		return $search;
 
-	$search["ends"]=!endsWith($name, "*");
-	if(!$search["ends"])
-		$name=substr($name, 0, strlen($name)-1);
+	$ends=!endsWith($name, "*");
+	if(!$ends)
+		$name=substringBeforeLast($name, "*");
 	$search["name"] = $name;
-	debug("parseWildcards", $search);
+
+	$starts = $starts ? "^"  : ""; //starts with name
+	$ends   = $ends   ? "$" : "";  //finishes with name before .extension
+	$search["regex"]="/($starts($name)$ends)/i";
+
+//	debug("parseWildcards", $search);
+	return $search;
 }
 
 function sortFiles($files,$sort,$dateIndex=array())
@@ -362,8 +351,8 @@ function listFilesStartingWith($relPath,$name,$type,$maxCount=0)
 	$search["type"]=$type;
 	$search["name"]=$name;
 	$search["start"]=true;
-	$search["maxCount"]=$maxCount; // find only first one
-	return listFiles($relPath,$search);
+	$search["count"]=$maxCount; // find only first one
+	return listFilesDir($relPath,$search);
 }
 
 //see if a dir has at least one files of listed type
@@ -373,8 +362,8 @@ function hasFiles($relPath,$type="",$recursive=false)
 	$search =  array();
 	$search["type"]=$type;
 	$search["depth"]=$recursive;
-	$search["maxCount"]=1; // find only first one
-	return listFiles($relPath,$search);
+	$search["count"]=1; // find only first one
+	return listFilesRecursive($relPath,$search);
 }
 
 function listSubdirs($relPath,$recursive=0)
@@ -382,8 +371,8 @@ function listSubdirs($relPath,$recursive=0)
 	$search =  array();
 	$search["type"]="DIR";
 	$search["depth"]=$recursive;
-	//$search["maxCount"]=1; // find only first one
-	return listFiles($relPath,$search);
+	//$search["count"]=1; // find only first one
+	return listFilesRecursive($relPath,$search);
 }
 
 
@@ -487,12 +476,21 @@ function excludeFiles($files, $list)
 }
 
 //Filter sub dirs only
-function selectDirs($relPath,$fileList)
+function selectDirs($relPath, $fileList)
 {
 	global $relPathG;
 	$relPathG=$relPath;
+debug("selectDirs",  $relPathG);	
 	$filteredList = array_filter($fileList,"fileIsDir");
 	return $filteredList;
+}
+
+function fileIsDir($file)
+{
+	global $relPathG;
+	$dirPath = combine($relPathG, $file);
+//debug ("fileIsDir" . $dirPath, is_dir($dirPath));
+	return is_dir($file) || is_dir($dirPath);
 }
 
 function selectFilesByType($fileList,$ext,$sort=false)
@@ -530,7 +528,7 @@ function getExtensionsForTypes($exts)
 	$result=array();
 	foreach ($exts as $ext)
 		$result=array_merge($result, getExtensionsForType($ext));
-//debug("=>",$result);
+debug("getExtensionsForTypes",$result);
 	return $result;
 }
 
@@ -556,12 +554,6 @@ function fileExists($file)
 function fileIsImage($filename)
 {
 	return getFileType($filename)=="IMAGE";
-}
-
-function fileIsDir($file)
-{
-	global $relPathG;
-	return is_dir($file) || is_dir(combine($relPathG,$file));
 }
 
 function fileIsInSubdir($file)
@@ -646,8 +638,9 @@ function fileHasType($file, $ext="")
 	return $result!==false;
 }
 
+/*
 //filter by partial or complete name (without extension)
-function fileHasName($file,$name="",$start=false,$end=false)
+function fileHasName($file, $name="", $start=false, $end=false)
 {
 	global $nameG;
 	setIfEmpty($name,$nameG);
@@ -658,9 +651,12 @@ function fileHasName($file,$name="",$start=false,$end=false)
 	$start = $start ? "^"  : ""; //starts with name
 	$end   = $end   ? "$" : "";  //finishes with name before .extension 
 	$regex="/($start$name$end)/i";
-//debug("fileHasName regex", $regex);
-	return preg_match($regex, $file);
+	$result = preg_match($regex, $file);
+	//if ($result)
+		debug("fileHasName $file $regex", $result);
+	return $result;
 }
+
 
 function fileHasNameAndType($file,$name="",$ext="",$start=false,$end=false)
 {
@@ -669,6 +665,7 @@ function fileHasNameAndType($file,$name="",$ext="",$start=false,$end=false)
 	if($name)	$result = $result && fileHasName($file,$name,$start,$end);
 	return $result;
 }
+*/
 
 // filter array between 2 values passed as an array
 //to search by name or date range
@@ -703,26 +700,26 @@ function isPrivate($path)
 //if not found, look in parent directories
 //returns relative link to FIRST FILE found, or empty if none found
 //$getOther boolean: retrieve another file of the same type if file not found
-function findInParent($relPath,$file,$getOther=false)
+function findInParent($relPath, $file, $getOther=false)
 {
-	$found=findFilesInParent($relPath,$file,$getOther, 1, true);
-	return $found[0];
+	$found = findFilesInParent($relPath, $file, $getOther, 1, true);
+	return reset($found);
 }
 
 //find multiple files in parent
-function findFilesInParent($relPath,$file,$getOther=false, $maxCount=0, $appendPath=true)
+function findFilesInParent($relPath, $file, $getOther=false, $maxCount=0, $appendPath=true)
 {
 	$search =  array();
 	if(!$getOther)
 		$search["file"]=$file;
 	else
 		$search["type"]=getFilenameExtension($file);
-		
+
 	$search["depth"] = -10; // TODO, use depth of path?
-	$search["maxCount"] = $maxCount; // find only first one
-	$found = listFiles($relPath,$search);
+	$search["count"] = $maxCount; // find only first one
+	$found = listFilesRecursive($relPath, $search);
 	if(!$found) 
-		return false;
+		return $found;
 
 	$found=array_values($found);
 	if($appendPath)
@@ -733,15 +730,10 @@ function findFilesInParent($relPath,$file,$getOther=false, $maxCount=0, $appendP
 }
 
 //pick random 4 thumbs in this dir
-function subdirThumbs($relPath,$max_thumbs)
+function subdirThumbs($relPath, $max_thumbs)
 {
-	$search = array();
-	$search["type"]="IMAGE|VIDEO";
-	$search["depth"]=2;
-	$search["maxCount"]=2*$max_thumbs;
-	$search["tnDir"]=".tn";
-
-	$pics=listFiles($relPath,$search);
+	$search = array("type" => "IMAGE", "depth" => 2, "tnDir" => ".tn", "count" => 2 * $max_thumbs);
+	$pics=listFilesRecursive($relPath, $search);
 	$pics = pickRandomElements($pics, $max_thumbs);
 	return $pics;
 }
@@ -756,28 +748,24 @@ function findFirstImage($relPath)
 
 function findFirstImages($relPath, $maxCount=1)
 {
-	$search = array();
-	$search["type"]="IMAGE";
-	$search["maxCount"]=$maxCount;
-	$search["depth"]=1;
-	$search["tnDir"]=".ss";
-	$pics=listFiles($relPath,$search);
+	$search = array("type" => "IMAGE", "depth" => 1, "tnDir" => ".ss", "count" => $maxCount);
+	$pics=listFilesRecursive($relPath, $search);
 	if(!$pics)
 	{
-		$search["tnDir"]=".tn";
-		$pics=listFiles($relPath,$search);
+		$search["tnDir"] = ".tn";
+		$pics=listFilesRecursive($relPath, $search);
 	}
 	if(!$pics)
 	{
 		unset($search["tnDir"]);
-		$pics=listFiles($relPath,$search);
+		$pics=listFilesRecursive($relPath, $search);
 	}
 	debug("findFirstImage", $pics);
 	return $pics;
 }
 
 //pick random 4 thumbs in this dir
-function pickRandomElements($array,$nb)
+function pickRandomElements($array, $nb)
 {
 	shuffle($array);
 	return array_slice($array, 0, $nb);

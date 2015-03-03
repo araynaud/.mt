@@ -150,7 +150,7 @@ MediaFile.isVideoStream = function(mediaFile)
 	return mediaFile.isVideoStream();
 };
 
-MediaFile.prototype.isVideoStream = function(mediaFile)
+MediaFile.prototype.isVideoStream = function()
 {
 	if(isMissing(this.stream) && !isEmpty(this.exts))
 		this.stream = this.exts.intersect(config.TYPES.VIDEO_STREAM, "toLowerCase");
@@ -289,12 +289,18 @@ MediaFile.prototype.getFileUrl = function (ext)
 
 MediaFile.getShortPath = function (mediaFile)
 {
-	return String.combine(album.path, mediaFile.subdir, mediaFile.name);
+	return mediaFile.getShortPath();
 };
 
 MediaFile.prototype.getShortPath = function ()
 {
 	return String.combine(album.path, this.subdir, this.name);
+};
+
+MediaFile.prototype.getStartPath = function ()
+{
+	if(this.isDir()) return this.getShortPath();
+	return String.combine(album.path, this.subdir) + ":" + this.name;
 };
 
 MediaFile.prototype.getHashPath = function ()
@@ -305,7 +311,7 @@ MediaFile.prototype.getHashPath = function ()
 
 MediaFile.prototype.getShortUrl = function ()
 {
-	return UI.appRootUrl() + "?" + this.getShortPath();
+	return UI.appRootUrl() + "?" + this.getStartPath();
 };
 
 MediaFile.getFileDir = function(mediaFile, subdir)

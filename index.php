@@ -1,12 +1,9 @@
 <?php
 require_once("include/config.php");
 session_start();
-reqPathFile($path, $file);
 
-$tag = reqParam("search");
-$depth = reqParam("depth");
-$params=array("path" => $path, "file" => $file, "search" => $tag, "depth" => $depth);
-
+$params = requestFilters(false);
+$path = $params["path"];
 debugVar("params");
 
 $album = new Album($path, false);
@@ -36,7 +33,7 @@ $allowFacebook=allowFacebook($path);
 if(!empty($description)) {?>
 	<meta name="description" content="<?php echo $description?>"/>
 <?php }
-metaTags($album);
+testFunctionResult("metaTags", $album);
 if(isMobile()) {?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
 <?php } ?>
@@ -82,7 +79,7 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/phpmyvisites.js"></script>
 
 <script type="text/javascript">
-<?php echo jsVar("params", true, false, true, false); ?>
+<?php echoJsVar("params"); //, true); //, false, true, false); ?>
 var qs = new Querystring();
 delete qs.params[qs.whole];
 var search = Object.merge(qs.params, params, true);
@@ -121,9 +118,9 @@ Album.onLoad = function (albumInstance)
 
 		var mf=null;
 		if(location.hash)
-			search.file = location.hash.substringAfter("#");
-		if(search.file)
-			mf=album.getMediaFileByName(search.file);
+			search.start = location.hash.substringAfter("#");
+		if(search.start)
+			mf=album.getMediaFileByName(search.start);
 
 		UI.sortFiles(!mf);
 

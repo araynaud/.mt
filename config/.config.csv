@@ -115,8 +115,7 @@ TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
 TYPES.TEXT=txt
 TYPES.SPECIAL=xml;php;chunk;js;css
-SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.bg.jpg;.ignore.txt;.dateIndex.csv;.config.csv;youtube.csv;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_
-
+SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_;.DS_Store;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;
 
 ;JW Player options
 JWPLAYER.allowHtml5=true
@@ -201,3 +200,5 @@ visittracker.siteId=238250
 visittracker.url=http://st.free.fr/
 visittracker.php=phpmyvisites.php
 visittracker.js=phpmyvisites.js
+
+_mapping._root=..

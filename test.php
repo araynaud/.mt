@@ -37,7 +37,6 @@ debug();
 debug("GD Info", gd_info(), true);
 
 //debug("Defined functions", get_defined_functions(), true);
-
 $pdjConfig2 = readConfigFile("../pdj/pdj.config");
 echoJsVar("pdjConfig2");
 
@@ -134,9 +133,9 @@ debug("dirname $dir",dirname($dir));
 $dir = dirname($dir);
 debug("dirname $dir",dirname($dir));
 
-reqPathFile($path, $file);
-//$path=getPath();
-debugVar("file");
+$params = requestFilters(false);
+debugVar("params");
+$path=$params["path"];
 $relPath=getRelPath($path);
 debugVar("relPath");
 debug("is_dir $relPath", is_dir($relPath));
@@ -176,7 +175,7 @@ $search =  array();
 $search["type"]=getParam("type");
 $search["name"]=getParam("name");
 $search["depth"]=getParam("depth",0);
-$search["maxCount"]=getParam("count",0);
+$search["count"]=getParam("count",0);
 if(!is_numeric($search["depth"]))
 	$search["depth"]=getParamBoolean("depth");
 $search["tnDir"]=getParam("tndir");
@@ -238,7 +237,7 @@ debug(count($files) . " files");
 debugVar("files", true);
 
 startTimer();
-$files = listFiles($relPath, $search);
+$files = listFilesRecursive($relPath, $search);
 debug("listFiles $relPath Time elapsed", getTimer());
 debug(count($files) . " files");
 debugVar("files", true);

@@ -176,6 +176,7 @@ function LoadConfiguration($path=null, &$configData = array())
 //debug("LoadConfiguration", $relPath);	
 	if($relPath)
 		$configFilenames = findFilesInParent($relPath, ".config.csv");
+debug("findFilesInParent", $configFilenames);	
 	if($configFilenames) 
 	{
 		sort($configFilenames);
@@ -194,10 +195,7 @@ function LoadConfiguration($path=null, &$configData = array())
 		}
 
 //finally add some keys to output
-
-//debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
-//	$configData["SPECIAL_FILES"] = readArray(combine($appRootDir, $configData["SPECIAL_FILES"]), true);
-debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
+	debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
 	$configData ["SITE_NAME"] = getSiteName();
 	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);

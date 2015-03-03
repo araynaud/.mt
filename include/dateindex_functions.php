@@ -13,8 +13,7 @@ function listTagFiles($relPath, $depth=0, $tags=null, $grouped=true)
 {
 	$search = array("type" => "csv", "name" => $tags, "depth" => $depth, "subdir" => ".tag");
 debug("listTagFiles", $search);
-	$tagFiles = listFiles($relPath, $search);
-debug("tagFiles", $tagFiles);
+	$tagFiles = listFilesDir($relPath, $search);
 	if($grouped)
 		$tagFiles = groupByName("$relPath/.tag", $tagFiles);
 debug("tagFiles grouped", array_keys($tagFiles), true);

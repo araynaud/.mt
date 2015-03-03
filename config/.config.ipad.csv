@@ -3,7 +3,6 @@ TITLE=iPad Thingy
 
 ;thumbnail display
 display.rotate=false
-.reverse=false
 .downloadFileList=false
 .searchOptions=true
 

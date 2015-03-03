@@ -234,16 +234,19 @@ function metaTags($album, $article=true)
 
 //TODO: image: 1st best, or 1st image, use maxcount ?
 //or if start use this one
-	$mediaFile = MediaFile::getMediaFile();
+	$mediaFile = $album->getMediaFile();
 	debug("mediaFile", $mediaFile);
 	$meta["og:description"] = metaDescription($album, $mediaFile);
 
 //TODO: mediaFile method findOgImage
 	$image="";
 	if(!$mediaFile)
-		$image = findFirstImages($relPath,4);
+		$image = findFirstImages($relPath, 4);
 	else
+	{
+		$meta["mediaFile"] = $mediaFile->getName();
 		$image = $mediaFile->getBestImage(1000);
+	}
 debug("metaTags image", $image);
 
 	if($article)

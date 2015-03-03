@@ -19,7 +19,7 @@ require_once("classes/MediaFile.php");
 require_once("classes/Album.php");
 
 $startTime=startTimer();
-$path=getPath();
+$path=reqPath();
 
 if(isDebugMode())
 	header("Content-Type: text/plain");

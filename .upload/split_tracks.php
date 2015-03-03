@@ -2,13 +2,9 @@
 require_once("../include/config.php");
 setContentType("text", "plain");
 
-startTimer();
-
-reqPathFile($path, $file);
-debug("reqPathFile", "$path / $file");
-$relPath=getDiskPath($path);
 $mf = MediaFile::getMediaFile();
 debugVar("mf", true);
+$relPath = $mf->getRelPath();
 $fileType=strtolower($mf->getFileType());
 debugVar("fileType");
 debug("time:", getTimer());

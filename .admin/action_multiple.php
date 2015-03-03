@@ -7,7 +7,6 @@ setContentType("text", "plain");
 // create MediaFile by name
 // AJAX response: new MediaFile after action + error or confirmation message
 
-//reqPathFile($path, $file);
 $path = reqPath();
 debugVar("path");
 $files = reqParam("name");
