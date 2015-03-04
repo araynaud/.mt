@@ -201,4 +201,4 @@ visittracker.url=http://st.free.fr/
 visittracker.php=phpmyvisites.php
 visittracker.js=phpmyvisites.js
 
-_mapping._root=..
+;_mapping._root=..

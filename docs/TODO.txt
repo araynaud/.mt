@@ -1,6 +1,9 @@
 bugs:
 fix action_multiple
 
+2005-2006: thumbnails in subdirs only, not displayed
+no thumbnails. check depth in subdirThumbs
+
 qs: path:depth:search:start
 
 transition.type

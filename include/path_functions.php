@@ -268,6 +268,8 @@ debug("_mapping.$path1", $mapping);
 function getMappedRoot($dir)
 {	
 	$mappings = getConfig("_mapping");
+	if(!$mappings) return "";
+
 	foreach ($mappings as $key => $value) 
 		if(startsWith($dir, $value))
 			return $value;
