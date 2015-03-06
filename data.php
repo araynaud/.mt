@@ -50,6 +50,9 @@ function getFileData(&$getData)
 		case "album":
 			$getData="Album";
 			return new Album($search);
+		case "albumfast":
+			$getData="AlbumFast";
+			return new AlbumFast($search);
 		case "mediafile":
 		default:
 			$getData="MediaFile";

@@ -17,6 +17,7 @@ require_once("classes/BaseObject.php");
 require_once("classes/User.php");
 require_once("classes/MediaFile.php");
 require_once("classes/Album.php");
+require_once("classes/AlbumFast.php");
 
 $startTime=startTimer();
 $path=reqPath();

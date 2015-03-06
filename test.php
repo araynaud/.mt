@@ -178,7 +178,7 @@ $search["depth"]=getParam("depth",0);
 $search["count"]=getParam("count",0);
 if(!is_numeric($search["depth"]))
 	$search["depth"]=getParamBoolean("depth");
-$search["tnDir"]=getParam("tndir");
+$search["tndir"]=getParam("tndir");
 debugVar("search");
 
 debug("publish", getConfig("_publish.free"));

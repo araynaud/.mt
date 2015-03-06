@@ -1,8 +1,14 @@
 bugs:
-fix action_multiple
+1 action_multiple: only applies to clicked file
+2 2005-2006: thumbnails in subdirs only, not displayed
+no thumbnails. check depth in subdirThumbs,  tndir and recursivity.
 
-2005-2006: thumbnails in subdirs only, not displayed
-no thumbnails. check depth in subdirThumbs
+3 use start parameter
+
+3 optimize album generation
+scandir .tn, .ss, .hd
+
+
 
 qs: path:depth:search:start
 
@@ -1991,7 +1997,7 @@ move.php: use listFiles to move multiple files
 
 DONE
 function listFiles($dir,$name="",$type="",$recursive=0,$maxCount=0,$sort=false)
-add arguments: tnDir (".tn") + first & last file
+add arguments: tndir (".tn") + first & last file
 filterFiles($fileList,$name,$type,$maxCount=0,$sort=false)
 recursive in subdirs: list subdirs in all cases
 

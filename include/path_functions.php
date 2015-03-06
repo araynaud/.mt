@@ -151,8 +151,9 @@ function getSearchParameters($filters=null)
 	setIfEmpty($search["depth"], 0);
 	$search["subdir"] = arrayGet($filters, "subdir");
 	$search["subpath"] = "";
-	$search["count"] = arrayGet($filters, "count");
-	setIfEmpty($search["count"], 0);
+	$count = arrayGet($filters, "count");
+	if($count)
+		$search["count"] = $count;
 	$search["config"] = reqParamBoolean("config", true);
 	$search["nested"] = reqParamBoolean("nested");
 	parseWildcards($search);

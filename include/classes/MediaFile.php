@@ -56,7 +56,7 @@ class MediaFile extends BaseObject
 			$this->newestDate=getNewestFileDate($this->_filePath);
 			$this->takenDate=$this->newestDate;
 debug("MediaFile " . $this->name , $this->_filePath);
-			$this->thumbnails=subdirThumbs($this->_filePath, 4);
+			$this->thumbnails=testFunctionResult("subdirThumbs", $this->_filePath, 4);
 debug("dates " . $this->oldestDate, $this->newestDate);
 		}
 		else

@@ -746,21 +746,21 @@ function findThumbnails($dir, $file, $appendPath=true)
 	$sizes = getConfig("thumbnails.sizes");
 	if(!$sizes) return false;
 	$thumbnails = array();
-	foreach($sizes as $tnDir => $size)
-		$thumbnails[$tnDir] = findThumbnail($dir, $file, ".$tnDir", $appendPath);
+	foreach($sizes as $tndir => $size)
+		$thumbnails[$tndir] = findThumbnail($dir, $file, ".$tndir", $appendPath);
 
 	return $thumbnails;
 }
 
-function findThumbnail($dir, $file, $tnDir, $appendPath=true)
+function findThumbnail($dir, $file, $tndir, $appendPath=true)
 {
 //for image, get .tn/image
-	$thumb=combine($dir,$tnDir,$file);
+	$thumb=combine($dir,$tndir,$file);
 	if(file_exists($thumb))
 		return $appendPath ? $thumb : $file;
 //for video, get .tn/name.jpg
 	$file=getFilename($file,"jpg");
-	$thumb=combine($dir,$tnDir,$file);
+	$thumb=combine($dir,$tndir,$file);
 	if(file_exists($thumb))	
 		return $appendPath ? $thumb : $file;
 	return false;

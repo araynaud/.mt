@@ -4,7 +4,6 @@ require_once("../include/config.php");
 $path=getPath();
 $relPath=getDiskPath($path);
 $file=getParam("file");
-$tnDir=getParam("target");
 $size=getParam("size",0);
 $debug=getParamBoolean("debug");
 $format=getParam("format", "ajax");

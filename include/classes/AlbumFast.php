@@ -1,6 +1,6 @@
 <?php
 // media file, 1 per name
-class Album extends BaseObject
+class AlbumFast extends BaseObject
 {
     private $path;
     private $relPath;
@@ -16,10 +16,11 @@ class Album extends BaseObject
     private $cdate;
     private $oldestDate;
     private $newestDate;
+    private $thumbnails;
 	private $description;
 	private $dirs; //subdirectories
-	private $_allFiles; //array of files in the directory
-	private $_metadataIndex = array();
+	private $files; //array of files in the directory
+	private $metadataIndex = array();
 	private $youtube; //array of files in the directory
 	private $groupedFiles; //array of files in the directory
 	private $mediaFiles; //array of MediaFile in the directory
@@ -30,61 +31,60 @@ class Album extends BaseObject
     private $config;
 	private $tags;
 
-    public function __construct($filters="", $details=false)
+    public function __construct($filters)
 	{
 		global $config;
 
-debug("new Album", $filters);
+debug("new AlbumFast", $filters);
 	
-		if(is_array($filters))
-		{
-			$this->search = $filters;
-			$details = true;
-			$path = $filters["path"];
-		}
-		else
-			$path = $filters;
-
+		$this->search = $filters;
+		$this->path = $filters["path"];
         $this->user = new User();
-        $this->path = $path;
 		$this->getRelPath();
 		$this->getAbsPath();
 		$this->getTitle();
 		$this->getDescription();
-debug("new Album", $details);
-		if($details)
+		//list files according to search, etc.		
+		$this->files = listFilesRecursive($this->relPath, $this->search);
+		$this->groupedFiles = groupByName($this->relPath, $this->files, true);
+		if(@$this->groupedFiles["DIR"])
+			$this->dirs=array_keys($this->groupedFiles["DIR"]);
+		$allFilenames = null; //getDistinctNames($this->files);
+
+//list all thumbnails
+		$tndirs=getConfig("thumbnails.dirs");
+		$filters["noext"] = true;
+		foreach ($tndirs as $tndir)
 		{
-			$this->getSearchParameters();
-			//list files according to search, etc.		
-			$allFiles=listFilesRecursive($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
-//debug("allFiles", $allFiles, true);
-			$this->dirs=selectDirs($this->relPath, $allFiles);
-			$this->groupedFiles=groupByName($this->relPath, $allFiles, true);
-			$allFiles=groupByName($this->relPath, $allFiles);
-//			if(!$this->path)
-//				$this->addMappedDirs();
-//debug("allFiles", $allFiles, true);
-			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
-			$this->getDateIndex();
-
-			$this->getMetadataIndex("IMAGE");
-			$this->getMetadataIndex("VIDEO");
-
-			//Group by name / make MediaFile objects
-			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), null, $allFiles);
-			$this->youtube = loadYoutubePlaylist($this->relPath);
-debug("youtube", $this->youtube,"print_r");
-			$this->createMediaFiles();
-
-			$this->oldestDate=getOldestFileDate($this->relPath);
-			$this->newestDate=getNewestFileDate($this->relPath);
-			$this->cDate=$this->oldestDate;
-			$this->mDate=$this->newestDate;
-			if($this->search["config"])			
-				$this->config = $config;
+			$filters["subdir"] = ".$tndir";
+			$tnfiles = listFilesRecursive($this->relPath, $filters);
+			$this->thumbnails[$tndir] = array_combine($tnfiles, $tnfiles);
 		}
-		$this->private = isPrivate($path);
-		$this->buildTime=getTimer();
+
+		if(!$this->path)
+			$this->addMappedDirs();
+		$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
+		$this->getDateIndex();
+
+		$this->getMetadataIndex("IMAGE");
+		$this->getMetadataIndex("VIDEO");
+
+		//Group by name / make MediaFile objects
+		$this->tags = loadTagFiles($this->relPath, $this->getDepth(), null, $allFilenames);
+		$this->youtube = loadYoutubePlaylist($this->relPath);
+debug("youtube", $this->youtube,"print_r");
+//		$this->createMediaFiles();
+
+		$this->oldestDate=getOldestFileDate($this->relPath);
+		$this->newestDate=getNewestFileDate($this->relPath);
+		$this->cDate=$this->oldestDate;
+		$this->mDate=$this->newestDate;
+
+		if($this->search["config"])			
+			$this->config = $config;
+
+		$this->private = isPrivate($this->path);
+		$this->buildTime = getTimer();
     }
 
 	//init search parameters from request
@@ -158,9 +158,9 @@ debug("Album::getSearchParameters", $this->search);
     public function getMetadataIndex($type)
 	{
 		//TODO use dateIndex.types;IMAGE		
-		if(!isset($this->_metadataIndex[$type]))
-			$this->_metadataIndex[$type] = getMetadataIndex($this->relPath, $type, @$this->groupedFiles[$type], $this->isCompleteIndex());
-		return $this->_metadataIndex[$type];
+		if(!isset($this->metadataIndex[$type]))
+			$this->metadataIndex[$type] = getMetadataIndex($this->relPath, $type, @$this->groupedFiles[$type], $this->isCompleteIndex());
+		return $this->metadataIndex[$type];
 	}
 
     public function getDateIndexFiles()
