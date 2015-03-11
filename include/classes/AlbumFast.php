@@ -58,7 +58,8 @@ debug("new AlbumFast", $filters);
 		{
 			$filters["subdir"] = ".$tndir";
 			$tnfiles = listFilesRecursive($this->relPath, $filters);
-			$this->thumbnails[$tndir] = array_combine($tnfiles, $tnfiles);
+			if($tnfiles)
+				$this->thumbnails[$tndir] = array_combine($tnfiles, $tnfiles);
 		}
 
 		if(!$this->path)

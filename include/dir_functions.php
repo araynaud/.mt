@@ -10,7 +10,9 @@ debug("listFilesRecursive $dir", $search);
 		$search["count"] -= count($files);
 		if($search["count"] <= 0) 
 			return $files;
+		debug("listFilesRecursive remaining", @$search["count"]);
 	}
+
 	if(!@$search["depth"]) return $files;
 
 	$root = getMappedRoot($dir);
@@ -31,6 +33,12 @@ debug("listFilesRecursive $dir", $search);
 debug("subpath", $search["subpath"]);
 
 			$subdirFiles = listFilesRecursive($subdirPath, $search);
+			if(isset($search["count"]))
+			{
+				$search["count"] -= count($subdirFiles);
+				debug("listFilesRecursive remaining", @$search["count"]);
+			}
+
 debug("count", @$search["count"]);
 			if($subdirFiles && @$search["nested"]) //nested subdirs or flat array
 				$files[$subdir] = $subdirFiles; 
@@ -87,12 +95,12 @@ function listFilesDir($dir, $search=array(), &$subdirs=false)
 	{
 		$subdirs = selectDirs($dir, $dirFiles);
 		$subdirs = array_diff($subdirs, $ignoreList, $specialFiles);
-debug("listFilesDir subdirs", $subdirs);	
+debug("listFilesDir subdirs", count($subdirs));	
 	}
 
 	if(@$search["tag"])
 		$search["tagfiles"] = searchTagFiles($dir, 0, $search["tag"]);
-	$files = filterFiles($files, $search);
+	$files = testFunctionResult("filterFiles", $files, $search);
 
 	if(@$search["subpath"] && !@$search["nested"] || @$search["tndir"])
 		array_walk($files, "addSubpath", $search);
@@ -128,7 +136,6 @@ function filterFiles($files, $search)
 	$searchG = $search;
 	$files = array_filter($files, "fileIsSelected");
 
-debug("filterFiles count", @$search["count"]);
 	if(isset($search["count"]))
 		$files = array_slice($files, 0, $search["count"]);
 	$searchG = null;
@@ -537,7 +544,7 @@ function getExtensionsForTypes($exts)
 	$result=array();
 	foreach ($exts as $ext)
 		$result=array_merge($result, getExtensionsForType($ext));
-debug("getExtensionsForTypes",$result);
+//debug("getExtensionsForTypes",$result);
 	return $result;
 }
 

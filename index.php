@@ -3,10 +3,13 @@ require_once("include/config.php");
 session_start();
 
 $params = requestFilters(false);
+$params["count"] = 4;
 $path = $params["path"];
 debugVar("params");
 
 $album = new Album($path, false);
+unset($params["count"]);
+
 $relPath=$album->getRelPath();
 $urlPath=$album->getAbsPath();
 $urlPath = coalesce($urlPath, $relPath);

@@ -1,9 +1,21 @@
 bugs:
 1 action_multiple: only applies to clicked file
-2 2005-2006: thumbnails in subdirs only, not displayed
+unify into action.php ? function doAction called in loop ?
+
+2 fix tags when depth>1
+loadTagFile
+
+OK. free: listFilesRecursive too slow. check use of search["count"]
+
+2 convert video .mp4 => .mp4, should be .m4v
+check use of config
+
+OK 2 2005-2006: thumbnails in subdirs only, not displayed
 no thumbnails. check depth in subdirThumbs,  tndir and recursivity.
 
 3 use start parameter
+
+
 
 3 optimize album generation
 scandir .tn, .ss, .hd

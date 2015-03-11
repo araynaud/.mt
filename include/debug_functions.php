@@ -37,43 +37,39 @@ function formatMs($time, $digits=3)
 	return round($time * 1000, $digits) . "ms";
 }
 
-function testFunction()
-{
-	$args = func_get_args();
-	$funct = array_shift($args);
-
-	debug("Test $funct args", $args);
-	$time = getTimer();
-	$result = call_user_func_array($funct, $args);
-	$time = formatMs(getTimer() - $time);
-	$nb="";
-	if(is_array($result))
-		$nb = count($result);
-
-	debug("Test $funct", "$nb in $time");
-	debug();
-	return $result;
-}
-
 function testFunctionResult()
 {
 	$args = func_get_args();
 	$funct = array_shift($args);
-	debug("Test $funct args", $args);
-
 	$time = getTimer();
 	$result = call_user_func_array($funct, $args);
+	foreach ($args as $key => $arg)
+		if(is_array($arg))
+			$args[$key] = shortenArray($arg);
+
+	debug("Test $funct args", $args);
+
 	$time = formatMs(getTimer() - $time);
-	$nb="";
-	if(is_array($result))
-		$nb = count($result);
+	$nb = $result;
+	if(is_array($nb))
+		$nb = shortenArray($result);
 	
-	debug("Test $funct result", $result, true);
-	debug("Test $funct", "$nb in $time");
+	debug("Test $funct result", $nb, true);
+	debug("Test $funct time", $time);
 	debug();
 	return $result;
 }
 
+function shortenArray($arr, $maxlength=8)
+{
+	$count = count($arr);
+	if(!is_array($arr) || $count <= $maxlength)
+		return $arr;
+
+	$arr = array_slice($arr, 0, $maxlength);
+	$arr[] = "... Array($count) ...";
+	return $arr;
+}
 
 function debugVar($name, $indent=0)
 {
