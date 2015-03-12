@@ -61,8 +61,8 @@ debug("new Album", $details);
 			$this->dirs=selectDirs($this->relPath, $allFiles);
 			$this->groupedFiles=groupByName($this->relPath, $allFiles, true);
 			$allFiles=groupByName($this->relPath, $allFiles);
-//			if(!$this->path)
-//				$this->addMappedDirs();
+			if(!$this->path)
+				$this->addMappedDirs();
 //debug("allFiles", $allFiles, true);
 			$this->_dateIndexEnabled = getConfig("dateIndex.enabled");
 			$this->getDateIndex();

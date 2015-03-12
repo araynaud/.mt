@@ -13,7 +13,7 @@ function listTagFiles($relPath, $depth=0, $tags=null, $grouped=true)
 {
 	$search = array("type" => "csv", "name" => $tags, "depth" => $depth, "subdir" => ".tag");
 debug("listTagFiles", $search);
-	$tagFiles = listFilesDir($relPath, $search);
+	$tagFiles = listFilesRecursive($relPath, $search);
 	if($grouped)
 		$tagFiles = groupByName("$relPath/.tag", $tagFiles);
 debug("tagFiles grouped", array_keys($tagFiles), true);
@@ -85,7 +85,7 @@ function loadTagFiles($relPath, $depth=0, $tags=null, $fileList=null)
 function loadTagFile($relPath, $subdir, $tag, $fileList=null)
 {
 	$filename=getTagFilename($relPath, $subdir, $tag);
-debug("loadTagFile", $filename);
+debug("loadTagFile $subdir $tag", $filename);
 	$tagList = readArray($filename, true);
 
 	if($subdir)
