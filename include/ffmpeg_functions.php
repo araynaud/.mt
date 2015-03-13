@@ -275,7 +275,7 @@ function convertVideo($relPath, $inputFile, $to, $size=0, $start=0, $end=0)
 {
 //calculate height from display_aspect_ratio
 	$convert = getConfig("_FFMPEG.convert.$to");
-debug($to, $convert);
+debug("convert $to", $convert);
 	if(!$convert) return false;
 
 //if input is MPEG or MPEG2 : deinterlace with yadif filter?

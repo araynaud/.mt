@@ -252,9 +252,19 @@ MediaFile.prototype.getTakenDate = function(includeTime)
 	return MediaFile.getTakenDate(this, includeTime);
 };
 
-MediaFile.getFilePath = function (mediaFile)
+MediaFile.getPath = function (mediaFile)
 {
-	return String.combine(album.path, mediaFile.subdir, mediaFile.filename);
+	return String.combine(album.path, mediaFile.subdir);
+};
+
+MediaFile.prototype.getPath = function(ext)
+{
+	return String.combine(album.path, this.subdir);
+};
+
+MediaFile.getFilePath = function (mediaFile, ext)
+{
+	return String.combine(album.path, mediaFile.subdir, mediaFile.getFilename(ext));
 };
 
 MediaFile.prototype.getFilePath = function(ext)
@@ -545,7 +555,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 	if(config.debug.ajax)
 	{
 		var debugScriptUrl = mediaFile.getScriptUrl(script, params).appendQueryString({debug:"true"});
-		var link = $.makeElement("a", { href: debugScriptUrl, target: "debug"}).html(scriptUrl);
+		var link = $.makeElement("a", { href: debugScriptUrl, target: "debug"}).html(debugScriptUrl);
 		if(window.UI) UI.addStatus(link.outerHtml());
 	}
 

@@ -58,6 +58,23 @@ function Album(data)
 Album.serviceUrl = ""; 
 Album.defaultFilter="type";
 
+
+Album.getScriptUrl = function(scriptName, params)
+{
+	scriptName = String.combine(Album.serviceUrl, scriptName);
+	var url = "{0}?path={1}".format(scriptName, album.path);
+	if(!params)
+		return scriptName;
+	return scriptName + "?" + Object.toQueryString(params);
+};
+
+Album.prototype.getScriptUrl = function (scriptName, params)
+{
+	if(!params)	params = {};
+	params.path = this.path;
+	return Album.getScriptUrl(scriptName, params);
+};
+
 // get album data in JSON format
 Album.getAlbumAjax = function(instanceName, search, async, callback)
 {	

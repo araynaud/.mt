@@ -156,7 +156,6 @@ UI.fileActionAjax = function(params)
 	else if(params.multiple)
 	{
 		params.name=album.getSelectedFileNames();
-		params.script = ".admin/action_multiple.php";
 		return UI.fileAction(params);
 	}
 	return UI.doSelectedFiles(scriptName, params);
@@ -273,21 +272,22 @@ UI.ajaxError = function(xhr, textStatus, errorThrown)
 //pass response, use .action and .parameters
 UI.afterAction = function(response, mediaFile, params)
 {
-	if(!mediaFile && !response.mediaFiles) return false;
+	if(!mediaFile && !response.files) return false;
 	if(!params || !params.action) return false;
 	if(!response.result) return false;
 
-//	UI.setStatus("action done in " + response.time);
 	//handle multiple files if params.multiple && response.files
 	//response.files: update mediaFiles
-	if(response.mediaFiles)
+	if(response.files)
 	{
-		var mediaFiles = response.mediaFiles;
-		delete response.mediaFiles;
-		for(var key in mediaFiles)
+		var mediaFiles = response.files;
+		if(config.debug.ajax)
+			UI.addStatus(plural(mediaFiles.length, "file"));
+		delete response.files;
+		for(var i=0; i < mediaFiles.length; i++)
 		{
-			var rmf = mediaFiles[key];
-			var mf = album.getMediaFileByName(key, rmf.type);
+			var rmf = mediaFiles[i];
+			var mf = album.getMediaFileByName(rmf.name, rmf.type);
 			UI.afterAction(response, mf, params);
 		}
 		return;

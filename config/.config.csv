@@ -115,7 +115,7 @@ TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
 TYPES.TEXT=txt
 TYPES.SPECIAL=xml;php;chunk;js;css
-SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_;.DS_Store;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;
+SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_;.DS_Store;Thumbs.db;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;
 
 ;JW Player options
 JWPLAYER.allowHtml5=true
@@ -146,7 +146,7 @@ _FFMPEG.convert.stream.format=mp4
 _FFMPEG.convert.stream.script=ffmpeg2mp4
 _FFMPEG.convert.stream.3gp.format=mp4
 _FFMPEG.convert.stream.3gp.script=ffmpeg_3gp_mp4
-;_FFMPEG.convert.stream.mp4.format=m4v
+_FFMPEG.convert.stream.mp4.format=m4v
 ;_FFMPEG.convert.stream.mp4.script=ffmpeg_mp4_m4v
 
 _FFMPEG.convert.stream.width=960

@@ -416,7 +416,7 @@ img.icontr, img.iconTrans
 	padding: 0px;
 	position:relative;
 	white-space: normal;
-	min-width: 120px;
+	min-width: 20px; 
 }
 
 /*.file.margin, .slide.margin, .column.margin*/

@@ -40,15 +40,17 @@ function formatMs($time, $digits=3)
 function testFunctionResult()
 {
 	$args = func_get_args();
+	$args2 = func_get_args();
 	$funct = array_shift($args);
+	$funct = array_shift($args2);
 	$time = getTimer();
-	$result = call_user_func_array($funct, $args);
-	foreach ($args as $key => $arg)
+	foreach ($args2 as $key => $arg)
 		if(is_array($arg))
-			$args[$key] = shortenArray($arg);
+			$args2[$key] = shortenArray($arg);
 
-	debug("Test $funct args", $args);
+	debug("Test $funct args", $args2);
 
+	$result = call_user_func_array($funct, $args);
 	$time = formatMs(getTimer() - $time);
 	$nb = $result;
 	if(is_array($nb))
@@ -60,7 +62,7 @@ function testFunctionResult()
 	return $result;
 }
 
-function shortenArray($arr, $maxlength=8)
+function shortenArray($arr, $maxlength=6)
 {
 	$count = count($arr);
 	if(!is_array($arr) || $count <= $maxlength)

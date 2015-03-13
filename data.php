@@ -7,8 +7,9 @@ function getFileData(&$getData)
 	$getData = strtolower($getData);
 	$search = getSearchParameters();
 	$details = reqParamBoolean("details");
-	$relPath = getDiskPath($search["path"]);
-	$filePath=combine($relPath, $search["file"]);
+	$relPath = getDiskPath(@$search["path"]);
+	$file = reqParam("file");
+	$filePath=combine($relPath, $file);
 
 	switch ($getData)
 	{
