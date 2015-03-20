@@ -79,8 +79,8 @@
 <script id="imageCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="floatR">
-			<a {{if vsizes}} title="{{:width}}x{{:height}} {{:~formatSize(vsizes[exts[0]])}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
-				<img class="icon" src="icons/download.gif" alt="download {{>filename}}"/>
+			<a {{if versions}} title="{{:width}}x{{:height}} {{:~formatSize(versions[0])}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
+				<img class="icon" src="icons/download.gif" alt="download {{:filename}}"/>
 			</a>
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
@@ -99,7 +99,9 @@
 		<div class="floatR" style="margin-left:5px; margin-right:5px; max-width:35%;">
 			{{if duration}}{{:~formatTime(duration)}}{{/if}}
 			{{if isLocalVideoStream()}}<img class="playLink" src="icons/play.png" title="play {{:stream}}" /><br/>{{/if}}
-			{{if exts}}{{for exts tmpl="extLinkTemplate"/}}{{/if}}
+			{{if versions}}{{for versions tmpl="versionLinkTemplate"/}}
+			{{else exts}}{{for exts tmpl="extLinkTemplate"/}}
+			{{/if}}
 		</div>
 		<div class="nowrap noscroll">{{>title}}</div>
 		{{if true tmpl="descriptionTagTemplate"/}}
@@ -125,8 +127,12 @@
 </script>
 
 <!-- template for video download links by extension -->
+<script id="versionLinkTemplate" type="text/x-jsrender"> 
+	<a class="download" title="{{:#parent.parent.data.width}}x{{:#parent.parent.data.height}} {{:~formatSize(size)}}" href="{{:~fileUrl(#parent.parent.data, ext)}}">{{:ext.toUpperCase()}}</a>
+</script>
+
 <script id="extLinkTemplate" type="text/x-jsrender"> 
-	<a class="download" title="{{:#parent.parent.data.width}}x{{:#parent.parent.data.height}} {{:~formatSize(#parent.parent.data.vsizes[#data])}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
+	<a class="download" title="{{:#parent.parent.data.width}}x{{:#parent.parent.data.height}}" href="{{:~fileUrl(#parent.parent.data, #data)}}">{{:#data.toUpperCase()}}</a>
 </script>
 
 <!-- template for playlist items -->

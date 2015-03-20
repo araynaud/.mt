@@ -7,24 +7,17 @@ $params["count"] = 4;
 $path = $params["path"];
 debugVar("params");
 
-$album = new Album($path, false);
+$album = new Album($path, 0);
 unset($params["count"]);
 
-$relPath=$album->getRelPath();
-$urlPath=$album->getAbsPath();
-$urlPath = coalesce($urlPath, $relPath);
-debugVar("relPath");
-debugVar("urlPath");
-
-$title= $album->getTitle();
+$relPath = $album->getRelPath();
+$title = $album->getTitle();
 $siteName = getSiteName();
 $pageTitle = ($title == $siteName) ? $title : "$title - $siteName";
 $description=$album->getDescription();
 $depth=$album->getDepth();
 
 copyRedirect($relPath);
-$allowJquery=allowJqueryFX();
-$allowFacebook=allowFacebook($path);
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,7 +29,7 @@ $allowFacebook=allowFacebook($path);
 if(!empty($description)) {?>
 	<meta name="description" content="<?php echo $description?>"/>
 <?php }
-testFunctionResult("metaTags", $album);
+metaTags($album);
 if(isMobile()) {?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
 <?php } ?>

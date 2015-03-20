@@ -2,7 +2,7 @@
 */
 
 //constructor
-function MediaFile(data)
+function MediaFile(data, metadata, album)
 { 
 	//if data is object: loop for each key, use Object.merge = function (this, data);
 	if(isObject(data))
@@ -10,9 +10,16 @@ function MediaFile(data)
 	//if data is a string: absolute URL, relative URL or filename
 	else if(isString(data))
 		this.url=data;
+
+	this._parent = album;
+	if(metadata && isObject(metadata))
+		Object.merge(this, metadata, true);
+
+
 	this.getId();
 	this.getTitle();
 	this.getRatio();
+	this.getVersions();	
 	this.filename = this.getFilename();
 	this.isVideoStream();	
 	this.initTags();
@@ -70,6 +77,15 @@ MediaFile.prototype.getRatio = function()
 	return this.ratio;
 };
 
+MediaFile.prototype.getVersions = function()
+{
+	if(!isEmpty(this.versions)) return this.versions;
+	if(isEmpty(this.exts)) return [];
+	this.versions = [];
+	for(i=0; i<this.exts.length; i++)
+		this.versions.push({ ext: this.exts[i], size: this.size ? this.size[i] : null, date: this.date[i] });
+	return this.versions;
+};
 
 MediaFile.getId = function(name, type)
 {
@@ -473,9 +489,9 @@ MediaFile.getFileSize = function (mediaFile, tn)
 
 MediaFile.prototype.getFileSize = function (tn)
 {	
-	if(!this.vsizes) return 0;
 	tn=valueOrDefault(tn, 0);
-	return this.vsizes[tn] || this.vsizes[this.exts[tn]];
+	if(!this.versions || !this.versions[tn]) return 0;
+	return this.versions[tn].size || this.versions[this.exts[tn]].size;
 };
 
 MediaFile.getTnFileSize = function (mediaFile, tn)

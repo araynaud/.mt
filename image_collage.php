@@ -216,7 +216,7 @@ debugVar("target");
 $files = getParam("files");
 $tag = getParam("tag");
 
-$album = new Album($path, true);
+$album = new Album($path, 4);
 if($files)
 	$mediaFiles = getImages($album, $files);
 else

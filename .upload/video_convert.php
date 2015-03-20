@@ -26,7 +26,7 @@ $progress="";
 if($mode=="progress")
 	$progress = convertVideoProgress($relPath, $file, $convertTo);
 else
-	$outputFile = testFunctionResult("convertVideo", $relPath, $file, $convertTo, $size, $start, $end);
+	$outputFile = convertVideo($relPath, $file, $convertTo, $size, $start, $end);
 
 $imgType=getImageTypeFromExt($outputFile);
 

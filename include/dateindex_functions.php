@@ -319,8 +319,8 @@ function getFilesFromDateIndex($relPath)
 //build index entries with $date,$name
 function updateIndex($relPath, $files, &$dateIndex=array())
 {
-	global $relPathG;
-	$relPathG=$relPath;
+//	global $relPathG;
+//	$relPathG=$relPath;
 
 	foreach ($files as $name => $file)
 	{

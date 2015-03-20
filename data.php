@@ -6,7 +6,7 @@ function getFileData(&$getData)
 	global $config;
 	$getData = strtolower($getData);
 	$search = getSearchParameters();
-	$details = reqParamBoolean("details");
+	$details = reqParam("details", 0);
 	$relPath = getDiskPath(@$search["path"]);
 	$file = reqParam("file");
 	$filePath=combine($relPath, $file);
@@ -32,7 +32,7 @@ function getFileData(&$getData)
 				$tags = loadTagFiles($relPath, $search["depth"]);
 			return $tags;
 		case "tablefile":
-			return readCsvTableFile($filePath, 0, true);
+			return readCsvTableFile($filePath, false, true);
 		case "playlist":
 			return readPlaylistFile($filePath); //, 0, true);
 		case "datafile":
@@ -50,7 +50,7 @@ function getFileData(&$getData)
 			return getMediaFileInfo($filePath);
 		case "album":
 			$getData="Album";
-			return new Album($search);
+			return new Album($search, $details);
 		case "albumfast":
 			$getData="AlbumFast";
 			return new AlbumFast($search);

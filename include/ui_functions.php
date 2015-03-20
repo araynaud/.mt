@@ -242,11 +242,14 @@ function metaTags($album, $article=true)
 	$image="";
 	if(!$mediaFile)
 		$image = findFirstImages($relPath, 4);
-	else
+	else if(is_object($mediaFile))
 	{
 		$meta["mediaFile"] = $mediaFile->getName();
 		$image = $mediaFile->getBestImage(1000);
 	}
+	else if(is_array($mediaFile))
+		$meta["mediaFile"] = $mediaFile["name"];
+
 debug("metaTags image", $image);
 
 	if($article)
@@ -298,7 +301,7 @@ debug("getimagesize", $is);
 function metaDescription($album, $mediaFile)
 {
 	$ad = $album ? $album->getDescription() : ""; 
-	$md = $mediaFile ? $mediaFile->getDescription() : "";
+	$md = $mediaFile && is_object($mediaFile) ? $mediaFile->getDescription() : "";
 	if($ad && $md) return "$ad. $md";
 	if($ad) return $ad;
 	return $md;

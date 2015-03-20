@@ -27,12 +27,14 @@ function Album(data)
 
 	for(var type in this.groupedFiles)
 	{
+		if(!this.groupedFiles.hasOwnProperty(type)) continue;
 		var files = this.groupedFiles[type];
+		var metadata = this.metadata ? this.metadata[type] : null;
 		var typeFiles={};
 		for(var key in files)
 		{
 			if(!files.hasOwnProperty(key)) continue;
-			var mf = new MediaFile(files[key]);
+			var mf = new MediaFile(files[key], metadata ? metadata[key] : null, this);
 			typeFiles[mf.id] = mf;
 		}
 		this.groupedFiles[type] = typeFiles;	
@@ -52,6 +54,7 @@ function Album(data)
 	this.articleFiles = this.getFilesByType("TEXT");
 	this.musicFiles = this.getFilesByType("AUDIO");
 	this.mediaFiles = this.getFilesByType(["DIR", "IMAGE", "VIDEO"]);
+	this.loadTags();
 	this.initTags();
 }
 
@@ -81,6 +84,8 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	if(!search) search={};
 	search.data = "album";	
 	search.debug = "false";
+	search.config = valueOrDefault(search.config, true);
+	search.details = valueOrDefault(search.details, 3);
 	async=valueOrDefault(async,false);
 	//TODO: pass search as data to $.ajax GET
 	var serviceUrl = String.combine(Album.serviceUrl, "data.php");

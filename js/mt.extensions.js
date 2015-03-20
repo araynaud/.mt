@@ -865,8 +865,17 @@ Object.keyIntersect = function (o1, o2)
 	return result;
 };
 
+Object.foreach = function (obj, funct)
+{
+	if(!isObject(obj)) return funct(obj);
+	for(var key in obj)
+	{
+		if(!obj.hasOwnProperty(key)) continue;
+		var value = obj[key];
+		funct(key, value);
+	}
+}
 
-	
 //TODO add browser info function
 Object.toText = function (obj, separator, includeFunctions)
 {

@@ -464,6 +464,8 @@ function groupByName($relPath, $files, $byType=false, $details=true)
 			$distinct[$key] = $element;
 	}
 
+	//return $distinct;
+
 	//article files: remove description files that have same name as another mediaFile
 	if($byType && isset($distinct["TEXT"])) 
 	{
@@ -720,7 +722,9 @@ function findFilesInParent($relPath, $file, $getOther=false, $maxCount=0, $appen
 function subdirThumbs($relPath, $max_thumbs)
 {
 	$search = array("type" => "IMAGE", "depth" => 1, "tndir" => ".tn", "count" => 2 * $max_thumbs);
-	$pics = testFunctionResult("listFilesRecursive", $relPath, $search);
+	$pics = listFilesDir($relPath, $search);
+	if(!$pics)
+		$pics = listFilesRecursive($relPath, $search);
 	$pics = pickRandomElements($pics, $max_thumbs);
 	return $pics;
 }

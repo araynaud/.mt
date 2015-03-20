@@ -3,16 +3,16 @@
 class MediaFile extends BaseObject
 {
     //private $id;
-    private $_filePath;
+    protected $_filePath;
     protected $name;
     protected $subdir;
 	protected $type;
 	protected $exts=array();		//array of extensions available for this filename
+	protected $size;
+	protected $date;
+    private $takenDate;
     private $title;
     private $description;
-    private $takenDate;
-    private $cDate;
-    private $mDate;
     private $metadata;
     private $oldestDate;
     private $newestDate;
@@ -38,8 +38,8 @@ class MediaFile extends BaseObject
 		$this->_parent=$album;
 		$this->setMultiple($file);
 
-		foreach($this->exts as $ext)
-			$this->addVersion($ext);
+//		foreach($this->exts as $ext)
+//			$this->addVersion($ext);
 
 		//$this->getTitle();
 		$this->_filePath = $this->getFilePath();
@@ -56,24 +56,16 @@ class MediaFile extends BaseObject
 			$this->newestDate=getNewestFileDate($this->_filePath);
 			$this->takenDate=$this->newestDate;
 debug("MediaFile " . $this->name , $this->_filePath);
-			$this->thumbnails=testFunctionResult("subdirThumbs", $this->_filePath, 4);
+			$this->thumbnails=subdirThumbs($this->_filePath, 4);
 debug("dates " . $this->oldestDate, $this->newestDate);
 		}
 		else
 		{
 			$this->getMetadata();
 			if($this->isVideo())
-			{
-				$streamTypes = getConfig("TYPES.VIDEO_STREAM");
-				$this->stream=array();
-				foreach ($this->exts as $ext)
-					if(in_array(strtolower($ext), $streamTypes))
-						$this->stream[]=$ext;
-
 				$this->animated = true;
-			}
-			//thumbnails: image: .tn & .ss, same ext.
-			$this->addImageThumbnails();
+			//$this->addImageThumbnails();
+			$this->addThumbnails();
 		}
 	}
 
@@ -81,7 +73,7 @@ debug("dates " . $this->oldestDate, $this->newestDate);
     {
 		if(!$search) $search = getSearchParameters();
 debug("MediaFile::getMediaFile", $search);
-		$album = new Album($search);
+		$album = new Album($search, 4);
 debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
 		return $album->getMediaFile();
 	}
@@ -90,11 +82,18 @@ debug("MediaFile::getMediaFile countMediaFiles", $album->countMediaFiles());
     {    	
 		if(!$search) $search = getSearchParameters();
 debug("MediaFile::getMediaFiles", $search);
-		$album = new Album($search);
+		$album = new Album($search, 4);
 debug("MediaFile::getMediaFiles countMediaFiles", $album->countMediaFiles());
 		return $album->getMediaFiles();
 	}
 
+
+    public function addThumbnails()
+    {
+    	if($this->_parent)
+	    	$this->tnsizes = $this->_parent->getFileThumbnails($this->name);
+    	return $this->tnsizes;
+	}
 
     public function addImageThumbnails()
     {
@@ -103,11 +102,12 @@ debug("MediaFile::getMediaFiles countMediaFiles", $album->countMediaFiles());
     	$noThumbTypes = getConfig("TYPES.IMAGE_NOTHUMB");
 		$noThumb = array_intersect($this->exts, $noThumbTypes);
     	if($noThumb) return;
+		debug("addImageThumbnails", $tnSizes);
 
     	foreach ($tnSizes as $subdir => $size)
     	{
     		if(!$this->animated && $this->imageIsSmaller($size)) break;
-			debug("addImageThubnails $subdir $size", $this->width . "x" . $this->height);
+			debug("addImageThumbnails $subdir $size", $this->width . "x" . $this->height);
  			$this->addThumbnail($subdir);
     		if($this->imageIsSmaller($size)) break;
     	}
@@ -220,7 +220,7 @@ debug("MediaFile::getMediaFiles countMediaFiles", $album->countMediaFiles());
 		$path = $this->getPath();
 		if(!$path)
 			return $this->getDiskPath();
-
+//		return $this->getRelPath() ."/". $this->subdir ."/". $this->getFilename($ext);
 		return combine($this->getRelPath(), $this->subdir, $this->getFilename($ext));
 	}
 

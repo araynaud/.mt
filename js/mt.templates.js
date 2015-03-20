@@ -189,7 +189,7 @@ UI.displayArticle = function(mediaFile)
 		UI.setMode("article");
 
 	if(isEmpty(mediaFile.description))
-		mediaFile.descripton = UI.getTextAjax(album.urlAbsPath, mediaFile.name);
+		mediaFile.description = UI.getTextAjax(album.urlAbsPath, mediaFile.name);
 
 	var desc = mediaFile.description;
 //	desc = desc.replace(new RegExp("\n\n", "g"), "</div><div class='nofloat left margin'>");
