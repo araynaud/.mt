@@ -73,7 +73,7 @@ else
 			case "background":
 				//TODO: apply .bg to other directory (parent or sub?)
 				//copy .ss image file directly if same size exists
-				$result = setBackgroundImage($mf->getRelPath(), $file);
+				$result = $mf->setBackground(); 
 				break;
 			case "addtag":
 			case "removetag":

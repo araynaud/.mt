@@ -1,11 +1,19 @@
 bugs:
-1 action_multiple: only applies to clicked file
+OK action_multiple: only applies to clicked file
 unify into action.php ? function doAction called in loop ?
 
-2 fix tags when depth>1
+OK fix tags when depth>1
 loadTagFile
 
-OK. free: listFilesRecursive too slow. check use of search["count"]
+1 free: listFilesRecursive for thumbnails crashes. check use of search["count"]
+
+2 use start / file parameter to select right meta tags
+
+3 tnsizes: determine max length based on max(width,height)
+JS: new MediaFile(album, type, key)
+
+4 fix search by tag
+search=abc => name=*abc* & tag=abc
 
 OK 2 convert video .mp4 => .mp4, should be .m4v, check use of config
 
@@ -18,12 +26,15 @@ scandir .tn, .ss, .hd
 4 action.php : speed up when many files.
 make sure files are filtered before createMediaFiles
 
-4 use start / file parameter
-for to select right meta tags
-
 5 getMetadataIndex($type): interesect key with filenames
 
 6 use irfan view resize for jpg, not for transparent gif/png
+
+7 on peut mettre des .bg.png ça serait cool?
+.cover.*
+
+je pense changer ca : mettre n'importe quel fichier, lui donner le tag "bg"
+et du coup un album pourrait avoir plusieurs arriere plans differents?
 
 7 video subtitles
 add json to mediafile
@@ -42,14 +53,7 @@ subtitles: [
 
 8 script to split video => offset subtitles
 
-"F1.2014.AE-HD.18.JAP.RACE.magnussen": 
-{
-	"name": "F1.2014.AE-HD.18.JAP.RACE.magnussen", 
-	"type": "VIDEO", 
-	"exts": ["avi", "mp4"], 
-	"size": [7182336, 1774301], 
-	"date": ["2014-10-07 08:42:40", "2015-03-15 12:53:25"]
-}, 
+9 htaccess / ht passwd in data dir => do not list if image fails 401. Redirect to parent ?
 			
 "F1.2014.AE-HD.18.JAP.RACE.magnussen": 
 {

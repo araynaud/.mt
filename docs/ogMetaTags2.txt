@@ -1,0 +1,18 @@
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="United Club - ORD T2, Gate F4 - AirportBliss.com" />
+<meta property="og:description" content="The United Club at Chicago O&#8217;Hare &#8211; Concourse F serves primarily regional flights, and yet this location was the first to be completely remodeled based on the new United Club design unveiled in late 2012. With this new design, United signals its intention to turn a page. The new lounge offers a modern, bright and airy [...]" />
+<meta property="og:url" content="http://airportbliss.com/lounges/united-club-ord-t2-gate-f4/" />
+<meta property="og:site_name" content="AirportBliss.com" />
+<meta property="article:publisher" content="http://www.facebook.com/AirportBliss" />
+<meta property="article:author" content="http://www.facebook.com/AirportBliss" />
+<meta property="fb:app_id" content="663024783758939" />
+
+<!-- / Yoast WordPress SEO plugin. -->
+<link rel="alternate" type="application/rss+xml" title="AirportBliss.com &raquo; Feed" href="http://airportbliss.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="AirportBliss.com &raquo; Comments Feed" href="http://airportbliss.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="AirportBliss.com &raquo; United Club &#8211; ORD T2, Gate F4 Comments Feed" href="http://airportbliss.com/lounges/united-club-ord-t2-gate-f4/feed/" />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://airportbliss.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://airportbliss.com/wp-includes/wlwmanifest.xml" />
+<link rel='shortlink' href='http://airportbliss.com/?p=1097' />
+<link rel="image_src" href="" />

@@ -105,7 +105,7 @@ debug("details", $details);
 		{
 			$this->addFileDetails();
 			$this->times[]=getTimer(true);
-			$this->thumbnails = $this->allFilenames = $this->files = null;
+			//$this->thumbnails = $this->allFilenames = $this->files = null;
 		}
 		else if($details >=4)
 		{
@@ -235,8 +235,8 @@ debug($type, count($typeFiles));
 		{
 			$filters["subdir"] = ".$tndir";
 			$tnfiles = listFilesRecursive($this->relPath, $filters);
-			if($tnfiles)
-				$this->thumbnails[$tndir] = array_combine($tnfiles, $tnfiles);
+//			if($tnfiles)
+			$this->thumbnails[$tndir] = $tnfiles ? array_combine($tnfiles, $tnfiles) : $tnfiles;
 		}
 		return $this->thumbnails;
 	}
@@ -251,10 +251,11 @@ debug($type, count($typeFiles));
 
 	public function getFileThumbnails($name)
 	{
-		if(!$this->thumbnails) 		return array();
+
+		//if(!$this->thumbnails) 		return array();
 		$tnsizes = array();
 		foreach($this->thumbnails as $tndir => $thumbnails)
-			$tnsizes[] = array_key_exists($name, $thumbnails) ? 11 : -1;
+			$tnsizes[] = $this->thumbnails && array_key_exists($name, $thumbnails) ? 11 : -1;
 		return $tnsizes;
 	}
 
@@ -302,15 +303,14 @@ debug($type, count($typeFiles));
 	public function addFileDetails()
 	{
 		$prevDir="";
-		foreach ($this->groupedFiles as $type => $typeFiles)
+		foreach ($this->groupedFiles as $type => &$typeFiles)
 			array_walk($typeFiles, array($this, "setFileDetails"), $type);
 
 		return $this->groupedFiles;
 	}
 
-	public function setFileDetails(&$item, $name, $type)
+	public function setFileDetails(&$mf, $name, $type)
 	{
-		$mf=$this->groupedFiles[$type][$name];
 		if($mf["type"]=="DIR")
 		{
 			$dirPath = combine($this->relPath, $name);
@@ -323,15 +323,14 @@ debug($type, count($typeFiles));
 			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
 			$mf["description"] = $this->getDirDescription($name);
 		}
-		else
+		else 
 		{
 			$mf["description"] = $this->getFileDescription($name);
 			$mf["tnsizes"] = $this->getFileThumbnails($name);
-			$mf["takenDate"] = @$this->_dateIndex[$name];
+			$mf["takenDate"] = arrayGet(@$this->_dateIndex, $name);
+			$mf["metadata"] = @$this->metadata[$type][$name];
 		}
-
-		$this->groupedFiles[$type][$name]=$mf;
-//		debug("setFileDetails $type $name", $this->groupedFiles[$type][$name]);
+		debug("setFileDetails $type $name", $mf);
 	}
 
 	private function setMediaFileTags($mf)
@@ -447,12 +446,12 @@ debug("Album.getFileByName", "name=$name type=$type");
 		return count($this->getMediaFiles());
 	}
 
-	public function getMediaFile($index=0)
-	{
+	public function getMediaFile($index=0, $type="")
+	{		
 		if($this->search["name"] && $mf = $this->getFileByName($this->search["name"], $this->search["type"]))
 				return $mf;
 
-		$files=$this->getMediaFiles();
+		$files=$this->getMediaFiles($type);
 		return @$files[$index];
 	}
 

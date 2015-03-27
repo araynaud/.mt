@@ -76,7 +76,7 @@ function requestFilters($addFilters=true, $selectOneFile = false)
 	$qs = urldecode($_SERVER["QUERY_STRING"]);
 	$hasParams = contains($qs, "=");
 	debug("requestFilters qs", $qs);
-	if(!$hasParams)
+	if($qs && !$hasParams)
 	{
 		$params = parseQueryString($qs);
 	}

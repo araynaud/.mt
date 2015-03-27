@@ -15,11 +15,11 @@ function MediaFile(data, metadata, album)
 	if(metadata && isObject(metadata))
 		Object.merge(this, metadata, true);
 
-
 	this.getId();
 	this.getTitle();
 	this.getRatio();
 	this.getVersions();	
+	this.getThumbnails();
 	this.filename = this.getFilename();
 	this.isVideoStream();	
 	this.initTags();
@@ -82,10 +82,26 @@ MediaFile.prototype.getVersions = function()
 	if(!isEmpty(this.versions)) return this.versions;
 	if(isEmpty(this.exts)) return [];
 	this.versions = [];
-	for(i=0; i<this.exts.length; i++)
+	for(var i=0; i<this.exts.length; i++)
 		this.versions.push({ ext: this.exts[i], size: this.size ? this.size[i] : null, date: this.date[i] });
 	return this.versions;
 };
+
+MediaFile.prototype.getThumbnails = function()
+{
+	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) return [];
+	var size = Math.max(this.width, this.height);
+	var cfg = config.thumbnails;
+	this.maxtn = this.tnsizes.length-1;
+
+	for(var i=this.maxtn; i >= 0; i--)
+	{
+		var tndir = cfg.dirs[i];
+		if(cfg.sizes[tndir] >= size)
+			this.tnsizes.pop();
+	}
+	return this.tnsizes;
+}
 
 MediaFile.getId = function(name, type)
 {
@@ -557,21 +573,41 @@ MediaFile.prototype.getThumbnailUrlAjax = function (tnIndex)
 	return MediaFile.getThumbnailUrlAjax(this, tnIndex);
 };
 
+MediaFile.prototype.loadSubtitles = function ()
+{	
+	var params = { data: "tableFile", counttime: false, file: this.name +".sub", empty: true };
+	this.subtitles = this.scriptAjax("data.php", params);
+	//TODO: make async with success callback
+	if(!this.subtitles) return false;
+	var subs={};
+	for (i=0; i < this.subtitles.length; i++)
+	{
+		var sub = this.subtitles[i];
+		subs[sub.start] = sub.text;
+		subs[sub.end] = "";
+	}
+	return this.subtitleMap = subs;
+};
+
 //run image script via ajax request
 MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbacks)
 {	
-	if(!script || !mediaFile) return false;
+//	if(!script || !mediaFile) return false;
 
 	async = valueOrDefault(async, false);
 	params = valueOrDefault(params, {});
-	params.format="ajax";
-	var scriptUrl = mediaFile.getScriptUrl(script);
+	if(window.album && !params.path) params.path = album.path;
+	if(mediaFile 	&& !params.file) params.file = mediaFile.getFilename(); 
+	// Album.prototype.getScriptUrl = function (scriptName, params)
+	var scriptUrl = Album.getScriptUrl(script);
 	var method = post ? "POST" : "GET";
 
 	if(config.debug.ajax)
 	{
-		var debugScriptUrl = mediaFile.getScriptUrl(script, params).appendQueryString({debug:"true"});
-		var link = $.makeElement("a", { href: debugScriptUrl, target: "debug"}).html(debugScriptUrl);
+		params.debug=true;
+		var link = $.makeElement("a", { href: scriptUrl.appendQueryString(params), target: "debug"})
+		delete params.debug;
+		link.html(scriptUrl.appendQueryString(params));
 		if(window.UI) UI.addStatus(link.outerHtml());
 	}
 

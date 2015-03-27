@@ -40,8 +40,11 @@ function formatMs($time, $digits=3)
 function testFunctionResult()
 {
 	$args = func_get_args();
-	$args2 = func_get_args();
 	$funct = array_shift($args);
+	if(!isDebugMode())
+		return call_user_func_array($funct, $args);
+
+	$args2 = func_get_args();
 	$funct = array_shift($args2);
 	$time = getTimer();
 	foreach ($args2 as $key => $arg)
@@ -49,13 +52,11 @@ function testFunctionResult()
 			$args2[$key] = shortenArray($arg);
 
 	debug("Test $funct args", $args2);
-
 	$result = call_user_func_array($funct, $args);
 	$time = formatMs(getTimer() - $time);
 	$nb = $result;
 	if(is_array($nb))
-		$nb = shortenArray($result);
-	
+		$nb = shortenArray($result);	
 	debug("Test $funct result", $nb, true);
 	debug("Test $funct time", $time);
 	debug();

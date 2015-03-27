@@ -64,8 +64,8 @@ debug("dates " . $this->oldestDate, $this->newestDate);
 			$this->getMetadata();
 			if($this->isVideo())
 				$this->animated = true;
-			//$this->addImageThumbnails();
-			$this->addThumbnails();
+			$this->addImageThumbnails();
+			//$this->addThumbnails();
 		}
 	}
 
@@ -159,12 +159,14 @@ debug("MediaFile::getMediaFiles countMediaFiles", $album->countMediaFiles());
 	{
 		if(!$this->height || !$this->width) 
 			$this->ratio = 0;
-		$this->ratio = $this->width / $this->height;
+		else
+			$this->ratio = $this->width / $this->height;
 		return $this->ratio;
 	}
 
 	public function getImageInfo()
 	{
+debug("MediaFile.getImageInfo", $this->getMultiple("width,height,ratio,format"));
 		$this->getRatio();
 		return $this->getMultiple("width,height,ratio,format");
 	}
@@ -557,6 +559,12 @@ debug("file.delete.to", $moveTo);
 			$result += $status ? 1 : 0;
 		}			
 		return $result;
+	}
+
+	public function setBackground()
+	{
+		debug("setBackgroundImage", $this->getRelPath() ." / ". $this->getFilename());
+		return setBackgroundImage($this->getRelPath(), $this->getFilename());
 	}
 
 	public function addTag($tag)

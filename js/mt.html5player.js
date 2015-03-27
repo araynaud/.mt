@@ -19,6 +19,7 @@ function Html5Player(settings)
     this.container = $("#" + this.settings.id);	
     this.playlistDiv = $("#{0}Playlist".format(this.settings.id));
 	this.messageDiv = $("#{0}Message, .status".format(this.settings.id));
+	this.subtitlesDiv = $(this.settings.subtitlesDiv);
 	this.createPlayer();
 
    	this.setupEvents();
@@ -70,6 +71,7 @@ Html5Player.playerSettings=
 		repeat: false,
 		uiMode: "slideshow",
 		class: "slide top left",
+		subtitlesDiv: "#slideshowCaption",
 		hidden:true
 	}
 
@@ -229,12 +231,31 @@ Html5Player.prototype.createPlayer = function()
 	this.jqplayer = this.player;
 	this.player = this.player[0];
 
+	var hp=this;
+    this.player.addEventListener("timeupdate", function() { Html5Player.showSubtitles(hp); } );
+
 	if(this.type!="video" || !this.settings.youtube || !Html5Player.YouTubeReady) return;
 
 //	loadJavascript(config.youtube.iframeApiUrl);
 	this.ytid = this.settings.id + "_youtube";
 	this.yt = $.makeElement("div", {id: this.ytid}).appendTo(this.container);	
 };
+
+
+Html5Player.showSubtitles = function(hp)
+{
+	if(!hp.currentFile || !hp.currentFile.subtitleMap) return;
+
+	var subtitleMap = hp.currentFile.subtitleMap;
+	var time = Math.floor(hp.player.currentTime);
+	UI.setStatus("currentTime:" + time);
+
+	if(isMissing(subtitleMap[time])) return;
+
+	var text = subtitleMap[time];
+	hp.subtitlesDiv.html(text);
+}
+
 
 //TODO pass optional controlDiv id 
 //todo play icon even if only 1 item
@@ -381,6 +402,8 @@ Html5Player.prototype.loadFile = function(index)
 	this.current = this.getFilePosition(index);
 
 	this.currentFile = this.mediaFiles[this.current];
+	this.currentFile.loadSubtitles();
+
 	var isEmbedded = this.isEmbeddedVideo();
 	if(isEmbedded)
 	{
@@ -394,7 +417,6 @@ Html5Player.prototype.loadFile = function(index)
 		this.player.poster = this.currentFile.getThumbnailUrl(1);
 		this.player.load();
 	}
-
 	if(this.jqiframe) this.jqiframe.toggle(isEmbedded);
 	if(this.jqplayer) this.jqplayer.toggle(!isEmbedded);
 

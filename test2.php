@@ -26,14 +26,16 @@ debugVar("absPath");
 debug("currentDir",realpath(""));
 debug("relPath $relPath",realpath($relPath));
 
+$files = testFunctionResult("listFilesDir", $relPath, $search);
+
 $files = testFunctionResult("listFilesRecursive", $relPath, $search);
 $dirs  = testFunctionResult("selectDirs", $relPath, $files);
 $groupedFiles = testFunctionResult("groupByName", $relPath, $files, false);
 
-$mf = MediaFile::getMediaFiles();
+//$mf = MediaFile::getMediaFiles();
 debugVar("mf", true);
 
-$mf = MediaFile::getMediaFile();
+//$mf = MediaFile::getMediaFile();
 debugVar("mf", true);
 
 debug("Time elapsed", getTimer(true));
