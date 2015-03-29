@@ -2,18 +2,19 @@
 */
 
 //constructor
-function MediaFile(data, metadata, album)
+function MediaFile(data, type, key)
 { 
 	//if data is object: loop for each key, use Object.merge = function (this, data);
-	if(isObject(data))
+	if (data instanceof Album)
+	{
+		this._parent = data;
+		var data = this._parent.getMediaFileById(key, type);
+		var metadata = this._parent.getMetadata(type, key);
 		Object.merge(this, data, true);
-	//if data is a string: absolute URL, relative URL or filename
-	else if(isString(data))
-		this.url=data;
-
-	this._parent = album;
-	if(metadata && isObject(metadata))
 		Object.merge(this, metadata, true);
+	}
+	else
+		Object.merge(this, data, true);
 
 	this.getId();
 	this.getTitle();
@@ -23,7 +24,6 @@ function MediaFile(data, metadata, album)
 	this.filename = this.getFilename();
 	this.isVideoStream();	
 	this.initTags();
-
 	this.selected=false;
 }
 

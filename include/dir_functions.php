@@ -21,6 +21,7 @@ debug("listFilesRecursive $dir", $search);
 	//loop for dirs with depth-1, subpath
 	if(@$search["depth"] > 0 && $subdirs)
 	{
+		
 		$search["depth"]--;
 		$subpath = @$search["subpath"];
 		foreach ($subdirs as $subdir)
@@ -100,7 +101,7 @@ debug("listFilesDir subdirs", count($subdirs));
 
 	if(@$search["tag"])
 		$search["tagfiles"] = searchTagFiles($dir, 0, $search["tag"]);
-	$files = testFunctionResult("filterFiles", $files, $search);
+	$files = filterFiles($files, $search);
 
 	if(@$search["subpath"] && !@$search["nested"] || @$search["tndir"])
 		array_walk($files, "addSubpath", $search);

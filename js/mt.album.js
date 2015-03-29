@@ -34,7 +34,7 @@ function Album(data)
 		for(var key in files)
 		{
 			if(!files.hasOwnProperty(key)) continue;
-			var mf = new MediaFile(files[key], metadata ? metadata[key] : null, this);
+			var mf = new MediaFile(this, type, key);
 			typeFiles[mf.id] = mf;
 		}
 		this.groupedFiles[type] = typeFiles;	
@@ -193,7 +193,6 @@ Album.prototype.get = function(key, default_)
 	return isMissing(value) ? default_ :  value ;
 };
 
-
 Album.prototype.setOptions = function(options)
 {
 	if(isObject(options))
@@ -327,6 +326,15 @@ Album.prototype.getMediaFileByName = function(name, type)
 	var id = MediaFile.getId(name);
 	return this.getMediaFileById(id, type);
 };
+
+Album.prototype.getMetadata = function(type, key)
+{  
+	var meta = this.metadata[type];
+	if(!meta) return null;
+
+	return key ? meta[key] : meta;
+};
+
 
 //Filter by json object {name: "a", type: "image", date: "", description: "" }
 Album.searchFiles = function(fileList, search)
