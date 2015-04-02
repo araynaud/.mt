@@ -311,8 +311,8 @@ $tags = parseCsvTable($tagsCsv);
 debugVar("tags");
 }
 
-//$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
-//debugVar("indexFiles",true);
+$indexFiles=selectFilesByType($files,"DIR|VIDEO|IMAGE");
+debugVar("indexFiles",true);
 
 //$dateIndex=getRefreshedDateIndex($relPath,$indexFiles);	
 //debug("Files from $relPath date index", count($dateIndex));

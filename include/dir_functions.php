@@ -167,7 +167,7 @@ function fileIsSelected($file, $search=null)
 
 	if(@$search["exts"] || @$search["type"] )
 	{
-		$hasType = @$search["exts"] && in_array(strtolower($ext), @$search["exts"]);
+		$hasType = fileHasType($file, $search);
 		$result = $result && $hasType;
 	}
 
@@ -182,6 +182,7 @@ function fileHasName($file, $search=null)
 	global $searchG;
 	setIfEmpty($search, $searchG);
 	if(empty($search)) return true;
+
 	$name = @$search["name"]; 
 	if(!$name) return true;
 
@@ -195,6 +196,27 @@ function fileHasName($file, $search=null)
 	return $result;
 }
 
+function fileHasType($file, $search=null)
+{
+	global $searchG;
+	setIfEmpty($search, $searchG);
+	if(empty($search))	return true;
+	if(is_string($search))
+	{
+		$search = array("type"=>$search);
+		$search["exts"] = getExtensionsForTypes($type);
+	}
+
+debug("fileHasType $file", $search);
+	if(equals(@$search["type"], "DIR") && fileIsDir($file)) return true;
+	if(equals(@$search["type"], "FILE") && !fileIsDir($file)) return true;
+
+	$ext=getFilenameExtension($file);
+	$result = @$search["exts"] && in_array(strtolower($ext), @$search["exts"]);
+//if ($result)
+debug("fileHasType $file", $result);
+	return $result;
+}
 
 // dir listing functions with readdir
 function listAllFilesInDir($dir)
@@ -512,30 +534,15 @@ function fileIsDir($file)
 	return is_dir($file) || is_dir($dirPath);
 }
 
-function selectFilesByType($fileList,$ext,$sort=false)
+function selectFilesByType($fileList, $ext, $sort=false)
 {
 	if(empty($ext))
-		return $fileList;
-		
-	global $extG;
-	$extG=getExtensionsForTypes($ext);
-	$filteredList = array_filter($fileList,"fileHasType");
+		return $fileList;	
+	$search = array("type" => $ext);
+	$fileList = filterFiles($fileList, $search);
 	if($sort)
-		asort($filteredList);
-	return $filteredList;
-}
-
-function selectFiles($fileList,$name,$ext,$sort=false)
-{
-	if(empty($ext) && empty($name))
-		return $fileList;
-	global $nameG,$extG;
-	$nameG=$name;
-	$extG=getExtensionsForTypes($ext);
-	$filteredList = array_filter($fileList,"fileHasNameAndType");
-	if($sort)
-		asort($filteredList);
-	return $filteredList;
+		asort($fileList);
+	return $fileList;
 }
 
 //type => exts
@@ -543,24 +550,21 @@ function selectFiles($fileList,$name,$ext,$sort=false)
 function getExtensionsForTypes($exts)
 {
 	if(!isset($exts) || !$exts)	return "";
+debug("getExtensionsForTypes", $exts);
 	$exts=toArray($exts);
 	$result=array();
 	foreach ($exts as $ext)
 		$result=array_merge($result, getExtensionsForType($ext));
-//debug("getExtensionsForTypes",$result);
+debug("getExtensionsForTypes", $result);
 	return $result;
 }
 
 function getExtensionsForType($ext)
 {
-	if(is_array($ext))
-		return flattenArray($ext);
-
-//	debugStack();
-	global $config;
-	$key=strtoupper($ext);
-	if(isset($config["TYPES"][$key]))	return flattenArray($config["TYPES"][$key]);
-	return toArray($ext);
+	$type=strtoupper($ext);
+	if($type=="DIR" || $type=="FILE") return array();
+	$exts = getConfig("TYPES.$type");
+	return $exts ? $exts : toArray($ext);
 }
 
 //file boolean Filter functions
@@ -639,22 +643,6 @@ function getFileType($file, $checkExists=false)
 			return $type;
 
 	return "FILE";
-}
-
-function fileHasType($file, $ext="")
-{
-	global $extG;
-	setIfEmpty($ext,$extG);
-	if(is_array($ext) && count($ext)==1) $ext=$ext[0];
-
-	if(empty($ext))	return true;
-//debug("fileHasType $file", $ext);
-	if(equals($ext,"DIR") && fileIsDir($file)) return true;
-	if(equals($ext,"FILE") && !fileIsDir($file)) return true;
-
-	$fileExt=getFilenameExtension($file);
-	$result=arraySearchRecursive($ext, $fileExt);
-	return $result!==false;
 }
 
 // filter array between 2 values passed as an array

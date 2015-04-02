@@ -329,9 +329,8 @@ Album.prototype.getMediaFileByName = function(name, type)
 
 Album.prototype.getMetadata = function(type, key)
 {  
+	if(!this.metadata || !this.metadata[type]) return null;
 	var meta = this.metadata[type];
-	if(!meta) return null;
-
 	return key ? meta[key] : meta;
 };
 
