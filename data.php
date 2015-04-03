@@ -6,7 +6,7 @@ function getFileData(&$getData)
 	global $config;
 	$getData = strtolower($getData);
 	$search = getSearchParameters();
-	$details = reqParam("details", 0);
+	$details = reqParam("details", 3);
 	$relPath = getDiskPath(@$search["path"]);
 	$file = reqParam("file");
 	$filePath=combine($relPath, $file);
@@ -23,6 +23,8 @@ function getFileData(&$getData)
 		case "groupedfiles":
 			$files = listFilesRecursive($relPath, $search); 
 			return groupByName($relPath, $files, true, $details);
+		case "thumbnails":
+			return subdirThumbs($filePath, @$search["count"], $search["depth"]);
 		case "tags":
 			return array_keys(listTagFiles($relPath, $search["depth"], @$search["tag"], true));
 		case "taglists":
@@ -51,9 +53,6 @@ function getFileData(&$getData)
 		case "album":
 			$getData="Album";
 			return new Album($search, $details);
-		case "albumfast":
-			$getData="AlbumFast";
-			return new AlbumFast($search);
 		case "mediafile":
 		default:
 			$getData="MediaFile";
@@ -71,7 +70,7 @@ function getFileData(&$getData)
 //startTimer();
 
 $getData = reqParam("data", "MediaFile");
-$countTime = reqParamBoolean("counttime", true);
+$countTime = reqParamBoolean("counttime");
 //output options
 $format=reqParam("format", "json");
 $format=strtolower($format);

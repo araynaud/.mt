@@ -30,9 +30,7 @@ $rename = reqParam("rename");
 $indent = reqParam("indent", 1);
 $includeEmpty = reqParamBoolean("empty");
 $overallResult = false;
-$name = $search["name"];
-if(!$name)
-	$name = $search["file"];
+$name = arrayGetCoalesce($search, "name", "file");
 
 $parameters = array();
 $messages = array();

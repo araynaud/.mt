@@ -146,9 +146,9 @@ function readArray($filename, $valuesAsKeys=false)
 	if(!file_exists($filename) || filesize($filename)==0 || is_dir($filename))
 		return array();
 	//remove windows CR/LF  from each line
-	$lineArray=file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
-	if($valuesAsKeys)
-		$lineArray = array_combine($lineArray, $lineArray);
+	$lineArray = file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
+	if($lineArray && $valuesAsKeys)
+		return array_combine($lineArray, $lineArray);
 	return $lineArray;
 }
 

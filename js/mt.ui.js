@@ -270,7 +270,7 @@ UI.setStatus = function(text)
 	text=text || "";
 	if(isObject(text))
 		text=JSON.stringify(text);
-	$(UI.statusBar).html(text);
+	UI.statusBar.html(text);
 };
 
 UI.addStatus = function(text)
@@ -278,7 +278,9 @@ UI.addStatus = function(text)
 	if(!text) return;
 	if(isObject(text))
 		text=JSON.stringify(text);
-	$(UI.statusBar).append("\n" + text);
+	if(UI.statusBar.html())
+		UI.statusBar.append("\n");
+	UI.statusBar.append(text);
 };
 
 UI.displayBrowserInfo =  function()
@@ -451,7 +453,7 @@ UI.displayFileCounts = function (fileList,divId,clear)
 {
 	if(clear)	
 		$(divId).html("");
-	$(divId).append("{0}s / {1}s".format(Math.roundDigits(album.buildTime,2), Math.roundDigits(album.requestTime/1000,2)));
+	$(divId).append("{0}s / {1}s / {2}s".format(Math.roundDigits(album.buildTime,2), Math.roundDigits(album.requestTime/1000,2), Math.roundDigits(album.albumTime/1000,2)));
 	var counts=fileList.countBy("type");
 	for(var k in counts)
 		$(divId).append(" " + plural(counts[k],k.toLowerCase()));

@@ -137,12 +137,15 @@ function getSearchParameters($filters=null)
 {
 	if(!$filters) 
 		$filters = requestFilters(false);
-	$search = arrayCopyMultiple($filters, "path,file,depth,count");	
+	$search = arrayCopyMultiple($filters, "path,file,depth,count,name,tag");	
 	if($type = $search["type"] = arrayGet($filters, "type"))
 		$search["exts"] = getExtensionsForTypes($type);
 
-	$search["name"] = arrayGetCoalesce($filters, "name", "search");
-	$search["tag"]  = arrayGetCoalesce($filters, "tag", "search");
+	if(@$filters["search"])
+	{
+		$search["name"] = "*" . $filters["search"] ."*";
+		$search["tag"]  = $filters["search"];
+	}
 
 	$search["sort"] = arrayGet($filters, "sort");
 	$search["depth"]  = arrayGet($filters, "depth");

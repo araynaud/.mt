@@ -26,17 +26,33 @@ debugVar("absPath");
 debug("currentDir",realpath(""));
 debug("relPath $relPath",realpath($relPath));
 
-$files = testFunctionResult("listFilesDir", $relPath, $search);
+$tp=@$search["exts"];
+debug("Extensions", $tp, "print_r");
 
-$files = testFunctionResult("listFilesRecursive", $relPath, $search);
-$dirs  = testFunctionResult("selectDirs", $relPath, $files);
-$groupedFiles = testFunctionResult("groupByName", $relPath, $files, false);
+/*
+$indexFiles = scandir($relPath);
+$indexFiles = testFunctionResult("selectFilesByType", $indexFiles, $search["type"]);
+debugVar("indexFiles", true);
+*/
+
+//$files = testFunctionResult("listFilesDir", $relPath, $search);
+//$files = testFunctionResult("listFilesRecursive", $relPath, $search);
+$files = listFilesRecursive($relPath, $search);
+debugVar("files", true);
+
+//$dirs = testFunctionResult("selectDirs", $relPath, $files);
+//debugVar("dirs", true);
+
+//$groupedFiles = testFunctionResult("groupByName", $relPath, $files, false);
+
 
 //$mf = MediaFile::getMediaFiles();
-debugVar("mf", true);
+//debugVar("mf", true);
 
 //$mf = MediaFile::getMediaFile();
-debugVar("mf", true);
+//debugVar("mf", true);
+
+debugVar("functionStats");
 
 debug("Time elapsed", getTimer(true));
 ?> 

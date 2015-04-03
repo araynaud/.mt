@@ -458,8 +458,8 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange)
 {
-	this.elements.prevButton.parent().backgroundImage(this.previousFile(1).getThumbnailUrl(0));
-	this.elements.nextButton.parent().backgroundImage(this.nextFile(1).getThumbnailUrl(0));
+	//this.elements.prevButton.parent().backgroundImage(this.previousFile(1).getThumbnailUrl(0));
+	//this.elements.nextButton.parent().backgroundImage(this.nextFile(1).getThumbnailUrl(0));
 
 	if(this.currentFile.isVideoStream() && fileChange)
 	{

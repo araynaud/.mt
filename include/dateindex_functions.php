@@ -94,7 +94,7 @@ debug("loadTagFile $subdir $tag", $filename);
 		foreach ($tagList as $name)
 		{			
 			$key = combine($subdir, $name);
-			$tags[$key]= $name;
+			$tags[$key]= $key;
 		}
 		$tagList=$tags;
 	}

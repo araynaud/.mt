@@ -3,7 +3,6 @@ OK action_multiple: only applies to clicked file
 unify into action.php ? function doAction called in loop ?
 
 OK fix tags when depth>1
-loadTagFile
 
 1 free: listFilesRecursive for thumbnails crashes. check use of search["count"]
 
@@ -14,6 +13,11 @@ JS: new MediaFile(album, type, key)
 
 4 fix search by tag
 search=abc => name=*abc* & tag=abc
+
+5 setFileTag : set parent dir with tag too
+in search, only go through dirs with that tag
+getDirTags = getfilenames in that dir.
+6 put tag files in data dir name.tag ?
 
 OK 2 convert video .mp4 => .mp4, should be .m4v, check use of config
 

@@ -402,7 +402,8 @@ Html5Player.prototype.loadFile = function(index)
 	this.current = this.getFilePosition(index);
 
 	this.currentFile = this.mediaFiles[this.current];
-	this.currentFile.loadSubtitles();
+	if(this.currentFile.isVideoStream())
+		this.currentFile.loadSubtitles();
 
 	var isEmbedded = this.isEmbeddedVideo();
 	if(isEmbedded)

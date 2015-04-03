@@ -9,9 +9,11 @@ function equals($str,$sub,$caseSenstive=false)
 	return $str == $sub;
 }
 
-function contains($str,$sub,$caseSenstive=false)
+function contains($str, $sub, $caseSenstive=false)
 {
 	if(!$sub) return false;
+	if(is_array($str))
+		return in_array($sub, $str);
 	if(!$caseSenstive)
 	{
 		$str=strtolower($str);
@@ -20,7 +22,7 @@ function contains($str,$sub,$caseSenstive=false)
 	return strpos($str, $sub)!==false;
 }
 
-function startsWith($str,$sub, $caseSenstive=false)
+function startsWith($str, $sub, $caseSenstive=false)
 {
 	if(!$caseSenstive)
 	{
@@ -375,12 +377,9 @@ function parseColor($color)
 
 function toArray($str)
 {
-	if(is_string($str))
-		return preg_split("/[,; \|]/", $str);
-//	if(is_array($str))
-	return $str;
+	if(is_array($str))	return $str;
+	return preg_split("/[,; \|]/", $str);
 }
-
 
 //flatten array to string
 // ! does it modify array ?
@@ -431,6 +430,15 @@ function arraySearchRecursive($array,$search)
 		}
 	}
 	return false;
+}
+
+
+function arrayToMap($arr)
+{
+	if(!$arr) 	return array();
+	if(!is_array($arr))
+		$arr=toArray($arr);
+	return array_combine($arr, $arr);
 }
 
 //arrayGet from nested array

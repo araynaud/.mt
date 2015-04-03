@@ -29,7 +29,7 @@ function Album(data)
 	{
 		if(!this.groupedFiles.hasOwnProperty(type)) continue;
 		var files = this.groupedFiles[type];
-		var metadata = this.metadata ? this.metadata[type] : null;
+		//var metadata = this.metadata ? this.metadata[type] : null;
 		var typeFiles={};
 		for(var key in files)
 		{
@@ -103,30 +103,18 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 		async: async,
 		success: function(response)
 		{ 
+			response.startTime = startTime;
 			Album.ajaxLoader.hide();
-			albumInstance = new Album(response);
-			var endTime = new Date();
-			albumInstance.requestTime = endTime - startTime;
-			window[instanceName] = albumInstance;
-			if(callback) 
-				callback();
-			else if(Album.onLoad)
-			    Album.onLoad(albumInstance);
+			Album.createInstance(response, instanceName, callback);
 		},
 		error: function(xhr, textStatus, errorThrown)
 		{ 
 			var response = Album.parseErrorResponse(xhr.responseText);
+			response.startTime = startTime;
 			Album.ajaxLoader.hide();
 			if(!response.jsonError)
 			{
-				albumInstance = new Album(response);
-				var endTime = new Date();
-				albumInstance.requestTime = endTime - startTime;
-				window[instanceName] = albumInstance;
-				if(callback) 
-					callback();
-				else if(Album.onLoad)
-				    Album.onLoad(albumInstance);
+				Album.createInstance(response, instanceName, callback);
 			}
 			if(window.UI && UI.setStatus)
 			{
@@ -138,6 +126,19 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	});
 	return albumInstance; //only valid if async=false
 };
+
+Album.createInstance = function (response, instanceName, callback) 
+{
+	response.requestTime = new Date() - response.startTime;
+	albumInstance = new Album(response);
+	window[instanceName] = albumInstance;
+	if(callback) 
+		callback();
+	else if(Album.onLoad)
+	    Album.onLoad(albumInstance);
+	return albumInstance;
+};
+
 
 // event callbacks
 Album.onLoad = function (albumInstance) 
@@ -531,9 +532,9 @@ Album.prototype.activeFileList = function()
 
 Album.prototype.getSelection = function(allByDefault)
 {
-	var selectedFiles = album.selectFiles({selected: true});
+	var selectedFiles = this.selectFiles({selected: true});
 	if(allByDefault && isEmpty(selectedFiles)) 
-		selectedFiles = album.activeFileList();
+		selectedFiles = this.activeFileList();
 	return selectedFiles;
 };
 

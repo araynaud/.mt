@@ -1,5 +1,23 @@
 <?php
 //Debugging functions
+
+function addFunctionCall($name)
+{
+	global $functionStats;
+	if(!$functionStats) 
+		$functionStats=array();
+	if(!isset($functionStats[$name]))
+		$functionStats[$name]=1;
+	else
+		$functionStats[$name]++;
+}
+
+function getFunctionStats($name="")
+{
+	global $functionStats;
+	return $name ? @$functionStats[$name] : $functionStats;
+}
+
 function isDebugMode()
 {
 	global $config;

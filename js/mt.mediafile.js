@@ -58,7 +58,7 @@ MediaFile.prototype.contains = function(key)
 
 MediaFile.prototype.getId = function()
 {
-	if(!this.id)	this.id = MediaFile.getId(this.name); //, this.type);
+	if(!this.id)	this.id = MediaFile.getId(String.combine(this.subdir,this.name)); //, this.type);
 	if(!this.name) 	this.name=this.id;
 	return this.id;
 };
@@ -89,6 +89,9 @@ MediaFile.prototype.getVersions = function()
 
 MediaFile.prototype.getThumbnails = function()
 {
+	if(this.isDir && isEmpty(this.thumbnails))
+		return this.loadThumbnails();
+
 	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) return [];
 	var size = Math.max(this.width, this.height);
 	var cfg = config.thumbnails;
@@ -573,9 +576,24 @@ MediaFile.prototype.getThumbnailUrlAjax = function (tnIndex)
 	return MediaFile.getThumbnailUrlAjax(this, tnIndex);
 };
 
+MediaFile.prototype.loadThumbnails = function ()
+{	
+	if(!this.isDir()) return;
+
+	var params = { data: "thumbnails", path: this.name, file: "", count:6, empty: true, depth: 2 };
+	var mf=this;
+	var callbacks = { success: function (response)
+		{
+			mf.thumbnails = response;
+		}
+	};
+	this.scriptAjax("data.php", params, true, false, callbacks);
+	return this.thumbnails;
+}
+
 MediaFile.prototype.loadSubtitles = function ()
 {	
-	var params = { data: "tableFile", counttime: false, file: this.name +".sub", empty: true };
+	var params = { data: "tableFile", file: this.name +".sub", empty: true };
 	this.subtitles = this.scriptAjax("data.php", params);
 	//TODO: make async with success callback
 	if(!this.subtitles) return false;
@@ -596,8 +614,13 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 
 	async = valueOrDefault(async, false);
 	params = valueOrDefault(params, {});
-	if(window.album && !params.path) params.path = album.path;
-	if(mediaFile 	&& !params.file) params.file = mediaFile.getFilename(); 
+	if(isMissing(params.path))
+		if(mediaFile) 
+			params.path = mediaFile.getPath();
+		else if(window.album)
+			params.path = album.getPath();
+
+	if(mediaFile && isMissing(params.file)) params.file = mediaFile.getFilename(); 
 	// Album.prototype.getScriptUrl = function (scriptName, params)
 	var scriptUrl = Album.getScriptUrl(script);
 	var method = post ? "POST" : "GET";

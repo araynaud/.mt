@@ -557,7 +557,7 @@ UI.setupElements = function()
 	UI.pagers = $(".pager");
 	UI.progressBar = new ProgressBar({displayMax: true, displayValue: "percent"});
 	UI.articleContainer = $("#articleContainer");
-
+	UI.statusBar = $(UI.statusBar);
 
 //edit div elements
 	UI.editDiv=$("div#editDiv");

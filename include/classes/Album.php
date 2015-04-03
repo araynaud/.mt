@@ -81,7 +81,6 @@ debug("details", $details);
 			$this->groupedFiles = groupByName($this->relPath, $this->files, true, true);
 			if(@$this->groupedFiles["DIR"])
 			{
-//				$this->dirs = selectDirs($this->relPath, $this->files);
 				$this->dirs = array_keys($this->groupedFiles["DIR"]);
 				$this->nbDirs = count($this->dirs);
 			}
@@ -235,13 +234,12 @@ debug($type, count($typeFiles));
 		{
 			$filters["subdir"] = ".$tndir";
 			$tnfiles = listFilesRecursive($this->relPath, $filters);
-//			if($tnfiles)
-			$this->thumbnails[$tndir] = $tnfiles ? array_combine($tnfiles, $tnfiles) : $tnfiles;
+			$this->thumbnails[$tndir] = arrayToMap($tnfiles);
 		}
 		return $this->thumbnails;
 	}
 
-	public function getThumbnails($tndir)
+	public function getThumbnails($tndir="")
 	{
 		if(!$this->thumbnails) 		return array();
 		if(!$tndir)		return $this->thumbnails;
@@ -267,7 +265,8 @@ debug($type, count($typeFiles));
 		$dateIndex = $this->_dateIndex;
 		foreach ($this->groupedFiles as $type => $typeFiles)
 		{
-//			array_walk($typeFiles, array($this, "createMediaFile"), $type);
+			array_walk($typeFiles, array($this, "createMediaFile"), $type);
+			if(false)
 			foreach($typeFiles as $name => $file)
 			{
 	 			// if file in different dir: load new date index
@@ -313,11 +312,13 @@ debug($type, count($typeFiles));
 	{
 		if($mf["type"]=="DIR")
 		{
-			$dirPath = combine($this->relPath, $name);
+			$dirPath = combine($this->relPath, $name); //Or something else for mapped dirs
 			$_mappedPath = isMappedPath($name);
 			if($_mappedPath)
+			{
+				$dirPath = $_mappedPath;
 				$mf["urlAbsPath"] = diskPathToUrl($_mappedPath);
-
+			}
 			$mf["oldestDate"] = getOldestFileDate($dirPath);
 			$mf["takenDate"] = $mf["newestDate"] = getNewestFileDate($dirPath);
 			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
@@ -328,7 +329,6 @@ debug($type, count($typeFiles));
 			$mf["description"] = $this->getFileDescription($name);
 			$mf["tnsizes"] = $this->getFileThumbnails($name);
 			$mf["takenDate"] = arrayGet(@$this->_dateIndex, $name);
-			$mf["metadata"] = @$this->metadata[$type][$name];
 		}
 		debug("setFileDetails $type $name", $mf);
 	}
@@ -448,7 +448,7 @@ debug("Album.getFileByName", "name=$name type=$type");
 
 	public function getMediaFile($index=0, $type="")
 	{		
-		if($this->search["name"] && $mf = $this->getFileByName($this->search["name"], $this->search["type"]))
+		if(@$this->search["name"] && $mf = $this->getFileByName($this->search["name"], $this->search["type"]))
 				return $mf;
 
 		$files=$this->getMediaFiles($type);

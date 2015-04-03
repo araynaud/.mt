@@ -94,29 +94,28 @@ Album.onLoad = function (albumInstance)
 {
 //	try
 	{
-		if(!window.album) return;
-		config = album.config;
+		if(!albumInstance) return;
+		config = albumInstance.config;
 		UI.displayUser();
 		UI.slideshow = new Slideshow(config.slideshow);
 		UI.slideshow.setOptions(search);
 		UI.transition.setOptions(config.transition);
 
-		$("#description").html(album.description);
-		$("#dateRange").html(album.formatDateRange(true));	
-		if(!album.mediaFiles)
+		$("#description").html(albumInstance.description);
+		$("#dateRange").html(albumInstance.formatDateRange(true));	
+		if(!albumInstance.mediaFiles)
 		{
 			$("#pagesTop").html("No files in this album.");
 			return;
 		}
 
 		UI.selectCountPerPage(false);
-		UI.displayFileCounts(album.mediaFiles,"#counts");	
 
 		var mf=null;
 		if(location.hash)
 			search.start = location.hash.substringAfter("#");
 		if(search.start)
-			mf=album.getMediaFileByName(search.start);
+			mf=albumInstance.getMediaFileByName(search.start);
 
 		UI.sortFiles(!mf);
 
@@ -124,9 +123,12 @@ Album.onLoad = function (albumInstance)
 		UI.styleCheckboxes();
 		UI.setupEvents();
 
-		pmv(UI.visitImg);
+		//pmv(UI.visitImg);
 
 		$(".lOption").each(UI.toggleLayoutOption); 
+
+		albumInstance.albumTime = new Date() - albumInstance.startTime;
+		UI.displayFileCounts(album.mediaFiles,"#counts");	
 
 		if(mf) mf.play();
 	}
@@ -174,7 +176,7 @@ $(window).resize(function(event)
 		<a class="spaceLeft admin" title="reset best" href=".admin/delete.php?file=.tag/best.csv<?php echo qsParameters("path",false)?>"><img src="icons/star.png"/><img src="icons/delete.png"/></a>
 		<a class="spaceLeft admin" title="delete background" href=".admin/delete.php?file=.bg.jpg<?php echo qsParameters("path",false)?>"><img class="admin" src="icons/delete.png"  alt="delete"/><img class="admin" src="icons/background.png" alt="background"/></a>
 
-		<a class="spaceLeft upload" target="test" href="test.php<?php echo qsParameters("path")?>"><img src="icons/testing.png" alt="description"/></a>
+		<a class="spaceLeft upload" target="test" href="test2.php<?php echo qsParameters("path")?>"><img src="icons/testing.png" alt="description"/></a>
 		<a class="spaceLeft upload" href=".upload/description.php<?php echo qsParameters("path")?>"><img src="icons/comment.gif" alt="description"/></a>
 		<a class="spaceLeft" target="xml" href="data.php?data=album&format=xml&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/xml.png" alt="XML" title="XML index"/></a>
 		<a class="spaceLeft" target="json" href="data.php?data=album&indent=1<?php echo qsParameters("path,depth,name,type",false)?>"><img src="icons/json_orange.png" alt="JSON" title="JSON index"/></a>
