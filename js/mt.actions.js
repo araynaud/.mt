@@ -347,6 +347,8 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 
 	//refresh only 1 file template
 	var fileDiv = mediaFile.getDiv();
+	if(isEmpty(fileDiv)) return;
+	
 	UI.renderTemplate("fileboxTemplate", fileDiv, mediaFile, "after");
 	fileDiv.eq(0).remove();
 	UI.setupFileEvents(mediaFile);

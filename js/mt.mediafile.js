@@ -14,8 +14,10 @@ function MediaFile(data, type, key)
 		Object.merge(this, metadata, true);
 	}
 	else
+	{
 		Object.merge(this, data, true);
-
+		this._parent = album || {};
+	}
 	this.getId();
 	this.getTitle();
 	this.getRatio();
@@ -289,22 +291,22 @@ MediaFile.prototype.getTakenDate = function(includeTime)
 
 MediaFile.getPath = function (mediaFile)
 {
-	return String.combine(album.path, mediaFile.subdir);
+	return mediaFile.getPath();
 };
 
 MediaFile.prototype.getPath = function(ext)
 {
-	return String.combine(album.path, this.subdir);
+	return String.combine(this._parent.path, this.subdir);
 };
 
 MediaFile.getFilePath = function (mediaFile, ext)
 {
-	return String.combine(album.path, mediaFile.subdir, mediaFile.getFilename(ext));
+	return mediaFile.getFilePath();
 };
 
 MediaFile.prototype.getFilePath = function(ext)
 {
-	return MediaFile.getFilePath(this, ext);
+	return String.combine(this._parent.path, this.subdir, this.getFilename(ext));
 };
 
 MediaFile.getFileUrl = function (mediaFile, ext)
@@ -323,7 +325,7 @@ MediaFile.getFileUrl = function (mediaFile, ext)
 		filename=mediaFile.name+"."+ext;
 	if(mediaFile.isDir() && mediaFile.urlAbsPath)
 		return mediaFile.urlAbsPath;
-	var baseUrl = mediaFile.urlAbsPath || album.relPath;
+	var baseUrl = mediaFile.urlAbsPath || mediaFile._parent.relPath;
 	return String.combine(baseUrl, mediaFile.subdir, filename);
 };
 
@@ -339,19 +341,19 @@ MediaFile.getShortPath = function (mediaFile)
 
 MediaFile.prototype.getShortPath = function ()
 {
-	return String.combine(album.path, this.subdir, this.name);
+	return String.combine(this._parent.path, this.subdir, this.name);
 };
 
 MediaFile.prototype.getStartPath = function ()
 {
 	if(this.isDir()) return this.getShortPath();
-	return String.combine(album.path, this.subdir) + ":" + this.name;
+	return String.combine(this._parent.path, this.subdir) + ":" + this.name;
 };
 
 MediaFile.prototype.getHashPath = function ()
 {
 	if(this.isDir()) return this.getShortPath();
-	return String.combine(album.path, this.subdir) + "#" + this.name;
+	return String.combine(this._parent.path, this.subdir) + "#" + this.name;
 };
 
 MediaFile.prototype.getShortUrl = function ()
@@ -361,7 +363,7 @@ MediaFile.prototype.getShortUrl = function ()
 
 MediaFile.getFileDir = function(mediaFile, subdir)
 {
-	var baseUrl = mediaFile.urlAbsPath || album.relPath;
+	var baseUrl = mediaFile.urlAbsPath || mediaFile._parent.relPath;
 	return String.combine(baseUrl, mediaFile.subdir, subdir);
 };
 
@@ -373,10 +375,15 @@ MediaFile.prototype.getFileDir = function(subdir)
 MediaFile.getScriptUrl = function(mediaFile, scriptName, params)
 {
 	scriptName = String.combine(Album.serviceUrl,scriptName);
-	var url = mediaFile ? "{0}?path={1}&file={2}".format(scriptName, String.combine(album.path, mediaFile.subdir), String.urlEncode(mediaFile.filename))
-		: "{0}?path={1}".format(scriptName, album.path);
-	if(!params) return url;
-	return url + "&" + Object.toQueryString(params);
+	if(!params) params = {};
+	if(mediaFile)
+	{
+		params.path = mediaFile.getPath();
+		params.file =  String.urlEncode(mediaFile.filename);
+	}
+	else if(window.album)
+		params.path = album.path;
+	return scriptName + "?" + Object.toQueryString(params);
 };
 
 MediaFile.prototype.getScriptUrl = function (scriptName, params)
@@ -387,7 +394,7 @@ MediaFile.prototype.getScriptUrl = function (scriptName, params)
 MediaFile.makePostData = function(mediaFile, params)
 {
 	if(!params) params={};
-	params.path = String.combine(album.path, mediaFile.subdir);
+	params.path = mediaFile.getPath();
 	params.name = mediaFile.name;
 //	params.file = mediaFile.filename;
 	return params;
@@ -400,7 +407,7 @@ MediaFile.prototype.makePostData = function (params)
 
 MediaFile.getThumbnailDir = function(mediaFile, tnIndex)
 {
-	var baseUrl = mediaFile.urlAbsPath || album.relPath;
+	var baseUrl = mediaFile.urlAbsPath || mediaFile._parent.relPath;
 	if(isMissing(tnIndex) || isEmpty(mediaFile.tnsizes) || isMissing(mediaFile.tnsizes[tnIndex]))
 		return String.combine(baseUrl, mediaFile.subdir);
 	
@@ -580,13 +587,15 @@ MediaFile.prototype.loadThumbnails = function ()
 {	
 	if(!this.isDir()) return;
 
-	var params = { data: "thumbnails", path: this.name, file: "", count:6, empty: true, depth: 2 };
+	if(isMissing(this.thumbnails))
+		this.thumbnails = [];
+
+	var params = { data: "thumbnails", path: this.getFilePath(), file: "", count:6, empty: true, depth: 2 };
 	var mf=this;
-	var callbacks = { success: function (response)
-		{
-			mf.thumbnails = response;
-		}
-	};
+	var callbacks = { success: function (response) { 
+		mf.thumbnails = response; 
+		UI.refreshMediaFile(mf);
+	} };
 	this.scriptAjax("data.php", params, true, false, callbacks);
 	return this.thumbnails;
 }
@@ -660,7 +669,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 			if(window.UI)
 			{
 				if(response.jsonError)
-					UI.setStatus(response.jsonError);
+					UI.addStatus(response.jsonError);
 				UI.addStatus(response.serverError);
 				if(config.debug.ajax && link)
 					UI.addStatus(link.outerHtml());

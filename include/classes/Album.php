@@ -249,8 +249,7 @@ debug($type, count($typeFiles));
 
 	public function getFileThumbnails($name)
 	{
-
-		//if(!$this->thumbnails) 		return array();
+		if(!$this->thumbnails) 		return array();
 		$tnsizes = array();
 		foreach($this->thumbnails as $tndir => $thumbnails)
 			$tnsizes[] = $this->thumbnails && array_key_exists($name, $thumbnails) ? 11 : -1;
@@ -321,14 +320,15 @@ debug($type, count($typeFiles));
 			}
 			$mf["oldestDate"] = getOldestFileDate($dirPath);
 			$mf["takenDate"] = $mf["newestDate"] = getNewestFileDate($dirPath);
-			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
+			//$mf["thumbnails"] = subdirThumbs($dirPath, 4);
 			$mf["description"] = $this->getDirDescription($name);
 		}
 		else 
 		{
 			$mf["description"] = $this->getFileDescription($name);
-			$mf["tnsizes"] = $this->getFileThumbnails($name);
 			$mf["takenDate"] = arrayGet(@$this->_dateIndex, $name);
+			if(contains("VIDEO,IMAGE",$type))
+				$mf["tnsizes"] = $this->getFileThumbnails($name);
 		}
 		debug("setFileDetails $type $name", $mf);
 	}
