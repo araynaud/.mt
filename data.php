@@ -24,7 +24,7 @@ function getFileData(&$getData)
 			$files = listFilesRecursive($relPath, $search); 
 			return groupByName($relPath, $files, true, $details);
 		case "thumbnails":
-			return subdirThumbs($filePath, @$search["count"], $search["depth"]);
+			return subdirThumbs($relPath, @$search["count"], $search["depth"]);
 		case "tags":
 			return array_keys(listTagFiles($relPath, $search["depth"], @$search["tag"], true));
 		case "taglists":

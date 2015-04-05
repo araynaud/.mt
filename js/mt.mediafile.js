@@ -92,7 +92,9 @@ MediaFile.prototype.getVersions = function()
 MediaFile.prototype.getThumbnails = function()
 {
 	if(this.isDir && isEmpty(this.thumbnails))
-		return this.loadThumbnails();
+		return; // this.loadThumbnails();
+	if(this.isDir())
+		return this.tncolumns = this.thumbnails.divideInto(2);
 
 	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) return [];
 	var size = Math.max(this.width, this.height);
@@ -106,6 +108,29 @@ MediaFile.prototype.getThumbnails = function()
 			this.tnsizes.pop();
 	}
 	return this.tnsizes;
+}
+
+MediaFile.prototype.loadThumbnails = function (count)
+{	
+	if(!this.isDir()) return;
+
+	if(isMissing(this.thumbnails))
+		this.thumbnails = this.tncolumns = [];
+
+	count = valueOrDefault(count, 6);
+	var params = { data: "thumbnails", count: count, empty: true, depth: 2 };
+	var mf=this;
+	var callbacks = { 
+		success: function (response){
+			if(!isArray(response)) return;
+			mf.thumbnails = response;
+			mf.tncolumns = mf.thumbnails.divideInto(2);
+			UI.refreshMediaFile(mf);
+		}
+		//error: function() { mf.thumbnails = []; }
+	};
+	this.scriptAjax("data.php", params, true, false, callbacks);
+	return this.thumbnails;
 }
 
 MediaFile.getId = function(name, type)
@@ -582,28 +607,6 @@ MediaFile.prototype.getThumbnailUrlAjax = function (tnIndex)
 {	
 	return MediaFile.getThumbnailUrlAjax(this, tnIndex);
 };
-
-MediaFile.prototype.loadThumbnails = function ()
-{	
-	if(!this.isDir()) return;
-
-	if(isMissing(this.thumbnails))
-		this.thumbnails = this.tncolumns = [];
-
-	var params = { data: "thumbnails", path: this.getFilePath(), file: "", count:6, empty: true, depth: 2 };
-	var mf=this;
-	var callbacks = { 
-		success: function (response){
-			if(!isArray(response)) return;
-			mf.thumbnails = response;
-			mf.tncolumns = mf.thumbnails.divideInto(2);
-			UI.refreshMediaFile(mf);
-		}
-		//error: function() { mf.thumbnails = []; }
-	};
-	this.scriptAjax("data.php", params, true, false, callbacks);
-	return this.thumbnails;
-}
 
 MediaFile.prototype.loadSubtitles = function ()
 {	

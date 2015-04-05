@@ -129,7 +129,7 @@ Album.onLoad = function (albumInstance)
 
 		albumInstance.albumTime = new Date() - albumInstance.startTime;
 		UI.displayFileCounts(album.mediaFiles,"#counts");	
-
+		UI.loadDirThumbnails();
 		if(mf) mf.play();
 	}
 //	catch(err)	{ alert(Object.toText(err,"\n")); }
@@ -213,6 +213,9 @@ $(window).resize(function(event)
 		<div class="centered noprint controls">
 			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
 			<div id="textList" class="inlineBlock"  style="vertical-align:middle"></div>
+			<input class="typeOption" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
+			<input class="typeOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
+			<input class="typeOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
 			<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 			<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
 			<div id="tagList" class="inlineBlock"></div>

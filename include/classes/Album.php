@@ -104,7 +104,7 @@ debug("details", $details);
 		{
 			$this->addFileDetails();
 			$this->times[]=getTimer(true);
-			//$this->thumbnails = $this->allFilenames = $this->files = null;
+			$this->thumbnails = $this->allFilenames = $this->files = null;
 		}
 		else if($details >=4)
 		{
@@ -320,7 +320,7 @@ debug($type, count($typeFiles));
 			}
 			$mf["oldestDate"] = getOldestFileDate($dirPath);
 			$mf["takenDate"] = $mf["newestDate"] = getNewestFileDate($dirPath);
-			//$mf["thumbnails"] = subdirThumbs($dirPath, 4);
+			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
 			$mf["description"] = $this->getDirDescription($name);
 		}
 		else 

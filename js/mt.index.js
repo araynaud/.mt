@@ -120,6 +120,25 @@ UI.setupFileEvents = function(mediaFile)
 	});
 };
 
+
+UI.loadDirThumbnails = function(mediaFiles,count)
+{
+	UI.selectedFileList = album.selectFiles({type:"DIR", thumbnails: null});
+	if(isEmpty(UI.selectedFileList)) return;
+
+	count = valueOrDefault(count, 6);
+	var callbacks = {};
+	callbacks.success = function(response, mediaFile, params)
+	{
+			if(!isArray(response)) return;
+			mediaFile.thumbnails = response;
+			mediaFile.tncolumns = mediaFile.thumbnails.divideInto(2);
+			UI.refreshMediaFile(mediaFile);
+	};
+	var params = { data: "thumbnails", count: count, empty: true, depth: 2 };
+	UI.multipleAjaxAsync("data.php", params, callbacks);
+};
+
 //call when initial display, and when tag list changes: new tag word created or removed.
 UI.displayTags = function()
 {

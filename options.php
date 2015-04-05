@@ -1,6 +1,6 @@
 <div id="optionsContainer" class="noprint footerLeftCorner">
 
-<?php if(true || !isMobile()) {?>		
+<?php if(!isMobile()) {?>		
 	<div class="fixedLeft left">
 		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
 		<br/>
@@ -11,13 +11,6 @@
 	</div>
 	<div class="fixedRight right">
 		<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
-		<br/>
-		<input class="typeOption" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
-		<br/>
-		<input class="typeOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
-		<br/>
-		<input class="typeOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
-		<br/>
 		<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 		<br/>
 		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
