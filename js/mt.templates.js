@@ -73,7 +73,7 @@ UI.renderTemplate = function(templateId, targetId, data, funct, params)
 
 UI.getGroupTitle = function(mediaFile)
 {
-	if(isMissing(mediaFile)) return false;
+	if(isMissing(mediaFile) || isMissing(window.album)) return false;
 	var value =  mediaFile[album.sort];
 	if(isMissing(value)) return false;
 	if(isFunction(value))

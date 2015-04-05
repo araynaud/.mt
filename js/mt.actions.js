@@ -339,6 +339,8 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 		return;
 	}
 
+	UI.setGroup(mediaFile);
+
 	UI.editDiv.hide().appendTo(UI.body);
 	//to avoid losing it when refreshing index
 
@@ -348,7 +350,7 @@ UI.refreshMediaFile = function(mediaFile, refreshPage)
 	//refresh only 1 file template
 	var fileDiv = mediaFile.getDiv();
 	if(isEmpty(fileDiv)) return;
-	
+
 	UI.renderTemplate("fileboxTemplate", fileDiv, mediaFile, "after");
 	fileDiv.eq(0).remove();
 	UI.setupFileEvents(mediaFile);

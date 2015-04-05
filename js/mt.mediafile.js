@@ -16,7 +16,7 @@ function MediaFile(data, type, key)
 	else
 	{
 		Object.merge(this, data, true);
-		this._parent = album || {};
+		this._parent = window.album || {};
 	}
 	this.getId();
 	this.getTitle();
@@ -588,14 +588,19 @@ MediaFile.prototype.loadThumbnails = function ()
 	if(!this.isDir()) return;
 
 	if(isMissing(this.thumbnails))
-		this.thumbnails = [];
+		this.thumbnails = this.tncolumns = [];
 
 	var params = { data: "thumbnails", path: this.getFilePath(), file: "", count:6, empty: true, depth: 2 };
 	var mf=this;
-	var callbacks = { success: function (response) { 
-		mf.thumbnails = response; 
-		UI.refreshMediaFile(mf);
-	} };
+	var callbacks = { 
+		success: function (response){
+			if(!isArray(response)) return;
+			mf.thumbnails = response;
+			mf.tncolumns = mf.thumbnails.divideInto(2);
+			UI.refreshMediaFile(mf);
+		}
+		//error: function() { mf.thumbnails = []; }
+	};
 	this.scriptAjax("data.php", params, true, false, callbacks);
 	return this.thumbnails;
 }
@@ -666,7 +671,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 			result=response;
 
 			//result = false;
-			if(window.UI)
+			if(window.UI && config.debug.ajax)
 			{
 				if(response.jsonError)
 					UI.addStatus(response.jsonError);
@@ -676,12 +681,10 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 			}
  			if(callbacks && callbacks.error)
 				callbacks.error(xhr, mediaFile);
-
 			if(callbacks && callbacks.success)
 				callbacks.success(response, mediaFile, params);
 			if(callbacks && callbacks.next)
 				callbacks.next(response, script, params, callbacks);
-
 		}
 	});
 	return result;

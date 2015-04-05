@@ -19,13 +19,13 @@
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
 	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
-		{{if type=="DIR" && thumbnails}}
+		{{if type=="DIR" && tncolumns && tncolumns.length}}
 			<a href="?{{:~filePath(#data)}}" title="{{>title}}">
 				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
-					{{for thumbnails.getHalfElements(0) tmpl="tnTemplate"/}}
+					{{for tncolumns[0] tmpl="tnTemplate"/}}
 				</div>
 				<div class="{{if ~albumVar('columns')!=-1}}smallThumbRight floatR{{else}}smallThumbBottom{{/if}}">
-					{{for thumbnails.getHalfElements(1) tmpl="tnTemplate"/}}
+					{{for tncolumns[1] tmpl="tnTemplate"/}}
 				</div>
 			</a>
 		{{else type=="VIDEO" && isExternalVideoStream() && ~config("MediaPlayer").slide.enabled && ~config("youtube").mode=="iframe"}}

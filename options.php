@@ -1,6 +1,6 @@
 <div id="optionsContainer" class="noprint footerLeftCorner">
 
-<?php if(!isMobile()) {?>		
+<?php if(true || !isMobile()) {?>		
 	<div class="fixedLeft left">
 		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
 		<br/>
@@ -11,6 +11,13 @@
 	</div>
 	<div class="fixedRight right">
 		<input id="cb_titleContainer" type="checkbox" class="lOption" label="H" title="Header"/>
+		<br/>
+		<input class="typeOption" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
+		<br/>
+		<input class="typeOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
+		<br/>
+		<input class="typeOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
+		<br/>
 		<input id="cb_downloadFileList" type="checkbox" class="lOption" label="Files" title="Files"/>
 		<br/>
 		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
@@ -31,21 +38,13 @@
 	<div id="searchOptions" class="floatL toolbar translucent shadowIn hidden" direction="left">
 		<div class="inlineBlock nowrap">
 			Search: <input id="search_name" type="text" style="width: 150px" title="Search"/>
-			<select id='dd_search_depth'>
+			<!--select id='dd_search_depth'>
 				<option value="0">this dir only</option>
 				<option value="1">subdirs</option>
 				<option value="t">all subdirs</option>
 				<option value="-1">parent dir</option>
 				<option value="-10">all parent dirs</option>
-			</select>
-		</div>
-
-		<div class="inlineBlock nowrap">
-			<input class="typeOption spaceLeft" id="cb_search_type_IMAGE" type="checkbox" label="Image" title="Images"/>
-			<input class="typeOption" id="cb_search_type_VIDEO" type="checkbox" label="Video" title="Videos"/>
-			<!--input class="typeOption" id="cb_search_type_AUDIO" type="checkbox" label="Audio" title="Audio"/-->
-			<input class="typeOption" id="cb_search_type_DIR" type="checkbox" label="Dir" title="Directories"/>
-			<!--input class="typeOption" id="cb_search_type_FILE" type="checkbox" label="File" title="Other files"/-->
+			</select-->
 		</div>
 		<img id="searchIcon" alt="search" src="icons/search24.png"/>
 		<img id="clearSearchIcon" alt="clear" src="icons/delete.png"/>

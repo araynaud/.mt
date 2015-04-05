@@ -588,7 +588,7 @@ UI.setupEvents = function()
 			UI.displaySelectedFiles(true);
 	} );
 
-	$("div#searchOptions input:checkbox, div#searchOptions select").change(UI.search);
+	$("div#searchOptions input:checkbox, input.typeOption, div#searchOptions select").change(UI.search);
 	$("div#searchOptions input:text").change(UI.search);
 //	$("div#searchOptions #searchIcon").click(UI.search);
 	$("div#searchOptions #clearSearchIcon").click(UI.clearSearch);
