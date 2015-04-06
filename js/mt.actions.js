@@ -383,16 +383,16 @@ UI.refreshThumbnail = function(img)
 {	
 	if(!img) img=this;
 	img = $(img);
-	UI.setStatus(img.selector());
 	var filebox=img.parents("div.file");
 	var thumbnailImg = filebox.find("img.thumbnail");
 	UI.currentFile.setTnExists(false);
 	var tnUrl = UI.currentFile.getThumbnailUrl(album.tnIndex, true);
     var time = +(new Date());
-//	var sec = Math.round(time/1000 % 1000000);
-
 	tnUrl =	String.appendQueryString(tnUrl, {cache: time});
 	thumbnailImg.attr("src", tnUrl);
-//	filebox.append(tnUrl);
-	UI.addStatus(tnUrl);
+	if(config.debug.ajax)
+	{
+		var imageLink = $.makeElement("a", {href: tnUrl, target: "image"}).html(tnUrl);
+		UI.addStatus(imageLink.outerHtml());
+	}
 };
