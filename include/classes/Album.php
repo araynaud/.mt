@@ -24,7 +24,7 @@ class Album extends BaseObject
 	private $allFilenames; //array of distinct names (without extensions)
 	private $groupedFiles; //array of files in the directory, grouped by type and name
     private $thumbnails; //array of thumbnails 
-	private $metadata = array();
+	private $metadata;
 
 	private $mediaFiles; //array of MediaFile in the directory
 	private $otherFiles; //array of MediaFileVersion thumbnail images in different subdirectories
@@ -110,7 +110,7 @@ debug("details", $details);
 		{
 			//Group by name / make MediaFile objects
 			$this->createMediaFiles();
-			$this->thumbnails = $this->allFilenames = $this->metadata = $this->files = null;
+			$this->thumbnails = $this->allFilenames = $this->files = null;
 			$this->times[]=getTimer(true);
 		}
 
@@ -202,10 +202,13 @@ debug("Album::getSearchParameters", $this->search);
 //image: load exts, width, height, duration, codec
     public function getMetadataIndex($type)
 	{
-		//TODO use dateIndex.types;IMAGE		
+debug("getMetadataIndex $type is set", isset($this->metadata));
+		//TODO use dateIndex.types;IMAGE
+		if(!isset($this->metadata))
+			$this->metadata = array();		
 		if(!isset($this->metadata[$type]))
 			$this->metadata[$type] = getMetadataIndex($this->relPath, $type, @$this->groupedFiles[$type], $this->isCompleteIndex());
-		return $this->metadata[$type];
+		return @$this->metadata[$type];
 	}
 
     public function getDateIndexFiles()

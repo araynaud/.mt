@@ -437,8 +437,8 @@ debug("MediaFile.loadImage",$imagePath);
 	
     public function getMetadata()
 	{
-		$index = $this->_parent->getMetadataIndex($this->type);
 		$key = combine($this->subdir, $this->name);
+		$index = $this->_parent->getMetadataIndex($this->type);
 		$metadata = @$index[$key];
 debug("getMetadata $key", $metadata);		
 		$this->setMultiple($metadata);
@@ -473,6 +473,9 @@ debug("getMetadata $key", $metadata);
 
     public function isVideoStream()
 	{
+		$streamTypes = getConfig("TYPES.VIDEO_STREAM");
+		$this->stream = array_intersect($streamTypes, $this->exts);
+		$this->stream = reset($this->stream);
 		return $this->stream;
 	}
 

@@ -3,9 +3,10 @@ OK action_multiple: only applies to clicked file
 unify into action.php ? function doAction called in loop ?
 
 1 fix tags when depth>1
-2 fix upload video: "20150319_171753.m4v is not a streamable video. convert file first."
-
+OK 2 fix upload video: "20150319_171753.m4v is not a streamable video. convert file first."
 OK free: listFilesRecursive for thumbnails crashes. check use of search["count"]
+
+OK upload: fix progress bar (callbacks.progres)
 
 2 use start / file parameter to select right meta tags
 

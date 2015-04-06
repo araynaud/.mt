@@ -85,7 +85,12 @@ MediaFile.prototype.getVersions = function()
 	if(isEmpty(this.exts)) return [];
 	this.versions = [];
 	for(var i=0; i<this.exts.length; i++)
-		this.versions.push({ ext: this.exts[i], size: this.size ? this.size[i] : null, date: this.date[i] });
+	{
+		var ext = this.exts[i];
+		var v = { ext: ext, size: this.size ? this.size[i] : null, date: this.date[i] };
+		this.versions.push(v);
+		this.versions[ext] = v;
+	}
 	return this.versions;
 };
 
