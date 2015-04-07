@@ -137,7 +137,7 @@ function getSearchParameters($filters=null)
 {
 	if(!$filters) 
 		$filters = requestFilters(false);
-	$search = arrayCopyMultiple($filters, "path,file,depth,count,name,tag");	
+	$search = arrayCopyMultiple($filters, "path,file,depth,count,name,tag,start");	
 	if($type = $search["type"] = arrayGet($filters, "type"))
 		$search["exts"] = getExtensionsForTypes($type);
 

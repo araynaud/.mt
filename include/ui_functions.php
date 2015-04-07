@@ -231,26 +231,10 @@ function metaTags($album, $article=true)
 	$meta["og:site_name"] = getSiteName(); //get root dir title	
 	$meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
-
-//TODO: image: 1st best, or 1st image, use maxcount ?
-//or if start use this one
-	$mediaFile = $album->getMediaFile();
-	debug("mediaFile", $mediaFile);
-	$meta["og:description"] = metaDescription($album, $mediaFile);
-
-//TODO: mediaFile method findOgImage
-	$image="";
-	if(!$mediaFile)
-		$image = findFirstImages($relPath, 4);
-	else if(is_object($mediaFile))
-	{
-		$meta["mediaFile"] = $mediaFile->getName();
-		$image = $mediaFile->getBestImage(1000);
-	}
-	else if(is_array($mediaFile))
-		$meta["mediaFile"] = $mediaFile["name"];
-
-debug("metaTags image", $image);
+	$search = $album->getSearchParameters();
+	$meta["og:description"] = metaDescription($album, @$search["start"]);
+	$image = findFirstImages($relPath, 4, $search);
+	metaImage($path, $relPath, $image);
 
 	if($article)
 	{
@@ -265,8 +249,6 @@ debug("metaTags image", $image);
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);
-
-	metaImage($path, $relPath, $image);
 
 	return $meta;
 }
@@ -298,11 +280,11 @@ debug("getimagesize", $is);
 	return $meta;
 }
 
-function metaDescription($album, $mediaFile)
+function metaDescription($album, $file)
 {
-	$ad = $album ? $album->getDescription() : ""; 
-	$md = $mediaFile && is_object($mediaFile) ? $mediaFile->getDescription() : "";
-	if($ad && $md) return "$ad. $md";
+	$ad = $album->getDescription();
+	$md = $file ? $album->getFileDescription($file) : "";
+	if($ad && $md) return "$md. $ad";
 	if($ad) return $ad;
 	return $md;
 }

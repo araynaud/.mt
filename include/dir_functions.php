@@ -738,16 +738,22 @@ function subdirThumbs($relPath, $max_thumbs, $depth=0)
 }
 
 
-function findFirstImage($relPath)
+function findFirstImage($relPath, $search=null)
 {
-	$pics = findFirstImages($relPath,1);
+	$pics = findFirstImages($relPath, 1, $search);
 	if($pics)
 		return end($pics);
 }
 
-function findFirstImages($relPath, $maxCount=1)
+function findFirstImages($relPath, $maxCount=1, $search=null)
 {
-	$search = array("type" => "IMAGE", "depth" => 1, "tndir" => ".ss", "count" => $maxCount);
+	if(!$search)
+		$search = array("depth" => 1);
+	$search["type"] = "IMAGE";
+	if(@$search["start"])
+		$search["name"] = $search["start"];
+	$search["count"] = $maxCount;
+	$search["tndir"] = ".ss";
 	$pics=listFilesRecursive($relPath, $search);
 	if(!$pics)
 	{
@@ -759,7 +765,7 @@ function findFirstImages($relPath, $maxCount=1)
 		unset($search["tndir"]);
 		$pics=listFilesRecursive($relPath, $search);
 	}
-	debug("findFirstImage", $pics);
+	debug("findFirstImages", $pics);
 	return $pics;
 }
 
