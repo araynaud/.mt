@@ -396,6 +396,14 @@ debug("MediaFile.loadImage",$imagePath);
 		return combine($basePath, getFilename($this->name, "txt"));
 	}
 
+	public function getSubtitleFilename($withPath=false)
+	{
+		$basePath = $withPath ? $this->getFileDir() : "";
+		if($this->type=="VIDEO")
+			return combine($basePath, getFilename($this->name, "sub"));
+		return "";
+	}
+
 	public function getMetadataFilename($withPath=false)
 	{
 		$basePath = $withPath ? $this->getFileDir() : "";

@@ -99,7 +99,8 @@ function listFilesDir($dir, &$search=array(), &$subdirs=false)
 	if($subdirs!==false)
 	{
 		$subdirs = selectDirs($dir, $dirFiles);
-		$subdirs = array_diff($subdirs, $ignoreList, $specialFiles);
+		if($subdirs)
+			$subdirs = array_diff($subdirs, $ignoreList, $specialFiles);
 		debug("listFilesDir subdirs", count($subdirs));	
 	}
 

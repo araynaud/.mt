@@ -615,18 +615,23 @@ MediaFile.prototype.getThumbnailUrlAjax = function (tnIndex)
 
 MediaFile.prototype.loadSubtitles = function ()
 {	
+	//reload file each time or not ?
+	this.subtitles=[];
 	var params = { data: "tableFile", file: this.name +".sub", empty: true };
-	this.subtitles = this.scriptAjax("data.php", params);
-	//TODO: make async with success callback
-	if(!this.subtitles) return false;
-	var subs={};
-	for (i=0; i < this.subtitles.length; i++)
+	var callbacks = {};
+	callbacks.success = function(response, mf) 
 	{
-		var sub = this.subtitles[i];
-		subs[sub.start] = sub.text;
-		subs[sub.end] = "";
-	}
-	return this.subtitleMap = subs;
+		mf.subtitles=[];
+		for (i=0; i < response.length; i++)
+		{
+			var sub = response[i];
+			mf.subtitles.push({time: sub.start, text: sub.text.replace("\\","\n")});
+			mf.subtitles.push({time: sub.end, text: "" });
+		}
+		return mf.subtitles;
+	};
+
+	this.scriptAjax("data.php", params, true, false, callbacks);
 };
 
 //run image script via ajax request

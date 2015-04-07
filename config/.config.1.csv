@@ -1,6 +1,4 @@
-;TITLE=(one)
-;SIZE.DEFAULT=medium
-;display.size=medium
+display.size=medium
 .reverse=true
 .group=true
 

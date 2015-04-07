@@ -1,12 +1,13 @@
-<div id="videoContainer" class="wrapper hidden">
+<div id="videoContainer" class="wrapper hidden margin">
 	<div class="headerLeftCorner controls" id="videoBackDiv">
 		<img class="iconTrans headerLeftCorner" id="indexButtonBigV" src="icons/close128.png" onclick="UI.setPrevMode()" title="back to thumbnails (Esc)" alt="back to thumbnails"/>
 	</div>
 
 	<div class="inlineBlock">
 		<div id="videoPlayer"></div>
+		<span id="videoSubtitles" class="translucent big subtitle text"></span>
 	</div>
-	<div class="inlineBlock left shadow marginH">
+	<div class="inlineBlock vTop left shadow marginH">
 		<div class="translucent right">
 			<span id="videoPlayerMessage" class="text"></span>
 			<span id="videoPlayerControls"></span>

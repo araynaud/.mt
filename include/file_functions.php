@@ -392,7 +392,7 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 	$separator=";";
 	$separator2="";
 	if(!$text)		return $csvRows;
-	$lines = explode("\n", $text);
+	$lines = splitLines($text);
 	if(!$lines)		return $csvRows;
 	if($columnNames && is_string($columnNames))
 		array_unshift($lines, $columnNames);

@@ -375,6 +375,12 @@ function parseColor($color)
 
 // ARRAY functions
 
+function splitLines($str)
+{
+	if(is_array($str))	return $str;
+	return preg_split("/\\n|\\r\\n/", $str);
+}
+
 function toArray($str)
 {
 	if(is_array($str))	return $str;

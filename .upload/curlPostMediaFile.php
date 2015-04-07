@@ -109,9 +109,18 @@ if($nbChunks>1) // delete after upload
 // only with 1st chunk. or last?
 if($chunk <=1)
 {
+	//upload description file
 	$descPath = $mf->getDescriptionFilename(true);
 	$postData["version"] = "description";
 	$response["desc"] = uploadFile($publish, $descPath, $destPath);
+	
+	//upload subtitle file if it exists
+	$descPath = $mf->getSubtitlesFilename(true);
+	if($descPath)
+	{
+		$postData["version"] = "subtitles";
+		$response["sub"] = uploadFile($publish, $descPath, $destPath);
+	}
 }
 
 $uploadThumbs = arrayGet($publish, "$fileType.thumbnails");

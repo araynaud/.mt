@@ -1,0 +1,73 @@
+Bonjour Arthur, j'ai une question sur mediathingy.
+j'ai participé à une nouvelle compèt d'une autre assoc, 
+j'aimerais changer le login/pwd d'accès dans deux répertoires (j'ai utilisé la mm syntaxe que toi avec un sous répertoire .pw, le chemin complet du répertoire, mais alors c'est tout .mt qui prend ce nv login/pwd...).
+De même, j'aimerais aussi que qqs login/pwd d'upload mais que pour ces répertoires, pas pour tt .mt ^^ 
+Enfin, un truc, free php affiche l'url des img non accessibles par htaccess/pwd, peut-être un effet de bord ^^
+
+http://gkokoro.free.fr/share/.mt/?CTP/FV2015/Soiree
+Soiree gkokoro.free.fr
+
+Comme les images sont pas accessibles, le Tag image contient peut être alt= url
+Ah je vois, c'est un truc pour mon debugging mais ça devrait pas être la
+il affiche debug=true alors que tu as bien mis false dans config
+c pas la dernière version, faut ptre que j'update? 
+ya les metatags maintenant en upload?
+
+Je Vais te faire enlever une ligne
+oki dok
+Pour le reste,  les autorisations par répertoire ça va être un peu plus compliqué
+Pour la lecture,  y a pas de restriction
+Mais tu peux appeler ton répertoire .Soiree
+Dans ce cas il sera pas visible dans la navigation
+ah oui c vrai
+Seulement en ayant le lien.
+L'idée c'était de pas s'embêter avec des mots de passe pour les gens pas trop doués:)
+
+Enfin j'y réfléchirai un de ces jours
+(ok dok, aussi qd je disais répertoire, ça inclut les sous-répertoires conformément à ton système actuel)
+ce truc là, c'est pas valable en lecture, c normal: http://openclassrooms.com/courses/creer-un-htaccess-pour-proteger-un-dossier-sur-les-serveurs-free-fr
+
+dans mt.index.js, vire cette ligne:
+UI.addStatus(imageLink.outerHtml());
+ou commente la
+ca n'affichera plus les url des images qui fail
+yep ^^
+
+ah et le htpasswd qui s'affiche, ca m'etonne mais c'est pas top 
+lol
+c'est original 
+oui, car j'ai mis un .txt
+pour tester l'exemple
+du lien
+ah oui si c'est un txt c'est normal alors
+
+ca te va mes reponses pour l'instant ?
+j'ai pas beaucoup plus de temps
+mais je note pour plus tard
+
+pour l'autorisation en lecture? question bete
+htaccess / ht passwd dans le repertoire de donnees => ne rien afficher si images erreur 401. Rediriger vers repertoire parent ?
+ca t'irait comme solution ? (pas pour aujourdhui)
+
+oui indeed ^^ ah ok je pensais que ça fonctionnait déjà ^^
+quand tu as le temps bien sûr 
+Je te dérange pas plus ^^
+donc tu as ce qui te faut pour le moment ?
+je te dirai quand j'ai une nouvelle version
+plus rapide pour les gros albums et la recherche
+ca marche presque, reste 2-3 bugs 
+
+Euh, bah oui, il me semblait que ça fonctionnait la protection en lecture personnalisable par répertoire comme les .bg.
+Ah oui, je ne sais plus si je t'avais posé la question, si on peut mettre des .bg.png ça serait cool?
+ca serait cool. je le note dans ma todo list
+je pense changer ca : mettre n'importe quel fichier, lui donner le tag "bg"
+et du coup un album pourrait avoir plusieurs arriere plans differents
+ah oui, faire une fonction random ^^
+
+oui ou qui change pendant le diaporama, mais j'ai pas encore trop reflechi
+
+à murir, bon par contre, comme je crois que je vais etre obligé de mettre en ligne les photos de l'évènement d'ici qqs jours/semaines,
+pour confirmer, le seul moyen de protection en lecture actuel, c'est le fichier caché? ^^
+(en fait ya une ou deux personnes qui tiennent à ça dans l'assoc, mais bon c sinequanone apparemment)
+Aller hop, bonne journée et tout et tout, on se tel bientôt quand mm, tchuss !
+Oui dossier cache.
