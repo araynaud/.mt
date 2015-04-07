@@ -396,7 +396,7 @@ debug("MediaFile.loadImage",$imagePath);
 		return combine($basePath, getFilename($this->name, "txt"));
 	}
 
-	public function getSubtitleFilename($withPath=false)
+	public function getSubtitlesFilename($withPath=false)
 	{
 		$basePath = $withPath ? $this->getFileDir() : "";
 		if($this->type=="VIDEO")
