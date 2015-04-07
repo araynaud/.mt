@@ -27,7 +27,7 @@ MediaPlayer.playerSettings=
 		type: "audio",
 		allowHtml5: true,
 		allowFlash: true,
-		width: 260,
+		width: "100%",
 		height: 24,
 		autostart: false,		
 		item: 0,
@@ -141,7 +141,7 @@ MediaPlayer.prototype.getModes = function()
 {
 	var modes=[];
 	if(this.settings.allowFlash)
-		modes.push({type: "flash", src: "jwplayer510/player.swf"});
+		modes.push({type: "flash", src: config.MediaPlayer.jwplayer.flash});
 	if(this.settings.allowHtml5)
 		modes.push({type: "html5"});
 	modes.push({type: "download"});
@@ -291,11 +291,11 @@ MediaPlayer.prototype.loadPlaylist = function(mediaFiles, startItem)
 	//modify user settings
 	this.settings.modes=this.getModes();
 	this.settings.skin=this.getSkin();
-	this.settings.playlist=playlist;
+	//this.settings.playlist=playlist;
 
 	this.getPlayer();
 	this.player.setup(this.settings);
-	
+	this.player.load(playlist);
 	//playlist buttons
 	if(playlist.length>1)
 		this.setupIcons();

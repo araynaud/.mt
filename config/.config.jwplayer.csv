@@ -1,0 +1,4 @@
+;JW Player options for flash
+MediaPlayer.js=js/mt.mediaplayer.js
+MediaPlayer.jwplayer.js=js/lib/jwplayer510.js
+MediaPlayer.jwplayer.flash=jwplayer510/player.swf

@@ -1,5 +1,0 @@
-;JW Player options
-JWPLAYER.allowHtml5=true
-JWPLAYER.allowFlash=false
-JWPLAYER.MODES.0.type=html5
-JWPLAYER.MODES.1.type=download

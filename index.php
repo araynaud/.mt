@@ -3,12 +3,9 @@ require_once("include/config.php");
 session_start();
 
 $params = requestFilters(false);
-$params["count"] = 4;
 $path = $params["path"];
 debugVar("params");
-
-$album = new Album($path, 0);
-unset($params["count"]);
+$album = new Album($path, 1);
 
 $relPath = $album->getRelPath();
 $title = $album->getTitle();
@@ -16,6 +13,14 @@ $siteName = getSiteName();
 $pageTitle = ($title == $siteName) ? $title : "$title - $siteName";
 $description=$album->getDescription();
 $depth=$album->getDepth();
+
+//if FLV files exist: load jw player instead of html5 player
+$hasFlash = $album->filterFiles(array("type"=>"flv"));
+if($hasFlash)
+{
+	$configFilename = combine(pathToAppRoot(), "config/.config.jwplayer.csv");
+	readConfigFile($configFilename, $config); 
+}
 
 copyRedirect($relPath);
 ?>
@@ -75,7 +80,8 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/phpmyvisites.js"></script>
 
 <script type="text/javascript">
-<?php echoJsVar("params"); //, true); //, false, true, false); ?>
+<?php echoJsVar("hasFlash"); ?>
+<?php echoJsVar("params"); ?>
 var qs = new Querystring();
 delete qs.params[qs.whole];
 var search = Object.merge(qs.params, params, true);
@@ -244,7 +250,7 @@ $(window).resize(function(event)
 
 <?php include("slideshow.html");?>
 
-<div id="audioContainer" class="footerRightCorner right noprint" style="width:200px">
+<div id="audioContainer" class="footerRightCorner right noprint" style="width:250px">
 	<div id="musicPlayerMessage" class="text"></div>
 	<div id="musicPlayerControls"></div>	
 	<div id="musicPlayerPlaylist" class="playlist scrollY"></div>

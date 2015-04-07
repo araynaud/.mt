@@ -48,6 +48,11 @@ display description  when pause / at start until 1st subtitle
 display subtitles when playing.
 use player time event
 
+8 If FLV video exists: use flash player (MediaPlayer + jwplayer)
+
+WebVTT format (Srt)
+https://developer.mozilla.org/en-US/docs/Web/API/Web_Video_Text_Tracks_Format
+
 start;end;time
 8.5;10.5;Kok, put your pants on
 12.4;15.5;David Meowie\nother line

@@ -1,6 +1,5 @@
 <div id="optionsContainer" class="noprint footerLeftCorner">
-
-<?php if(!isMobile()) {?>		
+<?php if(!isMobile()) {?>
 	<div class="fixedLeft left">
 		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
 		<br/>
@@ -20,12 +19,11 @@
 <?php }?>
 
 	<div class="floatL toolbar">
+<?php if(isMobile()) {?>
+		<img class="iconTrans" id="zoomInIcon" style="height: 15mm;" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/><br/>
+<?php }?>
 		<input id="cb_searchOptions" type="checkbox" class="lOption" label="S" title="Search" icon="icons/search16.png"/>
 		<input id="cb_displayOptions" type="checkbox" class="lOption" label="O" title="Options"/>
-<?php if(false && isMobile()) {?>
-		<img class="iconTrans" id="zoomOutIcon" alt="zoom -" src="icons/zoom-out.png" onclick="UI.zoom(-1);"/>
-		<img class="iconTrans" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
-<?php }?>
 	</div>	
 
 	<div id="searchOptions" class="floatL toolbar translucent shadowIn hidden" direction="left">

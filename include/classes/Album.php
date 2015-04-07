@@ -67,8 +67,7 @@ debug("details", $details);
 		//list files according to search, etc.
 		if($details >=1)
 		{
-			$this->files = listFilesRecursive($this->relPath, $this->search); //TODO : group by name / make MediaFile objects
-			$this->nbFiles = count($this->files);
+			$this->listFiles();
 			$this->oldestDate=getOldestFileDate($this->relPath);
 			$this->newestDate=getNewestFileDate($this->relPath);
 			$this->times[]=getTimer(true);
@@ -225,7 +224,26 @@ debug($type, count($typeFiles));
 		}
 		return $result;
 	}
-	
+
+	//list all files
+	public function listFiles($search=null)
+	{
+		if($search)
+			return listFilesRecursive($this->relPath, $search);
+		$search = $this->search;
+		$this->files = listFilesRecursive($this->relPath, $search); //TODO : group by name / make MediaFile objects
+		$this->nbFiles = count($this->files);
+		return $this->files;
+	}
+
+	//filter among current album files
+	public function filterFiles($search)
+	{
+		if(!$this->files)
+			$this->listFiles();
+		return filterFiles($this->files, $search);
+	}
+
 	//list all thumbnails
 	public function listThumbnails()
 	{

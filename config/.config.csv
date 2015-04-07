@@ -114,24 +114,14 @@ TYPES.AUDIO=mp3;wav;m4a;aac;ogg
 TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
 TYPES.TEXT=txt
-TYPES.SPECIAL=xml;php;chunk;js;css
+TYPES.SPECIAL=xml;php;chunk;js;css;sub
 SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_;.DS_Store;Thumbs.db;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;
-
-;JW Player options
-JWPLAYER.allowHtml5=true
-JWPLAYER.allowFlash=true
-JWPLAYER.MODES.0.type=flash
-JWPLAYER.MODES.0.src=jwplayer510/player.swf
-JWPLAYER.MODES.1.type=html5
-JWPLAYER.MODES.2.type=download
 
 MediaPlayer.video.enabled=true
 MediaPlayer.audio.enabled=true
 MediaPlayer.slide.enabled=true
 MediaPlayer.js=js/mt.html5player.js
-;MediaPlayer.js=js/mt.mediaplayer.js
-;MediaPlayer.jwplayer.js=js/lib/jwplayer510.js
-;MediaPlayer.jwplayer.flash=jwplayer510/player.swf
+MediaPlayer.jwplayer.flash=jwplayer510/player.swf
 
 ;FFMPEG scripts
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin
