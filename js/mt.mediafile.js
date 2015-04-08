@@ -96,7 +96,7 @@ MediaFile.prototype.getVersions = function()
 
 MediaFile.prototype.getThumbnails = function()
 {
-	if(this.isDir && isEmpty(this.thumbnails))
+	if(this.isDir() && isEmpty(this.thumbnails))
 		return; // this.loadThumbnails();
 	if(this.isDir())
 		return this.tncolumns = this.thumbnails.divideInto(2);
