@@ -103,12 +103,14 @@ UI.keys =
 		'M': function() { UI.toggleOption("margin"); },
 		'S': function() { UI.toggleOption("shadow"); },		
 		'R': function() { UI.toggleOption("rotate"); },
+		'Q': function() { MediaPlayer.slide.rewind(); },
+		'W': function() { MediaPlayer.slide.forward(); },
 
 		107: function() { MediaPlayer.slide.nextSize(1) },
 		109: function() { MediaPlayer.slide.nextSize(-1) },
 
 		173: function() { MediaPlayer.slide.nextSize(-1); },
-		61: function() { MediaPlayer.slide.nextSize(1); },
+		61:  function() { MediaPlayer.slide.nextSize(1); },
 		189: function() { MediaPlayer.slide.nextSize(-1); },
 		187: function() { MediaPlayer.slide.nextSize(1); }
 	},
@@ -127,9 +129,11 @@ UI.keys =
 		109: function() { MediaPlayer.video.nextSize(-1) },
 
 		173: function() { MediaPlayer.video.nextSize(-1); },
-		61: function() { MediaPlayer.video.nextSize(1); },
+		61:  function() { MediaPlayer.video.nextSize(1); },
 		189: function() { MediaPlayer.video.nextSize(-1); },
 		187: function() { MediaPlayer.video.nextSize(1); },
+		'Q': function() { MediaPlayer.video.rewind(); },
+		'W': function() { MediaPlayer.video.forward(); },
 
 		'V': function() { UI.setPrevMode(); },		// V key: same
 		// ESC key: back to index, close player?

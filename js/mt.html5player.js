@@ -181,6 +181,18 @@ Html5Player.prototype.loop = function(start, end)
     this.player.addEventListener("timeupdate", Html5Player.seekLoopStart);
 };
 
+Html5Player.prototype.rewind = function(sec)
+{
+	sec = valueOrDefault(sec,5);
+	this.player.currentTime -= sec;
+}
+
+Html5Player.prototype.forward = function(sec)
+{
+	sec = valueOrDefault(sec,5);
+	this.player.currentTime += sec;
+}
+
 Html5Player.prototype.disableLoop = function()
 {
   this.player.removeEventListener("timeupdate", Html5Player.seekLoopStart);

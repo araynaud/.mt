@@ -101,6 +101,7 @@ debug("details", $details);
 
 		if($details == 3)
 		{
+			$this->_noThumbTypes = arraytoMap(getConfig("TYPES.IMAGE_NOTHUMB"));
 			$this->addFileDetails();
 			$this->times[]=getTimer(true);
 			$this->thumbnails = $this->allFilenames = $this->files = null;
@@ -348,7 +349,8 @@ debug($type, count($typeFiles));
 		{
 			$mf["description"] = $this->getFileDescription($name);
 			$mf["takenDate"] = arrayGet(@$this->_dateIndex, $name);
-			if(contains("VIDEO,IMAGE",$type))
+			$ext = strtolower(reset($mf["exts"]));
+			if(($type=="VIDEO" || $type=="IMAGE") && !@$this->_noThumbTypes[$ext])
 				$mf["tnsizes"] = $this->getFileThumbnails($name);
 		}
 		debug("setFileDetails $type $name", $mf);

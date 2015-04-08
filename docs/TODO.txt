@@ -2,19 +2,19 @@ bugs:
 OK action_multiple: only applies to clicked file
 unify into action.php ? function doAction called in loop ?
 
-1 fix tags when depth>1
-OK 2 fix upload video: "20150319_171753.m4v is not a streamable video. convert file first."
-OK free: listFilesRecursive for thumbnails crashes. check use of search["count"]
-
-OK upload: fix progress bar (callbacks.progres)
-
-2 use start / file parameter to select right meta tags
-
-3 tnsizes: determine max length based on max(width,height)
-JS: new MediaFile(album, type, key)
+1 FLV video with slideshow. check mediaplayer.js
 
 4 fix search by tag
 search=abc => name=*abc* & tag=abc
+
+OK fix tags when depth>1
+OK fix upload video: "20150319_171753.m4v is not a streamable video. convert file first."
+OK free: listFilesRecursive for thumbnails crashes. check use of search["count"]
+OK upload: fix progress bar (callbacks.progres)
+OK use start / file parameter to select right meta tags
+
+3 tnsizes: determine max length based on max(width,height)
+JS: new MediaFile(album, type, key)
 
 5 setFileTag : set parent dir with tag too
 in search, only go through dirs with that tag
