@@ -83,7 +83,7 @@
 				<img class="icon" src="icons/download.gif" alt="download {{:filename}}"/>
 			</a>
 		</div>
-		<div class="nowrap noscroll">{{>title}}</div>
+		<span class="nowrap noscroll">{{>title}}</span>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<div>{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}{{:~dateFormat(takenDate,"monthDayTime")}}{{/if}}
 			{{if transparent}}Tr{{/if}}
@@ -103,7 +103,7 @@
 			{{else exts}}{{for exts tmpl="extLinkTemplate"/}}
 			{{/if}}
 		</div>
-		<div class="nowrap noscroll">{{>title}}</div>
+		<span class="nowrap noscroll">{{>title}}</span>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}
 			<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>

@@ -426,7 +426,15 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 		{
 			$ckey = isset($header[$i]) ? $header[$i] : $i;
 			$value = parseValue($column, $separator2);
-			$row[$ckey]= $value;
+			$prev = @$row[$ckey];
+			if(!$prev)
+				$row[$ckey]= $value;
+			else
+			{
+				if(!is_array($prev))
+					$row[$ckey]= array($prev);
+				$row[$ckey][]= $value;
+			}
 		}
 
 		//value = single value or array?

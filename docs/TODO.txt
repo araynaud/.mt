@@ -1,33 +1,31 @@
 bugs:
-OK action_multiple: only applies to clicked file
-unify into action.php ? function doAction called in loop ?
+OK action_multiple: only applies to clicked file. unify into action.php ? function doAction called in loop ?
+check refresh file UI.afterAction
 
 1 FLV video with slideshow. check mediaplayer.js
+4 fix search by tag with depth>0: search=abc => name=*abc* & tag=abc
 
-4 fix search by tag
-search=abc => name=*abc* & tag=abc
+3 cmd convert all non stream videos (only those that stream does not exist.)
+	add condition in dir2mp4 script
+4 cmd in background
+5 track conversion progress
+6 refresh after convert
 
-OK fix tags when depth>1
+OK fix tags when depth>0
 OK fix upload video: "20150319_171753.m4v is not a streamable video. convert file first."
 OK free: listFilesRecursive for thumbnails crashes. check use of search["count"]
 OK upload: fix progress bar (callbacks.progres)
 OK use start / file parameter to select right meta tags
-
-3 tnsizes: determine max length based on max(width,height)
-JS: new MediaFile(album, type, key)
+OK 2 convert video .mp4 => .mp4, should be .m4v, check use of config
+OK 2 2005-2006: thumbnails in subdirs only, not displayed
+OK optimize album generation: scandir .tn, .ss, .hd
+OK tnsizes: determine max length based on max(width,height)
+JS: new MediaFile(album, type, key) + on server
 
 5 setFileTag : set parent dir with tag too
 in search, only go through dirs with that tag
 getDirTags = getfilenames in that dir.
 6 put tag files in data dir name.tag ?
-
-OK 2 convert video .mp4 => .mp4, should be .m4v, check use of config
-
-OK 2 2005-2006: thumbnails in subdirs only, not displayed
-no thumbnails. check depth in subdirThumbs,  tndir and recursivity.
-
-3 optimize album generation
-scandir .tn, .ss, .hd
 
 4 action.php : speed up when many files.
 make sure files are filtered before createMediaFiles
