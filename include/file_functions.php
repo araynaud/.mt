@@ -5,6 +5,11 @@ function splitFilename($file,&$name,&$ext)
 	$arr = splitBeforeAfter($file, ".", true);
 	$name = $arr[0];
 	$ext = $arr[1];
+	if(!$name)
+	{
+		$name = $file;
+		$ext = "";
+	}
 	return !empty($ext);
 }
 

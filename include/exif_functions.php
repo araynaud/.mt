@@ -11,6 +11,8 @@ function getExifDateTaken($filename, $exif=NULL)
       return "";
 
   //replace :: in date
+  if(contains($date,"/")) return strtotime($date);
+
   $pos = strpos($date,':');
   $date[$pos]='-';
   if($pos>4) $date=deleteChars($date,4,$pos);

@@ -99,6 +99,11 @@ $.fn.isChecked = function(checked)
 	return this.prop("checked");
 };
 
+$.fn.appendLine = function(line)
+{
+    return this.append(line + "\n");
+};
+
 //toggle / cycle selected index
 $.fn.selectNextOption = function(increment, noEvent) 
 {	//toggle / cycle selected index

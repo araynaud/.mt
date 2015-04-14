@@ -34,17 +34,32 @@ make sure files are filtered before createMediaFiles
 
 6 use irfan view resize for jpg, not for transparent gif/png
 
-7 on peut mettre des .bg.png ça serait cool?
-.cover.*
+10: Multiple backgrounds: use tag "bg"
+on peut mettre des .bg.png ça serait cool?
+=> un album pourrait avoir plusieurs arriere plans differents?
+tag .cover.: displayed on top of album 1st page, in full ss size and as dir thumbnail.
+1st image in slideshow. 
+end: last image in slideshow
 
-je pense changer ca : mettre n'importe quel fichier, lui donner le tag "bg"
-et du coup un album pourrait avoir plusieurs arriere plans differents?
+7 password protected dir.
+list hidden dirs if admin
+during listing, check if $dir/.htaccess exists, do not list if not admin
 
-7 video subtitles
+
+8 SVG metadata: parse width="320" height="320" , use substringBetween ('height="', '"' ) 1st occurrence, set as transparent 
+
+9 draw graphs and animations
+generate SVG
+canvas: RaphaelJS
+
+
+OK video subtitles
 add json to mediafile
 display description  when pause / at start until 1st subtitle
 display subtitles when playing.
 use player time event
+
+TODO: generate VTT format for html5 player text track
 
 8 If FLV video exists: use flash player (MediaPlayer + jwplayer)
 

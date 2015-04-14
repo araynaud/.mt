@@ -140,7 +140,7 @@ MediaFile.prototype.loadThumbnails = function (count)
 
 MediaFile.getId = function(name, type)
 {
-	var id = name.replace(/[\.#\(\)\{\}' &\[\]~]/g,"_");
+	var id = name.replace(/[\.#\(\)\{\}' ,&\[\]~]/g,"_");
 	if(type)	id = type +"_" + id;
 	return id;
 };
