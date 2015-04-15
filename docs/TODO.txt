@@ -19,6 +19,7 @@ OK use start / file parameter to select right meta tags
 OK 2 convert video .mp4 => .mp4, should be .m4v, check use of config
 OK 2 2005-2006: thumbnails in subdirs only, not displayed
 OK optimize album generation: scandir .tn, .ss, .hd
+OK list hidden dirs if admin
 OK tnsizes: determine max length based on max(width,height)
 JS: new MediaFile(album, type, key) + on server
 
@@ -42,16 +43,41 @@ tag .cover.: displayed on top of album 1st page, in full ss size and as dir thum
 end: last image in slideshow
 
 7 password protected dir.
-list hidden dirs if admin
+1: isPasswordProtected, looks for .htaccess
 during listing, check if $dir/.htaccess exists, do not list if not admin
 
+8 edit.html: make some icons public
+link, share
 
-8 SVG metadata: parse width="320" height="320" , use substringBetween ('height="', '"' ) 1st occurrence, set as transparent 
+8 Authentication Model:
+user logs in as uploader
+user group file
+marmeutes=arthur;gwen;mrik
+torfou=arthur;olivier
 
-9 draw graphs and animations
+folder config file has permissions for user groups
+access.read=marmeutes;famille	(default: everyone)	//view dir
+access.edit=marmeutes;upload	(default: upload)	//edit  = upload, desc, tags, rename, collage
+access.delete=arthur;gwen		(default: admin)	//move, delete files (move to parent if user has access to parent)
+When logging in, add groups to user object.
+index.php / data.php checks if user has read access
+upload.php checks if user has upload access
+
+$user->getGroups();
+$user->hasAccess($path, "read");
+
+9 logoff: send wrong crendentials via header in ajax request
+handle 401 ?
+
+10
+
+11 SVG metadata: parse width="320" height="320" , use substringBetween ('height="', '"' ) 1st occurrence, set as transparent 
+
+12 draw graphs and animations
 generate SVG
 canvas: RaphaelJS
 
+----------------------------
 
 OK video subtitles
 add json to mediafile

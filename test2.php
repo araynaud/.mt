@@ -39,6 +39,12 @@ debugVar("indexFiles", true);
 //$files = testFunctionResult("listFilesRecursive", $relPath, $search);
 $files = listFilesRecursive($relPath, $search);
 debugVar("files", true);
+debug();
+$files = testFunctionResult("findFile", $relPath, ".htaccess", 1);
+debugVar("files", true);
+debug();
+$configFilenames = testFunctionResult("findFilesInParent", $relPath, ".config.csv");
+debugVar("configFilenames", true);
 
 //$dirs = testFunctionResult("selectDirs", $relPath, $files);
 //debugVar("dirs", true);

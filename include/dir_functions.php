@@ -2,7 +2,7 @@
 function listFilesRecursive($dir, $search=array())
 {
 	$subdirs = true;
-debug("listFilesRecursive $dir", $search, true);
+debug("listFilesRecursive $dir", $search);
 addFunctionCall("listFilesRecursive");
 
 	$files = listFilesDir($dir, $search, $subdirs);
@@ -84,7 +84,8 @@ function listFilesDir($dir, &$search=array(), &$subdirs=false)
 		if(file_exists($filePath))
 		{
 			$files[]=combine(@$search["subpath"], $search["file"]);
-			return $files;
+			if(!@$search["depth"])
+				return $files;
 		}
 	}
 
@@ -94,7 +95,6 @@ function listFilesDir($dir, &$search=array(), &$subdirs=false)
 
 	$ignoreList = loadIgnoreList($dir);
 	$specialFiles = getConfig("SPECIAL_FILES");
-	$files = array_diff($tnFiles, $ignoreList, $specialFiles);
 
 	if($subdirs!==false)
 	{
@@ -103,6 +103,12 @@ function listFilesDir($dir, &$search=array(), &$subdirs=false)
 			$subdirs = array_diff($subdirs, $ignoreList, $specialFiles);
 		debug("listFilesDir subdirs", count($subdirs));	
 	}
+
+debug("listFilesDir files", $files);	
+
+	if(count($files) == 1)		return $files;
+
+	$files = array_diff($tnFiles, $ignoreList, $specialFiles);
 
 	if(@$search["type"] && !isset($search["exts"]))
 	{
@@ -693,6 +699,18 @@ function isPrivate($path)
 	return 	substr($path, 0, 1) == "." || (strpos($path, "/.") !== false);
 }
 
+function isPasswordProtected($relPath)
+{
+
+	$htaccess = findInParent($relPath,".htaccess");
+debug(".htaccess", $htaccess);
+	if(!$htaccess) return false;
+	//return true;
+
+	$htaccess = readTextFile($htaccess);
+	return contains($htaccess, 'PerlSetVar AuthFile "');
+}
+
 //find folder.css in current path, or another css file
 //if not found, look in parent directories
 //returns relative link to FIRST FILE found, or empty if none found
@@ -704,7 +722,7 @@ function findInParent($relPath, $file, $getOther=false)
 }
 
 //find multiple files in parent
-function findFilesInParent($relPath, $file, $getOther=false, $maxCount=0, $appendPath=true)
+function findFilesInParent($relPath, $file, $getOther=false, $maxCount=null, $appendPath=true)
 {
 	$search =  array();
 	if(!$getOther)
@@ -726,6 +744,14 @@ function findFilesInParent($relPath, $file, $getOther=false, $maxCount=0, $appen
 	return $found;
 }
 
+//find .htaccess
+function findFile($relPath, $filename, $depth=10)
+{
+	$search = array("file" => $filename, "depth" => $depth); //, "count" => 2 * $max_thumbs);
+	$files = listFilesRecursive($relPath, $search);
+	return $files;
+}
+
 //pick random 4 thumbs in this dir
 function subdirThumbs($relPath, $max_thumbs, $depth=0)
 {
@@ -736,7 +762,6 @@ function subdirThumbs($relPath, $max_thumbs, $depth=0)
 	$pics = pickRandomElements($pics, $max_thumbs);
 	return $pics;
 }
-
 
 function findFirstImage($relPath, $search=null)
 {
