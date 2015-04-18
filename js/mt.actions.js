@@ -290,6 +290,11 @@ UI.afterAction = function(response, mediaFile, params)
 			var mf = album.getMediaFileByName(rmf.name, rmf.type);
 			UI.afterAction(response, mf, params);
 		}
+
+		//refresh search results
+		if(params.action=="move" || params.action=="delete") 
+			UI.search();
+
 		return;
 	}
 
