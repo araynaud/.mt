@@ -16,10 +16,11 @@ class User extends BaseObject
 			$this->username = current_user();
 	        $this->upload = is_uploader();
 	        $this->admin = is_admin();
-			$this->role = currentUserRole();
+			//$this->role = currentUserRole();
 		}
 		$this->getGroups();
-		$this->level = $this->getAccessLevel();
+		$this->role = $this->getAccessLevel();
+		setRole($this->role);
 	}	
 
 	//what groups the user belongs to, based on config
@@ -40,8 +41,9 @@ class User extends BaseObject
 	{
 		$defaultAccess = 
 		$dirAccess = getConfig("access");		
+//debug("dirAccess", $dirAccess, true);
 		if(!$dirAccess)
-			return true;
+			return "admin";
 
 		ksort($dirAccess);
 		foreach ($dirAccess as $level => $list)
@@ -53,20 +55,21 @@ class User extends BaseObject
 			if($userAccess || $groupAccess)
 				return $level;
 		}
-		return false;
+		return "";
 	}
 
 	public function getAccessLevelTo($relPath, $subdir="")
 	{
 		$hasAccess = $this->getAccessLevel();
-		if(!$hasAccess) return false;
+		if(!$hasAccess) return "";
 
 		$dirAccess = getConfig("access");
 		$subdirAccess = getSubdirConfig($relPath, $subdir, "access");
 		if($subdirAccess)
 			$dirAccess = arrayUnion($dirAccess , $subdirAccess);
+//debug("dirAccess", $dirAccess, true);
 		if(!$dirAccess)
-			return true;
+			return "admin";
 
 		ksort($dirAccess);
 		foreach ($dirAccess as $level => $list)
@@ -78,7 +81,7 @@ class User extends BaseObject
 			if($userAccess || $groupAccess)
 				return $level;
 		}
-		return false;
+		return "";
 	}
 
 	public function hasAccess($role="read")
