@@ -72,6 +72,11 @@ function isIE()
 	return clientIs("MSIE");
 }
 
+//test if request is ajax, with X-Requested-With header
+function isAjax()
+{
+	return isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest";
+}
 
 function checkUserAgent()
 {

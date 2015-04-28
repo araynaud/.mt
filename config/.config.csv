@@ -95,8 +95,9 @@ PAGINATE.OPTIONS=1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all
 thumbnails.sizes.tn=225
 thumbnails.sizes.ss=1000
 thumbnails.sizes.hd=1920
-;thumbnails.IMAGE.script=image.php;for lossless rotation ?
 thumbnails.IMAGE.script=image_auto.php
+;for lossless rotation
+thumbnails.IMAGE.script=image.php
 thumbnails.VIDEO.ext=jpg
 thumbnails.VIDEO.max_size=1000
 thumbnails.VIDEO.script=video_thumbnail.php
@@ -122,6 +123,11 @@ MediaPlayer.audio.enabled=true
 MediaPlayer.slide.enabled=true
 MediaPlayer.js=js/mt.html5player.js
 MediaPlayer.jwplayer.flash=jwplayer510/player.swf
+
+;default dir access
+access.admin=admin
+access.edit=upload
+access.read=
 
 ;FFMPEG scripts
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin

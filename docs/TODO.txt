@@ -21,6 +21,8 @@ OK 2 2005-2006: thumbnails in subdirs only, not displayed
 OK optimize album generation: scandir .tn, .ss, .hd
 OK list hidden dirs if admin
 OK tnsizes: determine max length based on max(width,height)
+OK after move/delete, remove file from album.searchResults or redo UI.search
+
 JS: new MediaFile(album, type, key) + on server
 
 5 setFileTag : set parent dir with tag too
@@ -47,9 +49,9 @@ end: last image in slideshow
 during listing, check if $dir/.htaccess exists, do not list if not admin
 
 8 edit.html: make some icons public
-link, share
+direct link, share, play in video, play in slideshow
 
-8 Authentication Model:
+12 Authentication Model:
 user logs in as uploader
 user group file
 marmeutes=arthur;gwen;mrik
@@ -65,11 +67,31 @@ upload.php checks if user has upload access
 
 $user->getGroups();
 $user->hasAccess($path, "read");
+$user->hasAccessTo
+for each subdir: check dir config
+
+6 for DIRS in mapped path
+MediaFile.prototype.loadThumbnails = function (count)
+correct url path
+
+13 config file by user: config.username.csv
+where to store? override everything
+
+15 config file editor
+key		value
+
+save as config file 
+key.to.var=value1;value2
+apply to directory : current, parents
+
++ button to add new line
+- button to remove
 
 9 logoff: send wrong crendentials via header in ajax request
 handle 401 ?
 
-10
+10 Album.refresh: reload with ajax.
+album.onRefresh: merge with existing album object. 
 
 11 SVG metadata: parse width="320" height="320" , use substringBetween ('height="', '"' ) 1st occurrence, set as transparent 
 

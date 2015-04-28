@@ -31,7 +31,7 @@ var User = new function()
 	this.isUploader = function()
 	{
 		var role = User.get("role");
-		return role=="admin" || role=="upload";
+		return role=="admin" || role=="upload" || role=="edit";
 		//return valueOrDefault(album.user.uploader,false);
 	};
 
@@ -43,13 +43,19 @@ var User = new function()
 	}
 	
 	//try getting login page with ajax, asks for authentication
+	this.logout=function()
+	{
+		return this.login();
+	}
+
 	this.login=function(role)
 	{
 		var link;
-		if(!role || role=="logout")
-			link=".upload/logout.php?format=ajax";
+		if(role=="logout") role=null;
+		if(!role)
+			link="logout.php";
 		else
-			link=".{0}/?format=ajax".format(role);
+			link=".{0}/?path={1}".format(role, window.album && album.path ? album.path : "");
 
 		var userDiv=$('#userLabel');
 

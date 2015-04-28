@@ -1,9 +1,10 @@
 <?php 
 function session_login()
 {
-	$_SESSION['user']= $_SERVER["REMOTE_USER"];
-	if(!$_SESSION['user']) return false;
-	return $_SESSION['user'];
+	$_SESSION["user"] = $_SERVER["REMOTE_USER"];
+	//if(is_admin() && @$_REQUEST["user"])	$_SESSION["user"] = $_REQUEST["user"];
+	if(!$_SESSION["user"]) return false;
+	return $_SESSION["user"];
 }
 
 function session_logout()
@@ -17,7 +18,6 @@ function session_logout()
 function current_user()
 {
 	return sessionParam("user");
-//	return isset($_SESSION['user']) ? $_SESSION['user'] : "";
 }
 
 function currentUserRole()
@@ -25,7 +25,6 @@ function currentUserRole()
 	$role=sessionParam("role");
 	return $role;
 }
-
 
 function setRole($role)
 {
@@ -60,7 +59,7 @@ function is_admin()
 
 function is_uploader()
 {
-	return sessionParamBoolean("upload"); 
+	return sessionParamBoolean("upload") || sessionParamBoolean("edit"); 
 }
 
 function is_loggedin()

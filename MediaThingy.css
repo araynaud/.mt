@@ -361,11 +361,35 @@ img.icontr, img.iconTrans
 	height: 225px;
 }
 
+.blackBorder, .rightPane
+{
+	border: 1px solid black;
+}
+
+.topBorder, .topRightBorder, .topLeftBorder
+{
+	border-top: 3px solid black;
+}
+
+.bottomBorder, .bottomRightBorder, .bottomLeftBorder
+{
+	border-bottom: 3px solid black;
+}
+
+.leftBorder, .topLeftBorder, .bottomLeftBorder
+{
+	border-left: 3px solid black;
+}
+
+.rightBorder, .topRightBorder, .bottomRightBorder
+{
+	border-right: 3px solid black;
+}
+
 .rightPane
 {
 	/*float: right;*/
 	max-width: 398px;
-	border: 1px solid black;
 	position: relative;
 	overflow: auto;
 }
@@ -425,6 +449,11 @@ img.icontr, img.iconTrans
 	margin: 20px;
 }
 
+.margin2
+{
+	margin: 2px;
+}
+
 .marginV
 {
 	margin-top: 20px;
@@ -435,6 +464,12 @@ img.icontr, img.iconTrans
 {
 	margin-left: 20px;
 	margin-right: 20px;
+}
+
+.marginH2
+{
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 .player

@@ -230,11 +230,17 @@ function getDirConfig($path, $key=null)
 //2 supersede values with folder specific config file in $relPath 
 	$configFilename = combine($relPath, ".config.csv");
 	readConfigFile($configFilename, $configData);
-	if(!isset($key)) return $configData;
 
 //debug("getDirConfig", $configData);
 	
-	return isset($configData[$key]) ? $configData[$key] : "";
+	return arrayGet($configData, $key);
+}
+
+function getSubdirConfig($relPath, $subdir, $key=null)
+{
+	$configFilename = combine($relPath, $subdir, ".config.csv");
+	$configData = readConfigFile($configFilename);
+	return arrayGet($configData, $key);
 }
 
 function getSiteName()
@@ -244,7 +250,7 @@ function getSiteName()
 
 function readConfigFile($filename, &$csvRows = NULL, $separator="=")
 {
-	debug("readConfigFile $filename", realpath($filename));
+//	debug("readConfigFile $filename", realpath($filename));
 	$lines = readArray($filename);
 	if(!$lines)
 		return $csvRows;

@@ -101,7 +101,7 @@ $.fn.isChecked = function(checked)
 
 $.fn.appendLine = function(line)
 {
-    return this.append(line + "\n");
+    return this.append(line).append("<br/>");
 };
 
 //toggle / cycle selected index

@@ -450,10 +450,10 @@ function arrayToMap($arr)
 //arrayGet from nested array
 function arrayGet($array, $keys)
 {
-	if(!is_array($keys))
-		$keys=explode(".", $keys);
 	if(empty($keys))
 		return $array;
+	if(!is_array($keys))
+		$keys=explode(".", $keys);
 	//if more keys, look into sub array
 	$key=array_shift($keys);
 	if(!isset($array[$key])) 

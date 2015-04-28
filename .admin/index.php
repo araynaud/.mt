@@ -1,17 +1,19 @@
 <?php session_start(); 
 require_once("../include/config.php");
-set_admin();
-$path=getPath();
-$relPath=getDiskPath($path);
 $user=session_login();
+//set_admin();
+$u=new User();
 
 $format=getParam('format','html');
-if($format=="ajax")
+if(isAjax() || $format=="ajax")
 {
-	$u=new User();
 	echo $u->toJson();
 	return;
 }
+
+$path=getPath();
+$relPath=getDiskPath($path);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +26,7 @@ if($format=="ajax")
 	<?php displayBackground($relPath); ?>
 	"user: " <?php echo $user?><br/>
 	<script type="text/javascript">
-		window.location = "../?path=<?php echo $path?>";
+		window.location = "../?<?=$path?>";
 	</script>
 </body>
 </html>
