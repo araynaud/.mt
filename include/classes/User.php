@@ -28,11 +28,16 @@ class User extends BaseObject
 	{
 		if($this->groups) return $this->groups;
 
-		$groups = getConfig("groups");
-		$this->groups=array();
+		$this->groups = array();
+		if(!($groups = getConfig("groups")))
+			return $this->groups;
+
 		foreach ($groups as $group => $users)
+		{
+			$users = toArray($users);
 			if(in_array($this->username, $users))
 				$this->groups[] = $group;
+		}
 		return $this->groups;
 	}
 
