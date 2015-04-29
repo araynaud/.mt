@@ -569,8 +569,8 @@ function fileIsDir($file)
 {
 	global $relPathG;
 	$dirPath = combine($relPathG, $file);
-//debug ("fileIsDir $dirPath", is_dir($dirPath));
-	return is_dir($file) || is_dir($dirPath);
+//debug ("fileIsDir $file / $dirPath", @is_dir($dirPath));
+	return is_dir($file) || @is_dir($dirPath);
 }
 
 function selectFilesByType($fileList, $ext, $sort=false)

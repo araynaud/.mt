@@ -64,7 +64,10 @@ access.delete=arthur;gwen		(default: admin)	//move, delete files (move to parent
 When logging in, add groups to user object.
 index.php / data.php checks if user has read access
 
-upload.php and scripts in .upload: check if user has upload/edit access
+and scripts in .upload: check if user has upload/edit access
+upload.php : add tag upload-gwen to files uploaded by user. enables delete.
+tag: star if admin
+
 scripts in .admin: check if user has admin access
 
 $user->getGroups();
