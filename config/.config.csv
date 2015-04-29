@@ -127,7 +127,7 @@ MediaPlayer.jwplayer.flash=jwplayer510/player.swf
 ;default dir access
 access.admin=admin
 access.edit=upload
-access.read=
+access.read=*
 
 ;FFMPEG scripts
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin

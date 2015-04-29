@@ -70,6 +70,12 @@ $user->hasAccess($path, "read");
 $user->hasAccessTo
 for each subdir: check dir config
 
+if user has no access to dir: prevent loading album.
+if user has no access to dir: do not list
+if read restricted: copy .upload/.htaccess.
+
+after login / logout : refresh album to reflect access changes.
+
 6 for DIRS in mapped path
 MediaFile.prototype.loadThumbnails = function (count)
 correct url path

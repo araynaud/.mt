@@ -71,9 +71,9 @@ Album.prototype.getScriptUrl = function (scriptName, params)
 Album.getScriptUrl = function(scriptName, params)
 {
 	scriptName = String.combine(Album.serviceUrl, scriptName);
-	if(!params)
-		return scriptName;
-	return scriptName + "?" + Object.toQueryString(params);
+	var qs = Object.toQueryString(params);
+	if(!params || !qs) return scriptName;
+	return scriptName + "?" + qs;
 };
 
 // get album data in JSON format
@@ -628,7 +628,7 @@ Album.prototype.selectRange = function(from, to, state)
 // do NOT fire events
 Album.prototype.loadDisplayOptions = function()
 {
-	config = this.config; //global config
+	if(!(config = this.config)) return;
 	var displayConfig = config.DISPLAY || config.display;
 	if(!displayConfig) return;
 	displayConfig.size=valueOrDefault(displayConfig.size,0);

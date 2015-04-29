@@ -37,6 +37,13 @@ class User extends BaseObject
 	}
 
 //accesss to current dir
+	public function getRole()
+	{
+		if(!$this->role)
+			$this->role = $this->getAccessLevel();
+		return $this->role;
+	}	
+
 	public function getAccessLevel()
 	{
 		$defaultAccess = 
@@ -48,7 +55,7 @@ class User extends BaseObject
 		ksort($dirAccess);
 		foreach ($dirAccess as $level => $list)
 		{
-			if(!$list) return $level;
+			if(!$list || $list=="*") return $level;
 			$list = toArray($list);
 			$userAccess = in_array($this->username, $list);
 			$groupAccess = array_intersect($this->groups, $list);
@@ -61,21 +68,22 @@ class User extends BaseObject
 	public function getAccessLevelTo($relPath, $subdir="")
 	{
 		$hasAccess = $this->getAccessLevel();
+debug("hasAccess $relPath", $hasAccess, true);
 		if(!$hasAccess) return "";
 
 		$dirAccess = getConfig("access");
 		$subdirAccess = getSubdirConfig($relPath, $subdir, "access");
 		if($subdirAccess)
 			$dirAccess = arrayUnion($dirAccess , $subdirAccess);
-//debug("dirAccess", $dirAccess, true);
+debug("dirAccess $subdir", $dirAccess, true);
 		if(!$dirAccess)
 			return "admin";
 
 		ksort($dirAccess);
 		foreach ($dirAccess as $level => $list)
 		{
+			if(!$list || $list=="*") return $level;
 			$list = toArray($list);
-			if(!$list) return $level;
 			$userAccess = in_array($this->username, $list);
 			$groupAccess = array_intersect($this->groups, $list);
 			if($userAccess || $groupAccess)

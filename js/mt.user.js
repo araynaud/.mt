@@ -50,15 +50,10 @@ var User = new function()
 
 	this.login=function(role)
 	{
-		var link;
-		if(role=="logout") role=null;
-		if(!role)
-			link="logout.php";
-		else
-			link=".{0}/?path={1}".format(role, window.album && album.path ? album.path : "");
-
+		var link = role ? ".{0}/".format(role) : "logout.php";
+		var path = window.album && album.path ? album.path : "";
+		link = Album.getScriptUrl(link, {path: path});
 		var userDiv=$('#userLabel');
-
 		$.ajax({	
 			url: link,
 			dataType: "json",
@@ -72,9 +67,7 @@ var User = new function()
 			},
 			error:   function(xhr, textStatus, errorThrown)
 			{ 
-				userDiv.html("");
-				userDiv.append("Error " + xhr.status + " : " + xhr.statusText + "\n");
-				userDiv.append(xhr.responseText);
+				userDiv.html("Error " + xhr.status + " : " + xhr.statusText + "\n");
 			}
 		});				
 	};

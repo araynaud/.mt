@@ -55,6 +55,10 @@ debug("details", $details);
 
         $this->user = new User();
 		$this->private = isPrivate($this->path);
+
+		if(!$this->user->get("role"))
+			$details=false;
+
 		$this->getRelPath();
 		$this->getAbsPath();
 		$this->getTitle();
@@ -177,13 +181,21 @@ debug("Album::getSearchParameters", $this->search);
 
     public function getDirDescription($name="")
 	{
-
-		return testFunctionResult("readTextFile", combine($this->relPath, $name, "readme.txt"));
+		return readTextFile(combine($this->relPath, $name, "readme.txt"));
 	}
 
     public function getFileDescription($name)
 	{
-		return testFunctionResult("readTextFile", combine($this->relPath, "$name.txt"));
+		return readTextFile(combine($this->relPath, "$name.txt"));
+	}
+	
+	public function getSubdirAccess($subdir="", $dirPath="")
+	{
+		if(!$subdir) return $this->user->getAccessLevel();
+debug("getSubdirAccess $dirPath", $subdir);
+		if(!$dirPath) 
+			return $this->user->getAccessLevelTo($this->relPath, $subdir);
+		return $this->user->getAccessLevelTo($dirPath);
 	}
 
     public function getDateIndex()
@@ -331,7 +343,7 @@ debug($type, count($typeFiles));
 
 	public function setFileDetails(&$mf, $name, $type)
 	{
-		if($mf["type"]=="DIR")
+		if($type=="DIR")
 		{
 			$dirPath = combine($this->relPath, $name); //Or something else for mapped dirs
 			$_mappedPath = isMappedPath($name);
@@ -340,10 +352,17 @@ debug($type, count($typeFiles));
 				$dirPath = $_mappedPath;
 				$mf["urlAbsPath"] = diskPathToUrl($_mappedPath);
 			}
+			$mf["access"] = $this->getSubdirAccess($name, $_mappedPath);
+			if(!$mf["access"])
+			{
+				$mf=null;
+				return;
+			}
 			$mf["oldestDate"] = getOldestFileDate($dirPath);
 			$mf["takenDate"] = $mf["newestDate"] = getNewestFileDate($dirPath);
 			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
 			$mf["description"] = $this->getDirDescription($name);
+			//setIfEmpty($mf["access"], "NO");
 		}
 		else 
 		{
