@@ -5,13 +5,18 @@ define("LAST_CHUNK_SUFFIX", ".last.chunk");
 
 startTimer();
 
-$user = current_user();
-$format=getParam("format","ajax");
+$username = current_user();
+$user = new User();
+
+debugVar("user",true);
+$access = $user->getAccessLevel();
+
+$format=getParam("format", "ajax");
 
 debug("Request", $_REQUEST);
 debug("GET request", $_GET);
 debug("POST request", $_POST);
-debug("POST files", $_FILES);
+debug("POST files", $_FILES, true);
 
 $path = reqParam("path");
 $dataRoot = getDiskPath("");
@@ -25,9 +30,19 @@ addVarToArray($response,"path");
 if($index)
 	addVarToArray($response,"index");
 
+if(empty($_FILES))
+{
+	$message =  "No File uploaded.";
+	addVarToArray($response, "message");
+	$response["time"] = getTimer();
+	echo jsValue($response,true);
+	return;
+}
 $tmpFile = $_FILES["file"]["tmp_name"];
 $mimeType = $_FILES["file"]["type"];
 $filename= $_FILES["file"]["name"];
+
+
 
 $name = getFilename($filename);
 $fileType = postParam("type");
@@ -46,7 +61,19 @@ addVarToArray($response,"mimeType");
 $uploaded=is_uploaded_file($tmpFile);
 $message="OK";
 if(!$uploaded)
-	$message = "File not found";
+	$message = "File not found.";
+
+
+//verify dir access
+if(!$access || $access=="read")
+{
+	if(!$access) $access = "no";
+	$message = "$username has $access access to $path.";
+	addVarToArray($response, "message");
+	$response["time"] = getTimer();
+	echo jsValue($response,true);
+	return;
+}
 
 //verify file type
 if(!is_admin() && strstr($mimeType, "image")==false)
@@ -105,7 +132,6 @@ if($isFileComplete)
 
 if($format=="ajax")
 {
-	$u=new User();
 	$response["time"] = getTimer();
 	echo jsValue($response,true);
 	return;
