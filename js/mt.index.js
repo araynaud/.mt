@@ -311,7 +311,8 @@ UI.imageOnError = function()
 		UI.addStatus(imageLink.outerHtml());
 	}
 	img.unbind("error"); //to avoid infinite loop
-//	img.attr("src","icons/delete128.png").show();
+	if(mediaFile.isVideo())
+		img.attr("src","icons/media-play.png").show();
 	var caption=filebox.children(".caption, .captionBelow");	
 	caption.show();
 	filebox.show();
@@ -393,7 +394,7 @@ UI.selectThumbnailSize = function(img, mediaFile, caption)
 	var src=img.attr("src");
 	var tnIndex=mediaFile.selectThumbnailSize(imageSize);
 	var src2 = mediaFile.getThumbnailUrl(tnIndex, true);
-	if(src2 == src || tnIndex == mediaFile.tnIndex) return;
+	if(!src2 || src2 == src || tnIndex == mediaFile.tnIndex) return;
 	mediaFile.tnIndex=tnIndex;
 	img.attr("src", src2);
 	img.attr("tn", tnIndex);

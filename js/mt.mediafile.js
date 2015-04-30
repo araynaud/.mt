@@ -456,11 +456,15 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 	if(mediaFile.stream=="youtube")
 		return config.youtube.imageUrl.format(mediaFile.id);
 
-	if(mediaFile.type=="IMAGE" && !mediaFile.hasThumbnail(tnIndex))
+	if(mediaFile.isImage() && !mediaFile.hasThumbnail(tnIndex))
 		return mediaFile.getFileUrl();
 
 	if(!mediaFile.hasThumbnail(tnIndex))
 		tnIndex=0;
+	{
+		tnIndex=0;
+	 	create=false;
+	}
 //if already exists => existing image url
 	if(mediaFile.thumbnailExists(tnIndex))
 	{
