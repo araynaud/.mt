@@ -461,6 +461,7 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 
 	if(!mediaFile.hasThumbnail(tnIndex))
 		tnIndex=0;
+	if(mediaFile.isVideo() && !config.ENABLE_FFMPEG && !mediaFile.thumbnailExists(tnIndex))
 	{
 		tnIndex=0;
 	 	create=false;
