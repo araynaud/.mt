@@ -105,13 +105,13 @@ MediaFile.prototype.getThumbnails = function()
 	var size = Math.max(this.width, this.height);
 	var cfg = config.thumbnails;
 	this.maxtn = this.tnsizes.length-1;
-
 	for(var i=this.maxtn; i >= 0; i--)
 	{
 		var tndir = cfg.dirs[i];
 		if(cfg.sizes[tndir] >= size)
 			this.tnsizes.pop();
 	}
+	this.maxtn = this.tnsizes.length-1;
 	return this.tnsizes;
 }
 
@@ -597,7 +597,8 @@ MediaFile.getThumbnailUrlAjax = function (mediaFile,tnIndex)
 		{ 
 			//update mediaFile in response
 			result = response.output;
-			mediaFile.tnsizes[tnIndex] = response.filesize || 1;
+			if(result)
+				mediaFile.tnsizes[tnIndex] = response.filesize || 1;
 		},
 		error:   function(xhr, textStatus, errorThrown)
 		{ 

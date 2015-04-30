@@ -168,9 +168,13 @@ MediaPlayer.prototype.loadMediaFile = function(mediaFile)
 {
 	if(!mediaFile) return;
 	var fileUrl = mediaFile.getFileUrl(mediaFile.isVideoStream());
-	var imageUrl = mediaFile.getThumbnailUrl(1); //add tnIndex to settings
+	var imageUrl = null;
+	if(mediaFile.thumbnailExists(1))
+		imageUrl = mediaFile.getThumbnailUrl(1);
+	else if(mediaFile.thumbnailExists(0))
+		imageUrl = mediaFile.getThumbnailUrl(0);
 
-//	return this.loadHtml5Player(fileUrl, imageUrl);
+	this.currentFile = mediaFile;
 	return this.loadPlayer(fileUrl, imageUrl, mediaFile.duration);
 };
 
@@ -582,7 +586,7 @@ MediaPlayer.prototype.setupEvents = function()
 	{
 		mp.setMessage(); 
 		if(mp.settings.uiMode=="slideshow")
-			UI.slideshow.togglePlay(true);
+			mp.slideshow.togglePlay(true);
 		mp.displayItemDuration();		
 	});
 
@@ -595,21 +599,30 @@ MediaPlayer.prototype.setupEvents = function()
 	{ 
 		mp.setMessage("paused");
 		if(mp.settings.uiMode=="slideshow")
-			UI.slideshow.togglePlay(false);
+			mp.slideshow.togglePlay(false);
 	 });
 	this.player.onComplete(function(event)
 	{
 		mp.setMessage("finished."); 
-		if(mp.settings.uiMode=="slideshow" && UI.slideshow.play)
-			UI.slideshow.showNextImage();
+		if(mp.settings.uiMode=="slideshow" && mp.slideshow.play)
+			mp.slideshow.showNextImage();
 	});
 	this.player.onIdle(function(event) { mp.setMessage(); });
 	this.player.onSeek(function(event) { mp.setMessage(); });
 //	this.player.onBuffer(function(event)	{ mp.setMessage("buffering...", item); });
 	this.player.onMeta(function(event)
 	{	
-//		this.setMessage("", event.metadata);	
-		mp.displayItemDuration(event.metadata.duration);
+		if(event.metadata.duration)
+		{
+			mp.currentFile.duration = event.metadata.duration;
+			mp.displayItemDuration(event.metadata.duration);
+		}
+
+		if(mp.currentFile.height && mp.currentFile.width || !event.metadata.height || !event.metadata.width) return;
+	   	mp.currentFile.height = event.metadata.height;
+		mp.currentFile.width  = event.metadata.width;
+		mp.currentFile.getRatio();
+		mp.slideshow.fitImage();
 	});
 
 	this.player.onPlaylistItem(function(event) 
@@ -641,7 +654,7 @@ MediaPlayer.prototype.setupEvents = function()
 		{
 			var playerContainer=mp.getElement();
 			var pch = playerContainer.outerHeight(true);
-			var wHeight = UI.slideshow.container.height();
+			var wHeight = mp.slideshow.container.height();
 			playerContainer.css("margin-top", (wHeight - pch)/2);
 			this.setMessage("margin {0} {1} {2}".format(wHeight, pch, (wHeight - pch)/2 ));
 		}

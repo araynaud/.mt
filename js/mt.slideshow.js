@@ -385,8 +385,8 @@ Slideshow.prototype.getPicUrl = function(index)
 		if(pic.tnsizes[tnIndex] <=0)
 		{
 			this.setStatus("loading...");
-			var url = pic.getThumbnailUrlAjax(tnIndex);
 			this.setStatus();
+			var url = pic.getThumbnailUrlAjax(tnIndex);
 			return url;
 		}
 	}
@@ -444,7 +444,7 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 
 	this.preLoadedImage = this.loadImage();
 
-	if(this.preLoadedImage.complete)
+	if(this.preLoadedImage.complete || this.currentFile.isVideoStream())
 		this.displayLoadedImage(transitionFunction, fileChange);
 	else
 	{
@@ -588,7 +588,7 @@ Slideshow.prototype.getImageSize = function (zoomLevel)
 	var size = { height: this.preLoadedImage.height, width: this.preLoadedImage.width };
 	if(this.currentFile.isVideoStream() && this.currentFile.height && this.currentFile.width)
 		size = { height: this.currentFile.height, width: this.currentFile.width};
-	var preRatio = preRatio = size.width / size.height;
+	var preRatio = this.currentFile.getRatio() || size.height && size.width ? (size.width / size.height) : 1.5;
 	var wRatio = (this.elements.container.width() - ibm.bmw) / (this.elements.container.height() - ibm.bmh);
 
 	if(zoomLevel)
@@ -612,8 +612,8 @@ Slideshow.prototype.getImageSize = function (zoomLevel)
 
 Slideshow.prototype.getImageBorderMargins = function () 
 {
-	ibm = {};
-	ibm.bw = album.border ? 20 : 0; // image.borderWidth();
+	var ibm = {};
+	ibm.bw = album.border ? 20 : 0; //image.borderWidth();
 	ibm.mw = album.margin ? 40 : 0; //image.marginWidth();
 	ibm.bmw = ibm.bw + ibm.mw;
 

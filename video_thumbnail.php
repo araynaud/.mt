@@ -32,12 +32,16 @@ if($debug)
 }
 
 //for AJAX: output image file Url when image ready
-if($format=="ajax" && file_exists($image))
+if($format=="ajax")
 {
-	$jsonResponse=array();
-	$jsonResponse["file"]=$file;
-	$jsonResponse["output"]=$image;
-	$jsonResponse["time"]=getTimer();
+	$jsonResponse = array();
+	$jsonResponse["file"] = $file;
+	if(file_exists($image))
+	{
+		$jsonResponse["output"] = $image;
+		$jsonResponse["filesize"] = filesize($image);
+	}
+	$jsonResponse["time"] = getTimer();
 	echo jsValue($jsonResponse);
 	return;
 }
@@ -45,7 +49,6 @@ if($format=="ajax" && file_exists($image))
 if(!file_exists($image))
 	$image="icons/media-play.png";
 $imgType=getImageTypeFromExt($image);
-
 setContentType("image", $imgType);
 header('Content-Length: ' . filesize($image));
 
