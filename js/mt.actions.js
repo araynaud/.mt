@@ -7,7 +7,9 @@ UI.displayUser = function(div)
 		div.html(User.toString());
 	else
 		div.html("");
-		
+
+	$(".loggedin").toggle(User.isLoggedIn());
+	$(".notloggedin").toggle(!User.isLoggedIn());
 	$(".upload").toggle(User.isUploader());
 	$(".notupload").toggle(!User.isUploader());
 	$(".admin").toggle(User.isAdmin());

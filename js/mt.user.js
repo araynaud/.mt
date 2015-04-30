@@ -22,10 +22,14 @@ var User = new function()
 		return User.get("role");
 	};
 	
+	this.isLoggedIn = function()
+	{
+		return !!User.get("username");
+	};
+
 	this.isAdmin = function()
 	{
 		return User.get("role")=="admin";
-		//return valueOrDefault(album.user.admin,false);
 	};
 	
 	this.isUploader = function()
@@ -48,6 +52,13 @@ var User = new function()
 		return this.login();
 	}
 
+	var sendAuth = function (xhr) 
+	{
+		var username = "";
+		var password = "";
+		xhr.setRequestHeader("Authorization", "Basic " + btoa(username+":"+password));
+	}
+
 	this.login=function(role)
 	{
 		var link = role ? ".{0}/".format(role) : "logout.php";
@@ -58,7 +69,8 @@ var User = new function()
 			url: link,
 			dataType: "json",
 			contentType: "application/json",
-			cache: false,		
+			cache: false,
+			//beforeSend: role ? sendAuth : null,	
 			success: function(response) 
 			{ 
 				album.user=response;

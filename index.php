@@ -161,8 +161,8 @@ $(window).resize(function(event)
 <div id="titleContainer" direction="down" callback="setColumnWidths">
 	<div id="userDiv" class="floatR right noprint">
 		<span id="userLabel"> </span>
-		<img class="icon notupload" id="adminLoginIcon" src="icons/login.gif" alt="Login" title="login" onclick="User.login('admin')"/>
-		<img class="icon upload" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.logout()"/>
+		<img class="icon notloggedin" id="loginIcon" src="icons/login.gif" alt="Login" title="login" onclick="User.login('upload')"/>
+		<img class="icon loggedin" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.logout()"/>
 <?php if(!isLocal()) {?>		
 		<img id="visitImg" class="" alt="" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
 <?php	}?>
