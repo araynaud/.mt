@@ -584,6 +584,9 @@ MediaFile.prototype.imageScriptAjax = function (params)
 MediaFile.getThumbnailUrlAjax = function (mediaFile,tnIndex)
 {	
 	tnIndex=valueOrDefault(tnIndex, 0);
+	if(mediaFile.isVideo() && !config.ENABLE_FFMPEG && !mediaFile.thumbnailExists(tnIndex))
+		tnIndex=0;
+
 	var imageScriptUrl = mediaFile.getThumbnailUrl(tnIndex, true);
 	if(!imageScriptUrl) 
 		return false;

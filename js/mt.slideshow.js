@@ -382,11 +382,11 @@ Slideshow.prototype.getPicUrl = function(index)
 	if(pic.tnsizes)
 	{
 		tnIndex = Math.min(this.tnIndex, pic.tnsizes.length - 1);
-		if(pic.tnsizes[tnIndex] <=0)
+		if(pic.needsThumbnail(tnIndex))
 		{
 			this.setStatus("loading...");
-			this.setStatus();
 			var url = pic.getThumbnailUrlAjax(tnIndex);
+			this.setStatus();
 			return url;
 		}
 	}
