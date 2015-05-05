@@ -34,8 +34,6 @@
 		<img class="icon video" id="convertSoundIcon" src="icons/sound.png" 
 		alt="convert" title="convert to audio"
 		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
-	</span>	
-	<span id="adminIcons" class="admin">		
 		<img class="icon notdir" id="descIcon" src="icons/edit.gif"
 		title="edit description" alt="desc" 
 		onclick="UI.inputAction({action:'description', field:'description', multiple: true})" />
@@ -52,6 +50,15 @@
 		title="add tag" alt="tag" 
 		onclick="UI.inputAction({action:'addtag', field:'tags', multiple: true, choices:album.tags})" />
 
+		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" 
+		title="set as background" alt="background"
+		onclick="UI.fileActionAjax({action: 'background', confirm: true})" />
+
+		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png"
+		title="refresh" alt="refresh" 
+		onclick="UI.refreshThumbnail(this)" />
+	</span>	
+	<span id="adminIcons" class="admin">		
 		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
 		title="move to parent" alt="move to parent"
 		onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true, confirm: true})" />
@@ -62,15 +69,7 @@
 		
 		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"
 		title="delete" alt="delete"
-		onclick="UI.fileActionAjax({action: 'delete', confirm: true, multiple: true})" />
-		
-		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" 
-		title="set as background" alt="background"
-		onclick="UI.fileActionAjax({action: 'background', confirm: true})" />
-
-		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png"
-		title="refresh" alt="refresh" 
-		onclick="UI.refreshThumbnail(this)" />
+		onclick="UI.fileActionAjax({action: 'delete', confirm: true, multiple: true})" />		
 	</span>
 	<div id="editFieldDiv" class="hidden small">
 		<input id="btn_Cancel" type="button" value="X" onclick="UI.resetInput()"/>

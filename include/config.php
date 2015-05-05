@@ -1,10 +1,12 @@
 <?php
 require_once("http_functions.php");
 require_once("text_functions.php");
+require_once("array_functions.php");
 require_once("path_functions.php");
 require_once("json_xml_functions.php");
 require_once("debug_functions.php");
 require_once("file_functions.php");
+require_once("config_functions.php");
 require_once("dir_functions.php");
 require_once("login_functions.php");
 require_once("image_functions.php");
@@ -24,7 +26,7 @@ $path=reqPath();
 if(isDebugMode())
 	header("Content-Type: text/plain");
 
-LoadConfiguration($path, $config);
+$config = LoadConfiguration($path);
 
 if($timezone = getConfig("DEFAULT_TIMEZONE"))
 	date_default_timezone_set($timezone);

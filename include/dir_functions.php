@@ -94,7 +94,7 @@ function listFilesDir($dir, &$search=array(), &$subdirs=false)
 		$tnFiles = is_dir($tndir) ? scandir($tndir) : array();
 
 	$ignoreList = loadIgnoreList($dir);
-	$specialFiles = getConfig("SPECIAL_FILES");
+	$specialFiles = getConfig("SPECIAL_FILES", array());
 
 	if($subdirs!==false)
 	{

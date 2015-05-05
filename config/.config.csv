@@ -97,7 +97,7 @@ thumbnails.sizes.ss=1000
 thumbnails.sizes.hd=1920
 thumbnails.IMAGE.script=image_auto.php
 ;for lossless rotation
-thumbnails.IMAGE.script=image.php
+;thumbnails.IMAGE.script=image.php
 thumbnails.VIDEO.ext=jpg
 thumbnails.VIDEO.max_size=1000
 thumbnails.VIDEO.script=video_thumbnail.php

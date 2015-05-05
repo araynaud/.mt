@@ -193,6 +193,7 @@ $(window).resize(function(event)
 		<img class="icon" id="downloadAllIcon" src="icons/download.gif" alt="Download" title="Download selected files"/>
 		<img class="icon upload" id="uploadAllIcon" src="icons/upload16.png" alt="Upload" title="Upload selected files"/>
 <?php	}?>
+		<div id="pageCounts" class="small bold"></div>
 	</div>
 	<div id="title" class="title">
 		<span class="small" id="pathLinks">
@@ -214,7 +215,6 @@ $(window).resize(function(event)
 	<div class="centered">
 		<span id="indexStatus" class="status text translucent"></span>
 	</div>
-	<div id="pageCounts" class="floatR small bold"></div>
 		<div class="centered noprint controls">
 			<img id="ajaxLoader" src="icons/ajax-loadereee.gif"/>
 			<div id="textList" class="inlineBlock"  style="vertical-align:middle"></div>

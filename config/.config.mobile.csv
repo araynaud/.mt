@@ -7,8 +7,8 @@ display.size=small
 .displayOptions=false
 .searchOptions=false
 .downloadFileList=false
-.size=full
-SIZE.OPTIONS=tiny;small;full
+;.size=full
+;SIZE.OPTIONS=tiny;small;full
 
 PAGINATE.DEFAULT=10
 

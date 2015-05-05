@@ -487,8 +487,8 @@ UI.styleCheckboxes = function(container, cssClass, labelClass)
 		}
 		label.attr("title", cb.attr("title")); //tooltip
 		label.addClass(labelClass);
-		cb.after(label);
+		cb.addClass("styled").after(label);
 		if(!$.isOldIE(8) && !UI.clientIs("ipad")) 
-			cb.hide();
+			cb.addClass("styled");
 	});
 };
