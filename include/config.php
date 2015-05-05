@@ -28,4 +28,5 @@ LoadConfiguration($path, $config);
 
 if($timezone = getConfig("DEFAULT_TIMEZONE"))
 	date_default_timezone_set($timezone);
+debug();
 ?>

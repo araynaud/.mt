@@ -404,6 +404,8 @@ function arrayJoinRecursive($array, $sep="|")
 function flattenArray($data)
 {
 	$result=array();
+	if(!$data) return $result;
+	
 	if(is_array($data))
 		foreach($data as $key=>$value)
 			$result = array_merge($result, flattenArray($value));
