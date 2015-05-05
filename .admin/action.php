@@ -12,8 +12,8 @@ debugVar("search");
 if(@$search["name"])
 	unset($search["file"]);
 
+$username = session_login();
 $user = new User();
-$username = $user->getUsername();
 
 $mediaFiles = MediaFile::getMediaFiles($search);
 debugVar("mediaFiles", true);
@@ -41,7 +41,7 @@ $messages = array();
 $results = array();
 
 if(!$user->hasAccess("edit"))
-	$messages[] = "User has no access to $path.";
+	$messages[] = "User $username has no access to $path.";
 else if(!$name)
 	$messages[] = "No file selected.";
 else if(!$mediaFiles)

@@ -1,5 +1,5 @@
-AuthName "Media Thingy admin"
-PerlSetVar AuthFile "/.mt/.admin/.pw/.htpasswd"
+AuthName "Media Thingy upload"
+PerlSetVar AuthFile "/.mt/.upload/.pw/.htpasswd"
 AuthType Basic
 Require valid-user
 ErrorDocument 401 "Login failed.
