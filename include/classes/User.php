@@ -41,6 +41,11 @@ class User extends BaseObject
 		return $this->groups;
 	}
 
+	public function getUsername()
+	{
+		return $this->username;
+	}	
+
 //accesss to current dir
 	public function getRole()
 	{
@@ -51,7 +56,6 @@ class User extends BaseObject
 
 	public function getAccessLevel()
 	{
-		$defaultAccess = 
 		$dirAccess = getConfig("access");		
 //debug("dirAccess", $dirAccess, true);
 		if(!$dirAccess)
@@ -72,15 +76,15 @@ class User extends BaseObject
 
 	public function getAccessLevelTo($relPath, $subdir="")
 	{
-		$hasAccess = $this->getAccessLevel();
-debug("hasAccess $relPath", $hasAccess, true);
+		$hasAccess = $this->getRole();
+//debug("hasAccess $relPath", $hasAccess, true);
 		if(!$hasAccess) return "";
 
 		$dirAccess = getConfig("access");
 		$subdirAccess = getSubdirConfig($relPath, $subdir, "access");
 		if($subdirAccess)
 			$dirAccess = arrayUnion($dirAccess , $subdirAccess);
-debug("dirAccess $subdir", $dirAccess, true);
+//debug("dirAccess $subdir", $dirAccess, true);
 		if(!$dirAccess)
 			return "admin";
 
@@ -99,33 +103,15 @@ debug("dirAccess $subdir", $dirAccess, true);
 
 	public function hasAccess($role="read")
 	{
-		$dirAccess = getConfig("access.$role");
-		if(!$dirAccess) return true;
-		$dirAccess = toArray($dirAccess);
-//debug("dirAccess $role", $dirAccess);
-		$userAccess = in_array($this->username, $dirAccess);
-		$groupAccess = array_intersect($this->groups, $dirAccess);
-//debug("hasAccess $role", $userAccess || $groupAccess);
-		return $userAccess || $groupAccess;
-
+		$level = $this->getAccessLevel();
+		return $level && $level <= $role;
 	}
 
 	public function hasAccessTo($relPath, $subdir="", $role="read")
 	{
-		$hasAccess = $this->hasAccess($role);
-		if(!$hasAccess) return false;
-		
-		$dirAccess = getSubdirConfig($relPath, $subdir, "access.$role");
-		if(!$dirAccess) return true;
-		$dirAccess = toArray($dirAccess);
-//debug("dirAccess $subdir $role", $dirAccess);
-
-		$userAccess = in_array($this->username, $dirAccess);
-		$groupAccess = array_intersect($this->groups, $dirAccess);
-debug("hasAccessTo $subdir $role", $userAccess || $groupAccess);
-		return $userAccess || $groupAccess;
+		$level = $this->getAccessLevelTo($relPath, $subdir);
+		return $level && $level <= $role;
 	}
-
 
 }
 ?>

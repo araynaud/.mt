@@ -1,7 +1,7 @@
 <?php
 require_once("../include/config.php");
 setContentType("text", "plain");
-
+session_start(); 
 // action on a MediaFile: delete, move, rotate image, convert, etc.
 // accept GET or POST.
 // create MediaFile by name
@@ -11,6 +11,10 @@ debugVar("search");
 //for multipe files
 if(@$search["name"])
 	unset($search["file"]);
+
+$user = new User();
+$username = $user->getUsername();
+
 $mediaFiles = MediaFile::getMediaFiles($search);
 debugVar("mediaFiles", true);
 
@@ -36,7 +40,9 @@ $parameters = array();
 $messages = array();
 $results = array();
 
-if(!$name)
+if(!$user->hasAccess("edit"))
+	$messages[] = "User has no access to $path.";
+else if(!$name)
 	$messages[] = "No file selected.";
 else if(!$mediaFiles)
 	$messages[] = "File $path / $name does not exist.";

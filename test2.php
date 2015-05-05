@@ -37,10 +37,10 @@ debugVar("indexFiles", true);
 debug();
 $user = new User();
 debugVar("user", true);
+debug("\t$path level", $user->getRole());
 debug("\t$path admin", $user->hasAccess("admin"));
 debug("\t$path edit", $user->hasAccess("edit"));
 debug("\t$path read", $user->hasAccess());
-debug("\t$path level", $user->getAccessLevel());
 debug();
 
 $groups=getConfig("groups");
@@ -48,20 +48,22 @@ debugVar("groups", true);
 
 $dirAccess = getConfig("access");
 debugVar("dirAccess", true);
+debug("Time elapsed", getTimer(true));
 
 //$files = testFunctionResult("listFilesDir", $relPath, $search);
 $files = testFunctionResult("listFilesRecursive", $relPath, $search);
 //$configFiles = testFunctionResult("findFile", $relPath, ".config.csv", 1);
 //debugVar("configFiles", true);
+
 $dirs = testFunctionResult("selectDirs", $relPath, $files);
 debugVar("dirs", true);
 
 foreach ($dirs as $subdir)
 {
 	debug("\t$subdir", $user->getAccessLevelTo($relPath,$subdir));
-//	debug("\t$subdir read", $user->hasAccessTo($relPath,$subdir));
-//	debug("\t$subdir edit", $user->hasAccessTo($relPath,$subdir, "edit"));
-//	debug("\t$subdir admin", $user->hasAccessTo($relPath,$subdir,"admin"));
+	debug("\t$subdir read", $user->hasAccessTo($relPath,$subdir));
+	debug("\t$subdir edit", $user->hasAccessTo($relPath,$subdir, "edit"));
+	debug("\t$subdir admin", $user->hasAccessTo($relPath,$subdir,"admin"));
 }
 
 //$groupedFiles = testFunctionResult("groupByName", $relPath, $files, false);
