@@ -48,6 +48,7 @@ $name = getFilename($filename);
 $fileType = postParam("type");
 $metadata = postParam("metadata");
 $tags = postParam("tags");	
+$tags .= ";by_$username";
 
 $getcwd=getcwd();
 $freeSpace=disk_free_space("/");
