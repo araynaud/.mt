@@ -29,7 +29,7 @@ class User extends BaseObject
 		if($this->groups) return $this->groups;
 
 		$this->groups = array();
-		if(!($groups = getConfig("groups")))
+		if(!($groups = getConfig("_groups")))
 			return $this->groups;
 
 		foreach ($groups as $group => $users)

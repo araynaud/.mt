@@ -20,7 +20,7 @@
 
 	<div class="floatL toolbar">
 <?php if(isMobile()) {?>
-		<img class="iconTrans icon" id="zoomInIcon" alt="zoom +" src="icons/zoom-in.png" onclick="UI.zoom();"/>
+		<img class="iconTrans icon" id="zoomInIcon" alt="zoom +" src="icons/search24.png" onclick="UI.zoom();"/>
 <?php }?>
 		<input id="cb_searchOptions" type="checkbox" class="lOption" label="S" title="Search" icon="icons/search16.png"/>
 		<input id="cb_displayOptions" type="checkbox" class="lOption" label="O" title="Options"/>

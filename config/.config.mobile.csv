@@ -2,13 +2,13 @@ TITLE=(mobile)
 display.size=small
 .maxTnIndex=1
 .border=true
-.margin=false
+.margin=true
 .fadeIn=false
 .displayOptions=false
 .searchOptions=false
 .downloadFileList=false
 ;.size=full
-;SIZE.OPTIONS=tiny;small;full
+SIZE.OPTIONS=tiny;small;full
 
 PAGINATE.DEFAULT=10
 

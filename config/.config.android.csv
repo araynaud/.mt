@@ -1,5 +1,6 @@
 TITLE=(android)
 display.group=true
+;display.size=full
 .border=true
 .fadeIn=false
 .displayOptions=false

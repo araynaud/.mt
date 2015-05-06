@@ -40,6 +40,9 @@ debug("findFilesInParent", $configFilenames);
 	}
 
 //5 supersede values with device specific config file in appRoot 
+	if($force = arrayGet($configData, "USER_AGENT.FORCE"))
+		@$_SERVER["HTTP_USER_AGENT"] = " $force";
+
 	$configData["USER_AGENT"]["DEVICES"] = $devices = checkUserAgent($configData["USER_AGENT"]["DEVICES"]);
 	foreach($devices as $dev)
 	{

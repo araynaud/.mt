@@ -25,10 +25,7 @@ function isWindows()
 
 function clientIs($str)
 {
-	global $config;
-	$userAgent = @$_SERVER['HTTP_USER_AGENT'] . " " . @$config["USER_AGENT"]["FORCE"];
-	return contains($userAgent, $str);
-//	return isset($_SERVER['HTTP_USER_AGENT']) && contains($_SERVER['HTTP_USER_AGENT'], $str);
+	return contains($_SERVER["HTTP_USER_AGENT"], $str);
 }
 
 //user agent functions

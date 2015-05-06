@@ -11,7 +11,7 @@ function equals($str,$sub,$caseSenstive=false)
 
 function contains($str, $sub, $caseSenstive=false)
 {
-	if(!$sub) return false;
+	if(!$str || !$sub) return false;
 	if(is_array($str))
 		return in_array($sub, $str);
 	if(!$caseSenstive)

@@ -1,5 +1,4 @@
 ;TITLE=(root)
-SIZE.DEFAULT=medium
 display.size=medium
 .reverse=true
 .group=true

@@ -367,7 +367,7 @@ debug($type, count($typeFiles));
 		else 
 		{
 			$mf["description"] = $this->getFileDescription($name);
-			$mf["takenDate"] = arrayGet(@$this->_dateIndex, $name);
+			$mf["takenDate"] = @$this->_dateIndex[$name];
 			$ext = strtolower(reset($mf["exts"]));
 			if(($type=="VIDEO" || $type=="IMAGE") && !@$this->_noThumbTypes[$ext])
 				$mf["tnsizes"] = $this->getFileThumbnails($name);
