@@ -11,6 +11,7 @@ function splitLines($str)
 function toArray($str)
 {
 	if(is_array($str))	return $str;
+	if(empty($str))		return array();
 	return preg_split("/[,; \|]/", $str);
 }
 

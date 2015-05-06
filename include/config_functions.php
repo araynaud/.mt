@@ -7,9 +7,10 @@ function getConfig($key, $default=NULL)
 }
 
 // make an array from config files
-// in .mp/config, then data root, then subdirs to current path
+// in ./config, then data root, then subdirs to current path
 function LoadConfiguration($path=null, &$configData = array())
 {
+debug("LoadConfiguration", $path);
 	$appRootDir = pathToAppRoot();
 //1 default config in .mp/config
 	$configFilename = combine($appRootDir, "config", ".config.csv");
@@ -37,31 +38,33 @@ debug("findFilesInParent", $configFilenames);
 		foreach($configFilenames as $configFilename)
 			readConfigFile($configFilename, $configData);
 	}
-//debug("2: $configFilename", $configData);
 
 //5 supersede values with device specific config file in appRoot 
-	$devices = checkUserAgent();
-	if(is_array($devices))
-		foreach($devices as $dev)
-		{
-			$configFilename = combine($appRootDir, "config", ".config.$dev.csv");
-			readConfigFile($configFilename, $configData);
-		}
+	$configData["USER_AGENT"]["DEVICES"] = $devices = checkUserAgent($configData["USER_AGENT"]["DEVICES"]);
+	foreach($devices as $dev)
+	{
+		$configFilename = combine($appRootDir, "config", ".config.$dev.csv");
+		readConfigFile($configFilename, $configData);
+	}
 
 //finally add some keys to output
 	debug("SPECIAL_FILES", $configData["SPECIAL_FILES"]);
 	$configData["ENABLE_FFMPEG"] = isFfmpegEnabled();
 	$configData ["SITE_NAME"] = getSiteName();
-	$configData["thumbnails"]["dirs"] = array_keys($configData["thumbnails"]["sizes"]);
+	$configData["thumbnails"]["dirs"] = array_keys(@$configData["thumbnails"]["sizes"]);
 
 //output config for default site
-	$publish = getConfig("_publish");
-	if($publish)
+	if($publish = @$configData["_publish"])
 	{
 		$site = $publish["default"];
 		$configData["publish"] = $publish[$site];
 	}
 	return $configData;
+}
+
+function checkUserAgent($devices)
+{
+	return array_filter(toArray($devices), "clientIs");
 }
 
 //config for the current dir only
@@ -99,7 +102,7 @@ function getSiteName()
 
 function readConfigFile($filename, &$csvRows = NULL, $separator="=")
 {
-//	debug("readConfigFile $filename", realpath($filename));
+	debug("readConfigFile $filename", realpath($filename));
 	$lines = readArray($filename);
 	if(!$lines)
 		return $csvRows;

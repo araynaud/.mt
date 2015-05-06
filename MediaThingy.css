@@ -1130,11 +1130,6 @@ label.tagLabel
 }
 
 /* Create the checked state */
-input[type=checkbox].styled
-{
-	display: none;
-}
-
 input[type=checkbox]:checked + label.checkboxLabel,
 input[type=checkbox]:checked + label.tagLabel
 {

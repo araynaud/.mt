@@ -466,7 +466,7 @@ UI.styleCheckboxes = function(container, cssClass, labelClass)
 {	
 	var selector = "input:checkbox";
 	if(container)
-		selector= selector +" " + selector;
+		selector= container + " " + selector;
 	if(cssClass)
 		selector += "." + cssClass;
 
@@ -487,8 +487,8 @@ UI.styleCheckboxes = function(container, cssClass, labelClass)
 		}
 		label.attr("title", cb.attr("title")); //tooltip
 		label.addClass(labelClass);
-		cb.addClass("styled").after(label);
+		cb.after(label);
 		if(!$.isOldIE(8) && !UI.clientIs("ipad")) 
-			cb.addClass("styled");
+			cb.hide();
 	});
 };

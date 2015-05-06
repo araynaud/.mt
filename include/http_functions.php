@@ -78,16 +78,6 @@ function isAjax()
 	return isset($_SERVER["HTTP_X_REQUESTED_WITH"]) && $_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest";
 }
 
-function checkUserAgent()
-{
-	global $config;
-	$devices = @$config["USER_AGENT"]["DEVICES"];
-	if(!$devices) return array();
-	$config["USER_AGENT"]["DEVICES"] = array_filter($devices, "clientIs");
-	return $config["USER_AGENT"]["DEVICES"];
-}
-
-
 //get request parameter from query string
 function getParam($name, $default="")
 {	
