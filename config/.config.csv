@@ -4,7 +4,7 @@ debug.output=false
 debug.ajax=false
 
 USER_AGENT.DEVICES=mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
-USER_AGENT.FORCE=mobile android
+;USER_AGENT.FORCE=mobile android
 
 ;relative path from app root dir to data files root
 TEMP_DIR=.temp
