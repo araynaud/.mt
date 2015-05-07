@@ -98,7 +98,7 @@ $(document).ready(function()
 
 Album.onLoad = function (albumInstance) 
 {
-//	try
+	try 
 	{
 		if(!albumInstance) return;
 		config = albumInstance.config;
@@ -138,7 +138,11 @@ Album.onLoad = function (albumInstance)
 		UI.loadDirThumbnails();
 		if(mf) mf.play();
 	}
-//	catch(err)	{ alert(Object.toText(err,"\n")); }
+	catch(err) 
+	{
+		UI.setStatus(err.message);
+		UI.addStatus(err.stack); 
+	}
 };
 
 $(window).resize(function(event)

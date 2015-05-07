@@ -235,3 +235,18 @@ $.fn.animateRotate = function(startAngle, endAngle, duration, easing, complete)
         });
     });
 };
+
+//get link href or img urls
+$.fn.getUrls = function (selector, attr, absolute)
+{
+	selector = valueOrDefault(selector, "img");
+	attr = valueOrDefault(attr, "src");
+	urls = []; 
+	this.find(selector).each(function()
+	{ 
+		var src = absolute ? this[attr] : $(this).attr(attr);
+		if(src)
+			urls.push(src);
+	});
+	return urls;
+};

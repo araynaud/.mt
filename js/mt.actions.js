@@ -8,18 +8,13 @@ UI.displayUser = function(div)
 	else
 		div.html("");
 
-	$(".loggedin").toggle(User.isLoggedIn());
-	$(".notloggedin").toggle(!User.isLoggedIn());
-	$(".upload").toggle(User.isUploader());
-	$(".notupload").toggle(!User.isUploader());
-	$(".admin").toggle(User.isAdmin());
-	$(".notadmin").toggle(!User.isAdmin());
-
 	UI.displayUserElements();
 };
 
 UI.displayUserElements = function()
 {
+	$(".loggedin").toggle(User.isLoggedIn());
+	$(".notloggedin").toggle(!User.isLoggedIn());
 	$(".upload").toggle(User.isUploader());
 	$(".notupload").toggle(!User.isUploader());
 	$(".admin").toggle(User.isAdmin());
@@ -144,7 +139,6 @@ UI.resetInput = function()
 	UI.editFieldDiv.hide();
 
 	UI.displayUserElements();
-
 };
 
 UI.fileActionAjax = function(params)

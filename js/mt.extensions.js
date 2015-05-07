@@ -592,7 +592,8 @@ Array.prototype.divideInto = function(nb,transpose)
 		var remainingElements=this;
 		for(i=0;i<nb;i++)
 		{
-			var perCol=Math.floor(remainingElements.length / (nb-i));
+			var perCol=remainingElements.length / (nb-i);
+			perCol = (i+1 <= nb/2) ? Math.ceil(perCol) : Math.floor(perCol);
 			result[i]=remainingElements.slice(0,perCol);
 			remainingElements = remainingElements.slice(perCol);
 		}
@@ -601,8 +602,9 @@ Array.prototype.divideInto = function(nb,transpose)
 	{
 		for(i=0;i<nb;i++)
 			result.push([]);
-		for(i=0;i<this.length;i++)
+		for(i=0;i<this.length-1;i++)
 			result[i % nb].push(this[i]);
+		result[nb-1].push(this[i]);
 	}
 	return result;
 };

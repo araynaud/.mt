@@ -72,6 +72,12 @@ tag: star if admin
 
 15 scripts in .admin: check if user has admin access
 
+16 album, slideshows from array of images, video urls
+[http://fwfsffff, http://fwfsffff, http://fwfsffff,] =? mediafiles
+add external url playlist (like youtube.csv)
+
+17 count file by type next to filter checkboxes
+
 $user->getGroups();
 $user->hasAccess($path, "read");
 $user->hasAccessTo

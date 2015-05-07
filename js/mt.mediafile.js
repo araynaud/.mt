@@ -931,3 +931,10 @@ MediaFile.prototype.getDuration = function()
 	var defaultInterval = (window.UI && UI.slideshow && UI.slideshow.interval) ? UI.slideshow.interval : 0;
 	return this.duration || defaultInterval / 1000;	
 };
+
+MediaFile.getFileUrls = function(mediaFiles)
+{
+	var urls=[];
+	mediaFiles.forEach(function(n) { urls.push(MediaFile.getFileUrl(n)); });
+	return urls;
+}
