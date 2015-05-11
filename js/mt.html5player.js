@@ -169,15 +169,15 @@ Html5Player.prototype.setupEvents = function()
 
 Html5Player.seekLoopStart = function(e)
 {
-	if(this.currentTime>= this.loopEnd) 
+	if(this.currentTime >= this.loopEnd) 
 		this.currentTime= this.loopStart; 
 }
 
 Html5Player.prototype.loop = function(start, end)
 {
-	this.player.loopStart = valueOrDefault(start,0);
+	this.player.loopStart = valueOrDefault(start, 0);
 	this.player.loopEnd = valueOrDefault(end, this.player.duration - .2);
-	this.player.currentTime = start;
+	this.player.currentTime = this.player.loopStart;
     this.player.addEventListener("timeupdate", Html5Player.seekLoopStart);
 };
 

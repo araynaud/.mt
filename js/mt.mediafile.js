@@ -108,20 +108,16 @@ MediaFile.prototype.getMaxTnIndex = function()
 {
 	this.maxtn = this.tnsizes ? this.tnsizes.length-1 : -1;
 	var cfg = config.thumbnails;
-	var size = this.getMaxDimension();
-	if(!size) return this.maxtn;
-	
+	var size = this.getMaxDimension();	
 	var mf=this;
-
 	//image: last tn smaller than size
 	var maxtn = this.tnsizes.findLastIndex(function(el, i)
 	{
 		var tndir = cfg.dirs[i];
-		var tnIsSmaller = (cfg.sizes[tndir] < size);
+		var tnIsSmaller = !size || (cfg.sizes[tndir] < size);
 		if(mf.isImage())
 			return tnIsSmaller;
-		var tnExists = el>0;
-		return tnIsSmaller && (tnExists || config.ENABLE_FFMPEG);
+		return tnIsSmaller && (el>0 || config.ENABLE_FFMPEG);
 	});
 
 	//video / anim: first tn larger than size
@@ -129,7 +125,6 @@ MediaFile.prototype.getMaxTnIndex = function()
 		if(this.thumbnailExists(maxtn+1) || config.ENABLE_FFMPEG)
 			maxtn++;
 
-//	if(maxtn>=0)
 	this.maxtn = maxtn;
 	return this.maxtn;
 }
