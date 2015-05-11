@@ -8,6 +8,7 @@ display.size=small
 .searchOptions=false
 .downloadFileList=false
 ;.size=full
+slideshow.tnIndex = 1
 SIZE.OPTIONS=tiny;small;full
 
 PAGINATE.DEFAULT=10

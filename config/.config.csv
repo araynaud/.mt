@@ -95,7 +95,7 @@ thumbnails.sizes.tn=225
 thumbnails.sizes.ss=1000
 thumbnails.sizes.hd=1920
 thumbnails.IMAGE.script=image_auto.php
-;for lossless rotation
+;for lossless rotation, crop on large images (JPG only)
 ;thumbnails.IMAGE.script=image.php
 thumbnails.IMAGE.default=icons/background64.png
 thumbnails.VIDEO.ext=jpg
@@ -117,8 +117,7 @@ TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
 TYPES.TEXT=txt
 TYPES.SPECIAL=xml;php;chunk;js;css;sub
-SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;AlbumArt_;.tmp_;.DS_Store;Thumbs.db;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;
-
+SPECIAL_PREFIX=AlbumArt_;.tmp_
 MediaPlayer.video.enabled=true
 MediaPlayer.audio.enabled=true
 MediaPlayer.slide.enabled=true

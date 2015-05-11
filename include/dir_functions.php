@@ -173,6 +173,12 @@ function fileIsSelected($file, $search=null)
 	$result=true;
 	splitFilename($file, $name, $ext);
 //debug("fileIsSelected $file", $search);
+
+	$specialPrefixes = getConfig("SPECIAL_PREFIX", array());
+	foreach ($specialPrefixes as $prefix) 
+		if(startsWith($name, $prefix))
+			return false;
+
 	if(@$search["file"])
 		return equals($file, @$search["file"]) || equals($name, @$search["file"]);
 
