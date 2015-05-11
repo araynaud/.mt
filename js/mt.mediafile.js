@@ -516,10 +516,10 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 	}
 
 //if not already exists => create script url
-	create=valueOrDefault(create,false);
-	if(!create) return "";
+	create=valueOrDefault(create, false);
 	var cfg = config.thumbnails[mediaFile.type];
 	if(!cfg)	return "";
+	if(!create || !cfg.script) return cfg["default"];
 	return MediaFile.getScriptUrl(mediaFile, cfg.script, {target: tnIndex});
 };
 
