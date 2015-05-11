@@ -59,7 +59,7 @@ UI.displayFiles = function(selectedFiles, transition, append)
 	UI.getDisplayOptions(album);
 	
 	UI.displayPageLinks(album);
-	UI.displayFileCounts(album.activeFileList(),"#pageCounts",true);
+	UI.displayPageFileCounts(album.activeFileList());
 	
 	total=0;
 

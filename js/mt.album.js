@@ -54,6 +54,9 @@ function Album(data)
 	this.articleFiles = this.getFilesByType("TEXT");
 	this.musicFiles = this.getFilesByType("AUDIO");
 	this.mediaFiles = this.getFilesByType(["DIR", "IMAGE", "VIDEO"]);
+
+	this.countByType = this.mediaFiles.countBy("type");
+
 	this.loadTags();
 	this.initTags();
 }
@@ -388,6 +391,13 @@ Album.hasFiles = function(fileList, filterValue)
 	if(!fileList) return 0;
 	fileList=Album.selectFiles(fileList, filterValue);
 	return !isEmpty(fileList);	
+};
+
+Album.prototype.hasFilesOfType = function(type)
+{  
+	if(!type)
+		return !!album.groupedFiles;
+	return album.groupedFiles && !!album.groupedFiles[type.toUpperCase()];
 };
 
 Album.prototype.hasFiles = function (filterValue)

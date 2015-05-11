@@ -138,24 +138,27 @@ function saveFileTag($relPath, $name, $tag, $state)
 }
 
 //--------------- dir metadata functions ----------
-function getMetadataIndexFilename($relPath, $type="")
+function getMetadataIndexFilename($relPath, $type="", $subdir="")
 {
-	if(!$type)	return "$relPath/.tn/.metadata.csv";
-	return "$relPath/.tn/.metadata.$type.csv";
+	if(!$type)	return combine($relPath, $subdir, ".metadata.csv");
+	return combine($relPath, $subdir, ".metadata.$type.csv");
 }
 
 //get index csv without trying to refresh
 function loadMetadataIndex($relPath, $type="")
 {
-	$indexFilename=getMetadataIndexFilename($relPath, $type);
+	$indexFilename=getMetadataIndexFilename($relPath, $type, ".tn");
+	if(!file_exists($indexFilename))
+		$indexFilename=getMetadataIndexFilename($relPath, $type);
+debug("loadMetadataIndex", $indexFilename);
 	return readCsvTableFile($indexFilename, 0, true);
 }
 
 // write date index CSV data to file
 function saveMetadataIndex($relPath, $data, $type="")
 {
+	deleteFile(getMetadataIndexFilename($relPath, $type, ".tn"));
 	$indexFilename=getMetadataIndexFilename($relPath, $type);
-	createDir("$relPath",".tn");
 	return writeCsvTableFile($indexFilename, $data, true, "name");
 }
 

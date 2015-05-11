@@ -144,13 +144,14 @@ function addStylesheet($relPath)
 	return $stylesheet;
 }
 
-function displayBackground($path, $hidden=false)
+function displayBackground($path, $hidden=false, $printable=false)
 {
 	$background = findInParent($path, ".bg.jpg", false);
 	$background = diskPathToUrl($background);
 	$background = str_replace(' ', '%20', $background);
 	$class="";
 	if($hidden) $class .= " hidden";
+	if(!$printable) $class .= " noprint";
 	$style = "";
 	if ($background) $style = "style=\"background-image: url($background)\"";
 ?>

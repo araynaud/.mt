@@ -52,13 +52,19 @@
 
 <!-- template for separator -->
 <script id="separatorTemplate" type="text/x-jsrender"> 
-	<div class="{{:~subtitleClasses()}}"><span class="bold translucent shadow">{{:~getGroup(#data)}}</span></div>
+	<div class="{{:~subtitleClasses()}}">{{:~getGroup(#data)}}</div>
 </script>
 
 <!-- template for photo caption -->
-<script id="descriptionTagTemplate" type="text/x-jsrender"> 
-	<span id="desc_{{:id}}" class="description">{{:description}}</span>
-	{{for getTags() tmpl="tagTemplate"/}}
+<script id="descriptionTagTemplate" type="text/x-jsrender">
+	{{if description}} 
+	<div id="desc_{{:id}}" class="description bold">
+		{{:description}}
+		{{for getTags() tmpl="tagTemplate"/}}
+	</div>
+	{{else}}
+		{{for getTags() tmpl="tagTemplate"/}}
+	{{/if}}
 </script>
 
 <script id="descriptionTemplate" type="text/x-jsrender"> 
@@ -71,7 +77,7 @@
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div><a class="subtitle" href="?{{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a></div>
 		{{if true tmpl="descriptionTagTemplate"/}}
-		<div class="small">{{:~dateRange(oldestDate,newestDate,false)}}</div>
+		<div class="small bold">{{:~dateRange(oldestDate,newestDate,false)}}</div>
 	</div>
 </script>
 
@@ -83,12 +89,13 @@
 				<img class="icon" src="icons/download.gif" alt="download {{:filename}}"/>
 			</a>
 		</div>
-		<span class="nowrap noscroll">{{>title}}</span>
+		<span class="nowrap noscroll bold">{{>title}}</span>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<div>{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}{{:~dateFormat(takenDate,"monthDayTime")}}{{/if}}
 			{{if transparent}}Tr{{/if}}
 			{{if alpha}}RGBA{{/if}}
 			{{if animated}}Anim{{/if}}
+			t{{:maxtn}}
 		</div>
 	</div>
 </script>
@@ -103,10 +110,10 @@
 			{{else exts}}{{for exts tmpl="extLinkTemplate"/}}
 			{{/if}}
 		</div>
-		<span class="nowrap noscroll">{{>title}}</span>
+		<span class="nowrap noscroll bold">{{>title}}</span>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}
-			<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
+			<div>{{:~dateFormat(takenDate,"monthDayTime")}}	t{{:maxtn}}</div>
 		{{/if}}
 	</div>
 </script>
@@ -124,6 +131,12 @@
 <!-- template for tags search -->
 <script id="tagSelectTemplate" type="text/x-jsrender"> 
 	<input id="cb_tag_{{:#data}}" type="checkbox" class="tagOption" label="{{:~makeTitle(#data)}}" title="{{:#data}}" icon="{{if #data=='best'}}icons/{{:#data}}.png{{/if}}"/>
+</script>
+
+<script id="typeSelectTemplate" type="text/x-jsrender"> 
+	<input class="typeOption" id="cb_search_type_{{:key}}" type="checkbox" label="{{:key}}" title="{{:key}}"/>
+	<span id="type_count_{{:key}}" class="subtitle">{{:value}}</span>
+	&nbsp;
 </script>
 
 <!-- template for video download links by extension -->

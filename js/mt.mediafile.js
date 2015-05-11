@@ -94,24 +94,57 @@ MediaFile.prototype.getVersions = function()
 	return this.versions;
 };
 
+MediaFile.prototype.getMaxDimension = function()
+{
+	return Math.max(this.width || 0, this.height || 0);
+}
+
+//1280
+
+//[   1,    1,    0]
+//[ 225, 1000, 1920]
+
+MediaFile.prototype.getMaxTnIndex = function()
+{
+	this.maxtn = this.tnsizes ? this.tnsizes.length-1 : -1;
+	var cfg = config.thumbnails;
+	var size = this.getMaxDimension();
+	if(!size) return this.maxtn;
+	
+	var mf=this;
+
+	//image: last tn smaller than size
+	var maxtn = this.tnsizes.findLastIndex(function(el, i)
+	{
+		var tndir = cfg.dirs[i];
+		var tnIsSmaller = (cfg.sizes[tndir] < size);
+		if(mf.isImage())
+			return tnIsSmaller;
+		var tnExists = el>0;
+		return tnIsSmaller && (tnExists || config.ENABLE_FFMPEG);
+	});
+
+	//video / anim: first tn larger than size
+	if(this.isAnimated())
+		if(this.thumbnailExists(maxtn+1) || config.ENABLE_FFMPEG)
+			maxtn++;
+
+//	if(maxtn>=0)
+	this.maxtn = maxtn;
+	return this.maxtn;
+}
+
 MediaFile.prototype.getThumbnails = function()
 {
 	if(this.isDir() && isEmpty(this.thumbnails))
-		return; // this.loadThumbnails();
+		return;
 	if(this.isDir())
 		return this.tncolumns = this.thumbnails.divideInto(2);
+	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) 
+		return this.tnsizes;
 
-	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) return [];
-	var size = Math.max(this.width, this.height);
-	var cfg = config.thumbnails;
-	this.maxtn = this.tnsizes.length-1;
-	for(var i=this.maxtn; i >= 0; i--)
-	{
-		var tndir = cfg.dirs[i];
-		if(cfg.sizes[tndir] >= size)
-			this.tnsizes.pop();
-	}
-	this.maxtn = this.tnsizes.length-1;
+	this.getMaxTnIndex();
+	this.tnsizes = this.tnsizes.slice(0, this.maxtn+1);
 	return this.tnsizes;
 }
 
@@ -227,6 +260,16 @@ MediaFile.prototype.isVideoStream = function()
 	if(this.type!="VIDEO" || isEmpty(this.stream)) return false;
 	return isArray(this.stream) ? this.stream[0] : this.stream;
 };
+
+MediaFile.isAnimated = function(mediaFile)
+{
+	return mediaFile.isAnimated();
+};
+
+MediaFile.prototype.isAnimated = function()
+{
+	return this.animated || this.isVideo();
+}
 
 MediaFile.isLocalVideoStream = function(mediaFile)
 {

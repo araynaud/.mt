@@ -132,8 +132,6 @@ access.read=*
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin
 _FFMPEG.FFMPEG=ffmpeg.exe
 _FFMPEG.PROBE=ffprobe.exe
-_FFMPEG.QTFS=qt-faststart.exe
-_FFMPEG.MP4BOX=MP4Box.exe
 
 _FFMPEG.scripts;cmd
 _FFMPEG.convert.stream.title=convert video

@@ -431,6 +431,87 @@ if (!Array.prototype.indexOf) Array.prototype.indexOf = function(element)
 	return -1;
 };
 
+if (!Array.prototype.find)  Array.prototype.find = function(predicate)
+{
+    if (this == null)
+      throw new TypeError('Array.prototype.find called on null or undefined');
+
+    if (typeof predicate !== 'function')
+      throw new TypeError('predicate must be a function');
+
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) 
+    {
+      value = list[i];
+      if(predicate.call(thisArg, value, i, list)) return value;
+    }
+    return undefined;
+};
+
+
+if (!Array.prototype.findLast)  Array.prototype.findLast = function(predicate)
+{
+    if (this == null)
+      throw new TypeError('Array.prototype.findLast called on null or undefined');
+
+    if (typeof predicate !== 'function')
+      throw new TypeError('predicate must be a function');
+
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+    for (var i = length-1; i >=0; i--) 
+    {
+      value = list[i];
+      if(predicate.call(thisArg, value, i, list)) return value;
+    }
+    return undefined;
+};
+
+
+if (!Array.prototype.findIndex)  Array.prototype.findIndex = function(predicate)
+{
+    if (this == null)
+       throw new TypeError('Array.prototype.findIndex called on null or undefined');
+    if (typeof predicate !== 'function')
+      throw new TypeError('predicate must be a function');
+
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+    for (var i = 0; i < length; i++)
+    {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list))	return i;
+    }
+    return -1;
+};
+
+if (!Array.prototype.findLastIndex)  Array.prototype.findLastIndex = function(predicate)
+{
+    if (this == null)
+       throw new TypeError('Array.prototype.findIndex called on null or undefined');
+    if (typeof predicate !== 'function')
+      throw new TypeError('predicate must be a function');
+
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+    for (var i = length-1; i >=0; i--) 
+    {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list))	return i;
+    }
+    return -1;
+};
+
 // For IE array.filter
 if (!Array.prototype.filter) Array.prototype.filter = function(fun /*, thisp*/)
 {
@@ -982,6 +1063,29 @@ if(!isFunction(Object.keys))
             vals.push(key);
     return vals;
 };
+
+Object.toArray = function(obj, skipNull)
+{
+    var vals = [];
+    if(!obj) return vals;
+    //if array, return obj
+    if(isArray(obj)) return obj;
+    if(!isObjectNotArray(obj)) return obj;
+    //TODO if not object, return [obj]
+    for(var key in obj)
+        if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
+        {
+        	var value = obj[key];
+            var element = {key: key};
+            if(isObject(value))
+	            Object.merge(element, obj[key])
+	        else 
+	        	element.value=value;
+            vals.push(element);
+        }
+    return vals;
+};
+
 
 
 //--- OTHER UTILITY FUNCTIONS

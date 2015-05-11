@@ -449,18 +449,31 @@ UI.setContentWidth = function(el)
 	el.width(w);
 };
 
-UI.displayFileCounts = function (fileList,divId,clear)
+UI.displayFileCounts = function (fileList,divId,times)
 {
-	if(clear)	
-		$(divId).html("");
-	$(divId).append("{0}s / {1}s / {2}s".format(Math.roundDigits(album.buildTime,2), Math.roundDigits(album.requestTime/1000,2), Math.roundDigits(album.albumTime/1000,2)));
-	var counts=fileList.countBy("type");
-	for(var k in counts)
-		$(divId).append(" " + plural(counts[k],k.toLowerCase()));
+	$(divId).html("");
+	if(times)
+		$(divId).append("{0}s / {1}s / {2}s".format(Math.roundDigits(album.buildTime,2), Math.roundDigits(album.requestTime/1000,2), Math.roundDigits(album.albumTime/1000,2)));
 
-	$("#slideshowIcon").toggle(album.hasFiles("IMAGE"));
-	$("#playIcon").toggle(album.hasFiles("VIDEO"));
+	var counts=Object.toArray(fileList.countBy("type"));
+	UI.renderTemplate("typeSelectTemplate", divId, counts);
+
+	$("#slideshowIcon").toggle(album.hasFilesOfType("IMAGE"));
+	$("#playIcon").toggle(album.hasFilesOfType("VIDEO"));
 };
+
+UI.displayPageFileCounts = function (fileList)
+{
+	var albumCounts = album.countByType;
+	var pageCounts = fileList.countBy("type");
+	for(var k in albumCounts)
+	{
+		var val = pageCounts[k] || 0;
+		if(val != albumCounts[k]) 
+			val += " / " + albumCounts[k];
+		$("#type_count_"+k).html(val);
+	}
+}
 
 UI.styleCheckboxes = function(container, cssClass, labelClass)
 {	

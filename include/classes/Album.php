@@ -118,7 +118,7 @@ debug("details", $details);
 			$this->times[]=getTimer(true);
 		}
 
-		if($this->search["config"])			
+		if(@$this->search["config"])			
 			$this->config = $config;
 
 		$this->buildTime=getTimer();
@@ -142,7 +142,7 @@ debug("Album::getSearchParameters", $this->search);
 	public function getDepth()
 	{
 		$this->getSearchParameters();
-		return $this->search["depth"];
+		return coalesce(@$this->search["depth"], 0);
 	}
 
     public function getPath()
@@ -214,7 +214,7 @@ debug("getSubdirAccess $dirPath", $subdir);
 //image: load exts, width, height, duration, codec
     public function getMetadataIndex($type)
 	{
-debug("getMetadataIndex $type is set", isset($this->metadata));
+debug("getMetadataIndex $type is set", isset($this->metadata[$type]));
 		//TODO use dateIndex.types;IMAGE
 		if(!isset($this->metadata))
 			$this->metadata = array();		

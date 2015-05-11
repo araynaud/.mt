@@ -16,6 +16,7 @@ function Slideshow(options)
 	this.animate=false;
 	this.animStartZoom=1;
 	this.animEndZoom=2;
+	this.controls=true;
 	this.zoom=1;
 	this.play=false;
 	this.autoPlayAudio=false;
@@ -316,8 +317,9 @@ Slideshow.prototype.toggleAnimate = function(state)
 
 Slideshow.prototype.toggleControls = function()
 {
-	$("#slideshowContainer .controls").toggle('slow');
-	$('#fbComments').fadeToggle('slow');
+	this.controls = !this.controls;
+	$("#slideshowContainer .controls").toggle(this.controls);
+	$('#fbComments').fadeToggle(this.controls);
 };
 
 Slideshow.prototype.setImageLink = function(href, text)

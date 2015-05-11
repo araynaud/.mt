@@ -2,20 +2,7 @@
 // video manipulation function calling FFMPEG
 function isFfmpegEnabled()
 {
-	return getExePath() != false;
-}
-
-function getExePath($exe="FFMPEG", $key="_FFMPEG")
-{
-	global $config;
-		
-	if(!isset($config[$key])) return false;
-	$exePath=combine(getConfig("$key.PATH"), getConfig("$key.$exe"));
-
-debug("getExePath($exe, $key)", $exePath);
-
-	if(!file_exists($exePath)) return false;
-	return $exePath;
+	return getExePath("FFMPEG", "_FFMPEG") != false;
 }
 
 function quoteFilename($filename)
@@ -192,6 +179,11 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 	$image = getFilename($video, $ext);
 	$image = combine($imageDir, $image);	
 	// the input video file
+
+	$prop = getVideoProperties($relPath, $video);
+//debug("getVideoProperties", $prop, true);
+	$size = min($prop["width"], $size); //resize only if input video is larger than $size
+
 	$video = combine($relPath, $video);
 
 	if (file_exists($image))
@@ -213,7 +205,7 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 function getVideoProperties($relPath, $file="", $convertTo="")
 {
 	$metadata = getMediaFileInfo($relPath, $file);
-//debug("getMediaFileInfo", $metadata, true);
+debug("getMediaFileInfo", $metadata, true);
 	$data = array();
 
 	$nbStreams = arrayGet($metadata, "FORMAT.nb_streams");
@@ -416,8 +408,6 @@ convert to mp4 no resize:
 
 convert to mp4 + no resize:
 %ffmpeg% -i %1\\%2 -s 720x404 -b 800k %1\\%3_tmp.mp4
-rem %mp4box% -hint %1\\%3.mp4
-%qtfs% %1\\%3_tmp.mp4 %1\\%3.mp4
 del %1\\%3_tmp.mp4
 */
 

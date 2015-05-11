@@ -21,7 +21,7 @@ debug("LoadConfiguration", $path);
 	readConfigFile($configFilename, $configData);
 
 //3 default config by path depth
-	$depth=pathDepth($path);
+	$depth = pathDepth($path);
 	$configFilename = combine($appRootDir, "config", ".config.$depth.csv");
 	readConfigFile($configFilename, $configData);
 
@@ -63,6 +63,19 @@ debug("findFilesInParent", $configFilenames);
 		$configData["publish"] = $publish[$site];
 	}
 	return $configData;
+}
+
+function getExePath($exe="FFMPEG", $key="_FFMPEG", $configData=null)
+{
+	global $config;
+	setIfNull($configData, $config);	
+	if(!isset($configData[$key])) return false;
+	$exePath=combine(arrayGet($configData, "$key.PATH"), arrayGet($configData, "$key.$exe"));
+
+debug("getExePath($exe, $key)", $exePath);
+
+	if(!file_exists($exePath)) return false;
+	return $exePath;
 }
 
 function checkUserAgent($devices)

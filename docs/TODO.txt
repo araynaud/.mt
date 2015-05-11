@@ -1,3 +1,22 @@
+1 redesign title header
+use meme class for subtitle
+get impact.woff font
+
+2 write array.prototype.groupBy
+see distinct and countBy
+
+17 count file by type next to filter checkboxes. only display types that exist.
+
+
+autotag based on file: type
+video: stream / nostream / youtube
+image: transparent, ext, animated, panorama
+
+link to youtube video : on youtube.
+
+image sizes: add min height, min width for panoramas
+---------------
+
 bugs:
 OK action_multiple: only applies to clicked file. unify into action.php ? function doAction called in loop ?
 check refresh file UI.afterAction
@@ -75,8 +94,6 @@ tag: star if admin
 16 album, slideshows from array of images, video urls
 [http://fwfsffff, http://fwfsffff, http://fwfsffff,] =? mediafiles
 add external url playlist (like youtube.csv)
-
-17 count file by type next to filter checkboxes
 
 $user->getGroups();
 $user->hasAccess($path, "read");
@@ -405,14 +422,6 @@ UI.search:  in this dir: use search string
 otherwise : ajax call with depth
 
 ---------
-
-autotag based on file: type
-video: stream / nostream / youtube
-image: transparent, ext, animated, panorama
-
-link to youtube video : on youtube.
-
-image sizes: add min height, min width for panoramas
 
 ---------
 UI for video editor:

@@ -6,7 +6,7 @@ session_start();
 // accept GET or POST.
 // create MediaFile by name
 // AJAX response: new MediaFile after action + error or confirmation message
-$search = getSearchParameters();
+$search = getSearchParameters($_REQUEST);
 debugVar("search");
 //for multipe files
 if(@$search["name"])

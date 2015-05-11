@@ -1,76 +1,68 @@
 <div id="editDiv" class="hidden edit controls">
-	<span id="uploadIcons" class="upload">
-		<img class="icon floatL rotateIcon" id="rotateIcon_left" src="icons/rotate-left.png"
-		alt="L" title="Rotate Left"/>
-		<img class="icon floatR rotateIcon" id="rotateIcon_right" src="icons/rotate-right.png" 
-		alt="R" title="Rotate Right"/>
+	<input class="notdir floatL" id="cb_selected" type="checkbox" label="X" title="Select"/>
+	<img class="icon floatL rotateIcon upload spaceLeft" id="rotateIcon_left"  src="icons/rotate-left.png" alt="L" title="Rotate Left"/>
+	<img class="icon floatR rotateIcon upload spaceLeft" id="rotateIcon_right" src="icons/rotate-right.png" alt="R" title="Rotate Right"/>
 
-		<input class="notdir" id="cb_selected" type="checkbox" label="X" title="Select"/>
-
-		<img class="" id="dataIcon" src="icons/info.png" 
-		alt="info" title="file info"
-		onclick="UI.goToPage('data', {data:'metadata'}, 'data')"/>
+	<span id="publicIcons" class="spaceLeft public nowrap">
+		<img class="" id="dataIcon" src="icons/info.png" alt="info" title="file info"
+			onclick="UI.goToPage('data', {data:'metadata'}, 'data')"/>
 
 		<a id="fileUrlLink" target="fb">
 			<img id="fileUrlIcon" src="icons/link.png" alt="link" title="get direct link to file"/>
 		</a>
 
-		<img class="" id="fbIcon" src="icons/fb.png" 
-		alt="share" title="share on facebook" 
-		onclick="UI.fbShare()"/>
+		<img class="" id="fbIcon" src="icons/fb.png" alt="share" title="share on facebook" 
+			onclick="UI.fbShare()"/>
 
+		<img class="icon notdir" id="downloadAllIcon" src="icons/download.gif" alt="Download" title="Download selected files"/>
+	</span>
+
+	<span id="uploadIcons" class="spaceLeft upload nowrap">
 		<img class="icon notdir" id="editIcon" src="icons/editor16.png"
 		alt="edit" title="edit image"
 		onclick="UI.goToPage('.upload/imageEdit')"/>
 		
-		<img class="icon" id="commentIcon" src="icons/comment.gif" 
-		alt="rename" title="rename"
-		onclick="UI.goToPage('.upload/description')"/>
+		<img class="icon" id="commentIcon" src="icons/comment.gif" alt="rename" title="rename"
+			onclick="UI.goToPage('.upload/description')"/>
 		
-		<img class="icon video" id="convertIcon" src="icons/step_next.png" 
-		alt="convert" title="convert to stream"
-		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'stream'}, 'convert')"/>
+		<img class="icon video" id="convertIcon" src="icons/step_next.png" alt="convert" title="convert to stream"
+			onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'stream'}, 'convert')"/>
 		
-		<img class="icon video" id="convertSoundIcon" src="icons/sound.png" 
-		alt="convert" title="convert to audio"
-		onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
-		<img class="icon notdir" id="descIcon" src="icons/edit.gif"
-		title="edit description" alt="desc" 
-		onclick="UI.inputAction({action:'description', field:'description', multiple: true})" />
+		<img class="icon video" id="convertSoundIcon" src="icons/sound.png" alt="convert" title="convert to audio"
+			onclick="UI.goToPage('.upload/video_convert', {debug:true, to:'audio'}, 'convert')"/>
 
-		<img class="icon notdir" id="dateIcon" src="icons/date.png"
-		title="set date" alt="date" 
-		onclick="UI.inputAction({action:'date', field:'takenDate'})" />
+		<img class="icon notdir" id="descIcon" src="icons/edit.gif" title="edit description" alt="descr." 
+			onclick="UI.inputAction({action:'description', field:'description', multiple: true})" />
 
-		<img class="icon notdir" id="bestIcon" src="icons/star.png"
-		title="set as best" alt="best"
-		onclick="UI.fileActionAjax({action:'addtag', to:'best', multiple: true})" />
+		<img class="icon notdir" id="dateIcon" src="icons/date.png"	title="set date" alt="date" 
+			onclick="UI.inputAction({action:'date', field:'takenDate'})" />
+
+		<img class="icon notdir" id="bestIcon" src="icons/star.png"	title="set as best" alt="best"
+			onclick="UI.fileActionAjax({action:'addtag', to:'best', multiple: true})" />
 		
-		<img class="icon notdir" id="addTagIcon" src="icons/addtag.png"
-		title="add tag" alt="tag" 
-		onclick="UI.inputAction({action:'addtag', field:'tags', multiple: true, choices:album.tags})" />
+		<img class="icon notdir" id="addTagIcon" src="icons/addtag.png" title="add tag" alt="tag" 
+			onclick="UI.inputAction({action:'addtag', field:'tags', multiple: true, choices:album.tags})" />
 
-		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" 
-		title="set as background" alt="background"
-		onclick="UI.fileActionAjax({action: 'background', confirm: true})" />
+		<img class="icon notdir" id="backgroundIcon" src="icons/background.png" title="set as background" alt="background"
+			onclick="UI.fileActionAjax({action: 'background', confirm: true})" />
 
-		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png"
-		title="refresh" alt="refresh" 
-		onclick="UI.refreshThumbnail(this)" />
+		<img class="icon notdir" id="refreshIcon" src="icons/refresh.png" title="refresh" alt="refresh" 
+			onclick="UI.refreshThumbnail(this)" />
+
+		<img class="icon upload" id="uploadAllIcon" src="icons/upload16.png" alt="Upload" title="Upload selected files"/>
 	</span>	
-	<span id="adminIcons" class="admin">		
-		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" 
-		title="move to parent" alt="move to parent"
-		onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true, confirm: true})" />
 
-		<img class="icon notdir" id="parentIcon" src="icons/subdirs.gif" 
-		title="move" alt="move"
-		onclick="UI.inputAction({action:'move', field: 'subdir', multiple: true, choices: album.dirs})" />
+	<span id="adminIcons" class="spaceLeft admin nowrap">
+		<img class="icon notdir" id="parentIcon" src="icons/parent.gif" title="move to parent" alt="move to parent"
+			onclick="UI.fileActionAjax({action:'move', to:'..', multiple: true, confirm: true})" />
+
+		<img class="icon notdir" id="parentIcon" src="icons/subdirs.gif" title="move" alt="move"
+			onclick="UI.inputAction({action:'move', field: 'subdir', multiple: true, choices: album.dirs})" />
 		
-		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"
-		title="delete" alt="delete"
-		onclick="UI.fileActionAjax({action: 'delete', confirm: true, multiple: true})" />		
+		<img class="icon notdir" id="deleteIcon" src="icons/delete.png"	title="delete" alt="delete"
+			onclick="UI.fileActionAjax({action: 'delete', confirm: true, multiple: true})" />		
 	</span>
+
 	<div id="editFieldDiv" class="hidden small">
 		<input id="btn_Cancel" type="button" value="X" onclick="UI.resetInput()"/>
 		<span id="editFieldLabel" class="bold"></span>

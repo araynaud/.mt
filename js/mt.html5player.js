@@ -57,7 +57,7 @@ Html5Player.playerSettings=
 		autostart: false,		
 		repeat: true,
 		uiMode: "video",
-		class: "shadow photoBorder",
+		"class": "shadow photoBorder",
 		subtitlesDiv: "#videoSubtitles",
 		playlist: {	position: "right", size: 300, showAll: true } //, maxHeight: 400 }
 	},
@@ -71,7 +71,7 @@ Html5Player.playerSettings=
 		autostart: true,
 		repeat: false,
 		uiMode: "slideshow",
-		class: "slide top left",
+		"class": "slide top left",
 		subtitlesDiv: "#slideshowSubtitles",
 		hidden:true
 	}
@@ -175,8 +175,8 @@ Html5Player.seekLoopStart = function(e)
 
 Html5Player.prototype.loop = function(start, end)
 {
-	this.player.loopStart = start;
-	this.player.loopEnd = end;
+	this.player.loopStart = valueOrDefault(start,0);
+	this.player.loopEnd = valueOrDefault(end, this.player.duration - .2);
 	this.player.currentTime = start;
     this.player.addEventListener("timeupdate", Html5Player.seekLoopStart);
 };
@@ -235,8 +235,8 @@ Html5Player.prototype.createPlayer = function()
 	this.player = $.makeElement(this.type, { id: this.settings.id + "_" + this.type, controls: true, preload: "auto" });
 	if(this.settings.style)
 		this.player.css(this.settings.style);
-	if(this.settings.class)
-		this.player.addClass(this.settings.class);
+	if(this.settings["class"])
+		this.player.addClass(this.settings["class"]);
 	if(this.settings.hidden)
 		this.player.hide();
 
@@ -503,8 +503,8 @@ Html5Player.prototype.loadYoutubePlayer = function(videoId)
 
 	if(this.settings.style)
 		this.jqiframe.css(this.settings.style);
-	if(this.settings.class)
-		this.jqiframe.addClass(this.settings.class);
+	if(this.settings["class"])
+		this.jqiframe.addClass(this.settings["class"]);
 };
 
 Html5Player.prototype.activePlayer = function()

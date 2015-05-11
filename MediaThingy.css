@@ -1,3 +1,15 @@
+@font-face {
+	font-family: 'Impact'; 
+	src: url('fonts/impact.woff') format('woff'), url('fonts/impact.ttf')  format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+    font-family: 'Harlow';
+    src: url('fonts/HARLOWSI.TTF') format('truetype');
+}
+
 body
 {
 	font-family:Helvetica,Verdana;
@@ -70,11 +82,47 @@ pre
 	font-weight: bold;
 }
 
+.harlow
+{
+	font-family: Harlow;
+}
+
+.meme
+{
+	font-size: 1.5cm;
+	font-weight: normal;
+	font-family: Impact,Helvetica,Verdana;
+}
+
 .subtitle
 {
 	text-align: center;
-	font-size: 12pt;
+	font-size: 16pt;
 	font-weight: bold;
+}
+
+.textOutline, .subtitle
+{
+	color: white;
+	text-shadow: 
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+
+.textOutline2, .meme
+{
+	color: white;
+	text-shadow: 
+     -2px -2px 0 #000,  
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+       2px 2px 0 #000,
+     -2px 0px 0 #000,  
+      2px 0px 0 #000,
+      0px -2px 0 #000,
+      0px 2px 0 #000;
 }
 
 .container
@@ -188,8 +236,12 @@ div.file .edit, .captionTop
 
 .caption, .captionBelow, .edit, a.article
 {
-	font-weight:bold;
 	text-align: center;
+}
+
+.edit, a.article
+{
+	font-weight:bold;
 }
 
 .captionTop
@@ -202,6 +254,11 @@ div.file .edit, .captionTop
 .translucent a, .caption a, .captionBelow a, .captionTop a
 {
 	color: orange;
+}
+
+.captionBelow a.subtitle, .caption a.subtitle, .captionTop a.subtitle
+{
+ 	color: white;
 }
 
 .title a, .small a, li a, .caption a, .captionTop a, .captionBelow a, .translucent a, .pages a, .pager a, a.article

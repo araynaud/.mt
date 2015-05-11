@@ -177,7 +177,7 @@ function setHeader($header, $value="")
 function sendFileToResponse($relPath,$file,$contentType="",$attachment=true)
 {
 	$filePath=combine($relPath,$file);
-	if(!file_exists($filePath) || filesize($filePath)===0) return;
+	if(!file_exists($filePath) || is_dir($filePath) || filesize($filePath)===0) return;
 	
 	$src_info = getimagesize($filePath);
 	$img_type=$src_info["mime"];

@@ -18,14 +18,19 @@ UI.downloadFile = function()
 		return;
 	}
 
-	UI.getIframe();	
 	var mediaFile = UI.selectedFileList[UI.fileIndex];
+	if(mediaFile.isDir()) //skip dirs
+	{
+		UI.fileIndex++
+		return UI.downloadFile();
+	}
+
+	UI.getIframe();	
 	var downloadScriptUrl = UI.downloadScript ? mediaFile.getScriptUrl(UI.downloadScript) : mediaFile.getFileUrl(); //getThumbnailUrl(1);
-// use image.php ?
-	//use UI.downloadIframe.load() event?
+
 	UI.downloadIframe.attr("src", downloadScriptUrl);
 //	UI.addStatus("{0}:{1}".format(UI.fileIndex, downloadScriptUrl));
-	UI.fileIndex++;
+	return UI.fileIndex++;
 };
 
 UI.getIframe = function()
