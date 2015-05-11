@@ -97,9 +97,11 @@ thumbnails.sizes.hd=1920
 thumbnails.IMAGE.script=image_auto.php
 ;for lossless rotation
 ;thumbnails.IMAGE.script=image.php
+thumbnails.IMAGE.default=icons/background64.png
 thumbnails.VIDEO.ext=jpg
 thumbnails.VIDEO.max_size=1000
 thumbnails.VIDEO.script=video_thumbnail.php
+thumbnails.VIDEO.default=icons/media-play.png
 thumbnails.AUDIO.ext=jpg
 thumbnails.maxStretch=1
 

@@ -2,11 +2,15 @@
 use meme class for subtitle
 get impact.woff font
 
-2 write array.prototype.groupBy
+3
+
+4 write array.prototype.groupBy
 see distinct and countBy
 
-17 count file by type next to filter checkboxes. only display types that exist.
+OK 2 default thumbnail for image and video if none available.
+OK 17 count file by type next to filter checkboxes. only display types that exist.
 
+Fix IE8 UI object. UI.setupElements undefined.
 
 autotag based on file: type
 video: stream / nostream / youtube
