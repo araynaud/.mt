@@ -117,6 +117,7 @@ TYPES.VIDEO=avi;divx;wmv;mov;mpg;mkv;m2t;mts;mp4;m4v;3gp;flv;ogv;ogm;webm
 TYPES.VIDEO_STREAM=m4v;mp4;flv;3gp;webm;ogm;ogv
 TYPES.TEXT=txt
 TYPES.SPECIAL=xml;php;chunk;js;css;sub
+SPECIAL_FILES=.;..;.tn;.ss;.hd;.mp;.mt;mt;.tag;.temp;.ignore.txt;index.html;readme.txt;thumbs.db;desktop.ini;web.config;AlbumArtSmall.jpg;Folder.jpg;.DS_Store;Thumbs.db;.dateIndex.csv;.config.csv;youtube.csv;.bg.jpg;.metadata.IMAGE.csv;.metadata.VIDEO.csv
 SPECIAL_PREFIX=AlbumArt_;.tmp_
 MediaPlayer.video.enabled=true
 MediaPlayer.audio.enabled=true
