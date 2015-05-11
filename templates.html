@@ -95,7 +95,6 @@
 			{{if transparent}}Tr{{/if}}
 			{{if alpha}}RGBA{{/if}}
 			{{if animated}}Anim{{/if}}
-			t{{:maxtn}}
 		</div>
 	</div>
 </script>
@@ -113,7 +112,7 @@
 		<span class="nowrap noscroll bold">{{>title}}</span>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		{{if takenDate && ~dateFormat(takenDate,"monthDayTime")}}
-			<div>{{:~dateFormat(takenDate,"monthDayTime")}}	t{{:maxtn}}</div>
+			<div>{{:~dateFormat(takenDate,"monthDayTime")}}</div>
 		{{/if}}
 	</div>
 </script>
