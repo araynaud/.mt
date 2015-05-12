@@ -1,4 +1,5 @@
 Bug: Fix IE8 UI object. UI.setupElements undefined. PS3
+IE8 use jwplayer config.
 
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
@@ -61,13 +62,15 @@ by album
 by file
 
 async ajax call to counter.php (public)  ?path=$path&file=$file
-when displaying album
-when viewing file in slideshow or player
+-when displaying album
+-when viewing file in slideshow or player
 append line to $path/.views.csv
 filename;date;ip;username
 
 data.php?data=views
 count views by filename
+
+filename;date;username;comment line1\comment line2\
 
 ---------------
 

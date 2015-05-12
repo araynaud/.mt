@@ -1,5 +1,5 @@
 //JSRENDER TEMPLATE FUNCTIONS
-var UI = UI || {};
+window.UI = window.UI || {};
 
 UI.linkTemplate = function(templateId, targetId, data)
 {

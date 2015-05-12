@@ -1,3 +1,5 @@
+window.UI = window.UI || {};
+
 UI.displayUser = function(div)
 {
 	if(!div) div=$('#userLabel');
