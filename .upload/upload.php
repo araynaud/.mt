@@ -5,7 +5,7 @@ define("LAST_CHUNK_SUFFIX", ".last.chunk");
 
 startTimer();
 
-$username = current_user();
+$username = session_login();
 $user = new User();
 
 debugVar("user",true);
