@@ -50,6 +50,13 @@ MediaFile.prototype.contains = function(key)
 	return !isMissing(this[key]);
 };
 
+//get value from parent album
+MediaFile.prototype.albumVar = function(key, default_)
+{
+	var value = (key && this._parent) ? this._parent[key] : this._parent;
+	return isMissing(value) ? default_ : value;
+};
+
 //Todo functions
 // makeTitle
 // image in .ss, image in parent
