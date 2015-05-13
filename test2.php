@@ -6,6 +6,9 @@ ini_set('display_errors', '1');
 $configFile="include/config.php";
 if(file_exists("../$configFile"))	$configFile = "../$configFile";
 require_once($configFile);
+debug("User Agent", $_SERVER["HTTP_USER_AGENT"]);
+debug("Config", getConfig("USER_AGENT"), true);
+
 debug("Time elapsed", getTimer(true));
 debug();
 debug();
@@ -35,6 +38,7 @@ $indexFiles = testFunctionResult("selectFilesByType", $indexFiles, $search["type
 debugVar("indexFiles", true);
 */
 debug();
+
 $user = new User();
 debugVar("user", true);
 debug("\t$path level", $user->getRole());

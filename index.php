@@ -15,7 +15,7 @@ $description=$album->getDescription();
 $depth=$album->getDepth();
 
 //if FLV files exist: load jw player instead of html5 player
-$hasFlash = $album->filterFiles(array("type"=>"flv"));
+$hasFlash = getConfig("USER_AGENT.USE_FLASH") || $album->filterFiles(array("type"=>"flv"));
 if($hasFlash)
 {
 	$configFilename = combine(pathToAppRoot(), "config/.config.jwplayer.csv");

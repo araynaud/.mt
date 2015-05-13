@@ -8,13 +8,9 @@ function isMissing(variable)
 function isEmpty(variable)
 {
 	if(isMissing(variable)) return true;
-	if(variable.length === 0) return true;
-
+	if(!isMissing(variable.length)) return variable.length === 0;
 	if(isObject(variable))
-	{
-		variable = Object.keys(variable);
-		return variable.length == 0;
-	}
+		!Object.hasKeys(variable);
 	return false;
 }
 
@@ -40,7 +36,7 @@ function isBoolean(input)
 
 function isString(input)
 {
-    return typeof(input)=="string";
+    return typeof(input)=="string" || Object.getType(input) == "String";
 }
 
 function isObject(input)
@@ -1062,6 +1058,16 @@ if(!isFunction(Object.keys))
         if (obj.hasOwnProperty(key) && (!isMissing(obj[key]) || !skipNull))
             vals.push(key);
     return vals;
+};
+
+//return first key
+Object.hasKeys = function (obj)
+{
+    if(!obj) return false;
+    for(var key in obj)
+        if (obj.hasOwnProperty(key))
+            return true;
+    return false;
 };
 
 Object.toArray = function(obj, skipNull)

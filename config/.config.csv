@@ -3,9 +3,9 @@ TITLE=Media Thingy
 debug.output=false
 debug.ajax=false
 
-USER_AGENT.DEVICES=mobile;android;ipad;kindle;firefox;chrome;MSIE;Trident;playstation;opera
+USER_AGENT.DEVICES=mobile;android;ipad;kindle;firefox;chrome;msie;msie 8;msie 7;msie 6;rv:11.0;trident;playstation;opera
 ;USER_AGENT.FORCE=mobile android
-
+USER_AGENT.USE_FLASH=msie 8;msie 7;msie 6
 ;relative path from app root dir to data files root
 TEMP_DIR=.temp
 EXIF_SUPPORTED_TYPES=IMAGETYPE_JPEG;IMAGETYPE_TIFF_II;IMAGETYPE_TIFF_MM
