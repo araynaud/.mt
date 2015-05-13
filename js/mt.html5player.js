@@ -59,7 +59,7 @@ Html5Player.playerSettings=
 		uiMode: "video",
 		"class": "shadow photoBorder",
 		subtitlesDiv: "#videoSubtitles",
-		playlist: {	position: "right", size: 300, showAll: true } //, maxHeight: 400 }
+		playlist: {	position: "right", size: 300, showAll: true }
 	},
 	slide:
 	{
@@ -399,6 +399,7 @@ Html5Player.prototype.loadPlaylist = function(mediaFiles, start)
 		UI.renderTemplate("playlistLinkTemplate", this.playlistDiv, mediaFiles);
 		this.playlistDiv.width(this.settings.playlist.size);
 		this.playlistDiv.css("max-width", this.settings.playlist.maxWidth || "");
+		this.playlistDiv.css("max-height", this.settings.playlist.maxHeight || "");
 	}
 
 	if(mediaFiles.length>1)
@@ -683,4 +684,9 @@ Html5Player.prototype.setMessage = function(text, event)
 {
 	text = Object.toText(text," ");
 	this.messageDiv.html(text);
+};
+
+Html5Player.prototype.remove = function()
+{
+	if(this.player)	this.player.remove();
 };

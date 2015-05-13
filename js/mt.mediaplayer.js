@@ -37,7 +37,7 @@ MediaPlayer.playerSettings=
 		"playlist.position": "top",
 		"playlist.showAllItems": false,
 		"playlist.size": 24,
-		"playlist.maxHeight": 400
+		"playlist.maxHeight": 200
 	},
 	video:
 	{

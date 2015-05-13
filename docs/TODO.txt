@@ -1,14 +1,12 @@
-Bug: Fix IE8 UI object. UI.setupElements undefined. PS3
-IE8 use jwplayer config.
-
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
-
-2 uploader android app
 
 3 templates: Replace helper functions with mediaFile methods:
 ~thumbnailUrl(#data,~albumVar('tnIndex'),true)  ~getThumbnailUrl(_parent.tnIndex,true)
 ~albumVar('pageNum')  => _parent.pageNum or albumVar('pageNum')
+
+3 use tnindex=2.
+free: add size limit in config for tn creation. if too big, use tnindex=1
 
 4 write array.prototype.groupBy
 see distinct and countBy
@@ -31,6 +29,8 @@ image sizes: add min height, min width for panoramas.
 use hd image in slideshow. 
 use max stretch factor to detect need for hd image
 animate scroll from left to right
+
+2 android app, uploader share intent
 
 ------
 Enhance Article view
@@ -73,6 +73,8 @@ count views by filename
 filename;date;username;comment line1\comment line2\
 
 ---------------
+OK Fix IE8 UI object. UI.setupElements undefined. PS3
+OK IE8 use jwplayer config.
 
 OK 2 default thumbnail for image and video if none available.
 OK 17 count file by type next to filter checkboxes. only display types that exist.
@@ -2065,7 +2067,7 @@ slideshow: no ajax.
 
 config mappings:
 separate app_root and data root
-MAPPING["pictures"]="D:\Pictures\"
+MAPPING["pictures"]="D:\Pictures"
 allow unmapped dirs? output images with image.php / fpassthru
 
 ---------------

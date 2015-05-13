@@ -397,6 +397,16 @@ img.icontr, img.iconTrans
 	text-align: right;
 }
 
+.desktop #audioContainer
+{
+	width: 250px;
+}
+
+.mobile #audioContainer
+{
+	width: 80px;
+}
+
 .musicplayer
 {
 	float: right;
