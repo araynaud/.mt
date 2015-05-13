@@ -44,7 +44,7 @@ debug("findFilesInParent", $configFilenames);
 		@$_SERVER["HTTP_USER_AGENT"] .= " $force";
 
 	$configData["USER_AGENT"]["DEVICES"] = $devices = checkUserAgent($configData["USER_AGENT"]["DEVICES"]);
-	$configData["USER_AGENT"]["USE_FLASH"] = array_intersect($configData["USER_AGENT"]["USE_FLASH"], $devices);
+	$configData["USER_AGENT"]["USE_FLASH"] = checkUserAgent($configData["USER_AGENT"]["USE_FLASH"]);
 	foreach($devices as $dev)
 	{
 		$configFilename = combine($appRootDir, "config", ".config.$dev.csv");
