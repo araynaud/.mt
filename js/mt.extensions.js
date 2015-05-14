@@ -369,7 +369,8 @@ String.endsWith = function(str, sub)
 String.prototype.endsWith = function(sub)
 {
 	if(isEmpty(this) || isEmpty(sub)) return false;
-	return this.lastIndexOf(sub) == (this.length - sub.length);
+	var end = this.lastIndexOf(sub);
+	return end>=0 && this.substr(end) == sub;
 }
 
 String.prototype.containsText = function(value, caseSensitive)
@@ -377,7 +378,6 @@ String.prototype.containsText = function(value, caseSensitive)
 	if(caseSensitive)
 		return this.indexOf(value) !=-1;
 	return this.toLowerCase().indexOf(value.toLowerCase()) !=-1;
-//	return this.search(new RegExp(value, "i")) != -1;
 };
 
 String.substringBefore = function(s, sub, last, stringOrEmpty, include)

@@ -55,7 +55,7 @@ function Slideshow(options)
 		Slideshow.instances.push(this);
 }
 
-Slideshow.zoom = { labels: {none: "none", long: "fit", short: "cover" }}; // width: "fit width",  height: "fit height"} };
+Slideshow.zoom = { labels: {none: "none", longMargin: "fit with margin", long: "fit", shortMargin: "cover with margin", short: "cover", width: "fit width", height: "fit height"} };
 
 Slideshow.initZoomTypes = function ()
 {
@@ -319,6 +319,7 @@ Slideshow.prototype.toggleControls = function()
 {
 	this.controls = !this.controls;
 	$("#slideshowContainer .controls").toggle(this.controls);
+	$("#audioContainer .controls").toggle(this.controls);
 	$('#fbComments').fadeToggle(this.controls);
 };
 
@@ -454,7 +455,7 @@ Slideshow.prototype.showImage = function(index, transitionFunction)
 		$(this.preLoadedImage).load(function() { ss.displayLoadedImage(transitionFunction, fileChange); });
 	}
 
-	if(window.UI && UI.displayEdit)
+	if(window.UI && UI.displayEdit && this.controls)
 		UI.displayEdit("#slideshowControls");
 };
 
@@ -585,8 +586,10 @@ Slideshow.prototype.fitImage = function (animate, zoomLevel)
 Slideshow.prototype.getImageSize = function (zoomLevel)
 {
 	zoomLevel = valueOrDefault(zoomLevel, this.zoom);
+	var zoomType = Slideshow.zoom.types[zoomLevel];
+	var hasMargins = zoomType.endsWith("Margin");
 
-	var ibm = this.getImageBorderMargins();
+	var ibm = this.getImageBorderMargins(hasMargins);
 	var size = { height: this.preLoadedImage.height, width: this.preLoadedImage.width };
 	if(this.currentFile.isVideoStream() && this.currentFile.height && this.currentFile.width)
 		size = { height: this.currentFile.height, width: this.currentFile.width};
@@ -595,8 +598,7 @@ Slideshow.prototype.getImageSize = function (zoomLevel)
 
 	if(zoomLevel)
 	{
-		var zoomType = Slideshow.zoom.types[zoomLevel];
-		var fitWidth = (zoomType == "width") || (preRatio > wRatio && zoomType=="long")  || (preRatio <= wRatio && zoomType=="short");
+		var fitWidth = (zoomType == "width") || (preRatio > wRatio && zoomType.startsWith("long"))  || (preRatio <= wRatio && zoomType.startsWith("short"));
 		if (fitWidth) //fit width
 		{
 			size.width = this.elements.container.width() - ibm.bmw;
@@ -612,15 +614,15 @@ Slideshow.prototype.getImageSize = function (zoomLevel)
 	return size;
 };
 
-Slideshow.prototype.getImageBorderMargins = function () 
+Slideshow.prototype.getImageBorderMargins = function (hasMargins) 
 {
 	var ibm = {};
 	ibm.bw = album.border ? 20 : 0; //image.borderWidth();
-	ibm.mw = album.margin ? 40 : 0; //image.marginWidth();
+	ibm.mw = hasMargins ? 40 : 0; //image.marginWidth();
 	ibm.bmw = ibm.bw + ibm.mw;
 
 	ibm.bh = album.border ? 20 : 0; //image.borderHeight();
-	ibm.mh = album.margin ? 40 : 0; //image.marginHeight();
+	ibm.mh = hasMargins? 40 : 0; //image.marginHeight();
 	ibm.bmh = ibm.bh + ibm.mh;
 
 	return ibm;

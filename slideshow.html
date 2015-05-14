@@ -20,8 +20,8 @@
 
 	<div class="footerCenter">
 		<span id="slideshowSubtitles" class="subtitle text"></span><br/>
-		<span id="slideshowCaption" class="subtitle text"></span>
-		<span id="slideshowTags"></span>
+		<span id="slideshowCaption" class="subtitle text"></span><br/>
+		<span id="slideshowTags"></span><br/>
 	</div>
 
 	<div class="footerLeftCorner">
@@ -29,7 +29,6 @@
 			<span id="slidePlayerMessage" class="translucent small status text"></span>
 			<span id="slidePlayerControls" class="translucent"></span>
 			<br/>
-			<img class="icon" src="icons/thumbnails.png" alt="controls" title="controls (C)" onclick="UI.slideshow.toggleControls()"/>
 			<span id="controls" class="controls">
 				<img class="icontr" id="transitionIcon" src="icons/blend.png" onclick="UI.slideshow.nextTransition()" alt="transition" title="transition (T)"/>
 				<img class="icontr" id="zoomIcon" src="icons/zoom.png" onclick="UI.slideshow.toggleZoom()" alt="zoom/fit" title="zoom/fit (Z)"/>
@@ -37,11 +36,11 @@
 				<span class="translucent" id="speed"></span>
 				<img class="icontr" id="fasterIcon" src="icons/arrow-forward.png" onclick="UI.slideshow.faster()" alt="faster" title="faster (UP)"/>
 			</span>
-			<br/>
-			<span class="translucent">
-				<span id="imageText"></span>
-				<a id="imageLink" target="full"></a>
-			</span>
+		</div>
+		<div>
+			<img class="icon" src="icons/thumbnails.png" alt="controls" title="controls (C)" onclick="UI.slideshow.toggleControls()"/>
+			<span id="imageText" class="textOutline bold"></span>
+			<a id="imageLink" class="textOutline orange bold" target="full"></a>
 		</div>
 	</div>
 </div>

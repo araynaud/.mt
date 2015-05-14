@@ -260,9 +260,9 @@ $(window).resize(function(event)
 <?php include("slideshow.html");?>
 
 <div id="audioContainer" class="footerRightCorner right noprint">
-	<div id="musicPlayerMessage" class="text"></div>
-	<div id="musicPlayerControls"></div>	
-	<div id="musicPlayerPlaylist" class="playlist scrollY"></div>
+	<div id="musicPlayerMessage" class="text controls"></div>
+	<div id="musicPlayerControls" class="controls"></div>	
+	<div id="musicPlayerPlaylist" class="controls playlist scrollY"></div>
 	<div id="musicPlayer"></div>
 </div>
 

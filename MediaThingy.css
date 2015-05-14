@@ -101,6 +101,16 @@ pre
 	font-weight: bold;
 }
 
+a.subtitle
+{	
+	color: white;
+}
+
+a.subtitle, a.textOutline, a.orange
+{	
+	text-decoration: none;
+}
+
 .textOutline, .subtitle
 {
 	color: white;
@@ -234,7 +244,7 @@ div.file .edit, .captionTop
 	width: 100%;	
 }
 
-.caption, .captionBelow, .edit, a.article
+.caption, .captionBelow, a.article
 {
 	text-align: center;
 }
@@ -251,7 +261,7 @@ div.file .edit, .captionTop
     text-shadow: black 1px 1px;
 }
 
-.translucent a, .caption a, .captionBelow a, .captionTop a
+.translucent a, .caption a, .captionBelow a, .captionTop a, .orange
 {
 	color: orange;
 }
@@ -1056,7 +1066,7 @@ a.tag
 		background-color: rgb(221,221,221);
 	}
 
-	.translucent, .caption, .captionBelow, .edit
+	.translucent, .caption, .captionBelow
 	{
 		color:white;
 		background-color: rgba(0, 0, 0, 0.5);
@@ -1075,7 +1085,7 @@ a.tag
 		display:none;
 	}
 
-	.translucent, .caption, .captionBelow, .edit
+	.translucent, .caption, .captionBelow
 	{
 		color:black;
 		background-color: rgba(255, 255, 255, 0.5);

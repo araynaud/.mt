@@ -54,14 +54,14 @@ UI.displayEdit = function(filebox)
 	}
 
 	UI.editDiv.appendTo(filebox).show();
-
+	UI.editDiv.toggleClass("translucent", UI.mode=="index");
 	UI.currentFile=album.getByAttribute(filebox) || UI.slideshow.currentFile;
 	if(!UI.currentFile) return;
 
 	var link=UI.currentFile.getShortUrl();
 	UI.fileUrlLink.attr("href", link);
 
-	UI.rotateIcons.toggle(User.isUploader() &&  UI.currentFile.isImage());
+	UI.rotateIcons.toggle(User.isUploader() && UI.currentFile.isImage());
 //	UI.editDiv.find("img.notdir").toggle(!UI.currentFile.isDir());
 	$("#cb_selected").toggleChecked(UI.currentFile.selected, true);
 //	UI.setStatus(UI.currentFile.id + " " + UI.currentFile.selected);
