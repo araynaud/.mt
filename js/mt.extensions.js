@@ -657,7 +657,9 @@ Array.fromArguments = function(args, flat, separator)
 Array.prototype.divideInto = function(nb,transpose)
 {
 	//divide in 1 or more than length = same array
-	if(isMissing(nb) || nb <=1) //|| nb > this.length)
+	if(isEmpty(this))
+		return [];
+	if(isMissing(nb) || nb <=1) 
 		return [this];
 	nb=Math.floor(nb);
 	if(nb > this.length)
