@@ -44,7 +44,7 @@ Html5Player.playerSettings=
 		id:"musicPlayer",
 		autostart: false,		
 		repeat: true,
-		style: { width: "100%" },
+		style: { width: "100%", "max-height": "32px" },
 		playlist: {	position: "top", showAll: false, maxHeight: 200 }
 	},
 	video:
