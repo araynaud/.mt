@@ -69,7 +69,7 @@ if($ivEnabled && $format=="thumbnail")
 		writeBinaryFile($outputFile, $tnImage);
 	}
 	if($tnImage)
-		header("Content-Type: image/jpeg");
+		setContentType("image", "jpeg");
 	echo $tnImage;
 	return;
 }
@@ -253,7 +253,7 @@ outputImage($img, $outputFile, $format);
 if($outputFile===NULL || isDebugMode()) //to response only
 	return;
 
-header('Content-Length: ' . filesize($outputFile));
+//header('Content-Length: ' . filesize($outputFile));
 $fp = fopen($outputFile, 'rb'); //stream the image directly from the generated file
 fpassthru($fp);
 fclose($fp);	

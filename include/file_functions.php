@@ -50,7 +50,7 @@ function getFileId($filename, $type="")
 
 function readTextFile($filename)
 {
-	if(!file_exists($filename) || filesize($filename)==0 || is_dir($filename))
+	if(!@file_exists($filename) || filesize($filename)==0 || is_dir($filename))
 		return "";
 
 	return file_get_contents($filename);
@@ -148,7 +148,7 @@ function deleteChunks($relPath,$filename)
 // Read array of lines
 function readArray($filename, $valuesAsKeys=false)
 {
-	if(!file_exists($filename) || filesize($filename)==0 || is_dir($filename))
+	if(!@file_exists($filename) || filesize($filename)==0 || is_dir($filename))
 		return array();
 	//remove windows CR/LF  from each line
 	$lineArray = file($filename, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
@@ -165,7 +165,7 @@ function readArray($filename, $valuesAsKeys=false)
 function readCsvFile($filename, $keyColumn=false, $separator=",", $keySeparator=false, &$csvRows = array())
 {
 //	debug("readCsvFile",$filename);
-	if(!file_exists($filename))
+	if(!@file_exists($filename))
 		return $csvRows;
 	if (($handle = fopen($filename, "r")) == FALSE)
 		return $csvRows;

@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'Impact'; 
-	src: url('fonts/impact.woff') format('woff'), url('fonts/impact.ttf')  format('truetype');
+	src: url('fonts/impact.woff') format('woff'), url('fonts/impact.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -158,8 +158,9 @@ a.subtitle, a.textOutline, a.orange
 
 .bg, .bgCover
 {
-    background-repeat:no-repeat;
-    background-position: left top fixed;
+    background-repeat: no-repeat;
+    background-position: center top;
+	background-attachment: fixed;
     background-size: cover;
 }
 

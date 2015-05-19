@@ -1,34 +1,5 @@
 <?php
 
-/*
-
-image_collage.php?
-size=
-border =
-margin = 
-rows=img1,img2,img3;img6;img4,img5
-columns=img1,img2,img3;img6;img4,img5
-
-ratio = 
-default: keep each image ratio compute rows/columns automatically
-ratio = 1
-force ratio; crop each image to fit in box (1=square)
-ratio = 1;1.78;.75 force ratio for images in each row/column
-
-use .ss images
-
-rows: 
-img1  img2  img3
------ img6 -----
--img4--  --img5-
-
-columns:
-img1    |   img4
-img2  img6   |
-img3    |   img5
-
-*/
-
 require_once("include/config.php");
 session_start(); 
 error_reporting(E_ERROR | E_PARSE | E_WARNING | E_NOTICE);
