@@ -50,12 +50,8 @@ parsing
 
 Angular UI.
 enhance album service with action API
-
-
 views: album, slideshow, video, audio, article
 user/login/access controller
-
-use file_put_contents with append flag.
 
 slideshow: use Reveal-js
 
