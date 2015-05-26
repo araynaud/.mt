@@ -9,3 +9,4 @@ skins/
 web.config
 .DS_Store
 .dateIndex.csv
+.config.local.csv
