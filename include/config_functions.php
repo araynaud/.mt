@@ -12,11 +12,15 @@ function LoadConfiguration($path=null, &$configData = array())
 {
 debug("LoadConfiguration", $path);
 	$appRootDir = pathToAppRoot();
-//1 default config in .mp/config
+//1 default config in .mt/config
 	$configFilename = combine($appRootDir, "config", ".config.csv");
 	$configData = readConfigFile($configFilename); 
 
-//2 site root config: should contain directory mappings.
+//2a local config in .mt/config (not in repository). should contain directory mappings.
+	$configFilename = combine($appRootDir, "config", ".config.local.csv");
+	readConfigFile($configFilename, $configData);
+	
+//2b site root config: should contain directory mappings.
 	$configFilename = combine(pathToDataRoot(), ".config.csv");
 	readConfigFile($configFilename, $configData);
 
