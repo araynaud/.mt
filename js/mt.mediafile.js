@@ -192,7 +192,7 @@ MediaFile.prototype.searchString = function()
 {
 	var exts = this.exts ? this.exts.join(" ") : "";
 	var tags = this.Tags().makeTitle();
-	return "{0} {1} {2} {3} {4} {5}".format(this.name, exts, this.getTitle(), tags, this.description || "");
+	return "{0} {1} {2} {3} {4} {5} {6}".format(this.name, exts, this.getTitle(), tags, this.description || "", this.getFormattedDateTime());
 }
 
 MediaFile.prototype.initTags = function()
@@ -363,6 +363,19 @@ MediaFile.prototype.getTakenDate = function(includeTime)
 {
 	return MediaFile.getTakenDate(this, includeTime);
 };
+
+MediaFile.prototype.getFormattedDate = function(includeTime)
+{
+	if(!this.takenDate) return "";
+	return new Date(this.getTakenDate()).toDateString();
+}
+
+MediaFile.prototype.getFormattedDateTime = function(includeTime)
+{
+	if(!this.takenDate) return "";
+	return new Date(this.getTakenDate(true).replace(" ", "T")).toLocaleFormat();
+}
+
 
 MediaFile.getPath = function (mediaFile)
 {

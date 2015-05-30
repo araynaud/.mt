@@ -359,6 +359,7 @@ Album.searchFiles = function(fileList, search)
 Album.prototype.searchFiles = function(fileList, search)
 {  
 	//loop through object and restrict selection
+	this.searchFilters = search;
 	if(isEmpty(fileList) || isEmpty(search)) return fileList;
 	this.searchResults = Album.selectFiles(fileList, search);
 	return this.searchResults;

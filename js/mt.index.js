@@ -55,7 +55,7 @@ UI.displayFiles = function(selectedFiles, transition, append)
 	}
 
 	UI.mediaFileDiv = transition ? UI.transition.getNextSlide() : UI.transition.getCurrentSlide();
-//	UI.setStatus();
+	UI.setStatus();
 	UI.getDisplayOptions(album);
 	
 	UI.displayPageLinks(album);
@@ -149,6 +149,14 @@ UI.displayTags = function()
 
 	$("input.tagOption, input.operator").bindReset("click", UI.search);		
 	UI.styleCheckboxes("", "tagOption", "tagLabel");
+
+	if(!album.searchFilters || isEmpty(album.searchFilters.tags)) return;
+
+	for(var i=0; i < album.searchFilters.tags.length; i++)
+	{
+		var tag=album.searchFilters.tags[i];
+		$("#cb_tag_" + tag).toggleChecked();
+	}
 };
 
 //use mediafile.width and height
@@ -503,7 +511,7 @@ UI.search = function()
 	var search = UI.getSearchOptions();
 	album.searchFiles(album.mediaFiles, search);
 	//or make new Album AJAX request
-	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
+//	UI.setStatus("search: {0} / results:{1}.".format(Object.toText(search, " "), album.searchResults.length));
 	album.setPageNumber(1);
 
 	UI.slideshow.pics =  album.selectSlideshowFiles();
