@@ -192,7 +192,7 @@ MediaFile.prototype.searchString = function()
 {
 	var exts = this.exts ? this.exts.join(" ") : "";
 	var tags = this.Tags().makeTitle();
-	return "{0} {1} {2} {3} {4} {5} {6}".format(this.name, exts, this.getTitle(), tags, this.description || "", this.getFormattedDateTime());
+	return "{0} {1} {2} {3} {4} {5} {6}".format(this.name, exts, this.getTitle(), tags, this.description || "", this.getFormattedDate());
 }
 
 MediaFile.prototype.initTags = function()
