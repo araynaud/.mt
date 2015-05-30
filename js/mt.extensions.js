@@ -9,8 +9,7 @@ function isEmpty(variable)
 {
 	if(isMissing(variable)) return true;
 	if(!isMissing(variable.length)) return variable.length === 0;
-	if(isObject(variable))
-		!Object.hasKeys(variable);
+	if(isObject(variable))	return !Object.hasKeys(variable);
 	return false;
 }
 
@@ -1067,7 +1066,7 @@ Object.hasKeys = function (obj)
 {
     if(!obj) return false;
     for(var key in obj)
-        if (obj.hasOwnProperty(key))
+        if (key && obj.hasOwnProperty(key))
             return true;
     return false;
 };

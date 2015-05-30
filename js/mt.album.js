@@ -216,17 +216,26 @@ Album.prototype.initTags = function()
 
 Album.prototype.setTag = function(tag, file, state)
 {
+	var listChanged=false;
 	if(!state)
 	{
 		delete this.tags[tag][file];
 		if(isEmpty(this.tags[tag]))
+		{
+			listChanged=true;
 			delete this.tags[tag];
-		return;
+		}
+		return listChanged;
 	}
 
 	if(!this.tags)		this.tags = {};
-	if(!this.tags[tag])	this.tags[tag]= {};
-	this.tags[tag][file]= file;
+	if(!this.tags[tag])
+	{
+		listChanged=true;
+		this.tags[tag] = {};
+	}
+	this.tags[tag][file] = file;
+	return listChanged;
 };
 
 Album.prototype.loadTags = function()

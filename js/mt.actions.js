@@ -304,8 +304,9 @@ UI.afterAction = function(response, mediaFile, params)
 		case "addtag":
 		case "removetag":
 			mediaFile.setTag(response.parameters.tag, response.parameters.state);
-			album.setTag(response.parameters.tag, mediaFile.name, params.action=="addtag");
-			UI.displayTags();
+			var tagListChanged = album.setTag(response.parameters.tag, mediaFile.name, response.parameters.state);
+			if(tagListChanged)
+				UI.displayTags();
 		case "description":
 			return UI.refreshMediaFile(mediaFile);
 		case "background":

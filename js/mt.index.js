@@ -55,7 +55,7 @@ UI.displayFiles = function(selectedFiles, transition, append)
 	}
 
 	UI.mediaFileDiv = transition ? UI.transition.getNextSlide() : UI.transition.getCurrentSlide();
-	UI.setStatus();
+//	UI.setStatus();
 	UI.getDisplayOptions(album);
 	
 	UI.displayPageLinks(album);
@@ -145,7 +145,7 @@ UI.displayTags = function()
 	UI.renderTemplate("articleLinkTemplate", UI.textListDiv, album.articleFiles);
 
 	if(isEmpty(album.tags)) return;
-	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags), "append");
+	UI.renderTemplate("tagSelectTemplate", UI.tagListDiv, Object.keys(album.tags)); 
 
 	$("input.tagOption, input.operator").bindReset("click", UI.search);		
 	UI.styleCheckboxes("", "tagOption", "tagLabel");
