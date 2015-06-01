@@ -126,7 +126,7 @@ Html5Player.prototype.setupEvents = function()
 	   	hp.setMessage("paused"); 
 		hp.settings.autostart = false;
 	    var sl=hp.slideshow;
-		if(sl && sl.play)
+		if(sl && !sl.currentFile.isImage())
 			sl.togglePlay(false);
     });
 

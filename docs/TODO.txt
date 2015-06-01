@@ -1,5 +1,10 @@
-select untagged files: tag=""
-slideshow: skip video, do not pause
+OK select untagged files: tag=""
+slideshow: if playing, when skipping video, do not pause slideshow
+difference ended / skip
+use player.stop ?
+depends on event source.
+player => stop slideshow
+slideshow skip => pause player, not slideshow
 
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php

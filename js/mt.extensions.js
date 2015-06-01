@@ -1085,9 +1085,9 @@ Object.toArray = function(obj, skipNull)
         	var value = obj[key];
             var element = {key: key};
             if(isObject(value))
-	            Object.merge(element, obj[key])
+	            Object.merge(element, obj[key], true);
 	        else 
-	        	element.value=value;
+	        	element.value = value;
             vals.push(element);
         }
     return vals;

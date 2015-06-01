@@ -491,9 +491,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 	{
 		if(this.mplayer)
 		{
-			var pl= this.play;
 			this.mplayer.pause();
-			this.play = pl;
 			this.mplayer.hide(this.transition.duration);
 		}
 
