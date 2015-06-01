@@ -70,7 +70,7 @@ slideshow.tnIndex=1
 slideshow.animate=true
 slideshow.zoom=1
 slideshow.animStartZoom=1
-slideshow.animEndZoom=2
+slideshow.animEndZoom=3
 slideshow.autoPlayAudio=false
 
 ;UI transition

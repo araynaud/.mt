@@ -10,7 +10,8 @@ display.group=true
 transition.changeMode=false
 slideshow.changeMode=false
 slideshow.zoomFunction=crossFade
+slideshow.zoom=2
 
-MediaPlayer.video.enabled=true
+MediaPlayer.video.enabled=false
 MediaPlayer.audio.enabled=true
 MediaPlayer.slide.enabled=true
