@@ -528,7 +528,9 @@ UI.getSelectedTags = function()
 	});
 
 	//tag checkboxes: AND / OR : All/any ?
-	if(tags.length>1)
+	if(tags.length==1)
+		tags=tags[0];
+	else if(tags.length>1)
 		tags.matchAll = $("input#cb_all_tags").is(":checked");
 
 	return tags;
@@ -557,7 +559,7 @@ UI.getSearchOptions = function()
 		obj.type = t;
 
 	t = UI.getSelectedTags();
-	if(!isEmpty(t))
+	if(isString(t) || !isEmpty(t))
 		obj.tags = t;
 
 	return obj;

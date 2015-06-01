@@ -232,6 +232,7 @@ $(window).resize(function(event)
 		<span class="nowrap" id="counts"></span>
 		<input id="cb_tagList" type="checkbox" class="lOption" label="Tags" title="Header"/>
 		<input id="cb_all_tags" type="checkbox" class="operator" icon="icons/intersection10.png" label="All" title="Match all tags (intersect)"/>
+		<input id="cb_tag_" type="checkbox" class="tagOption" icon="icons/delete.png" label="" title="untagged"/>
 		<div id="tagList" class="inlineBlock"></div>
 		<span id="pageCounts" class="translucent"></span>
 		<img class="upload icon" src="icons/collage.png" title="Make collage" id="collageIcon" alt="collage" onclick="UI.collage()"/>

@@ -861,9 +861,10 @@ MediaFile.testProperty = function(element, key, value)
 		return result;
 	}
 
-	if(isString(field))	return field.containsText(value);
-	if(isArray(field))	return field.contains(value);
-	if(isObject(field))	return field.hasOwnProperty(value);
+	if(isEmpty(field))  return isEmpty(value);
+	if(isString(field)) return field.containsText(value);
+	if(isArray(field))  return field.contains(value);
+	if(isObject(field)) return field.hasOwnProperty(value);
 	return (field == value);  
 }
 
