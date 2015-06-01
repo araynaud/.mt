@@ -197,7 +197,7 @@
 		<div class="number small floatL">{{:(#index+1)}}</div>
 
 		<a href="{{:~fileUrl(#data)}}" class="track" title="{{:title}} {{:getTags().join(', ') }}">
-			{{if tnsizes}}
+			{{if tnsizes || isExternalVideoStream() }}
 				<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" />
 			{{/if}}
 			{{: description || title}}

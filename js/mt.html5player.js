@@ -536,16 +536,26 @@ Html5Player.prototype.isPlaying = function()
 //jwplayer mapped function
 Html5Player.prototype.play = function()
 {
-	var pl = this.activePlayer();
+	Html5Player.play(this.activePlayer());
+	Html5Player.pause(this.inactivePlayer());
+};
+
+Html5Player.prototype.pause = function()
+{
+	Html5Player.pause(this.activePlayer());
+	Html5Player.pause(this.inactivePlayer());
+};
+
+Html5Player.play = function(pl)
+{
 	if(pl && pl.play)
 		pl.play();
 	else if(pl && pl.playVideo)
 		pl.playVideo();
 };
 
-Html5Player.prototype.pause = function()
+Html5Player.pause = function(pl)
 {
-	var pl= this.activePlayer();
 	if(pl && pl.pause)
 		pl.pause();
 	else if(pl && pl.pauseVideo)

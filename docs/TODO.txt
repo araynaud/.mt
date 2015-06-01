@@ -1,3 +1,6 @@
+select untagged files: tag=""
+slideshow: skip video, do not pause
+
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
 
