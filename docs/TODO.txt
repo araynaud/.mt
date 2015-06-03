@@ -1,10 +1,5 @@
-OK select untagged files: tag=""
-slideshow: if playing, when skipping video, do not pause slideshow
-difference ended / skip
-use player.stop ?
-depends on event source.
-player => stop slideshow
-slideshow skip => pause player, not slideshow
+image_collage: add background image
+if size too big, recalculate.
 
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
@@ -13,11 +8,13 @@ slideshow skip => pause player, not slideshow
 ~thumbnailUrl(#data,~albumVar('tnIndex'),true)  ~getThumbnailUrl(_parent.tnIndex,true)
 ~albumVar('pageNum')  => _parent.pageNum or albumVar('pageNum')
 
+remove references to album in mediaFile
+
+
 3 use tnindex=2.
 free: add size limit in config for tn creation. if too big, use tnindex=1
 
-4 write array.prototype.groupBy
-see distinct and countBy
+OK 4 write array.prototype.groupBy. see distinct and countBy
 
 5 autotag based on file: type
 video: stream / nostream / youtube
@@ -31,14 +28,24 @@ MediaFile.prototype.autotag at end of constructor. call function or method
 	
 tag images: best, youtube, anim, panorama etc.
 
-link to youtube video : on youtube.
+7 mobile link to youtube video : on youtube.
 
 image sizes: add min height, min width for panoramas. 
 use hd image in slideshow. 
 use max stretch factor to detect need for hd image
 animate scroll from left to right
 
-2 android app, uploader share intent
+9: BD, comic strip.
+row layout.
+white background, 1px black border on each image
+bubbles.
+
+10 twitter share. FB post image via REST API.
+http://stackoverflow.com/questions/9818139/facebook-how-to-upload-photo-via-url
+https://developers.facebook.com/docs/graph-api/making-multiple-requests
+https://developers.facebook.com/blog/post/526/
+
+12 android app, uploader share intent
 
 ------
 Enhance Article view
@@ -55,6 +62,8 @@ parsing
 [video:video1,video2]
 
 ---------------
+OK select untagged files: tag=""
+OK slideshow: if playing, when skipping video, do not pause slideshow
 
 Angular UI.
 enhance album service with action API

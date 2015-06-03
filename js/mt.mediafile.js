@@ -14,10 +14,8 @@ function MediaFile(data, type, key)
 		Object.merge(this, metadata, true);
 	}
 	else
-	{
 		Object.merge(this, data, true);
-		this._parent = window.album || {};
-	}
+
 	this.getId();
 	this.getTitle();
 	this.getRatio();
