@@ -186,7 +186,7 @@ UI.fileAction = function(params)
 	if(isMissing(windowName))
 	{
 		var callbacks = {success: UI.afterAction };
-		mediaFile.scriptAjax(scriptName, params, false, true, callbacks);
+		mediaFile.scriptAjax(scriptName, params, true, true, callbacks);
 	}
 	else
 		UI.goToPage(scriptName, params, windowName);
