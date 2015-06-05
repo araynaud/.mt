@@ -41,9 +41,19 @@ white background, 1px black border on each image
 bubbles.
 
 10 twitter share. FB post image via REST API.
+unused/fb_upload.php
 http://stackoverflow.com/questions/9818139/facebook-how-to-upload-photo-via-url
 https://developers.facebook.com/docs/graph-api/making-multiple-requests
 https://developers.facebook.com/blog/post/526/
+
+function fbUploadPicture($albumId, $photoUrl, $message, $token) 
+{
+	$photoUrl = urlencode($photoUrl);
+	$message = urlencode($message);
+     $url= "https://graph.facebook.com/$albumId/photos?url=$photoUrl&message=$message&method=POST&access_token=$token";
+     return file_get_contents($url);
+}
+
 
 12 android app, uploader share intent
 
