@@ -643,7 +643,8 @@ div.dir
 
 .mediumImage img.thumbnail
 {
-	height: 270px;
+	max-height: 270px;
+	max-width: 100%;
 }
 
 .row div.dir.mediumImage
@@ -679,10 +680,17 @@ div.dir img.thumbnail
 	max-width: 100%;
 }
 
-.fullImage .square
+.desktop .fullImage .square
 {
 	height: 750px;
 	width: 750px;
+	max-width: 100%;
+}
+
+.mobile .fullImage .square
+{
+	height: 250px;
+	width: 250px;
 	max-width: 100%;
 }
 

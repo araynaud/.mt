@@ -9,6 +9,7 @@ function Album(data)
 	this.pageNum=1;
 	this.startFileIndex=0;
 	this.nbPages=1;
+	this.tags = {};
 
 	//if data is object: loop for each key, use Object.merge = function (this, data);
 	if(isObject(data))
