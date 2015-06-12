@@ -6,7 +6,7 @@ function getExifDateTaken($filename, $exif=NULL)
       $exif=getExifData($filename);
   if(!$exif)  return "";
 
-  $date = arrayGetCoalesce($exif, "DateTimeOriginal", "DateTime", "EXIF.DateTimeOriginal", "IFD0.DateTime");
+  $date = arrayGetCoalesce($exif, "DateTime", "DateTimeOriginal", "EXIF.DateTimeOriginal", "IFD0.DateTime");
   if(!$date)
       return "";
 
@@ -14,6 +14,8 @@ function getExifDateTaken($filename, $exif=NULL)
   if(contains($date,"/")) return strtotime($date);
 
   $pos = strpos($date,':');
+  if($pos===false)  return $date;
+
   $date[$pos]='-';
   if($pos>4) $date=deleteChars($date,4,$pos);
 

@@ -40,16 +40,7 @@ function Album(data)
 		this.groupedFiles[type] = typeFiles;	
 	}
 
-	if(this.youtube && window.MediaPlayer) // && MediaPlayer.YouTubeReady)
-		for(var key in this.youtube)
-		{
-			if(!this.groupedFiles.VIDEO)
-				this.groupedFiles.VIDEO={};
-			var mf= {id: key, name: this.youtube[key], title: this.youtube[key], type:"VIDEO", stream:"youtube", _parent: this};
-			mf = new MediaFile(mf);
-			this.groupedFiles.VIDEO[key]=mf;
-		}
-
+	this.loadYouTube();
 	this.otherFiles = this.getFilesByType("FILE");
 	this.articleFiles = this.getFilesByType("TEXT");
 	this.musicFiles = this.getFilesByType("AUDIO");
@@ -63,6 +54,22 @@ function Album(data)
 
 Album.serviceUrl = ""; 
 Album.defaultFilter="type";
+
+Album.prototype.loadYouTube = function ()
+{
+	if(!this.youtube || !window.MediaPlayer || !MediaPlayer.YouTubeReady) return;
+
+	this.tags.YouTube=[];
+	if(!this.groupedFiles.VIDEO)
+		this.groupedFiles.VIDEO={};
+	for(var key in this.youtube)
+	{
+		var mf= {id: key, name: key, title: this.youtube[key], type:"VIDEO", stream:"youtube", _parent: this};
+		mf = new MediaFile(mf);
+		this.tags.YouTube.push(key);
+		this.groupedFiles.VIDEO[key]=mf;
+	}
+}
 
 Album.prototype.getScriptUrl = function (scriptName, params)
 {

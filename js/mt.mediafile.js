@@ -49,10 +49,15 @@ MediaFile.prototype.contains = function(key)
 };
 
 //get value from parent album
-MediaFile.prototype.albumVar = function(key, default_)
+MediaFile.prototype.getAlbum = function(key, default_)
 {
 	var value = (key && this._parent) ? this._parent[key] : this._parent;
 	return isMissing(value) ? default_ : value;
+};
+
+MediaFile.prototype.getConfig = function(key, default_)
+{
+	return this.getAlbum("config", {})[key];
 };
 
 //Todo functions
@@ -92,7 +97,7 @@ MediaFile.prototype.getVersions = function()
 	for(var i=0; i<this.exts.length; i++)
 	{
 		var ext = this.exts[i];
-		var v = { ext: ext, size: this.size ? this.size[i] : null, date: this.date[i] };
+		var v = { ext: ext, size: this.size ? this.size[i] : null, date: this.date ? this.date[i] : null };
 		this.versions.push(v);
 		this.versions[ext] = v;
 	}
@@ -960,6 +965,7 @@ MediaFile.prototype.play = function()
 	{
 		case "VIDEO":
 			if(this.isExternalVideoStream() && (config.youtube.mode!="iframe" || !MediaPlayer.YouTubeReady))
+				//TODO open youtube url or app in youtube tab
 				return false;
 			if(!window.MediaPlayer || !this.isVideoStream())
 				return false;
