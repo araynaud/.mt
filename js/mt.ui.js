@@ -364,9 +364,11 @@ UI.divClasses = function(mediaFile)
 
 UI.imgClasses = function(mediaFile)
 {
-	var classes="loading";
+	var classes="loading thumbnail";
+	if(mediaFile.isVideoStream() && config.MediaPlayer.slide.enabled)
+		classes += " playLink";
+
 	if(album.fadeIn) classes+=" hidden";
-	//classes+=" shrinkW";+
  	if(album.columns>1)
 		classes+=" stretchW";
 	else if(UI.sizes[album.size].fixedHeight)

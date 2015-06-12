@@ -965,8 +965,8 @@ MediaFile.prototype.play = function()
 	{
 		case "VIDEO":
 			if(this.isExternalVideoStream() && (config.youtube.mode!="iframe" || !MediaPlayer.YouTubeReady))
+				return UI.goToUrl(this.getFileUrl(), "YouTube");
 				//TODO open youtube url or app in youtube tab
-				return false;
 			if(!window.MediaPlayer || !this.isVideoStream())
 				return false;
 			if(config.display.playVideo=="video")

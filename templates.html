@@ -18,37 +18,45 @@
 </script>
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
-	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:~albumVar('pageNum')}}" index="{{:getFileIndex(#index)}}">
+	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:_parent.pageNum}}" index="{{:getFileIndex(#index)}}">
 		{{if type=="DIR" && tncolumns && tncolumns.length}}
-			<a href="?{{:~filePath(#data)}}" title="{{>title}}">
-				<div class="{{if ~albumVar('columns')!=-1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
+			<a href="?{{:getFilePath()}}" title="{{>title}}">
+				<div class="{{if _parent.columns != -1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
 					{{for tncolumns[0] tmpl="tnTemplate"/}}
 				</div>
-				<div class="{{if ~albumVar('columns')!=-1}}smallThumbRight floatR{{else}}smallThumbBottom{{/if}}">
+				<div class="{{if _parent.columns != -1}}smallThumbRight floatR{{else}}smallThumbBottom{{/if}}">
 					{{for tncolumns[1] tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else type=="VIDEO" && isExternalVideoStream() && ~config("MediaPlayer").slide.enabled && ~config("youtube").mode=="iframe"}}
-				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data)}}" title="play from YouTube"/>
-		{{else type=="VIDEO" && tnsizes && isLocalVideoStream() && ~config("MediaPlayer").slide.enabled}}
-				<img class="thumbnail playLink {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="play {{:stream}}"/>
-		{{else type=="VIDEO" && (tnsizes || isExternalVideoStream() && ~config("youtube").mode=="link") }}
-			<a href="{{:~fileUrl(#data,stream)}}" target="fileDownload">
-				<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}" title="download {{:stream}}"/>
+		{{else isImage() || isVideoStream() && getConfig("MediaPlayer").slide.enabled}}
+			<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}" title="view {{:stream}}"/>
+		{{else isVideo()}}
+			<a href="{{:getFileUrl()}}" target="fileDownload">
+				<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}" title="download {{:exts}}"/>
 			</a>
-		{{else type=="IMAGE"}}
-			<img class="thumbnail {{:~imgClasses(#data) link=false}}" src="{{:~thumbnailUrl(#data,~albumVar('tnIndex'),true)}}"/>
 		{{/if}}
 			
-		{{if ~albumVar('caption') && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
-		{{else ~albumVar('caption') && type=="DIR" tmpl='#dirCaptionTemplate'}}
-		{{else ~albumVar('caption') tmpl='#imageCaptionTemplate'}}
-		{{else ~albumVar('caption') tmpl='#descriptionTemplate'}}
+		{{if   _parent.caption && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
+		{{else _parent.caption && type=="DIR"   tmpl='#dirCaptionTemplate'}}
+		{{else _parent.caption && type=="IMAGE" tmpl='#imageCaptionTemplate'}}
+		{{else _parent.caption tmpl='#descriptionTemplate'}}
 		{{/if}}
-</div>{{if ~albumVar('columns')==1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
+</div>{{if _parent.columns == 1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
+
+<script id="thumbnailTemplate" type="text/x-jsrender">
+	{{if _parent.cropRatio }}
+		<div id="{{:id}}" class="square bgCenterCover {{:~imgClasses(#data) link=false}}"
+			style="background-image: url('{{:getThumbnailUrl(_parent.tnIndex,true)}}')">
+		</div>
+	{{else }}
+		<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}"/>
+	{{/if}}
+</script>
 
 <!--directory thumbnails-->
-<script id="tnTemplate" type="text/x-jsrender"><img class="thumbnail {{:~dirImgClasses(#data) link=false}}" src="{{:~combine(~fileUrl(#parent.parent.data), #data)}}" alt="{{:#data}}" /></script>
+<script id="tnTemplate" type="text/x-jsrender">
+	<img class="thumbnail {{:~dirImgClasses(#data) link=false}}" src="{{:~combine(~fileUrl(#parent.parent.data), #data)}}" alt="{{:#data}}" />
+</script>
 
 <!-- template for separator -->
 <script id="separatorTemplate" type="text/x-jsrender"> 
