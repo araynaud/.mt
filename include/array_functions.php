@@ -236,4 +236,46 @@ function arrayDivide($array, $nb = 1, $transpose = false)
 	return $result;
 };
 
+function arrayDistinct($data, $field)
+{
+	$distinct=array();
+	foreach ($data as $el)
+	{
+		if(!isset($el[$field])) continue;
+		$val = $el[$field];
+		if(!isset($distinct[$val]))
+			$distinct[$val] = $val;
+	}
+	return $distinct;
+}
+
+function arrayCountBy($data, $field)
+{
+	$distinct=array();
+	foreach ($data as $el)
+	{
+		if(!isset($el[$field])) continue;
+		$val = @$el[$field];
+		if(!isset($distinct[$val]))
+			$distinct[$val] = 1;
+		else 
+			$distinct[$val]++;
+	}
+	return $distinct;
+}
+
+function arrayGroupBy($data, $field)
+{
+	$distinct=array();
+	foreach ($data as $el)
+	{
+		if(!isset($el[$field])) continue;
+		$val = @$el[$field];
+		if(!isset($distinct[$val]))
+			$distinct[$val] = array();
+		$distinct[$val][] = $el;
+	}
+	return $distinct;
+}
+
 ?>
