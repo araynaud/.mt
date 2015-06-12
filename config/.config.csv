@@ -52,6 +52,7 @@ display.types=IMAGE;VIDEO;AUDIO
 .fit=width
 .percent=true
 .transpose=false
+.cropRatio=false
 .maxTnIndex=2
 .displayOptions=true
 .searchOptions=false

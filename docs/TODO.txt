@@ -1,20 +1,53 @@
-image_collage: add background image
-if size too big, recalculate.
 
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
+
+	
+2 image in square: set as css background-image, cover, centered
+
+<div id="marmeute_20100312_Murol_mv_0044" class="file image floater shrinkW90 mediumImage margin photoBorder shadow square bg" style="background-image: url(&quot;http://localhost/pictures/guenole/.ss/marmeute_20100312.Murol.mv.0117.jpg&quot;);" page="1" index="2">
+	<div class="caption hidden">
+		<span class="nowrap noscroll bold">marmeute  20100312  Murol  mv  0044</span>
+		<div>March 13 16:57</div>
+	</div>
+
+</div>
+
+.mediumImage.square {
+    height: 270px;
+    overflow-x: hidden;
+    width: 270px;
+}
+
+.bgCenterCover
+{
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+Trigger event on background image load  ? 
+http://stackoverflow.com/questions/3281651/trigger-event-on-background-image-load
+
+2 image_collage: add background image
+if size too big, recalculate.
+
+display image in fixed ratio div: panorama, 2:1, 16:9, 3:2, 4:3, 1:1
+centered, left, right, top, bottom ?
+
+4 extract title, description, tags from EXIF data.
+
+2 remove references to album in mediaFile
 
 3 templates: Replace helper functions with mediaFile methods:
 ~thumbnailUrl(#data,~albumVar('tnIndex'),true)  ~getThumbnailUrl(_parent.tnIndex,true)
 ~albumVar('pageNum')  => _parent.pageNum or albumVar('pageNum')
 
-remove references to album in mediaFile
-
-
-3 use tnindex=2.
+4 use tnindex=2.
 free: add size limit in config for tn creation. if too big, use tnindex=1
 
-OK 4 write array.prototype.groupBy. see distinct and countBy
+6 OK 4 write array.prototype.groupBy. see distinct and countBy
+PHP version
 
 5 autotag based on file: type
 video: stream / nostream / youtube
@@ -88,9 +121,7 @@ slideshow: use Reveal-js
 
 -------
 
-view counter
-by album
-by file
+view counter, by album, by file
 
 async ajax call to counter.php (public)  ?path=$path&file=$file
 -when displaying album
@@ -206,6 +237,15 @@ correct url path
 
 13 config file by user: config.username.csv
 where to store? override everything
+
+14 admin user: save current display and slideshow config as default for this dir
+uploader user: save config as default for this user
+
+preset configs: 
+full 1 col
+medium
+photo stack: border, 3 columns, 8 per page, rotate, no margin
+gif anim: full size
 
 15 config file editor
 key		value

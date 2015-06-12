@@ -360,7 +360,7 @@ debug($type, count($typeFiles));
 			}
 			$mf["oldestDate"] = getOldestFileDate($dirPath);
 			$mf["takenDate"] = $mf["newestDate"] = getNewestFileDate($dirPath);
-			$mf["thumbnails"] = subdirThumbs($dirPath, 4);
+			$mf["thumbnails"] = subdirThumbs($dirPath, 6);
 			$mf["description"] = $this->getDirDescription($name);
 			//setIfEmpty($mf["access"], "NO");
 		}

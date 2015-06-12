@@ -164,6 +164,13 @@ a.subtitle, a.textOutline, a.orange
     background-size: cover;
 }
 
+.bgCenterCover
+{
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
 div#files
 {
 	text-align: center;
@@ -583,15 +590,32 @@ div.dir
 	height: 223px;
 }
 
+.row div.dir.smallImage.square
+{
+	height: 180px;
+	width: 180px;
+}
+
 .tinyImage img.thumbnail
 {
 	height: 100px;
+}
+
+.tinyImage .square
+{
+	height: 100px;
+	width: 100px;
 }
 
 .row div.dir.tinyImage
 {
 	width: 128px;
 	height: 98px;
+}
+
+.row div.dir.tinyImage.square
+{
+	width: 98px;
 }
 
 .column  div.dir
@@ -605,6 +629,18 @@ div.dir
 	max-height: 225px;
 }
 
+.smallImage .square
+{
+	height: 180px;
+	width: 180px;
+}
+
+.mediumImage .square
+{
+	height: 270px;
+	width: 270px;
+}
+
 .mediumImage img.thumbnail
 {
 	height: 270px;
@@ -616,9 +652,21 @@ div.dir
 	height: 268px;
 }
 
-.largeImage img.thumbnail
+.row div.dir.mediumImage.square
+{
+	width: 268px;
+}
+
+.largeImage .square
 {
 	height: 450px;
+	width: 450px;
+}
+
+.largeImage img.thumbnail
+{
+	max-height: 450px;
+	max-width: 100%;
 }
 
 div.dir img.thumbnail
@@ -631,10 +679,22 @@ div.dir img.thumbnail
 	max-width: 100%;
 }
 
-.row div.dir.largeImage
+.fullImage .square
+{
+	height: 750px;
+	width: 750px;
+	max-width: 100%;
+}
+
+.row div.dir.largeImage, .row div.dir.fullImage
 {
 	width: 598px;
 	height: 448px;
+}
+
+.row div.dir.largeImage.square, .row div.dir.fullImage.square
+{
+	width: 448px;
 }
 
 /* ---------------- generic styles ---------------- */
@@ -757,12 +817,12 @@ div.video
 	border-radius: 40px;
 }
 
-div.video img.thumbnail
+div.video .thumbnail
 {
 	border-radius: 40px;
 }
 
-.video.photoBorder img.thumbnail
+.video.photoBorder .thumbnail
 {
 	border-radius: 30px;
 }

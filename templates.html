@@ -19,7 +19,7 @@
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
 	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:_parent.pageNum}}" index="{{:getFileIndex(#index)}}">
-		{{if type=="DIR" && tncolumns && tncolumns.length}}
+		{{if isDir() && tncolumns && tncolumns.length}}
 			<a href="?{{:getFilePath()}}" title="{{>title}}">
 				<div class="{{if _parent.columns != -1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
 					{{for tncolumns[0] tmpl="tnTemplate"/}}
@@ -28,11 +28,10 @@
 					{{for tncolumns[1] tmpl="tnTemplate"/}}
 				</div>
 			</a>
-		{{else isImage() || isVideoStream() && getConfig("MediaPlayer").slide.enabled}}
-			<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}" title="view {{:stream}}"/>
+		{{else isImage() || isVideoStream() && getConfig("MediaPlayer").slide.enabled tmpl='#thumbnailTemplate'}}
 		{{else isVideo()}}
 			<a href="{{:getFileUrl()}}" target="fileDownload">
-				<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}" title="download {{:exts}}"/>
+				{{if true tmpl='#thumbnailTemplate' /}}
 			</a>
 		{{/if}}
 			
@@ -44,8 +43,8 @@
 </div>{{if _parent.columns == 1}}<br/>{{/if}}{{:~setGroup(#data)}}</script>
 
 <script id="thumbnailTemplate" type="text/x-jsrender">
-	{{if _parent.cropRatio }}
-		<div id="{{:id}}" class="square bgCenterCover {{:~imgClasses(#data) link=false}}"
+	{{if _parent.cropRatio  && _parent.columns < 2 }}
+		<div class="square bgCenterCover {{:~imgClasses(#data) link=false}}"
 			style="background-image: url('{{:getThumbnailUrl(_parent.tnIndex,true)}}')">
 		</div>
 	{{else }}

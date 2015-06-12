@@ -30,6 +30,7 @@ UI.keys =
 		'M': function() { UI.setOption("margin"); },	//margins
 		'T': function() { UI.setOption("transpose"); },	//T: transpose columns
 		'O': function() { UI.setOption("displayOptions"); }, //options
+		'Q': function() { UI.setOption("cropRatio"); },	//T: transpose columns
 		'S': function() { UI.setOption("searchOptions"); }, //search options
 		'X': function() { $('#dd_sort').selectNextOption(); },
 		'Z': function() { $('#dd_fit').selectNextOption(); },

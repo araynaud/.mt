@@ -48,7 +48,7 @@ UI.modes=
 UI.sizes = {};
 UI.sizes.tiny = {"divClasses": "tinyImage", tnIndex: 0, fixedHeight: true};
 UI.sizes.small  = {"divClasses": "smallImage", tnIndex: 0};
-UI.sizes.medium  = {"divClasses": "mediumImage", tnIndex: 0, fixedHeight: true};
+UI.sizes.medium  = {"divClasses": "mediumImage", tnIndex: 1, fixedHeight: true};
 UI.sizes.large  = {"divClasses": "largeImage", tnIndex: 1, fixedHeight: true};
 UI.sizes.full  = {"divClasses": "fullImage", tnIndex: 1};
 
@@ -352,6 +352,9 @@ UI.divClasses = function(mediaFile)
 		if(album.columns>1) classes+="V";
 	}
 
+	if(album.cropRatio)
+		classes+=" square";
+
 	if(album.border && !mediaFile.isTransparent())
 		classes+=" photoBorder";
 
@@ -368,7 +371,7 @@ UI.imgClasses = function(mediaFile)
 	if(mediaFile.isVideoStream() && config.MediaPlayer.slide.enabled)
 		classes += " playLink";
 
-	if(album.fadeIn) classes+=" hidden";
+	if(album.fadeIn && !album.cropRatio) classes+=" hidden";
  	if(album.columns>1)
 		classes+=" stretchW";
 	else if(UI.sizes[album.size].fixedHeight)
@@ -391,7 +394,7 @@ UI.captionClasses = function(mediaFile)
 {
 	var classes= "caption";
 	//if(album.columns<1 && mediaFile.type!="DIR") classes+= "Below";
-	if(album.fadeIn && !mediaFile.isDir())	 classes+=" hidden";
+	if(album.fadeIn && !album.cropRatio && !mediaFile.isDir())	 classes+=" hidden";
 	if(album.tnIndex == 0 || album.columns>1)
 		classes+=" small";
 

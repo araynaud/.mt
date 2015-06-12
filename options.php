@@ -75,6 +75,7 @@
 			</span>
 			<span id="rowOptions" class="spaceLeft">
 				<?php displaySizeOptions("dOption");?>
+				<input class="dOption" id="cb_cropRatio" type="checkbox" label="Sq" title="square crop"/>				
 			</span>
 		</div>
 		<div class="inlineBlock nowrap">
