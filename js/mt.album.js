@@ -670,6 +670,10 @@ Album.prototype.loadDisplayOptions = function()
 	return displayConfig;
 };
 
+Album.prototype.isMultiColumn = function()
+{
+	return !album.cropRatio && album.columns > 1 ;
+}
 
 Album.getShortPath = function ()
 {

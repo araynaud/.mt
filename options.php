@@ -75,10 +75,10 @@
 			</span>
 			<span id="rowOptions" class="spaceLeft">
 				<?php displaySizeOptions("dOption");?>
-				<input class="dOption" id="cb_cropRatio" type="checkbox" label="Sq" title="square crop"/>				
 			</span>
 		</div>
 		<div class="inlineBlock nowrap">
+			<input class="dOption" id="cb_cropRatio" type="checkbox" label="Sq" title="square crop"/>				
 			<input class="dOption" id="cb_rotate" type="checkbox" label="R" title="Rotate Images"/>
 			<input class="dOption" id="cb_border" type="checkbox" label="B" title="Photo border"/>
 			<input class="dOption" id="cb_margin" type="checkbox" label="M" title="Margin"/>

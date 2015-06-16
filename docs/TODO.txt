@@ -1,9 +1,11 @@
+square && columns : perRow = columns, <br/> after each row.
+
+bug: config different when ?dir  / ?path=dir dir config not read.
 
 1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
-
 	
-2 image in square: set as css background-image, cover, centered
+OK 2 image in square: set as css background-image, cover, centered
 
 <div id="marmeute_20100312_Murol_mv_0044" class="file image floater shrinkW90 mediumImage margin photoBorder shadow square bg" style="background-image: url(&quot;http://localhost/pictures/guenole/.ss/marmeute_20100312.Murol.mv.0117.jpg&quot;);" page="1" index="2">
 	<div class="caption hidden">
@@ -29,17 +31,28 @@
 Trigger event on background image load  ? 
 http://stackoverflow.com/questions/3281651/trigger-event-on-background-image-load
 
-2 image_collage: add background image
-if size too big, recalculate.
+$("img").cropRatio(1.5) => replace img with div that has that ratio and this image as background
+$("img").cropCover() => replace img with div(width,height)
 
 display image in fixed ratio div: panorama, 2:1, 16:9, 3:2, 4:3, 1:1
 centered, left, right, top, bottom ?
+PHP function cropRatio() : do not resize.  image in container cover. center, top, bottom, left, right ?
+
+
+3 Make album from an array of external URLs
+new Album(urls)
+new Album({baseUrl: '', title: 'album title' filenames: []})
+see Pictures\web\GTA\cars.csv
+JS code: like LoadYoutube
+
+2 image_collage: add background image
+if size too big, recalculate.
 
 4 extract title, description, tags from EXIF data.
 
-2 remove references to album in mediaFile
+2 remove references to album in mediaFile.js
 
-3 templates: Replace helper functions with mediaFile methods:
+OK 3 templates: Replace helper functions with mediaFile methods:
 ~thumbnailUrl(#data,~albumVar('tnIndex'),true)  ~getThumbnailUrl(_parent.tnIndex,true)
 ~albumVar('pageNum')  => _parent.pageNum or albumVar('pageNum')
 

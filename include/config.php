@@ -22,11 +22,17 @@ require_once("classes/Album.php");
 
 $startTime = startTimer();
 $path = reqPath();
-
+LoadConfiguration($path, $config);
 if(isDebugMode())
 	header("Content-Type: text/plain");
-
-LoadConfiguration($path, $config);
+//after loading mappings
+$params = requestFilters(false);
+if($path != $params["path"])
+{
+	$path = $params["path"];
+	LoadConfiguration($path, $config);
+}
+debugVar("params");
 
 if($timezone = getConfig("DEFAULT_TIMEZONE"))
 	date_default_timezone_set($timezone);

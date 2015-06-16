@@ -111,7 +111,7 @@ UI.setGroup = function(mediaFile)
 UI.getGroup = function(mediaFile)
 {
 	if(!album.group && !album.group.length) return false;
-	if(album.columns>1 && !album.transpose) return false;
+	if(album.isMultiColumn() && !album.transpose) return false;
 	
 	var group=UI.getGroupTitle(mediaFile);
 	if(UI.prevGroup != group)

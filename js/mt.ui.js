@@ -338,7 +338,7 @@ UI.divClasses = function(mediaFile)
 	if(mediaFile.selected)
 		classes+=" selected";
 
-	if(album.columns>1)
+	if(album.isMultiColumn())
 		classes += " stretchW";
 	else
 	{
@@ -349,7 +349,7 @@ UI.divClasses = function(mediaFile)
 	if(album.margin)
 	{
 	 	classes += " margin";
-		if(album.columns>1) classes+="V";
+		if(album.isMultiColumn()) classes+="V";
 	}
 
 	if(album.cropRatio)
@@ -372,7 +372,7 @@ UI.imgClasses = function(mediaFile)
 		classes += " playLink";
 
 	if(album.fadeIn && !album.cropRatio) classes+=" hidden";
- 	if(album.columns>1)
+ 	if(album.isMultiColumn())
 		classes+=" stretchW";
 	else if(UI.sizes[album.size].fixedHeight)
 		classes+=" stretchH";
@@ -395,7 +395,7 @@ UI.captionClasses = function(mediaFile)
 	var classes= "caption";
 	//if(album.columns<1 && mediaFile.type!="DIR") classes+= "Below";
 	if(album.fadeIn && !album.cropRatio && !mediaFile.isDir())	 classes+=" hidden";
-	if(album.tnIndex == 0 || album.columns>1)
+	if(album.tnIndex == 0 || album.isMultiColumn())
 		classes+=" small";
 
 	return classes;
@@ -414,7 +414,7 @@ UI.columnClasses = function(mediaFile)
 
 	if(album.margin) classes+=" marginH";
 
-	if(album.columns>1 && album.border) classes+=" paddingH";
+	if(album.isMultiColumn() && album.border) classes+=" paddingH";
 	return classes;
 };
 

@@ -2,8 +2,6 @@
 require_once("include/config.php");
 session_start();
 
-$params = requestFilters(false);
-$path = $params["path"];
 debugVar("params");
 $album = new Album($path, 1);
 
@@ -15,7 +13,7 @@ $description=$album->getDescription();
 $depth=$album->getDepth();
 
 //if FLV files exist: load jw player instead of html5 player
-$hasFlash = getConfig("USER_AGENT.USE_FLASH") || $album->filterFiles(array("type"=>"flv"));
+$hasFlash = getConfig("USER_AGENT.USE_FLASH") || $album->filterFiles(array("exts"=>"flv"));
 if($hasFlash)
 {
 	$configFilename = combine(pathToAppRoot(), "config/.config.jwplayer.csv");
@@ -109,24 +107,23 @@ Album.onLoad = function (albumInstance)
 
 		$("#description").html(albumInstance.description);
 		$("#dateRange").html(albumInstance.formatDateRange(true));	
-		if(!albumInstance.mediaFiles)
-		{
+		if(isEmpty(albumInstance.mediaFiles))
 			$("#pagesTop").html("No files in this album.");
-			return;
+		else
+		{
+			UI.selectCountPerPage(false);
+			var mf=null;
+			if(location.hash)
+				search.start = location.hash.substringAfter("#");
+			if(search.start)
+				mf=albumInstance.getMediaFileByName(search.start);
+
+			UI.sortFiles(!mf);
+
+			UI.displayFileCounts(album.mediaFiles,"#counts", true);	
+			UI.displayTags();
 		}
-
-		UI.selectCountPerPage(false);
-
-		var mf=null;
-		if(location.hash)
-			search.start = location.hash.substringAfter("#");
-		if(search.start)
-			mf=albumInstance.getMediaFileByName(search.start);
-
-		UI.sortFiles(!mf);
-
-		UI.displayFileCounts(album.mediaFiles,"#counts", true);	
-		UI.displayTags();
+		
 		UI.styleCheckboxes();
 		UI.setupEvents();
 
@@ -159,7 +156,8 @@ $(window).resize(function(event)
 
 <?php include("templates.html");?>
 </head>
-<body class="<?php echo isMobile() && !isIpad() ? "mobile" : "desktop"; ?>">
+<body class="<?php echo isMobile() && !isIpad() ? "mobile" : "desktop"; ?>"
+style="<?php echo getConfig("background.color") ? "background-color: " . getConfig("background.color") : ""; ?>">
 <?php $background=displayBackground($relPath, false);?>
 
 <div id="titleContainer" direction="down" callback="setColumnWidths">

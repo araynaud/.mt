@@ -70,12 +70,21 @@ function combine()
 }
 
 
+function requestFirstParam()
+{
+	$firstKey = array_keys($_REQUEST);
+	$firstKey = reset($firstKey);
+	debug("requestFilters firstKey", $firstKey);
+	return $firstKey;
+}
+
 //return filters from request: path, name, tag, search, file?
 function requestFilters($addFilters=true, $selectOneFile = false)
 {	
 	$qs = urldecode($_SERVER["QUERY_STRING"]);
 	$hasParams = contains($qs, "=");
 	debug("requestFilters qs", $qs);
+//	$firstKey = requestFirstParam();
 	if($qs && !$hasParams)
 	{
 		$params = parseQueryString($qs);
@@ -83,6 +92,7 @@ function requestFilters($addFilters=true, $selectOneFile = false)
 	else
 	{
 		$params = arrayCopyMultiple($_REQUEST, "name,type,tag,search,count");
+
 		$params["path"] = urldecode(reqParam("path"));
 		$params["file"] = urldecode(reqParam("file"));
 		$params["depth"] = reqParam("depth", 0);

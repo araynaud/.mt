@@ -23,7 +23,7 @@ UI.sortFiles = function(refreshDisplay)
 UI.zoom = function(increment)
 {
 	increment=valueOrDefault(increment,1);
-	if(album.columns<=1)
+	if(!album.isMultiColumn())
 		$('#dd_size').selectNextOption(increment);
 	else if (album.fit=="width")
 		$('#dd_columns').selectNextOption(-increment);
@@ -63,15 +63,15 @@ UI.displayFiles = function(selectedFiles, transition, append)
 	
 	total=0;
 
-	$("#columnOptions").toggle(album.columns>1);
-	$("#rowOptions").toggle(album.columns<=1);
+	$("#columnOptions").toggle(album.isMultiColumn());
+	$("#rowOptions").toggle(!album.isMultiColumn());
 
-	UI.mediaFileDiv.toggleClass("row", album.columns<1);
+	UI.mediaFileDiv.toggleClass("row", !album.isMultiColumn());
 	if(!append)
 		UI.mediaFileDiv.html("");
 
 	UI.pageDiv = UI.mediaFileDiv;
-	if(album.columns>=1)
+	if(album.isMultiColumn())
 		UI.displayColumns(selectedFiles);
 	else
 		UI.renderTemplate("fileboxTemplate", UI.pageDiv, selectedFiles, append, {action: 'removetag', multiple: 'true'});
@@ -356,11 +356,11 @@ UI.imageOnLoad = function()
 
 	var captionHeight = caption.height();
 
-	if(mediaFile.isDir() && album.columns > 1)
+	if(mediaFile.isDir() && album.isMultiColumn())
 		UI.setDivRatio(filebox);
 
 	//small image: caption below image
-	if(!mediaFile.isDir() && album.columns <= 1)
+	if(!mediaFile.isDir() && !album.isMultiColumn())
 	{
 		if(imageHeight < 2 * captionHeight) // && album.size<=0)
 		{
@@ -460,6 +460,15 @@ UI.selectCountPerPage = function()
 {
 	countPerPage=parseInt($("#dd_page").val());
 	album.setCountPerPage(countPerPage);
+
+	//if only 2 pages, just have 1
+	if(album.mediaFiles.length > album.countPerPage
+	&& album.mediaFiles.length < 2 * album.countPerPage)
+	{
+		$("#dd_page").val('all');
+		album.setCountPerPage(0);
+	}
+	UI.setStatus(album.countPerPage + "/"+album.nbPages);
 };
 
 UI.displayPageLinks = function()
@@ -467,7 +476,7 @@ UI.displayPageLinks = function()
 	var nbPages = album.getNumberOfPages();
 
 	UI.pagers.html("");
-	$("#pagesBottom").toggle(album.fit == "width" || album.columns<=1);
+//	$("#pagesBottom").toggle(album.fit == "width" || album.columns<=1);
 	if(album.nbPages<=1)
 		return album.nbPages;
 //add first,last, previous, next icons

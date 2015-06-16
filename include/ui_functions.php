@@ -340,17 +340,19 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 	echo "\n<select id='$ddId'$cssClass>\n";
 	//add default if not already in options
 	if(!in_array($default,$options))
-		$default=reset($options);
-//		$options[]=$default;
+		$options[]=$default;
 	//sort options
-	if($sort = "key")
+debug("sort", $sort);
+	if($sort === "key")
 		ksort($options);
-	else if($sort)
+	else if($sort === "value")
 		asort($options);
+	else if($sort)
+		sort($options);
 
 	if ($reverse)
 		$options=array_reverse($options);
-
+debug("options", $options);
 	foreach($options as $key=>$value)
 	{	
 		$selected=($default===$value) || (!is_numeric($key) && $default===$key);
@@ -359,8 +361,6 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 
 		if($keysAsValues || !is_numeric($key))
 			echo "\t<option value='$key'$selected>$title</option>\n";
-//		else if($title === $value)
-//			echo	"\t<option$selected>$value</option>\n";
 		else
 			echo	"\t<option value='$value'$selected>$title</option>\n";
 	}
@@ -369,15 +369,12 @@ function displayDropDown($ddId, $cssClass, $options, $default, $sort=false, $rev
 
 function displayPaginateOptions($cssClass="")
 {
-	global $config;
 	displayDropDown("dd_page", $cssClass, getConfig("PAGINATE.OPTIONS"), getConfig("PAGINATE.DEFAULT"), true);
 }
 
 function displaySizeOptions($cssClass="")
 {
-	global $config;
 	displayDropDown("dd_size", $cssClass, getConfig("SIZE.OPTIONS"), getConfig("display.size"));
-	//, "key", false, true);
 }
 
 function displaySortOptions($cssClass="")
