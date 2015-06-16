@@ -129,7 +129,7 @@ UI.getDisplayOptions = function(obj)
 		obj[this.id.substringAfter("cb_")]=$(this).is(":checked");
 	});
 	obj.tnIndex = 0;
-	if(obj.columns <=1) 
+	if(obj.isMultiColumn && !obj.isMultiColumn()) 
 	{
 		obj.tnIndex = obj.maxTnIndex;
 		var uiSize = UI.sizes[obj.size];
@@ -385,15 +385,14 @@ UI.imgClasses = function(mediaFile)
 UI.dirImgClasses = function()
 {
 	var classes="loading";
+	classes+=" stretchW";
 	if(album.fadeIn) classes+=" hidden";
-	if(album.columns!=-1) classes+=" stretchW";
 	return classes;
 };
 
 UI.captionClasses = function(mediaFile)
 {
 	var classes= "caption";
-	//if(album.columns<1 && mediaFile.type!="DIR") classes+= "Below";
 	if(album.fadeIn && !album.cropRatio && !mediaFile.isDir())	 classes+=" hidden";
 	if(album.tnIndex == 0 || album.isMultiColumn())
 		classes+=" small";

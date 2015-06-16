@@ -63,14 +63,6 @@ $.fn.toggleEffect = function(state, duration, effect, direction, callback)
 	return this.toggle(opts);
 };
 
-$.fn.backgroundImage = function(url)
-{
-	if(isMissing(url))
-		return this.css("background-image");
-	url = url.replace(/ /g, "%20");
-	return this.css("background-image", "url(" + url + ")");
-};
-
 $.fn.outerHtml = function ()
 {
     return $('<div/>').append(this.clone()).html();
@@ -250,3 +242,51 @@ $.fn.getUrls = function (selector, attr, absolute)
 	});
 	return urls;
 };
+
+$.fn.backgroundImage = function(url)
+{
+	if(isMissing(url))
+		return this.css("background-image");
+	url = url.replace(/ /g, "%20").escapeQuotes();
+	this.css("background-image", "url(" + url + ")");
+	return this;
+};
+
+$.fn.cropImage = function(params)
+{
+	if(isEmpty(this) || isEmpty(params)) return this;
+	if(this.length>1)
+	{
+		return this.map(function(){ 
+			return $(this).cropImage(params); 
+		});
+	}
+
+	var id = this.attr("id");
+	var classes = this.attr("class");
+	var src = this.attr("src");
+	var width = params.width || this.width();
+	var height = params.height || this.height();
+	params.ratio = valueOrDefault(params.ratio, width/height);
+	if(!params.width)
+		width = height * params.ratio;
+	else if(!params.height)
+		height = width / params.ratio; 
+
+	var div = this;
+	if(this.is("img"))
+		div = $.makeElement("div", { 'id': id, 'class': "bgCenterCover " + classes });
+	if(width)
+		div.width(width);
+	if(height)
+		div.height(height);
+	if(div != this)
+	{
+		div.backgroundImage(src);
+		div.show();
+		this.after(div);
+		this.remove();
+	}
+	return div;
+};
+
