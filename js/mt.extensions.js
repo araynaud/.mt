@@ -410,6 +410,19 @@ String.prototype.substringAfter = function(sub, last, stringOrEmpty, include)
 	return String.substringAfter(this, sub, last, stringOrEmpty, include);
 };
 
+
+String.escapeQuotes = function(str)
+{
+	return str.escapeQuotes();
+}
+
+String.prototype.escapeQuotes = function()
+{
+	var rUnescapeQuotes = /\\(['"])/g;
+	var rEscapeQuotes = /\\?(['"])/g;
+	return this.replace(rEscapeQuotes, "\\$1");
+}
+
 //ARRAY EXTENSION METHODS
 
 Array.prototype.clone = function()

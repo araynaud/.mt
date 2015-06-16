@@ -88,8 +88,6 @@ SORT.OPTIONS=takenDate;name;title;type;Tags;description;subdir;random;duration;w
 ;paginate / count per page
 PAGINATE.OPTIONS=1;2;3;4;5;6;8;10;15;20;25;32;50;60;100;all
 .DEFAULT;15
-.MIN_PAGES;3
-.MIN_LAST_PAGE;.5
 
 ;image thumbnail generation
 thumbnails.sizes.tn=225

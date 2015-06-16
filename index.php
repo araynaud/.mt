@@ -122,6 +122,7 @@ Album.onLoad = function (albumInstance)
 
 			UI.displayFileCounts(album.mediaFiles,"#counts", true);	
 			UI.displayTags();
+			UI.loadDirThumbnails();
 		}
 		
 		UI.styleCheckboxes();
@@ -132,7 +133,6 @@ Album.onLoad = function (albumInstance)
 		$(".lOption").each(UI.toggleLayoutOption); 
 
 		albumInstance.albumTime = new Date() - albumInstance.startTime;
-		UI.loadDirThumbnails();
 		if(mf) mf.play();
 	}
 	catch(err) 

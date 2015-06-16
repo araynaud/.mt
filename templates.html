@@ -1,6 +1,6 @@
 <script id="fileTemplate" type="text/x-jsrender"> 
 	<div class="file floater" id="{{:id}}">
-		<a href="{{:~fileUrl(#data)}}">{{>name}}</a> is {{>type}}.
+		<a href="{{:getFileUrl()}}">{{>name}}</a> is {{>type}}.
 		{{if exts}}
 			({{>exts.join(", ")}}).
 		{{/if}}
@@ -13,19 +13,23 @@
 		{{if exts}}{{:exts.join(", ")}}{{/if}}
 		{{:takenDate}}
 	</div>
-	<a href="{{:~fileUrl(#data)}}">{{:title}}</a>
+	<a href="{{:getFileUrl()}}">{{:title}}</a>
 </div>
 </script>
 
 <script id="fileboxTemplate" type="text/x-jsrender">{{if ~getGroup(#data) tmpl="#separatorTemplate"/}}<div id="{{:id}}" 
 	class="file {{:~divClasses(#data) link=false}}"	style="{{:~divStyles()}}" page="{{:_parent.pageNum}}" index="{{:getFileIndex(#index)}}">
-		{{if isDir() && tncolumns && tncolumns.length}}
+		{{if isDir() && tncolumns}}
 			<a href="?{{:getFilePath()}}" title="{{>title}}">
-				<div class="{{if _parent.columns != -1}}smallThumbLeft floatL{{else}}smallThumbTop{{/if}}">
-					{{for tncolumns[0] tmpl="tnTemplate"/}}
+				<div class="smallThumbLeft floatL">
+					{{for tncolumns[0]}}
+					<img class="thumbnail {{:~dirImgClasses() link=false}}" src="{{:~combine(#parent.parent.data.getFileUrl(), #data)}}" alt="{{:#data}}" />
+					{{/for}}
 				</div>
-				<div class="{{if _parent.columns != -1}}smallThumbRight floatR{{else}}smallThumbBottom{{/if}}">
-					{{for tncolumns[1] tmpl="tnTemplate"/}}
+				<div class="smallThumbRight floatR">
+					{{for tncolumns[1]}}
+					<img class="thumbnail {{:~dirImgClasses() link=false}}" src="{{:~combine(#parent.parent.data.getFileUrl(), #data)}}" alt="{{:#data}}" />
+					{{/for}}
 				</div>
 			</a>
 		{{else isImage() || isVideoStream() && getConfig("MediaPlayer").slide.enabled tmpl='#thumbnailTemplate'}}
@@ -45,16 +49,11 @@
 <script id="thumbnailTemplate" type="text/x-jsrender">
 	{{if _parent.cropRatio }}
 		<div class="square bgCenterCover {{:~imgClasses(#data) link=false}}"
-			style="background-image: url('{{:getThumbnailUrl(_parent.tnIndex, true)}}')">
+			style="background-image: url('{{:getThumbnailUrl(_parent.tnIndex, true).escapeQuotes()}}')">
 		</div>
 	{{else }}
 		<img class="{{:~imgClasses(#data) link=false}}" src="{{:getThumbnailUrl(_parent.tnIndex, true)}}"/>
 	{{/if}}
-</script>
-
-<!--directory thumbnails-->
-<script id="tnTemplate" type="text/x-jsrender">
-	<img class="thumbnail {{:~dirImgClasses(#data) link=false}}" src="{{:~combine(~fileUrl(#parent.parent.data), #data)}}" alt="{{:#data}}" />
 </script>
 
 <!-- template for separator -->
@@ -82,7 +81,7 @@
 
 <script id="dirCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
-		<div><a class="subtitle" href="?{{:~filePath(#data)}}" title="{{>title}}">{{>title}}</a></div>
+		<div><a class="subtitle" href="?{{:getFilePath()}}" title="{{>title}}">{{>title}}</a></div>
 		{{if true tmpl="descriptionTagTemplate"/}}
 		<div class="small bold">{{:~dateRange(oldestDate,newestDate,false)}}</div>
 	</div>
@@ -92,7 +91,7 @@
 <script id="imageCaptionTemplate" type="text/x-jsrender"> 
 	<div class="{{:~captionClasses(#data) link=false}}">
 		<div class="floatR">
-			<a {{if versions}} title="{{:width}}x{{:height}} {{:~formatSize(versions[0].size)}}"{{/if}} href="{{:~fileUrl(#data)}}" target="fileDownload">
+			<a {{if versions}} title="{{:width}}x{{:height}} {{:~formatSize(versions[0].size)}}"{{/if}} href="{{:getFileUrl()}}" target="fileDownload">
 				<img class="icon" src="icons/download.gif" alt="download {{:filename}}"/>
 			</a>
 		</div>
@@ -173,7 +172,7 @@
 
 <script id="playlistItemTemplate" type="text/x-jsrender">
 	<div id="{{:type}}PlaylistItem_{{:#index}}" class="hidden translucent">
-		<a href="{{:~fileUrl(#data)}}" target="fileDownload">
+		<a href="{{:getFileUrl()}}" target="fileDownload">
 			<img class="floatR icon" src="icons/download.gif" style="height: 12px; margin-right: 2px;" title="download {{>filename}}"/>
 		</a>
 		{{if ~config("ENABLE_FFMPEG") }}
@@ -184,7 +183,7 @@
 		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
 		{{if tnsizes }}
-			<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" title="play {{:stream}}" 
+			<img class="tinyThumb floatL" src="{{:getThumbnailUrl()}}" title="play {{:stream}}" 
 			onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})" />
 		{{/if}}
 		<a onclick="MediaPlayer.{{:type.toLowerCase()}}.playItem({{:#index}})">{{>title}}</a>
@@ -203,9 +202,9 @@
 		<div class="duration small floatR">{{if duration}}{{:~formatTime(duration)}}{{/if}}</div> 
 		<div class="number small floatL">{{:(#index+1)}}</div>
 
-		<a href="{{:~fileUrl(#data)}}" class="track" title="{{:title}} {{:getTags().join(', ') }}">
+		<a href="{{:getFileUrl()}}" class="track" title="{{:title}} {{:getTags().join(', ') }}">
 			{{if tnsizes || isExternalVideoStream() }}
-				<img class="tinyThumb floatL" src="{{:~thumbnailUrl(#data)}}" />
+				<img class="tinyThumb floatL" src="{{:getThumbnailUrl()}}" />
 			{{/if}}
 			{{: description || title}}
 		</a>
@@ -225,7 +224,7 @@
 	{{if duration}}
 		<div class="duration small floatR">{{:~formatTime(duration)}}</div> 
 	{{/if}}
-		<a href="{{:~fileUrl(#data)}}" class="track" title="{{:title}}">{{: description || title}}</a>
+		<a href="{{:getFileUrl()}}" class="track" title="{{:title}}">{{: description || title}}</a>
 	</div>
 </script>
 

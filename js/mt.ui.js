@@ -382,7 +382,7 @@ UI.imgClasses = function(mediaFile)
 	return classes;
 };
 
-UI.dirImgClasses = function(mediaFile)
+UI.dirImgClasses = function()
 {
 	var classes="loading";
 	if(album.fadeIn) classes+=" hidden";

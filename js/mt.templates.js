@@ -10,7 +10,6 @@ UI.linkTemplate = function(templateId, targetId, data)
 
 UI.setupTemplates = function()
 {
-	UI.linkTemplate("tnTemplate");
 	UI.linkTemplate("extLinkTemplate");
 	UI.linkTemplate("versionLinkTemplate");
 	UI.linkTemplate("tagTemplate");
