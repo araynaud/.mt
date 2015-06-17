@@ -374,8 +374,6 @@ UI.imgClasses = function(mediaFile)
 	if(album.fadeIn && !album.cropRatio) classes+=" hidden";
  	if(album.isMultiColumn())
 		classes+=" stretchW";
-	else if(UI.sizes[album.size].fixedHeight)
-		classes+=" stretchH";
 	else
 		classes+=" shrinkW";
 

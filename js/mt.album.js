@@ -617,9 +617,9 @@ Album.prototype.getFileNamesByType = function(type)
 Album.prototype.selectCurrentPageFiles = function()
 {
 	this.startFileIndex=this.countPerPage*(this.pageNum-1); //to keep same page and avoid out of range
-	if(!this.pageNum || !this.countPerPage) return this.mediaFiles;
+	if(!this.pageNum || !this.countPerPage) return this.activeFileList();
 
-	return this.activeFileList().slice(this.startFileIndex,this.startFileIndex+this.countPerPage);
+	return this.activeFileList().slice(this.startFileIndex, this.startFileIndex + this.countPerPage);
 };
 
 Album.getFileIndex = function(index)
