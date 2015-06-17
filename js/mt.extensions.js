@@ -13,12 +13,31 @@ function isEmpty(variable)
 	return false;
 }
 
-function isDefined(variable)
+function isDefined(variable, ctx)
 {
-	return !isMissing(window[variable]);
+	var arr = variable.split(".");
+	if(!ctx) ctx = window;
+	for(var i=0; i < arr.length; i++)
+	{
+		if(isMissing(ctx[arr[i]])) return false;
+		ctx = ctx[arr[i]];
+	}
+	return true;
 }
 
-function valueOrDefault(variable,defaultValue)
+function valueIfDefined(variable, ctx)
+{
+	var arr = variable.split(".");
+	if(!ctx) ctx = window;
+	for(var i=0; i < arr.length; i++)
+	{
+		if(isMissing(ctx[arr[i]])) return ctx[arr[i]];
+		ctx = ctx[arr[i]];
+	}
+	return ctx;
+}
+
+function valueOrDefault(variable, defaultValue)
 {
 	return isMissing(variable) ? defaultValue : variable;
 }

@@ -584,11 +584,9 @@ Album.prototype.getSelectedFileNames = function(separator)
 
 Album.prototype.selectSlideshowFiles = function()
 {
-	var types = isDefined("MediaPlayer") && config.MediaPlayer && config.MediaPlayer.slide.enabled ? ["IMAGE", "VIDEO"] : "IMAGE";
-
-
+	var types = isDefined("MediaPlayer") && valueIfDefined("config.MediaPlayer.slide.enabled") ? ["IMAGE", "VIDEO"] : "IMAGE";
 	var files = Album.selectFiles(this.activeFileList(), {type: types});
-	if(!MediaPlayer.YouTubeReady || config.youtube.mode!="iframe") //remove youtube files if disabled
+	if(!valueIfDefined("MediaPlayer.YouTubeReady") || valueIfDefined("config.youtube.mode") !="iframe") //remove youtube files if disabled
 		files = Album.excludeFiles(files, MediaFile.isExternalVideoStream);
 	return files;
 };

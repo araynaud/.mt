@@ -10,7 +10,7 @@ function getFileData(&$getData)
 	$relPath = getDiskPath(@$search["path"]);
 	$file = reqParam("file");
 	$filePath=combine($relPath, $file);
-
+	$key = reqParam("key", false);
 	switch ($getData)
 	{
 		case "scandir":
@@ -34,7 +34,7 @@ function getFileData(&$getData)
 				$tags = loadTagFiles($relPath, $search["depth"]);
 			return $tags;
 		case "tablefile":
-			return readCsvTableFile($filePath, false, true);
+			return readCsvTableFile($filePath, $key, true);
 		case "playlist":
 			return readPlaylistFile($filePath); //, 0, true);
 		case "datafile":

@@ -15,7 +15,7 @@ function MediaFile(data, type, key)
 	}
 	else
 		Object.merge(this, data, true);
-
+	if(!this.type)	this.type = type;
 	this.getId();
 	this.getTitle();
 	this.getRatio();
@@ -67,6 +67,13 @@ MediaFile.prototype.getConfig = function(key, default_)
 
 //add to prototype all functions taking 1 mediaFile as argument
 // from filenames.js and templates.js
+
+//TODO get type from extension
+MediaFile.prototype.getType = function()
+{
+	if(this.type) return this.type;
+	return this.type;
+};
 
 MediaFile.prototype.getId = function()
 {
@@ -402,6 +409,9 @@ MediaFile.prototype.getFilePath = function(ext)
 
 MediaFile.getFileUrl = function (mediaFile, ext)
 {
+	if(mediaFile.url)
+		return mediaFile.url;
+
 	if(mediaFile.stream=="youtube")
 		return config.youtube.videoUrl.format(mediaFile.id);
 

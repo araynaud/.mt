@@ -244,7 +244,7 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 	{
 		if (!$lines[0])	return $csvRows;
 		$header = explode($separator, $lines[0]);
-		if($keyColumn!==false)
+		if($keyColumn!==false && isset($header[$keyColumn]))
 		{
 			$key = $header[$keyColumn];
 			unset($header[$keyColumn]);
@@ -258,7 +258,7 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 		$rowData = explode($separator, $line);
 		$row = array();
 		$key="";
-		if($keyColumn!==false)
+		if($keyColumn!==false && isset($rowData[$keyColumn]))
 		{
 			$key = $rowData[$keyColumn];			
 			unset($rowData[$keyColumn]);

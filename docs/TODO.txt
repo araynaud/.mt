@@ -1,32 +1,12 @@
-square && columns : perRow = columns, <br/> after each row.
 
 bug: config different when ?dir  / ?path=dir dir config not read.
+temp resolution. fix requestFilters before/after loading mapping.
 
-1 image_auto.php: use irfanView if enabled for JPG rotate, crop, resize
+1 image_transform.php: use irfanView if enabled for JPG rotate, crop, resize
 	refactor code from image.php
 	
 OK 2 image in square: set as css background-image, cover, centered
-
-<div id="marmeute_20100312_Murol_mv_0044" class="file image floater shrinkW90 mediumImage margin photoBorder shadow square bg" style="background-image: url(&quot;http://localhost/pictures/guenole/.ss/marmeute_20100312.Murol.mv.0117.jpg&quot;);" page="1" index="2">
-	<div class="caption hidden">
-		<span class="nowrap noscroll bold">marmeute  20100312  Murol  mv  0044</span>
-		<div>March 13 16:57</div>
-	</div>
-
-</div>
-
-.mediumImage.square {
-    height: 270px;
-    overflow-x: hidden;
-    width: 270px;
-}
-
-.bgCenterCover
-{
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-}
+OK square && columns : perRow = columns, <br/> after each row.
 
 Trigger event on background image load  ? 
 http://stackoverflow.com/questions/3281651/trigger-event-on-background-image-load
@@ -47,6 +27,8 @@ JS code: like LoadYoutube
 
 2 image_collage: add background image
 if size too big, recalculate.
+
+4 fix search by tag with depth>0: search=abc => name=*abc* & tag=abc
 
 4 extract title, description, tags from EXIF data.
 
@@ -159,8 +141,7 @@ bugs:
 OK action_multiple: only applies to clicked file. unify into action.php ? function doAction called in loop ?
 check refresh file UI.afterAction
 
-1 FLV video with slideshow. check mediaplayer.js
-4 fix search by tag with depth>0: search=abc => name=*abc* & tag=abc
+OK 1 FLV video with slideshow. check mediaplayer.js
 
 3 cmd convert all non stream videos (only those that stream does not exist.)
 	add condition in dir2mp4 script
