@@ -154,7 +154,7 @@ function filterFiles($files, $search)
 		return $files;
 
 //debug("filterFiles", $search);
-	if(!isset($search["exts"]))
+	if(!isset($search["exts"]) && @$search["type"])
 		$search["exts"] = getExtensionsForTypes($search["type"]);
 
 	$searchG = $search;
