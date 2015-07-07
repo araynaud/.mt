@@ -44,7 +44,7 @@
 		{{else _parent.caption && type=="IMAGE" tmpl='#imageCaptionTemplate'}}
 		{{else _parent.caption tmpl='#descriptionTemplate'}}
 		{{/if}}
-</div>{{if _parent.columns == 1 || (#index+1) % _parent.columns == 0 || #index == #parent.data.length-1 }}<br/>{{/if}}{{:~setGroup(#data)}}</script>
+</div>{{if _parent.columns == 1 || _parent.cropRatio && ((#index+1) % _parent.columns == 0 || #index == #parent.data.length-1) }}<br/>{{/if}}{{:~setGroup(#data)}}</script>
 
 <script id="thumbnailTemplate" type="text/x-jsrender">
 	{{if _parent.cropRatio }}

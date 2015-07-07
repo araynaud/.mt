@@ -25,7 +25,7 @@ function isWindows()
 
 function clientIs($str)
 {
-	return contains($_SERVER["HTTP_USER_AGENT"], $str);
+	return contains(@$_SERVER["HTTP_USER_AGENT"], $str);
 }
 
 //user agent functions

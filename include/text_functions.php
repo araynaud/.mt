@@ -215,32 +215,49 @@ function escapeNewLine($str, $escapeQuotes=true)
 	return $str;
 }
 
+function getCharType($ch)
+{
+	if($ch >= "0" && $ch <= "9") return "digit";
+	if(!$ch) return "";
+	if($ch >= "a" && $ch <= "z") return "lower";
+	if($ch >= "A" && $ch <= "Z") return "upper";
+	return "other";
+}
+
+//test if different character types to insert a space
+function isWordEnd($str, $index)
+{
+	if($index<=0) return false;
+	$prev = $str[$index-1];
+	$cur  = $str[$index];
+	$next = $str[$index+1];
+	if(ctype_upper($prev) && ctype_upper($cur) && ctype_lower($next)) return true;
+	if(ctype_upper($prev) && ctype_lower($cur)) return false;
+debug("isWordEnd $prev" . getCharType($prev) , $cur. getCharType($cur));
+	return getCharType($prev) != getCharType($cur);
+}
+
 function makeTitle($filename)
 {
-	$filename= str_replace("_", " ", $filename);
-	//$filename= str_replace("/", " ", $filename);
-	$filename= str_replace("-", " - ", $filename);
-	$filename= str_replace(".", " ", $filename);
-	$filename= str_replace("  ", " ", $filename);
-	//$filename=escapeAmp($filename);
-	
-	if(ctype_lower($filename) || ctype_upper($filename) || ctype_digit($filename))
-		return $filename;
-		
-	//search for lowercaseUppercase sequences in string, insert spaces between
-	$nbWords=0;
-	$wordPos=0;
-	$formLabel="";
-	while($wordPos < strlen($filename)) //and nbWords < 3
-	{
-		$nextWordPos = findNextWord($filename,$wordPos);
-		if (!empty($formLabel))
-			$formLabel = $formLabel . " ";
-		$formLabel = $formLabel . substr($filename,$wordPos,$nextWordPos-$wordPos+1);
-		$wordPos=$nextWordPos+1;
-		$nbWords++;
-	}
-	return $formLabel;
+	$filename = str_replace("_", " ", $filename);
+	$filename = str_replace("-", " - ", $filename);
+	$filename = str_replace(".", " ", $filename);
+
+	$output = $filename;
+	$filename = cleanupAccents($filename); //process accented letters as letters
+	for($i = strlen($filename)-2; $i > 0; $i--)
+		if(isWordEnd($filename, $i))
+			$output = strInsert($output, " ", $i);
+
+	$output = str_replace("  ", " ", $output);
+	return $output;
+}
+
+function strInsert($str, $sub, $pos=0)
+{
+	$before = substr($str, 0, $pos);
+	$after = substr($str, $pos);
+	return "$before$sub$after";
 }
 
 function findNextWord($str,$startPos)
@@ -266,17 +283,15 @@ function findNextWord($str,$startPos)
 	return $nextWord;
 }
 
-//test if different character types to insert a space
-function different_ctype($currentChar,$nextChar)
-{
-	return	ctype_lower($currentChar) && (ctype_upper($nextChar) || ctype_digit($nextChar))  // lU or l3
-	|| 	  	ctype_digit($currentChar) && (ctype_lower($nextChar) || ctype_upper($nextChar))
-	|| 		ctype_upper($currentChar) && ctype_digit($nextChar); // A0
-}
-
 function cleanupFilename($filename)
 {
-	$filename= str_replace(" ", "_", $filename);
+	$filename = str_replace(" ", "_", trim($filename));
+	return cleanupAccents($filename);
+}
+
+
+function cleanupAccents($filename)
+{
 	$filename= str_replace("&", "",  $filename);
 	$filename= str_replace("à", "a", $filename);
 	$filename= str_replace("é", "e", $filename);
@@ -287,6 +302,7 @@ function cleanupFilename($filename)
 	$filename= str_replace("ç", "c", $filename);
 	return $filename;
 }
+
 
 function cleanupFilenameCmd($filename)
 {

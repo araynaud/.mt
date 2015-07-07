@@ -37,7 +37,9 @@ function getTimer($ms=false)
 	global $startTime, $endTime;
 	$endTime = microtime(true);
 	$time = $endTime - $startTime;
-	return $ms ? formatMs($time) : $time;  
+	$result = $ms ? formatMs($time) : $time;  
+debug("Timer", $result);
+	return $result;
 }
 
 function getTimerSinceLast($ms=false)
@@ -46,7 +48,8 @@ function getTimerSinceLast($ms=false)
 	$time = microtime(true);
 	$result = $time - $endTime;
 	$endTime = $time;
-	return $ms ? formatMs($result) : $result;  
+	$result = $ms ? formatMs($result) : $result;  
+debug("Timer Since Last", $result);
 	return $result;
 }
 
