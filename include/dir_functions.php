@@ -260,6 +260,9 @@ function getFileType($file, $checkExists=false)
 
 	$fileExt=strtolower(getFilenameExtension($file));
 	$types=getConfig("TYPES");
+	if(!$types)
+		return $fileExt;
+
 	foreach ($types as $type => $exts)
 		if($fileExt === $exts || is_array($exts) && in_array($fileExt, $exts))
 			return $type;
