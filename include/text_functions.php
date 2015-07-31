@@ -233,7 +233,7 @@ function isWordEnd($str, $index)
 	$next = $str[$index+1];
 	if(ctype_upper($prev) && ctype_upper($cur) && ctype_lower($next)) return true;
 	if(ctype_upper($prev) && ctype_lower($cur)) return false;
-debug("isWordEnd $prev" . getCharType($prev) , $cur. getCharType($cur));
+//debug("isWordEnd $prev" . getCharType($prev) , $cur. getCharType($cur));
 	return getCharType($prev) != getCharType($cur);
 }
 

@@ -539,6 +539,19 @@ if (!Array.prototype.findLastIndex)  Array.prototype.findLastIndex = function(pr
     return -1;
 };
 
+//add keys to array of objects by value of field
+Array.prototype.indexBy = function(fieldName, modify)
+{
+	var obj = modify ? this : {};
+	for(var i=0; i< this.length; i++)
+	{
+		key = this[i][fieldName];
+		if(!isMissing(key) && !obj.hasOwnProperty(key))
+			obj[key] = this[i];
+	}
+	return obj;
+};
+
 // For IE array.filter
 if (!Array.prototype.filter) Array.prototype.filter = function(fun /*, thisp*/)
 {
@@ -620,7 +633,7 @@ Array.prototype.intersect = function(array2, funct)
 	{
 		if(isFunction(funct))
 			n = funct(n);
-		if(isString(funct))
+		if(isString(funct) && n[funct])
 			n = n[funct]();
 	    return array2.indexOf(n) != -1
 	});

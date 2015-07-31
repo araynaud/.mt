@@ -11,7 +11,7 @@ $user = new User();
 debugVar("user",true);
 $access = $user->getAccessLevel();
 
-$format=getParam("format", "ajax");
+$format = getParam("format", "ajax");
 
 debug("Request", $_REQUEST);
 debug("GET request", $_GET);
@@ -41,8 +41,6 @@ if(empty($_FILES))
 $tmpFile = $_FILES["file"]["tmp_name"];
 $mimeType = $_FILES["file"]["type"];
 $filename= $_FILES["file"]["name"];
-
-
 
 $name = getFilename($filename);
 $fileType = postParam("type");

@@ -106,13 +106,13 @@ switch ($format)
 		echo xmlValue($getData, $data, $indent, $includeEmpty, true, $attributes);
 		break;
 	case "csv":
+	case "text":
 		setContentType("text", "plain");
 		echo csvValue($data, $includeEmpty);
 		break;
 	default:
 		setContentType("text", "plain");
-		$json = jsValue($data, $indent, $includeEmpty);
-		echo $json;
+		echo jsValue($data, $indent, $includeEmpty);
 }
 
 ?>

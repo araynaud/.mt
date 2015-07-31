@@ -92,7 +92,7 @@ function createResizedImage($dir, $srcFilename, $dstFilename, $dstW, $dstH)
 	$imageInfo=null;
 	$img = loadImageForResize($dir, $srcFilename, $size, $imageInfo);
 	$img = resizeImage($img, $imageInfo, $dstW,$dstH, true);
-	if(!contains($dstFilename,"/"))
+	if(!contains($dstFilename,"/") && !contains($dstFilename,"\\"))
 		$dstFilename=combine($dir,$dstFilename);
 	outputImage($img,$dstFilename,NULL);
 	return $dstFilename;
