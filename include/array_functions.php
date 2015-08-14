@@ -161,6 +161,24 @@ function arrayCopyMultiple($from, $keys, $to=array())
 	return $to;
 }
 
+/* make new array using key mapping
+ex: $iptcHeaderArray = array(
+	'2#005'=>'DocumentTitle',
+	'2#120'=>'Caption',
+	'2#122'=>'CaptionWriter'
+); */
+function arrayRemap($from, $keymap, $copyAll=false)
+{
+	if(!$from || !$keymap) return $from;
+	$to = array();
+	foreach ($from as $key => $value)
+	{
+		$tk =  array_key_exists($keymap, $key) ? $keymap[$key] : $key;
+		$to[$tk] =	$value;
+	}
+	return $to;
+}
+
 //filter array by keys, not values.
 function arrayFilterKeys($a, $funct)
 {
@@ -276,6 +294,18 @@ function arrayGroupBy($data, $field)
 		$distinct[$val][] = $el;
 	}
 	return $distinct;
+}
+
+function arrayHasSingleElement($data)
+{
+	return is_array($data) && count($data) == 1;
+}
+
+function arraySingleToScalar($data)
+{
+	if(arrayHasSingleElement($data))
+		return reset($data);
+	return $data;
 }
 
 ?>

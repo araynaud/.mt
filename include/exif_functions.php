@@ -32,31 +32,25 @@ function isExifLibAvailable()
   return is_callable("exif_imagetype");
 }
 
-function getExifData($filename, $arrays=false)
+function getExifData($filename, $arrays=false, $computed=false)
 {
-  if(!fileIsImage($filename) || !isExifLibAvailable())
-    return array();
-    
-  global $config;
-  $imagetype = @exif_imagetype($filename);  
-  if(!in_array($imagetype, $config["EXIF_SUPPORTED_TYPES"]))
-    return array();
-  //Get EXIF data for an image
-  $exif = @exif_read_data($filename, null, $arrays, false);
+	if(!isExifLibAvailable())	return array();
 
-  //if no exif in the image, get it from csv file
-//  if(!arrayGetCoalesce($exif, "DateTimeOriginal", "DateTime", "EXIF.DateTimeOriginal", "IFD0.DateTime"))
-//    $exif=loadImageInfo($filename);
-
-  unset($exif["COMPUTED"]);
-  return $exif;
+//	global $config;
+	$imagetype = @exif_imagetype($filename);	
+	$types = getConfig("EXIF_SUPPORTED_TYPES");
+	if(!$imagetype || !in_array($imagetype, $types))		return array();
+	//Get EXIF data for an image
+	$exif = @exif_read_data($filename, null, $arrays, false);
+	if($exif && !$computed)
+		unset($exif["COMPUTED"]);
+	return $exif;
 }
 
 function getExifThumbnail($filename)
 {
   debug("getExifThumbnail",$filename);
-  if(!fileIsImage($filename) || !isExifLibAvailable())
-    return;
+  if(!fileIsImage($filename) || !isExifLibAvailable())    return;
     
   global $config;
   $imagetype = @exif_imagetype($filename);  
