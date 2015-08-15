@@ -80,7 +80,63 @@ function getMediaFileInfoFormat($relPath, $file="", $format)
 	return $output;
 }
 
+function getStreamFormat($relPath, $file="")
+{	
+	$command="ffprobe_format";
+	$filePath = combine($relPath, $file);
+	$cmd = makeCommand("[0] [1]", $command, $filePath);
+	$output = execCommand($cmd, false, false);	
+	return parseFfprobeCompact($output);
+}
+
+
+function ffprobe($filePath, $show, $columns=null)
+{	
+	$ffprobe = getExePath("PROBE");
+	$cmd = makeCommand("[0] -print_format compact -show_[1] [2]", $ffprobe, $show, $filePath);
+	$output = execCommand($cmd, false, false);	
+	return parseFfprobeCompact($output, $columns);
+}
+
+function getKeyframes($relPath, $file="")
+{	
+	$command="ffprobe_keyframes";
+	$filePath = combine($relPath, $file);
+	$cmd = makeCommand("[0] [1]", $command, $filePath);
+	$output = execCommand($cmd, false, false);	
+	$columns = array("coded_picture_number", "pkt_pts_time");
+	$frames = parseFfprobeCompact($output, $columns);
+	return $frames;
+}
+
 //from ffprobe output
+function parseFfprobeCompact($output, $columns=null)
+{
+	if($columns)
+		$columns = array_combine($columns, $columns);
+	$data=array();
+	if(!$output) return $data;
+	foreach($output as $index => $item)
+	{
+		$row = explode('|', $item);
+		$obj=array();
+		foreach($row as $col)
+		{
+			$pair = explode('=', $col);
+			$key = $pair[0];
+			if($columns && !isset($columns[$key])) continue;
+			
+			$value = parseValue($pair[1]);
+			$obj[$key] = $value;
+		}
+		if($obj)
+		{
+			$data[] = $obj;
+		}
+	}
+	return arraySingleToScalar($data);
+}
+
 function parseFfprobeMetadata($output)
 {
 	$metadata=array();

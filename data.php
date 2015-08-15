@@ -13,6 +13,9 @@ function getFileData(&$getData)
 	$key = reqParam("key", false);
 	switch ($getData)
 	{
+		case "album":
+			$getData="Album";
+			return new Album($search, $details);
 		case "scandir":
 			return scandir($relPath); 
 		case "groupedscandir":
@@ -50,14 +53,22 @@ function getFileData(&$getData)
 		case "metadata":
 		case "exif":
 			return getMediaFileInfo($filePath);
-		case "album":
-			$getData="Album";
-			return new Album($search, $details);
+		case "keyframes":
+			return getKeyframes($filePath);
+		case "streamformat":
+			return getStreamFormat($filePath);
+		case "format":
+			$columns = $details ? null : array("filename","nb_streams","format_name","format_long_name","start_time","duration","size","bit_rate");		
+			return ffprobe($filePath, "format", $columns);
+		case "stream":
+		case "streams":
+			$columns = $details ? null : array("codec_name", "codec_type", "duration", "bit_rate", "width", "height", "nb_frames", "sample_aspect_ratio", "display_aspect_ratio");
+			return ffprobe($filePath, "streams", $columns);
 		case "mediafile":
 		default:
 			$getData="MediaFile";
 			$mf = MediaFile::getMediaFile();
-			if($mf && is_object($mf))
+			if($mf && is_object($mf) && details)
 			{
 				$mf->files = $mf->getFilenames();
 				$mf->paths = $mf->getFilePaths(true);
