@@ -1,0 +1,1 @@
+ffmpeg -i %1 -an -b:v 800k -vf crop=iw-12:ih:6:0,yadif=0:0:0,scale=640:480 -aspect 640:480 -movflags faststart %2

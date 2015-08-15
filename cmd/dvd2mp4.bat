@@ -1,0 +1,1 @@
+call ffmpeg_dvd43_mp4.bat "concat:e:\VIDEO_TS\VTS_01_1.VOB|e:\VIDEO_TS\VTS_01_2.VOB" %1
