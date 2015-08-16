@@ -7,6 +7,7 @@ function getFileData(&$getData)
 	$getData = strtolower($getData);
 	$search = getSearchParameters();
 	$details = reqParam("details", 3);
+	$all = reqParamBoolean("all");
 	$relPath = getDiskPath(@$search["path"]);
 	$file = reqParam("file");
 	$filePath=combine($relPath, $file);
@@ -58,17 +59,17 @@ function getFileData(&$getData)
 		case "streamformat":
 			return getStreamFormat($filePath);
 		case "format":
-			$columns = $details ? null : array("filename","nb_streams","format_name","format_long_name","start_time","duration","size","bit_rate");		
+			$columns = $all ? null : array("filename", "nb_streams", "format_name", "format_long_name", "start_time", "duration", "size", "bit_rate");		
 			return ffprobe($filePath, "format", $columns);
 		case "stream":
 		case "streams":
-			$columns = $details ? null : array("codec_name", "codec_type", "duration", "bit_rate", "width", "height", "nb_frames", "sample_aspect_ratio", "display_aspect_ratio");
+			$columns = $all ? null : array("codec_name", "codec_type", "duration", "bit_rate", "width", "height", "nb_frames", "sample_aspect_ratio", "display_aspect_ratio");
 			return ffprobe($filePath, "streams", $columns);
 		case "mediafile":
 		default:
 			$getData="MediaFile";
 			$mf = MediaFile::getMediaFile();
-			if($mf && is_object($mf) && details)
+			if($mf && is_object($mf) && $all)
 			{
 				$mf->files = $mf->getFilenames();
 				$mf->paths = $mf->getFilePaths(true);

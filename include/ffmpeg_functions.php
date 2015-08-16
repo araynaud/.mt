@@ -104,7 +104,7 @@ function getKeyframes($relPath, $file="")
 	$filePath = combine($relPath, $file);
 	$cmd = makeCommand("[0] [1]", $command, $filePath);
 	$output = execCommand($cmd, false, false);	
-	$columns = array("coded_picture_number", "pkt_pts_time");
+	$columns = "pkt_pts_time"; //array("coded_picture_number", "pkt_pts_time");
 	$frames = parseFfprobeCompact($output, $columns);
 	return $frames;
 }
@@ -112,6 +112,7 @@ function getKeyframes($relPath, $file="")
 //from ffprobe output
 function parseFfprobeCompact($output, $columns=null)
 {
+	$columns = toArray($columns);
 	if($columns)
 		$columns = array_combine($columns, $columns);
 	$data=array();
@@ -130,9 +131,7 @@ function parseFfprobeCompact($output, $columns=null)
 			$obj[$key] = $value;
 		}
 		if($obj)
-		{
-			$data[] = $obj;
-		}
+			$data[] = arraySingleToScalar($obj);
 	}
 	return arraySingleToScalar($data);
 }
