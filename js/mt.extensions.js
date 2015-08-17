@@ -275,23 +275,58 @@ String.prototype.parseKeywords = function(words, format, multiple)
 	return String.parseKeywords(this.toString(), words, format, multiple);
 };
 
+String.accentChars = /[áàâÁÀÂçÇéèêëÉÈÊËïîíÏÎÍôóőöÔÓŐÖűúùüŰÚÙÜÿŸæœÆŒ]/g;
+String.accentTranslate = { 
+	"á": "a", "à": "a",	"â": "a", "ã": "a",
+	"Á": "A", "À": "A",	"Â": "A", "Ã": "A",
+	"ç": "c", "Ç": "C",
+	"é": "e", "è": "e",	"ê": "e", "ë": "e",
+	"É": "E", "È": "E",	"Ê": "E", "Ë": "E",
+	"ï": "i", "î": "i",	"í": "i",
+	"Ï": "I", "Î": "I",	"Í": "I",
+	"ô": "o", "ó": "o", "ő": "o", "ö": "o",
+	"Ô": "O", "Ó": "O", "Ő": "O", "Ö": "O",
+	"ű": "u", "ú": "u", "ù": "u", "ü": "u",
+	"Ű": "U", "Ú": "U", "Ù": "U", "Ü": "U",
+	"ÿ": "y", "Ÿ": "Y",
+	"æ":"ae", "œ":"oe", "Æ":"AE", "Œ":"OE"
+};
+
+String.cleanupAccents = function(s) 
+{
+	return s.toString().cleanupAccents();
+};
+
+String.prototype.cleanupAccents = function() 
+{
+	if(!String.accentChars)
+		String.accentChars = new RegExp(Object.keys(String.accentTranslate).join(''), 'g');
+	return this.replace(String.accentChars, function(match) { return String.accentTranslate[match] || match; });
+};
+
+String.prototype.hasAccent = function() 
+{
+	return String.accentTranslate.hasOwnProperty(this);
+}
+
 String.makeTitle = function(str)
 {
 	if(isMissing(str)) return "";
 	return str.toString().makeTitle();
-}
+};
 
 String.prototype.makeTitle = function()
 {
 	var str = this.replace(/_/g, " ");
 	str = str.replace(/\//g, " ");
 	str = str.replace(/\./g, " ");
+	var strClean = str.cleanupAccents();
 
 	for(var i=str.length-1; i>0; i--)
-		if(str.isWordEnd(i))
+		if(strClean.isWordEnd(i))
 			str = str.insert(i," ");
 
-	str = str.replace(/  /g, " ");
+	//str = str.replace(/  /g, " ");
 	return str;
 };
 
