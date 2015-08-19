@@ -793,15 +793,16 @@ Object.getFieldValue = function(obj,field)
 
 //get array of distinct values on a field or function of the elements
 //and count for each value
-Array.prototype.countBy = function(field)
+Array.prototype.countBy = function(field, skipNull)
 {
 	var result = {};
 	var i=0;
 	var value;
 	for(i=0;i<this.length;i++)
 	{
+		value = this.getElementValue(i,field);
+		if(isMissing(value) && skipNull) continue;
 		if(isMissing(value)) value=0;
-			value = this.getElementValue(i,field);
 		if(!result[value])
 			result[value]=1;
 		else
@@ -810,9 +811,9 @@ Array.prototype.countBy = function(field)
 	return result;	
 }
 
-Array.prototype.distinct = function(field)
+Array.prototype.distinct = function(field, skipNull)
 {
-	var distinctCount = this.countBy(field);
+	var distinctCount = this.countBy(field, skipNull);
 	return Object.keys(distinctCount);	
 }
 
