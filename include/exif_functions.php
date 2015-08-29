@@ -6,7 +6,13 @@ function getExifDateTaken($filename, $exif=NULL)
       $exif=getExifData($filename);
   if(!$exif)  return "";
 
-  $date = arrayGetCoalesce($exif, "DateTime", "DateTimeOriginal", "EXIF.DateTimeOriginal", "IFD0.DateTime");
+  $date = arrayGetCoalesce($exif, "DateTime", "IFD0.DateTime");
+debug("getExifDateTaken DateTime " . strlen($date), "'$date'");
+  if(strlen($date) <= 2)
+  {
+    $date = arrayGetCoalesce($exif, "DateTimeOriginal", "EXIF.DateTimeOriginal");
+debug("getExifDateTaken DateTimeOriginal", $date);
+  }
   if(!$date)
       return "";
 
