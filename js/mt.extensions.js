@@ -475,6 +475,43 @@ String.prototype.escapeQuotes = function()
 	var rUnescapeQuotes = /\\(['"])/g;
 	var rEscapeQuotes = /\\?(['"])/g;
 	return this.replace(rEscapeQuotes, "\\$1");
+
+}
+
+//parse CSV string, use header line for element field names
+String.prototype.parseCsv = function(header)
+{
+	return String.parseCsv(this, header);
+}
+
+String.parseCsv = function(csv, header)
+{
+	var rows = [];
+	if(!csv) return rows;
+	
+	var lines = csv.split('\n');
+	lines.forEach(function(line)
+	{
+		var row = line.trim().split(';');
+		rows.push(row);
+	});
+	
+	if(header === true)
+		header = rows.shift();
+	if(header)
+	{
+		var list = [];
+		rows.forEach(function(row)
+		{
+			list.push(row.toMap(header));
+		});
+		rows = list;
+	}
+
+//  if(keyColumn > 0 || keyColumn === 0)
+//     return rows.indexBy(keyColumn);
+
+	return rows;
 }
 
 //ARRAY EXTENSION METHODS
@@ -688,12 +725,15 @@ Array.prototype.diff = function(array2)
 	});
 };
 
-//turn values into keys
-Array.prototype.toMap = function()
+//make an object using 1 array for keys and 1 for values
+//if no keys supplied: turn values into keys
+Array.prototype.toMap = function(keys)
 {
 	var map = {};
-	for(var i=0; i < this.length; i++)
-		map[this[i]]=this[i];
+	if(!keys) keys = this;
+	var len = Math.min(keys.length, this.length);
+	for(var i=0; i < len; i++)
+		map[keys[i]] = this[i];
 	return map;
 };
 
