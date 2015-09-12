@@ -95,7 +95,7 @@ thumbnails.sizes.ss=1000
 thumbnails.sizes.hd=1920
 thumbnails.IMAGE.script=image_auto.php
 ;for lossless rotation, crop on large images (JPG only)
-;thumbnails.IMAGE.script=image.php
+thumbnails.IMAGE.script=image.php
 thumbnails.IMAGE.default=icons/background64.png
 thumbnails.VIDEO.ext=jpg
 thumbnails.VIDEO.max_size=1000
