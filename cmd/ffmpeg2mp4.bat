@@ -16,7 +16,7 @@ IF NOT (%5) == () set to=-to %6
 echo from %ss% to %to%
 
 rem set ffmpeg_options=-c copy
-set ffmpeg_options=%filter% -b:v 800k -ab 128k -ac 2 -movflags faststart 
+set ffmpeg_options=%filter% -vf yadif -b:v 800k -ab 128k -ac 2 -movflags faststart 
 set ffmpeg_options=%ffmpeg_options% %ss% %to%
 
 set tmpFile=%1\\.tmp_%3.%oext%
