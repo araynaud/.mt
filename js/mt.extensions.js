@@ -315,7 +315,7 @@ String.makeTitle = function(str)
 	return str.toString().makeTitle();
 };
 
-String.prototype.makeTitle = function()
+String.prototype.makeTitle = function(capitalize)
 {
 	var str = this.replace(/_/g, " ");
 	str = str.replace(/\//g, " ");
@@ -324,11 +324,23 @@ String.prototype.makeTitle = function()
 
 	for(var i=str.length-1; i>0; i--)
 		if(strClean.isWordEnd(i))
+		{
+			if(capitalize && str.getCharType(i)=="lower")
+				str = str.setCharAt(i, str[i].toUpperCase());
 			str = str.insert(i," ");
-
+		}
 	//str = str.replace(/  /g, " ");
+
+	if(capitalize && str.getCharType(0)=="lower")
+		str = str.setCharAt(0, str[0].toUpperCase());
+
 	return str;
 };
+
+String.prototype.setCharAt = function(index, chr)
+{
+	return this.substr(0,index) + chr + this.substr(index+1);
+}
 
 String.prototype.makeFilename = function()
 {
