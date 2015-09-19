@@ -161,6 +161,28 @@ function arrayCopyMultiple($from, $keys, $to=array())
 	return $to;
 }
 
+//get or copy multiple properties from array
+function arrayExtract(&$array, $key)
+{
+	$value = @$array[$key];
+	if(isset($array[$key]))	unset($array[$key]);
+	return $value;
+}
+
+function arrayExtractMultiple(&$array, $keys)
+{
+	$keys = toArray($keys);
+	$result = array();
+	foreach($keys as $key)
+	{
+		$value = arrayExtract($array, $key);
+		if($value!=null)
+			$result[$key] = $value;
+	}
+	return $result;
+}
+
+
 /* make new array using key mapping
 ex: $iptcHeaderArray = array(
 	'2#005'=>'DocumentTitle',

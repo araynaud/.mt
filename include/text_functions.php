@@ -362,8 +362,16 @@ function parseValue($var, $separator="")
 	if(!strcasecmp($var,"true") || !strcasecmp($var,"false"))
 		return parseBoolean($var);
 	if($separator && contains($var,$separator))
-		return explode($separator, $var);
+		return explodeTrim($separator, $var);
 	return parseConstant($var);
+}
+
+function explodeTrim($separator, $var)
+{
+	$arr = explode($separator, $var);
+	foreach($arr as $key => $val)
+		$arr[$key] = trim($val);
+	return $arr;
 }
 
 //convert to defined constant value if it exists
