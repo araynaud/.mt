@@ -24,4 +24,4 @@ GOTO Loop
 del .ss\.tmpgif_%last%.jpg
 ffmpeg -f image2 -framerate 8 -i .ss\.tmpgif_%%d.jpg -vf scale=-1:300 -y %output%.gif
 
-rem del .ss\.tmpgif_*.jpg
+del .ss\.tmpgif_*.jpg
