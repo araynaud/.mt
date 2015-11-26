@@ -195,7 +195,9 @@ function arrayRemap($from, $keymap, $copyAll=false)
 	$to = array();
 	foreach ($from as $key => $value)
 	{
-		$tk =  array_key_exists($keymap, $key) ? $keymap[$key] : $key;
+		$inMap = array_key_exists($key, $keymap); 
+		if(!$inMap && !$copyAll) continue;
+		$tk = $inMap ? $keymap[$key] : $key;
 		$to[$tk] =	$value;
 	}
 	return $to;
