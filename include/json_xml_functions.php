@@ -25,6 +25,14 @@ function qsParameter($name, $first=false)
 	return "$sep$name=" . $GLOBALS[$name];
 }
 
+function addVarsToArray(&$arr, $names, $vars=null, $empty=false)
+{
+	$names = toArray($names);
+	foreach ($names as $name)
+		addVarToArray($arr, $name, $vars, $empty);
+	return $arr;
+}
+
 function addVarToArray(&$arr, $name, $vars=null, $empty=false)
 {
 	setIfNull($vars, $GLOBALS);
