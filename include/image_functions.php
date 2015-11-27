@@ -67,6 +67,15 @@ function createThumbnails($dir,$subfolder,$size,$force=false)
 	}
 }
 
+function resizeMultiple($relPath, $file, $sizes)
+{
+	$result = array();
+	if(!$sizes) return $result;
+	foreach($sizes as $tndir => $size)
+		$result[$tndir] = createThumbnail($relPath, $file, $tndir, $size);
+	return $result;
+}
+
 function createThumbnail($relPath, $file, $tndir, $size)
 {
 	if(!$tndir) return false;

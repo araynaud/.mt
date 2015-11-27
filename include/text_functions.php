@@ -112,6 +112,13 @@ function substringAfterLast($string, $char, $stringOrEmpty=false, $include=false
 	return substringAfter($string, $char, $stringOrEmpty, $include, true);
 }
 
+function substringBetween($string, $start, $end, $stringOrEmpty=false, $include=false, $startLast=false, $endLast=false)
+{
+	$after = substringAfter($string, $start, $stringOrEmpty, $include, $startLast);
+	$between = substringBefore($after, $end, $stringOrEmpty, $include, $endLast);
+	return $between;
+}
+
 function trimChar($str, $ch, $left=true, $right=true)
 {	
 	if(empty($str) || empty($ch)) 
