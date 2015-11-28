@@ -71,8 +71,20 @@ function resizeMultiple($relPath, $file, $sizes)
 {
 	$result = array();
 	if(!$sizes) return $result;
+	$size = reset($sizes);
+	$img = loadImageForResize($relPath, $file, $size, $imageInfo);
 	foreach($sizes as $tndir => $size)
-		$result[$tndir] = createThumbnail($relPath, $file, $tndir, $size);
+	{
+		$imageInfo=null;
+		$img = resizeImage($img, $imageInfo, $size, $size, true);
+		if(!startsWith($tndir, ".")) $tndir = ".$tndir";
+		createDir($relPath, $tndir);
+		$tnPath = combine($relPath, $tndir, $file);
+		outputImage($img, $tnPath, NULL, "", false);
+		$result[$tndir] = $tnPath;
+	}
+
+	imagedestroy($img);	
 	return $result;
 }
 
@@ -176,11 +188,13 @@ function loadImageForResize($dir, $file, $size, &$imageInfo=array())
 {
 //resize by using .ss image for source if it exists and if target size smaller
 	$inputFile=false;
-	if($size<=1000)
-		$inputFile=findThumbnail($dir, $file, ".ss");
+	if($size <= 1000)
+		$inputFile = findThumbnail($dir, $file, ".ss");
+	else if($size <= 1920)
+		$inputFile = findThumbnail($dir, $file, ".hd");
 //otherwise, load original image
 	if(!$inputFile)
-		$inputFile=combine($dir,$file);	
+		$inputFile = combine($dir, $file);	
 	return loadImage($inputFile, $imageInfo);
 }
 
