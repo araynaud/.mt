@@ -531,11 +531,16 @@ function deleteFile($relPath, $file="")
 }
 
 //rmdir always returns false on windows
+//delete dir only if it is empty
 function deleteDir($dir)
 {
 	if(!is_dir($dir)) return false;
-	rmdir($dir);
-	return true; //!file_exists($dir);
+
+	$files = scandir($dir);
+	$files = array_diff($files, array('.','..'));
+	if(count($files)==0)
+		rmdir($dir);
+	return !file_exists($dir);
 }
 
 function delTree($dir) 
