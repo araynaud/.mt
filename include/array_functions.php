@@ -8,11 +8,12 @@ function splitLines($str)
 	return preg_split("/\\n|\\r\\n/", $str);
 }
 
-function toArray($str)
+function toArray($str, $sep=null)
 {
 	if(is_array($str))	return $str;
 	if(empty($str))		return array();
-	return preg_split("/[,; \|]/", $str);
+	setIfNull($sep, "[,; \|]");
+	return preg_split("/$sep/", $str);
 }
 
 //flatten array to string
@@ -319,6 +320,27 @@ function arrayGroupBy($data, $field)
 	}
 	return $distinct;
 }
+
+function arrayIndexBy($data, $field=null)
+{
+	$distinct=array();
+	foreach ($data as $el)
+	{
+		if(!$field)
+			$val = $el;
+		else if(is_callable($field)) 
+			$val = $field($el);
+		else if(isset($el[$field])) 
+			$val = $el[$field];
+		else
+			continue;
+		if(!isset($distinct[$val]))
+			$distinct[$val] = $el;
+	}
+	return $distinct;
+}
+
+
 
 function arrayHasSingleElement($data)
 {
