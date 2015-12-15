@@ -112,6 +112,13 @@ function substringAfterLast($string, $char, $stringOrEmpty=false, $include=false
 	return substringAfter($string, $char, $stringOrEmpty, $include, true);
 }
 
+function substringBetween($string, $start, $end, $stringOrEmpty=false, $include=false, $startLast=false, $endLast=false)
+{
+	$after = substringAfter($string, $start, $stringOrEmpty, $include, $startLast);
+	$between = substringBefore($after, $end, $stringOrEmpty, $include, $endLast);
+	return $between;
+}
+
 function trimChar($str, $ch, $left=true, $right=true)
 {	
 	if(empty($str) || empty($ch)) 
@@ -362,8 +369,16 @@ function parseValue($var, $separator="")
 	if(!strcasecmp($var,"true") || !strcasecmp($var,"false"))
 		return parseBoolean($var);
 	if($separator && contains($var,$separator))
-		return explode($separator, $var);
+		return explodeTrim($separator, $var);
 	return parseConstant($var);
+}
+
+function explodeTrim($separator, $var)
+{
+	$arr = explode($separator, $var);
+	foreach($arr as $key => $val)
+		$arr[$key] = trim($val);
+	return $arr;
 }
 
 //convert to defined constant value if it exists

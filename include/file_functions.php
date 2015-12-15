@@ -228,10 +228,14 @@ function readCsvTableFile($filename, $keyColumn=false, $columnNames=false, &$csv
 	return parseCsvTable($text, $keyColumn, $columnNames, $csvRows);
 }
 
+$CSV_SEPARATOR=";"; //columns inside a row
+$CSV_SEPARATOR2=""; //values inside a field
+
 function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = array())
 {
-	$separator=";";
-	$separator2="";
+	global $CSV_SEPARATOR, $CSV_SEPARATOR2;
+	$separator=$CSV_SEPARATOR;
+	$separator2=$CSV_SEPARATOR2;
 	if(!$text)		return $csvRows;
 	$lines = splitLines($text);
 	if(!$lines)		return $csvRows;
@@ -527,11 +531,16 @@ function deleteFile($relPath, $file="")
 }
 
 //rmdir always returns false on windows
+//delete dir only if it is empty
 function deleteDir($dir)
 {
 	if(!is_dir($dir)) return false;
-	rmdir($dir);
-	return true; //!file_exists($dir);
+
+	$files = scandir($dir);
+	$files = array_diff($files, array('.','..'));
+	if(count($files)==0)
+		rmdir($dir);
+	return !file_exists($dir);
 }
 
 function delTree($dir) 

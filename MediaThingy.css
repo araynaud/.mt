@@ -596,7 +596,7 @@ div.dir
 	width: 180px;
 }
 
-.tinyImage img.thumbnail
+.tinyImage > img.thumbnail
 {
 	height: 100px;
 }
@@ -623,7 +623,7 @@ div.dir
 	min-height: 118px;
 }
 
-.smallImage img.thumbnail
+.smallImage > img.thumbnail
 {
 	max-width: 225px;
 	max-height: 225px;
@@ -641,7 +641,7 @@ div.dir
 	width: 270px;
 }
 
-.mediumImage img.thumbnail
+.mediumImage > img.thumbnail
 {
 	max-height: 270px;
 	max-width: 100%;
@@ -664,7 +664,7 @@ div.dir
 	width: 450px;
 }
 
-.largeImage img.thumbnail
+.largeImage > img.thumbnail
 {
 	max-height: 450px;
 	max-width: 100%;

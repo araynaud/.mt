@@ -8,11 +8,12 @@ function splitLines($str)
 	return preg_split("/\\n|\\r\\n/", $str);
 }
 
-function toArray($str)
+function toArray($str, $sep=null)
 {
 	if(is_array($str))	return $str;
 	if(empty($str))		return array();
-	return preg_split("/[,; \|]/", $str);
+	setIfNull($sep, "[,; \|]");
+	return preg_split("/$sep/", $str);
 }
 
 //flatten array to string
@@ -161,6 +162,28 @@ function arrayCopyMultiple($from, $keys, $to=array())
 	return $to;
 }
 
+//get or copy multiple properties from array
+function arrayExtract(&$array, $key)
+{
+	$value = @$array[$key];
+	if(isset($array[$key]))	unset($array[$key]);
+	return $value;
+}
+
+function arrayExtractMultiple(&$array, $keys)
+{
+	$keys = toArray($keys);
+	$result = array();
+	foreach($keys as $key)
+	{
+		$value = arrayExtract($array, $key);
+		if($value!=null)
+			$result[$key] = $value;
+	}
+	return $result;
+}
+
+
 /* make new array using key mapping
 ex: $iptcHeaderArray = array(
 	'2#005'=>'DocumentTitle',
@@ -173,7 +196,9 @@ function arrayRemap($from, $keymap, $copyAll=false)
 	$to = array();
 	foreach ($from as $key => $value)
 	{
-		$tk =  array_key_exists($keymap, $key) ? $keymap[$key] : $key;
+		$inMap = array_key_exists($key, $keymap); 
+		if(!$inMap && !$copyAll) continue;
+		$tk = $inMap ? $keymap[$key] : $key;
 		$to[$tk] =	$value;
 	}
 	return $to;
@@ -295,6 +320,27 @@ function arrayGroupBy($data, $field)
 	}
 	return $distinct;
 }
+
+function arrayIndexBy($data, $field=null)
+{
+	$distinct=array();
+	foreach ($data as $el)
+	{
+		if(!$field)
+			$val = $el;
+		else if(is_callable($field)) 
+			$val = $field($el);
+		else if(isset($el[$field])) 
+			$val = $el[$field];
+		else
+			continue;
+		if(!isset($distinct[$val]))
+			$distinct[$val] = $el;
+	}
+	return $distinct;
+}
+
+
 
 function arrayHasSingleElement($data)
 {

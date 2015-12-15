@@ -39,10 +39,10 @@
 			</a>
 		{{/if}}
 			
-		{{if   _parent.caption && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
+		{{if _parent.caption && _parent.detail=='description' tmpl='#descriptionTemplate'}}
+		{{else _parent.caption && type=="VIDEO" tmpl='#videoCaptionTemplate'}}
 		{{else _parent.caption && type=="DIR"   tmpl='#dirCaptionTemplate'}}
 		{{else _parent.caption && type=="IMAGE" tmpl='#imageCaptionTemplate'}}
-		{{else _parent.caption tmpl='#descriptionTemplate'}}
 		{{/if}}
 </div>{{if _parent.columns == 1 || _parent.cropRatio && ((#index+1) % _parent.columns == 0 || #index == #parent.data.length-1) }}<br/>{{/if}}{{:~setGroup(#data)}}</script>
 
@@ -74,7 +74,7 @@
 </script>
 
 <script id="descriptionTemplate" type="text/x-jsrender"> 
-	<div class="captionBelow big">
+	<div class="captionBottom big bold textOutline">
 		<span id="desc_{{:id}}" class="description">{{:description}}</span>
 	</div>
 </script>
