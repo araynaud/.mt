@@ -63,7 +63,7 @@ if(isMobile()) {?>
 ?>
 
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="icon" href="images/folder32.png">
+<link rel="icon" href="icons/folder32.png">
 <link rel="icon" sizes="128x128" href="icons/folder.png">
 <link rel="apple-touch-icon" sizes="128x128" href="icons/folder.png">
 <link rel="apple-touch-icon-precomposed" sizes="128x128" href="icons/folder.png">
