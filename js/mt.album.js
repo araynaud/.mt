@@ -140,8 +140,9 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 };
 
 //provide base url and array of filenames
-Album.getExternalUrls = function(instanceName)
+Album.getExternalUrls = function()
 {	
+	var instanceName = "album";
 	var album = {title: "external urls"};
 	var listUrl="http://localhost/mt/data.php?data=tablefile&path=web/GTA&file=cars.csv";
 	$.getJSON(listUrl).then(function(response)
@@ -152,12 +153,14 @@ Album.getExternalUrls = function(instanceName)
 }
 
 //json from external site: use proxy.php
-Album.getExternalFileList = function(instanceName)
-{	
+Album.getExternalFileList = function()
+{
+	var instanceName = "album";
 	var listUrl="http://localhost/mt/data.php?data=tablefile&path=web/GTA&file=cars_imgurl_files.csv&header=false";
-//	var listUrl="http://localhost/pictures/web/GTA/cars_imgurl_files.csv";
-	$.getJSON(listUrl).then(function(response)
+	var listUrl="http://localhost/pictures/web/GTA/racer2.csv";
+	$.get(listUrl).then(function(response, status)
 	{
+		response = String.parseCsv(response);
 		album.urlAbsPath = response.shift();
 		album.groupedFiles = { IMAGE: response };
 		Album.createInstance(album, instanceName);
@@ -370,7 +373,7 @@ Album.prototype.getMediaFileById = function(id, type)
 	{
 		var mf = this.groupedFiles[type][id];
 		if(isString(mf))
-			return {url: this.urlAbsPath + "/" + mf, name: mf.getFilenameNoExt(), filename: mf, exts: [mf.getExt()] };
+			return {url: this.urlAbsPath + mf, name: mf.getFilenameNoExt(), filename: mf, exts: [mf.getExt()] };
 		return mf;
 	}
 	

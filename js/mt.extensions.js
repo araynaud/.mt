@@ -502,15 +502,20 @@ String.parseCsv = function(csv, header)
 	if(!csv) return rows;
 	
 	var lines = csv.split('\n');
+	var singleColumn = (lines[0].indexOf(";") < 0);
 	lines.forEach(function(line)
 	{
-		var row = line.trim().split(';');
-		rows.push(row);
+		line = line.trim();
+		if(!line) return;
+		if(singleColumn)
+			rows.push(line);
+		else
+			rows.push(line.split(';'));
 	});
 	
 	if(header === true)
 		header = rows.shift();
-	if(header)
+	if(header && !singleColumn)
 	{
 		var list = [];
 		rows.forEach(function(row)

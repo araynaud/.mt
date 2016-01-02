@@ -231,16 +231,37 @@ $.fn.animateRotate = function(startAngle, endAngle, duration, easing, complete)
 //get link href or img urls
 $.fn.getUrls = function (selector, attr, absolute)
 {
-	selector = valueOrDefault(selector, "img");
-	attr = valueOrDefault(attr, "src");
+	attr = attr || "src";
 	urls = []; 
-	this.find(selector).each(function()
+	var getUrl = function()
 	{ 
 		var src = absolute ? this[attr] : $(this).attr(attr);
 		if(src)
 			urls.push(src);
-	});
+	};
+	
+	if(selector)
+		this.find(selector).each(getUrl);
+	else
+		this.each(getUrl);
 	return urls;
+};
+
+$.fn.getBackgroundImages = function (selector)
+{
+	var result = [];
+	var getBackgroundImage = function(a, el) 
+	{ 
+		var img=el.style.backgroundImage;
+		if(img && img.indexOf("url(")===0)
+			img = img.substr(0,img.length-2).substr(5);
+		result.push(img);
+	};
+	if(selector)
+		this.find(selector).each(getBackgroundImage);
+	else
+		this.each(getBackgroundImage);
+	return result;
 };
 
 $.fn.backgroundImage = function(url)
