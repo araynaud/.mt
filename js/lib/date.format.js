@@ -288,7 +288,7 @@ Date.formatDateDiff = function(dateRange)
 	return plural(dateRange.duration, unit);
 };
 
-Date.timeSince = function(since)
+Date.timeSince = function(since, dateOnly)
 {
 	dSince=Date.fromString(since);
 	if(!dSince.diffUnits) return dSince;
@@ -298,7 +298,8 @@ Date.timeSince = function(since)
 Date.formatTimeSince = function(since, dateOnly)
 {
 	if(!df.i18n) df.getMasks();
-	var diff = Date.formatDateDiff(Date.timeSince(since));
+	var diff = Date.timeSince(since, dateOnly);
+	diff = Date.formatDateDiff(diff);
 	var fmt = df.i18n.sinceFormat;
 	return fmt ? fmt.format(diff) : diff;	
 };

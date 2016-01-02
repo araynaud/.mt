@@ -99,7 +99,8 @@ Album.onLoad = function (albumInstance)
 	try 
 	{
 		if(!albumInstance) return;
-		config = albumInstance.config;
+		if(albumInstance.config)
+			config = albumInstance.config;
 		UI.displayUser();
 		UI.slideshow = new Slideshow(config.slideshow);
 		UI.slideshow.setOptions(search);
@@ -243,7 +244,7 @@ style="<?php echo getConfig("background.color") ? "background-color: " . getConf
 
 <div id="indexContainer" class="nofloat">
 	<div class="centered noprint">
-		<span id="pagesTop" class="pager centered"></span>
+		<span id="pagesTop" class="pager centered textOutline"></span>
 	</div>
 	<div class="floatR">
 		<div id="downloadFileList" class="rightPane hidden" direction="right" callback="setContentWidth"></div>

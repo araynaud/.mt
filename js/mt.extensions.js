@@ -819,6 +819,31 @@ Array.prototype.divideInto = function(nb,transpose)
 	return result;
 };
 
+//divide into pages with fixed number. nb = max number per page
+Array.prototype.paginate = function(nb, equalize, minPages)
+{
+	if(isEmpty(this))
+		return [];
+	minPages = valueOrDefault(minPages, 1);
+	var nbPages = Math.ceil(this.length / nb);
+	if(isMissing(nb) || nb <= 1 || nb > this.length || nbPages < minPages) 
+		return [this];
+
+	var result = [];
+	var remaining = this.length;
+	var start = 0;
+	
+	for(var i=0; i<nbPages; i++)
+	{
+		if(equalize)
+			nb = Math.ceil(remaining / (nbPages-i));
+		result.push(this.slice(start, start+nb));
+		start += nb;
+		remaining -= nb;
+	}
+	return result;
+};
+
 // value for filter, sort or group
 Array.prototype.getElementValue = function(i,field)
 {

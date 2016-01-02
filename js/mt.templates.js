@@ -87,10 +87,10 @@ UI.getGroupTitle = function(mediaFile)
 		if(!dateFormat)	return value;
 
 		if(album.reverse)
-			return Date.formatTimeSince(value);
+			return Date.formatTimeSince(value, true);
 
 		var fmt= ["month","year"].contains(album.dateRange.unit) ? "monthYear" : "longDate";
-		return dateFormat(value,fmt,true);
+		return dateFormat(value,fmt);
 	}
 	if(album.sort=="type")
 		return value+"S";

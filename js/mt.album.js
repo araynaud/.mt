@@ -19,6 +19,7 @@ function Album(data)
 		this.url=data;
 
 	this.relPath = this.urlAbsPath ? this.urlAbsPath : String.combine(Album.serviceUrl, this.relPath);
+	this.getTitle();
 	this.dateRange = this.getDateRange();
 
 	this.loadDisplayOptions();
@@ -137,6 +138,31 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	});
 	return albumInstance; //only valid if async=false
 };
+
+//provide base url and array of filenames
+Album.getExternalUrls = function(instanceName)
+{	
+	var album = {title: "external urls"};
+	var listUrl="http://localhost/mt/data.php?data=tablefile&path=web/GTA&file=cars.csv";
+	$.getJSON(listUrl).then(function(response)
+	{
+		album.groupedFiles = { IMAGE: response };
+		Album.createInstance(album, instanceName);
+	});
+}
+
+//json from external site: use proxy.php
+Album.getExternalFileList = function(instanceName)
+{	
+	var listUrl="http://localhost/mt/data.php?data=tablefile&path=web/GTA&file=cars_imgurl_files.csv&header=false";
+//	var listUrl="http://localhost/pictures/web/GTA/cars_imgurl_files.csv";
+	$.getJSON(listUrl).then(function(response)
+	{
+		album.urlAbsPath = response.shift();
+		album.groupedFiles = { IMAGE: response };
+		Album.createInstance(album, instanceName);
+	});
+}
 
 Album.createInstance = function (response, instanceName, callback) 
 {
@@ -272,6 +298,14 @@ Album.prototype.contains = function(key)
 //	"oldestDate": "2012-03-17 19:08:24",
 //	"newestDate": "2013-05-02 13:24:52",
 
+Album.prototype.getTitle = function()
+{
+	if(!this.title)	
+		this.title = this.path.substringAfter("/", true, true).makeTitle();
+	return this.title;
+};
+
+
 Album.prototype.getDateRange = function(dateOnly)
 {
 	if(Date.dateRange)
@@ -333,8 +367,13 @@ Album.prototype.getMediaFileType = function(el)
 Album.prototype.getMediaFileById = function(id, type)
 {
 	if(type && this.groupedFiles[type][id])
-		return this.groupedFiles[type][id];
-
+	{
+		var mf = this.groupedFiles[type][id];
+		if(isString(mf))
+			return {url: this.urlAbsPath + "/" + mf, name: mf.getFilenameNoExt(), filename: mf, exts: [mf.getExt()] };
+		return mf;
+	}
+	
 	for(type in this.groupedFiles)
 		if(this.groupedFiles[type][id])
 			return this.groupedFiles[type][id];
@@ -654,7 +693,8 @@ Album.prototype.selectRange = function(from, to, state)
 // do NOT fire events
 Album.prototype.loadDisplayOptions = function()
 {
-	if(!(config = this.config)) return;
+	if(!this.config) return;
+	config = this.config;
 	var displayConfig = config.DISPLAY || config.display;
 	if(!displayConfig) return;
 	displayConfig.size=valueOrDefault(displayConfig.size,0);

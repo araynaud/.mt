@@ -12,6 +12,7 @@ function getFileData(&$getData)
 	$file = reqParam("file");
 	$filePath=combine($relPath, $file);
 	$key = reqParam("key", false);
+	$header = reqParamBoolean("header", true);
 	switch ($getData)
 	{
 		case "album":
@@ -38,7 +39,7 @@ function getFileData(&$getData)
 				$tags = loadTagFiles($relPath, $search["depth"]);
 			return $tags;
 		case "tablefile":
-			return readCsvTableFile($filePath, $key, true);
+			return readCsvTableFile($filePath, $key, $header);
 		case "playlist":
 			return readPlaylistFile($filePath); //, 0, true);
 		case "datafile":

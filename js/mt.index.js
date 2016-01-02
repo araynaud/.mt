@@ -616,6 +616,8 @@ UI.setupElements = function()
 
 UI.setupEvents = function()
 {
+	if(UI.eventsSetup) return;
+	
 	$(".sOption").change(UI.sortFiles);	
 	$("#dd_page").change(UI.selectCountPerPage);
 	$(".lOption").change(UI.toggleLayoutOption);
@@ -676,15 +678,19 @@ UI.setupEvents = function()
 	});
 
 	UI.setupPlayers();
+
+	UI.eventsSetup = true;
 };
 
 UI.setupPlayers = function()
 {
-	if(!window.MediaPlayer) return;
+	if(!window.MediaPlayer || UI.playersSetup) return;
 
 	$("#playMusicIcon").toggle(album.musicFiles);	
 	if(config.MediaPlayer.audio.enabled)
 		MediaPlayer.loadPlaylist("audio", album.musicFiles);
+
+	UI.playersSetup = true;
 };
 
 UI.playAllVideos = function()
