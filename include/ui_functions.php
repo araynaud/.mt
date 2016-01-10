@@ -239,8 +239,8 @@ function metaTags($album, $article=true)
 
 	if($article)
 	{
-		$meta["article:published_time"] = formatDate(filectime($relPath), true);	//dir creation date or newest file date?
-		$meta["article:modified_time"]  = formatDate(filemtime($relPath), true);	//dir modified date?
+		$meta["article:published_time"] = @formatDate(filectime($relPath), true);	//dir creation date or newest file date?
+		$meta["article:modified_time"]  = @formatDate(filemtime($relPath), true);	//dir modified date?
 		$meta["article:author"] = "MinorArt"; //uploader username ?
 
 		//list album tags
@@ -248,8 +248,9 @@ function metaTags($album, $article=true)
 		$meta["article:tag"] = array_keys($tags);
 	}
 
-	foreach ($meta as $key => $value) 
-		echo metaTag($key, $value);
+	foreach ($meta as $key => $value)
+		if($value)
+			echo metaTag($key, $value);
 
 	return $meta;
 }
