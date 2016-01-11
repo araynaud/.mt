@@ -112,6 +112,7 @@ String.combine = function()
 {
 	//split each arg level
 	var pathArray=Array.fromArguments(arguments, true, String.PATH_SEPARATOR);
+	var hasDomain = String.startsWith(arguments[0], "//");
 	var isRooted = String.startsWith(arguments[0], String.PATH_SEPARATOR);
 	//filter pathArray
 	for(var i=0; i<pathArray.length; )
@@ -124,7 +125,10 @@ String.combine = function()
 			i++;
 	}
 	var path = pathArray.join(String.PATH_SEPARATOR);
-	if(isRooted)
+	//restore initial slashes
+	if(hasDomain)
+		path = "//" + path;
+	else if(isRooted)
 		path = String.PATH_SEPARATOR + path;
 	return path;
 };

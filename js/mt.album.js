@@ -98,7 +98,9 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	search.details = valueOrDefault(search.details, 3);
 	async=valueOrDefault(async,false);
 	//TODO: pass search as data to $.ajax GET
-	var serviceUrl = Album.serviceUrl + "/data.php";
+
+    Album.isExternal = Album.serviceUrl.indexOf("//") >= 0;
+    var serviceUrl = String.combine(Album.proxy, Album.serviceUrl, "data.php");
 	var startTime = new Date();
 
 	if(isEmpty(Album.ajaxLoader)) Album.ajaxLoader = $("#ajaxLoader");
@@ -115,7 +117,11 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 		async: async,
 		success: function(response)
 		{ 
+			response.serviceUrl = Album.serviceUrl;
 			response.startTime = startTime;
+			if(Album.isExternal)
+				response.urlAbsPath = Album.serviceUrl + "/" + response.urlAbsPath;
+
 			Album.ajaxLoader.hide();
 			Album.createInstance(response, instanceName, callback);
 		},
