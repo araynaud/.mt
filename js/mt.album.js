@@ -100,6 +100,7 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	//TODO: pass search as data to $.ajax GET
 
     Album.isExternal = Album.serviceUrl.indexOf("//") >= 0;
+    if(!Album.isExternal) Album.proxy = null;
     var serviceUrl = String.combine(Album.proxy, Album.serviceUrl, "data.php");
 	var startTime = new Date();
 
