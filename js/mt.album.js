@@ -98,7 +98,7 @@ Album.getAlbumAjax = function(instanceName, search, async, callback)
 	search.details = valueOrDefault(search.details, 3);
 	async=valueOrDefault(async,false);
 	//TODO: pass search as data to $.ajax GET
-	var serviceUrl = String.combine(Album.serviceUrl, "data.php");
+	var serviceUrl = Album.serviceUrl + "/data.php";
 	var startTime = new Date();
 
 	if(isEmpty(Album.ajaxLoader)) Album.ajaxLoader = $("#ajaxLoader");
