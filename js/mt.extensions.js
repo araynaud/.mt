@@ -108,12 +108,31 @@ String.combine3 = function()
 	return path;
 }
 
+//count start // chars
+String.isRootedPath = function(str)
+{
+	if(!str) return false;
+	for(var i=0; i<2 && i<str.length; i++)
+		if(str[i] != String.PATH_SEPARATOR)
+			return i;
+	return i;
+};
+
 String.combine = function()
 {
 	//split each arg level
-	var pathArray=Array.fromArguments(arguments, true, String.PATH_SEPARATOR);
-	var hasDomain = String.startsWith(arguments[0], "//");
-	var isRooted = String.startsWith(arguments[0], String.PATH_SEPARATOR);
+	var args = Array.fromArguments(arguments);
+	//find first root, remove what is before
+	for(var i=0; i<args.length; i++)
+		if(String.isRootedPath(args[i]))
+		{
+			if(i) args.splice(0,i);
+			break;
+		}
+	
+	var pathArray = args.flatten(String.PATH_SEPARATOR);
+	var hasDomain = String.startsWith(args[0], "//");
+	var isRooted = String.startsWith(args[0], String.PATH_SEPARATOR);
 	//filter pathArray
 	for(var i=0; i<pathArray.length; )
 	{
