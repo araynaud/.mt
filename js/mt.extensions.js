@@ -15,8 +15,9 @@ function isEmpty(variable)
 
 function isDefined(variable, ctx)
 {
-	var arr = variable.split(".");
 	if(!ctx) ctx = window;
+	if(!variable) return ctx;
+	var arr = variable.split(".");
 	for(var i=0; i < arr.length; i++)
 	{
 		if(isMissing(ctx[arr[i]])) return false;
@@ -27,8 +28,9 @@ function isDefined(variable, ctx)
 
 function valueIfDefined(variable, ctx)
 {
-	var arr = variable.split(".");
 	if(!ctx) ctx = window;
+	if(!variable) return ctx;
+	var arr = variable.split(".");
 	for(var i=0; i < arr.length; i++)
 	{
 		if(isMissing(ctx[arr[i]])) return ctx[arr[i]];
@@ -556,9 +558,14 @@ String.parseCsv = function(csv, header)
 
 //ARRAY EXTENSION METHODS
 
-Array.prototype.clone = function()
+if (!Array.prototype.clone) Array.prototype.clone = function()
 {
-	return this.slice(0);
+	if(this.slice)
+		return this.slice(0);
+
+	var clone = [];
+	for (var i = 0; i < this.length; i++)
+			clone.push(this[i]);
 };
 
 // For IE array.indexOf

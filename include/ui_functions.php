@@ -103,14 +103,14 @@ function pageLinks($path, $start, $nbFiles, $count)
 }
 
 
-function addScripts($relPath)
+function addAllScripts($relPath)
 {
 	if(!is_dir($relPath) && file_exists($relPath))
-		return addScript($scriptPath);
+		return addScript($relPath);
 
-	$search =  array();
+	$search = array();
 	$search["type"]="js";
-	$files = listFiles($relPath, $search);
+	$files = listFilesDir($relPath, $search);
 
 	foreach($files as $file)
 		addScript($relPath, $file);
@@ -118,19 +118,42 @@ function addScripts($relPath)
 	return $files;
 }
 
-function addScript($scriptPath, $file="")
+function addScript($scriptPath, $file="", $local=false)
 {
-	if (empty($scriptPath)) return false;
-?>	<script type="text/javascript" src="<?php echo combine($scriptPath, $file) ?>"></script>
-<?php
-	return $scriptPath;
+	if(is_array($file))
+	{	
+		foreach($file as $f)
+			addScript($scriptPath, $f);
+		return;
+	}
+
+	$url = combine($scriptPath, $file);
+	if(!$local || file_exists($url))
+		return addJavascript($url);
 }
 
 function addJavascript($url)
 {
-	if (!empty($url)) {?>
-<script type="text/javascript" src="<?php echo $url?>"></script>
-<?php }
+	if(!$url) return; 
+?><script type="text/javascript" src="<?php echo $url?>"></script>
+<?php
+	return $url;
+}
+
+
+function addAllCss($relPath)
+{
+	if(!is_dir($relPath) && file_exists($relPath))
+		return addCss($relPath);
+
+	$search =  array();
+	$search["type"]="css";
+	$files = listFilesDir($relPath, $search);
+
+	foreach($files as $file)
+		addCss($relPath, $file);
+
+	return $files;
 }
 
 function addStylesheet($relPath)
@@ -138,10 +161,32 @@ function addStylesheet($relPath)
 	$stylesheet = findInParent($relPath,"night.css",true);
 	$stylesheet = diskPathToUrl($stylesheet);
 
-	if (!empty($stylesheet)) {
-?><link type="text/css" rel="stylesheet" media="screen" href="<?php echo $stylesheet?>"/>
-<?php }
-	return $stylesheet;
+	return addCss($stylesheet);
+}
+
+function addCss($url, $file="", $local=false)
+{
+	$url = combine($url, $file);
+
+	if($local && !file_exists($url)) return;
+	if (!$url) return;
+?><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url?>"/>
+<?php 
+	return $url;
+}
+
+function addCssFromConfig($key, $file=NULL)
+{
+	$cfg = getConfig($key);
+	setIfNull($file, @$cfg["css"]);
+	return addCss($cfg["path"], $file);
+}
+
+function addScriptFromConfig($key, $file=NULL)
+{
+	$cfg = getConfig($key);
+	setIfNull($file, @$cfg["js"]);
+	return addScript($cfg["path"], $file);
 }
 
 function displayBackground($path, $hidden=false, $printable=false)
