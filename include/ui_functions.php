@@ -107,27 +107,21 @@ function addAllScripts($relPath)
 {
 	if(!is_dir($relPath) && file_exists($relPath))
 		return addScript($relPath);
-
-	$search = array();
-	$search["type"]="js";
+	$search = array("type" => "js");
 	$files = listFilesDir($relPath, $search);
-
-	foreach($files as $file)
-		addScript($relPath, $file);
-
-	return $files;
+	return addScript($relPath, $files);
 }
 
-function addScript($scriptPath, $file="", $local=false)
+function addScript($relPath, $file="", $local=false)
 {
 	if(is_array($file))
 	{	
 		foreach($file as $f)
-			addScript($scriptPath, $f);
+			addScript($relPath, $f);
 		return;
 	}
 
-	$url = combine($scriptPath, $file);
+	$url = combine($relPath, $file);
 	if(!$local || file_exists($url))
 		return addJavascript($url);
 }
@@ -140,33 +134,34 @@ function addJavascript($url)
 	return $url;
 }
 
-
 function addAllCss($relPath)
 {
 	if(!is_dir($relPath) && file_exists($relPath))
 		return addCss($relPath);
 
-	$search =  array();
-	$search["type"]="css";
+	$search = array("type" => "css");
 	$files = listFilesDir($relPath, $search);
-
-	foreach($files as $file)
-		addCss($relPath, $file);
-
-	return $files;
+	return addCss($relPath, $files);
 }
 
 function addStylesheet($relPath)
 {
-	$stylesheet = findInParent($relPath,"night.css",true);
+	$stylesheet = findInParent($relPath, "night.css", true);
 	$stylesheet = diskPathToUrl($stylesheet);
 
 	return addCss($stylesheet);
 }
 
-function addCss($url, $file="", $local=false)
+function addCss($relPath, $file="", $local=false)
 {
-	$url = combine($url, $file);
+	if(is_array($file))
+	{	
+		foreach($file as $f)
+			addCss($relPath, $f);
+		return;
+	}
+
+	$url = combine($relPath, $file);
 
 	if($local && !file_exists($url)) return;
 	if (!$url) return;
