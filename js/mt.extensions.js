@@ -556,6 +556,28 @@ String.parseCsv = function(csv, header)
 	return rows;
 }
 
+String.append = function(str1, sep, str2)
+{
+    str1 = valueOrDefault(str1, "");
+    return str1.toString().append(sep,str2).toString();
+};
+
+String.prototype.append = function(sep, str)
+{
+    if(arguments.length==1)
+    {
+        str=sep;
+        sep="";
+    }
+    if(!sep) sep="";
+    if(!str) return this;
+
+    if(this.length)
+        return this + sep + str;
+    return str.toString();
+};
+
+
 //ARRAY EXTENSION METHODS
 
 if (!Array.prototype.clone) Array.prototype.clone = function()
