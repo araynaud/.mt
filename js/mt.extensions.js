@@ -1185,6 +1185,18 @@ Object.toText = function (obj, separator, includeFunctions)
 	return isEmpty(msg) ? obj : msg;
 };
 
+Object.remap = function (obj, keyConvert)
+{
+	var newobj = {};
+	for(var key in obj)
+	{
+		if(!key || key.startsWith("$")) continue;
+		var newkey = key.toLowerCase();
+		newobj[newkey] = obj[key];
+	}
+	return newobj;
+};
+
 String.prototype.appendQueryString = function(obj)
 {
 	return String.appendQueryString(this, obj);

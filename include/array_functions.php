@@ -279,13 +279,13 @@ function arrayDivide($array, $nb = 1, $transpose = false)
 	return $result;
 };
 
-function arrayDistinct($data, $field)
+function arrayDistinct($data, $field="")
 {
 	$distinct=array();
 	foreach ($data as $el)
 	{
-		if(!isset($el[$field])) continue;
-		$val = $el[$field];
+		$val = arrayGet($el, $field);
+		if(is_null($val)) continue;
 		if(!isset($distinct[$val]))
 			$distinct[$val] = $val;
 	}
@@ -297,8 +297,12 @@ function arrayCountBy($data, $field)
 	$distinct=array();
 	foreach ($data as $el)
 	{
-		if(!isset($el[$field])) continue;
-		$val = @$el[$field];
+		if(is_callable($field)) 
+			$val = $field($el);
+		else
+			$val = arrayGet($el, $field);
+
+		if(is_null($val)) continue;
 		if(!isset($distinct[$val]))
 			$distinct[$val] = 1;
 		else 
@@ -312,8 +316,12 @@ function arrayGroupBy($data, $field)
 	$distinct=array();
 	foreach ($data as $el)
 	{
-		if(!isset($el[$field])) continue;
-		$val = @$el[$field];
+		if(is_callable($field)) 
+			$val = $field($el);
+		else
+			$val = arrayGet($el, $field);
+
+		if(is_null($val)) continue;
 		if(!isset($distinct[$val]))
 			$distinct[$val] = array();
 		$distinct[$val][] = $el;
@@ -326,21 +334,17 @@ function arrayIndexBy($data, $field=null)
 	$distinct=array();
 	foreach ($data as $el)
 	{
-		if(!$field)
-			$val = $el;
-		else if(is_callable($field)) 
+		if(is_callable($field)) 
 			$val = $field($el);
-		else if(isset($el[$field])) 
-			$val = $el[$field];
 		else
-			continue;
+			$val = arrayGet($el, $field);
+
+		if(is_null($val)) continue;
 		if(!isset($distinct[$val]))
 			$distinct[$val] = $el;
 	}
 	return $distinct;
 }
-
-
 
 function arrayHasSingleElement($data)
 {
@@ -354,4 +358,33 @@ function arraySingleToScalar($data)
 	return $data;
 }
 
+//random array of distinct values
+function randomArray($size, $min, $max, $unique=true)
+{
+	$arr = array();
+	if(!$unique)
+	{
+		for($i=0; $i < $size; $i++)
+			$arr[] = rand ($min, $max);
+		return $arr;
+	}
+
+	$maxSize = $max - $min + 1;
+	if($size > $maxSize) $size = $maxSize;
+	for($i=0; $i < $size;)
+	{
+		$id = rand ($min, $max);
+		if(isset($arr[$id])) continue;
+		$arr[$id] = $id;
+		$i++;
+	}
+	return array_values($arr);
+}
+
+//pick random 4 thumbs in this dir
+function pickRandomElements($array, $nb)
+{
+	shuffle($array);
+	return array_slice($array, 0, $nb);
+}
 ?>

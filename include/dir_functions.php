@@ -806,10 +806,4 @@ function findFirstImages($relPath, $maxCount=1, $search=null)
 	return $pics;
 }
 
-//pick random 4 thumbs in this dir
-function pickRandomElements($array, $nb)
-{
-	shuffle($array);
-	return array_slice($array, 0, $nb);
-}
 ?>

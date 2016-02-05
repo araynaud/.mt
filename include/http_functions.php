@@ -69,6 +69,11 @@ function isIE()
 	return clientIs("MSIE");
 }
 
+function isPost()
+{
+	return @$_SERVER['REQUEST_METHOD'] === 'POST';
+}
+
 //test if request is ajax, with X-Requested-With header
 function isAjax()
 {
