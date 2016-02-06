@@ -3,16 +3,21 @@
 function getExifDateTaken($filename, $exif=NULL)
 {
   if(!$exif)
-      $exif=getExifData($filename);
+      $exif=getImageMetadata($filename);
   if(!$exif)  return "";
 
   $date = arrayGetCoalesce($exif, "DateTime", "IFD0.DateTime");
-debug("getExifDateTaken DateTime " . strlen($date), "'$date'");
-  if(strlen($date) <= 2)
-  {
+  debug("getExifDateTaken DateTime " . strlen($date), "'$date'");
+  if(strlen($date) < 18) $date ="";
+
+  if(!$date)
     $date = arrayGetCoalesce($exif, "DateTimeOriginal", "EXIF.DateTimeOriginal");
-debug("getExifDateTaken DateTimeOriginal", $date);
-  }
+  debug("getExifDateTaken DateTimeOriginal " . strlen($date), $date);
+  if(strlen($date) < 18) $date="";
+
+  if(!$date && $iptcDate = getIptcDate($exif))
+    return $iptcDate;
+
   if(!$date)
       return "";
 
@@ -113,20 +118,19 @@ IPTC.APP13.2#120;Mid-morning snack: chocolate chips
 
 function parseIptcTags($iptcInfo)
 {
-    $iptcHeaderArray = getConfig("_IPTC.headers");
+    $iptcHeaders = getConfig("_IPTC.headers");
     $tags = array();
     foreach ($iptcInfo as $key => $value)
     { 
         if(!$value) continue;
         $iptc = iptcparse($value);
-debug("IPTC $key", $iptc);        
+//debug("IPTC $key", $iptc);        
         if(!$iptc || !is_array($iptc)) continue;
         foreach ($iptc as $key2 => $arr)
         {
-debug("IPTC $key.$key2", $arr);            
-            if(!array_key_exists($key2, $iptcHeaderArray)) continue;
-            $tk = $iptcHeaderArray[$key2];
-            $tags[$tk] = arraySingleToScalar($arr);
+            $tk = arrayGet($iptcHeaders, $key2, $key2);       
+//debug("IPTC $key.$tk", $arr);
+            if($tk) $tags[$tk] = arraySingleToScalar($arr);
         }
     }
 
@@ -136,17 +140,22 @@ debug("IPTC $key.$key2", $arr);
 
 function getIptcDate($exif)
 {
+    debug("getIptcDate", arrayGet($exif, "IPTC.CreationDate"));
     if(!$date = arrayGet($exif, "IPTC.CreationDate")) 
         return "";
 
-    $time = arrayGet($exif, "IPTC.CreationTime");
-    $time = substringBefore($time, "-");
-    $date .= " $time";
-//20100907 232516 => 2010-09-07 23:25:16-0700
     $date = strInsert($date, "-", 4);
     $date = strInsert($date, "-", 7);
-    $date = strInsert($date, ":", 13);
-    $date = strInsert($date, ":", 16);
+
+  //20100907 232516 => 2010-09-07 23:25:16-0700
+    if($time = arrayGet($exif, "IPTC.CreationTime"))
+    {
+      $time = substringBefore($time, "-");
+      $time = strInsert($time, ":", 4);
+      $time = strInsert($time, ":", 2); 
+
+      $date .= " $time";
+    }
     return $date;
 }
 

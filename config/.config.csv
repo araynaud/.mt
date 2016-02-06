@@ -129,6 +129,28 @@ access.admin=admin
 access.edit=upload
 access.read=*
 
+;EXIF IPTC data fields
+_IPTC.headers.2#005=DocumentTitle
+..2#010=Urgency
+..2#015=Category
+..2#020=Subcategories
+..2#025=Tags
+..2#040=SpecialInstructions
+..2#055=CreationDate
+..2#060=CreationTime
+..2#080=AuthorByline
+..2#085=AuthorTitle
+..2#090=City
+..2#095=State
+..2#101=Country
+..2#103=OTR
+..2#105=Headline
+..2#110=Source
+..2#115=PhotoSource
+..2#116=Copyright
+..2#120=Caption
+..2#122=CaptionWriter
+
 ;FFMPEG scripts
 _FFMPEG.PATH=C:\Program Files\ffmpeg\bin
 _FFMPEG.FFMPEG=ffmpeg.exe

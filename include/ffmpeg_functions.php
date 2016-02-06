@@ -60,7 +60,8 @@ function getMediaFileInfo($relPath, $file="")
 	$fileType=getFileType($filePath);
 	if($fileType=="IMAGE")
 	{
-		$data = getExifData($filePath);
+		$data = getImageMetadata($filePath);
+		$data["DateTaken"] = getExifDateTaken($filePath, $data);
 		getImageInfo($filePath, null, $data);
 		return $data;
 	}
