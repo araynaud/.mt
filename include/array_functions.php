@@ -107,24 +107,24 @@ function setNestedArrayValue(&$csvRows, $key, $value)
 {
 	if(!is_array($key))
 	{
-		$csvRows[$key]=$value;
+		$csvRows[$key] = $value;
 		return $value;
 	}
 	
 	//test if each level of key exists
 	//create array(s) if necessary
-	$var=&$csvRows;
-	$c=count($key)-1;
-	for($i=0;$i<$c;$i++)
+	$var = &$csvRows;
+	$c = count($key) - 1;
+	for($i = 0; $i < $c; $i++)
 	{
 		$name=$key[$i];
 		//or create nested array nodes
 		if(!isset($var[$name]))
 			$var[$name]=array();
-		$var=&$var[$name]; //change reference
+		$var = &$var[$name]; //change reference
 	}
 	//last node: assign value
-	$name=$key[$c];
+	$name = $key[$c];
 	$var[$name] = $value;
 
 	return $var[$name];
