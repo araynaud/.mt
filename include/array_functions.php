@@ -190,7 +190,20 @@ ex: $iptcHeaderArray = array(
 	'2#120'=>'Caption',
 	'2#122'=>'CaptionWriter'
 ); */
-function arrayRemap($from, $keymap, $copyAll=false)
+function arrayRemap($from, $keymap)
+{
+	if(!$from || !$keymap) return $from;
+	$to = array();
+	foreach ($keymap as $key => $toKey)
+	{
+		$value = arrayGet($from, $key);
+		if(!is_null($value))
+			$to[$toKey] = $value;
+	}
+	return $to;
+}
+
+function arrayRemap2($from, $keymap, $copyAll=false)
 {
 	if(!$from || !$keymap) return $from;
 	$to = array();
