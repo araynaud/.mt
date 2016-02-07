@@ -96,6 +96,13 @@ function arrayGet($array, $keys, $default=null)
 //create array values within CSV data
 // TYPES.VIDEO;flv;mp4	=> $csv["TYPES"]["VIDEO"] = ["flv", "mp4"]
 // keep previous key: .STREAM;flv;mp4	=> $csv["TYPES"]["STREAM"] = ["flv", "mp4"]
+
+function arraySet(&$arr, $key, $value)
+{
+	$keys = explode($key, ".");
+	return setNestedArrayValue($arr, $key, $value);
+}
+
 function setNestedArrayValue(&$csvRows, $key, $value)
 {
 	if(!is_array($key))
@@ -121,6 +128,11 @@ function setNestedArrayValue(&$csvRows, $key, $value)
 	$var[$name] = $value;
 
 	return $var[$name];
+}
+
+function arrayHasKey(&$arr, $key)
+{
+	return isset($arr[$key]) || array_key_exists($key, $arr) || arrayGet($arr, $key) != null;
 }
 
 //return 1st non null argument
@@ -198,7 +210,7 @@ function arrayRemap($from, $keymap)
 	{
 		$value = arrayGet($from, $key);
 		if(!is_null($value))
-			$to[$toKey] = $value;
+			arraySet($to, $toKey, $value);
 	}
 	return $to;
 }
