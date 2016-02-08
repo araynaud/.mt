@@ -90,13 +90,14 @@ debug("details", $details);
 
 			$this->listThumbnails();
 
+			$this->getDateIndex();
+
 			if(!$this->path)
 				$this->addMappedDirs();
 
 			$this->youtube = loadYoutubePlaylist($this->relPath);
 			debug("youtube", $this->youtube,"print_r");
 
-			$this->getDateIndex();
 			$this->getMetadataIndex("IMAGE");
 			$this->getMetadataIndex("VIDEO");
 			$this->tags = loadTagFiles($this->relPath, $this->getDepth(), null, $this->allFilenames);
