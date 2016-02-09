@@ -1078,7 +1078,7 @@ function compareElements(a, b, reverse, caseSensitive)
 }
 	
 //sort object array by a field
-function sortObjectArray(arr, sortField, reverse, caseSensitive)
+Array.sortObjectsBy = function(arr, sortField, reverse, caseSensitive)
 {    
 	arr.sort(function(a, b)
 	{
@@ -1091,15 +1091,15 @@ function sortObjectArray(arr, sortField, reverse, caseSensitive)
 		return compareElements(valueOrDefault(a[sortField],""), valueOrDefault(b[sortField],""), reverse, caseSensitive);
 	});
 	return arr;
-}
+};
 
 Array.prototype.sortObjectsBy = function(sortField, reverse, caseSensitive)
 {
-	return sortObjectArray(this, sortField, reverse, caseSensitive);
+	return Array.sortObjectsBy(this, sortField, reverse, caseSensitive);
 };
 
 //sort string array, case insensitive by default
-function sortStringArray(arr, reverse, caseSensitive)
+Array.sortStrings = function(arr, reverse, caseSensitive)
 {   
 	arr.sort(function(a, b)
 	{ 
@@ -1110,7 +1110,7 @@ function sortStringArray(arr, reverse, caseSensitive)
 
 Array.prototype.sortStrings = function(reverse, caseSensitive)
 {
-	return sortStringArray(this, reverse, caseSensitive);
+	return Array.sortStrings(this, reverse, caseSensitive);
 };
 
 //--- OBJECT EXTENSION FUNCTIONS

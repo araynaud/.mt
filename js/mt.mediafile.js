@@ -228,7 +228,7 @@ MediaFile.prototype.isDir = function()
 
 MediaFile.isImage = function(mediaFile)
 {
-	return MediaFile.hasType(mediaFile, "IMAGE");
+	return mediaFile && MediaFile.hasType(mediaFile, "IMAGE");
 };
 
 MediaFile.prototype.isImage = function()
@@ -238,7 +238,7 @@ MediaFile.prototype.isImage = function()
 
 MediaFile.isAudio = function(mediaFile)
 {
-	return MediaFile.hasType(mediaFile, "AUDIO");
+	return mediaFile && MediaFile.hasType(mediaFile, "AUDIO");
 };
 
 MediaFile.prototype.isAudio = function()
@@ -248,7 +248,7 @@ MediaFile.prototype.isAudio = function()
 
 MediaFile.isVideo = function(mediaFile)
 {
-	return mediaFile.isVideo();
+	return mediaFile && mediaFile.isVideo();
 };
 
 MediaFile.prototype.isVideo = function()
@@ -259,7 +259,7 @@ MediaFile.prototype.isVideo = function()
 
 MediaFile.isVideoStream = function(mediaFile)
 {
-	return mediaFile.isVideoStream();
+	return mediaFile && mediaFile.isVideoStream();
 };
 
 MediaFile.prototype.isVideoStream = function()
@@ -318,7 +318,7 @@ MediaFile.hasType = function(mediaFile, type, subType)
 		fileTypeExts = fileTypeExts[subType];
 	if(!fileTypeExts) fileTypeExts= [ type ];
 
-	if(!mediaFile.exts || !fileTypeExts) return false;
+	if(!mediaFile || !mediaFile.exts || !fileTypeExts) return false;
 	
 	for (var i=0;i<mediaFile.exts.length;i++)
 		if(fileTypeExts.contains(mediaFile.exts[i].toLowerCase()))

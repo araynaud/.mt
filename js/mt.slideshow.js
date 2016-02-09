@@ -415,7 +415,7 @@ Slideshow.prototype.getPicFilename = function(index)
 
 Slideshow.prototype.getCurrentSlide = function(next)
 {
-	if(this.mplayer && this.currentFile.isVideoStream())
+	if(this.mplayer && MediaFile.isVideoStream(this.currentFile))
 		return this.mplayer.getPlayerElement();
 	if(next || !this.currentImg)
 		this.currentImg = this.transition.getNextSlide();
