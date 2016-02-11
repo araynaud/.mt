@@ -172,16 +172,20 @@ function addCss($relPath, $file="", $local=false)
 
 function addCssFromConfig($key, $file=NULL)
 {
+	global $APP_DIR;
 	$cfg = getConfig($key);
+	$relPath = combine($APP_DIR, $cfg["path"]);
 	setIfNull($file, @$cfg["css"]);
-	return addCss($cfg["path"], $file);
+	return addCss($relPath, $file);
 }
 
 function addScriptFromConfig($key, $file=NULL)
 {
+	global $APP_DIR;
 	$cfg = getConfig($key);
+	$relPath = combine($APP_DIR, $cfg["path"]);
 	setIfNull($file, @$cfg["js"]);
-	return addScript($cfg["path"], $file);
+	return addScript($relPath, $file);
 }
 
 function displayBackground($path, $hidden=false, $printable=false)

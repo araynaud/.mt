@@ -52,20 +52,25 @@ function combine()
 // ../path/../../to/..
 // ../img/RamaduelNewman/../.bg.jpg
 	
-	for($i=1; $i < count($strArray);)
+	for($i=0; $i < count($strArray);)
 	{
 //		debug($i, $strArray[$i]);
-		if($strArray[$i]==".." && $strArray[$i-1]!="..")
+		if($strArray[$i] == ".")
+		{
+			unset($strArray[$i]);
+			$strArray = array_values($strArray);
+		}		
+		else if($i > 0 && $strArray[$i] == ".." && $strArray[$i-1] != "..")
 		{
 			unset($strArray[$i]);
 			unset($strArray[$i-1]);
-			$strArray=array_values($strArray);
+			$strArray = array_values($strArray);
 			$i--;
 		}
 		else
 			$i++;
 	}
-	$strArray=array_filter($strArray);
+	$strArray = array_filter($strArray);
 	return $isRoot . implode($sep, $strArray);
 }
 
@@ -333,9 +338,9 @@ function cleanupPath($path)
 
 //make relative path from current script to app root
 //detect if script is in subdir or not
-function pathToAppRoot()
+function pathToAppRoot($file=NULL)
 {
-	$file="include/config.php";
+	setIfEmpty($file, "include/config.php");
 	if(file_exists($file)) return "";
 	if(file_exists("../$file")) return "..";
 	if(file_exists("../../$file")) return "../..";
