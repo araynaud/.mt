@@ -227,14 +227,11 @@ MediaThingy.js=mt.extensions.js;mt.extensions.jquery.js;mt.mediafile.js;mt.album
 
 ;external JS
 lib.path=../lib
-lib.url=/testing/lib
 lib.js=jquery-ui-1.9.2.custom.min.js;angular-ui-router.min.js;ui-bootstrap-tpls-0.14.3.min.js;ng-file-upload.js
 lib.angular.path=../lib/angular-1.4.2
-lib.angular.url=/testing/lib/angular-1.4.2
 lib.angular.js=angular.js;angular-resource.min.js;angular-sanitize.min.js;angular-animate.min.js
 
 lib.bootstrap.path=../lib/bootstrap
-lib.bootstrap.url=/testing/lib/bootstrap
 lib.bootstrap.js=js/bootstrap.min.js
 lib.bootstrap.css=css/bootstrap.min.css
 lib.bootstrap.sizes.tn=320
