@@ -15,7 +15,7 @@ angular.module('mtServices').service('AlbumService', function($resource, $q)
         var deferred = $q.defer();
 	    this.resource.get({ data: "album", path: path }, function(response)
         {
-            a._album = response;
+            a._album = window.Album ? new Album(response) : response;
             deferred.resolve(response);
         });
  		return deferred.promise;
