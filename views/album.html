@@ -1,0 +1,48 @@
+<div>
+	<a href="#/{{ac.pathParent()}}">up</a>
+	<input ng-model="ac.path"/>
+	<button ng:click="ac.fetch()">Load</button>
+
+	Search: <input ng-model="ac.query"/>
+	Sort: 
+	<select ng-model="ac.orderProp">
+	    <option>name</option>
+	    <option>takenDate</option>
+	    <option>ratio</option>
+	</select>
+	<span class="small">{{ac.path}} / {{ac.query}} / {{ac.orderProp}}</span>
+	<div>
+		page:<input type="number" ng-model="ac.entryLimit" />
+		<button ng:click="ac.prevPage()">prev</button>
+		<span class="small">[{{ac.currentPage+1}} / {{ac.nbPages()}}]</span>
+		<button ng:click="ac.nextPage()">next</button>
+	</div>
+
+	<ul class="wrapper">
+		<li class="floatL" style="width: 200px" ng-repeat="file in ac.dirs">
+		  <a href="#/{{ac.combine('.', ac.path, file.name)}}">{{file.name}}</a>
+		</li>
+	</ul>
+
+	<div class="wrapper">
+		<div id="{{file.name}}" class="file floater {{file.type.toLower()}} photoBorder margin shadow"
+			ng-repeat="file in ac.images | filter:ac.query | orderBy:ac.orderProp | paginate:ac.currentPage:ac.entryLimit">
+			<a href="#/{{ac.path || '_'}}/{{file.name}}">
+				<img class="thumbnail" ng-src="{{ac.urlAbsPath}}/.tn/{{file.name}}.{{file.type=='IMAGE' ? file.exts[0] : 'jpg'}}"/>
+			</a>
+			<div class="caption small">{{$index}}
+				<a href="#/{{ac.path || '_'}}/{{file.name}}">{{file.name}}</a>
+				<br/>{{file.takenDate}} {{file.ratio}}</div>
+		</div>
+	</div>
+
+	<div class="wrapper">
+		<div id="{{file.name}}" class="file floater {{file.type.toLower()}} photoBorder margin shadow"
+			ng-repeat="file in ac.audio | filter:ac.query | orderBy:ac.orderProp">
+			<div class="small">{{$index}}
+				<a href="{{ac.urlAbsPath}}/{{file.name}}.{{file.exts[0]}}">{{file.name}}</a>
+				<br/>{{file.takenDate}} {{file.ratio}}</div>
+		</div>
+	</div>
+
+</div>

@@ -218,3 +218,24 @@ visittracker.php=phpmyvisites.php
 visittracker.js=phpmyvisites.js
 
 ;_mapping._root=..
+
+
+;config for angular version
+MediaThingy.root=.
+MediaThingy.path=./js
+MediaThingy.js=mt.extensions.js;mt.extensions.jquery.js;mt.mediafile.js;mt.album.js;mt.transition.js;mt.slideshow.js;mt.html5player.js
+
+;external JS
+lib.path=../lib
+lib.js=jquery-ui-1.9.2.custom.min.js;angular-ui-router.min.js;ui-bootstrap-tpls-0.14.3.min.js;ng-file-upload.js
+lib.angular.path=../lib/angular-1.4.2
+lib.angular.js=angular.js;angular-resource.js;angular-sanitize.min.js;angular-animate.min.js
+
+lib.bootstrap.path=../lib/bootstrap
+lib.bootstrap.js=js/bootstrap.min.js
+lib.bootstrap.css=css/bootstrap.min.css
+lib.bootstrap.sizes.tn=320
+...xs=480
+...sm=768
+...md=992
+...lg=1200

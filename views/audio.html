@@ -1,0 +1,12 @@
+<div id="audioContainer" class="footerRightCorner noprint" style="width:300px"> 
+    <div class="small">{{ac.audioFile}}</div>
+    <audio id="audioPlayer" preload="auto" controls=""  style="width:100%">
+        Sorry, your browser does not support HTML5 audio.
+    </audio>
+    <ol id="playlist" class="playlist">
+        <li class="translucent" ng-repeat="file in ac.audio">
+	        <a ng-audio="{{ac.urlAbsPath}}/{{file.name}}.mp3">{{file.name}}</a>
+	        <button ng-audio="{{ac.urlAbsPath}}/{{file.name}}.mp3">{{file.name}}</button>
+		</li>
+    </ol>
+</div>
