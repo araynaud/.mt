@@ -152,7 +152,7 @@ function addStylesheet($relPath)
 	return addCss($stylesheet);
 }
 
-function addCss($relPath, $file="", $local=false)
+function addCss($relPath, $file="", $local=false, $media=NULL)
 {
 	if(is_array($file))
 	{	
@@ -163,9 +163,12 @@ function addCss($relPath, $file="", $local=false)
 
 	$url = combine($relPath, $file);
 
+	if($media)
+		$media = " media='$media'";
+
 	if($local && !file_exists($url)) return;
 	if (!$url) return;
-?><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url?>"/>
+?><link rel="stylesheet" type="text/css"<?=$media?> href="<?=$url?>"/>
 <?php 
 	return $url;
 }

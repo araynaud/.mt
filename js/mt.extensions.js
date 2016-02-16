@@ -945,9 +945,12 @@ Array.prototype.countBy = function(field, skipNull)
 	return result;	
 }
 
-Array.prototype.distinct = function(field, skipNull)
+Array.prototype.distinct = function(field, skipNull, exclude)
 {
 	var distinctCount = this.countBy(field, skipNull);
+	if(exclude)
+		for(var i in exclude)
+			delete distinctCount[exclude[i]];
 	return Object.keys(distinctCount);	
 }
 
@@ -1311,7 +1314,7 @@ Object.toArray = function(obj, skipNull)
         {
         	var value = obj[key];
             var element = {key: key};
-            if(isObject(value))
+            if(isObjectNotArray(value))
 	            Object.merge(element, obj[key], true);
 	        else 
 	        	element.value = value;
