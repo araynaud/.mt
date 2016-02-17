@@ -234,7 +234,7 @@ function printlastError()
 //get URL
 //return response body
 //or store in file and return boolean
-function curlGet($url, $file=null, $username="", $password="")
+function curlGet($url, $file=null, $username="", $password="", $cookies=NULL)
 {
 	$timeout = 5;
 	$fp=null;
@@ -252,6 +252,10 @@ function curlGet($url, $file=null, $username="", $password="")
 
 	if($username && $password) //basic auth
 		curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+
+	if(is_array($cookies))
+		foreach ($cookies as $key => $value) 
+			curl_setopt($ch, CURLOPT_COOKIE, "$key=$value");
 
 	$response = curl_exec($ch);
 	curl_close($ch);
