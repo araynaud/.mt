@@ -681,12 +681,12 @@ if (!Array.prototype.findLastIndex)  Array.prototype.findLastIndex = function(pr
 };
 
 //add keys to array of objects by value of field
-Array.prototype.indexBy = function(fieldName, modify)
+Array.prototype.indexBy = function(field, modify)
 {
 	var obj = modify ? this : {};
 	for(var i=0; i< this.length; i++)
 	{
-		var key = this[i][fieldName];
+		var key = this.getElementValue(i, field);
 		if(!isMissing(key) && !obj.hasOwnProperty(key))
 			obj[key] = this[i];
 	}
@@ -907,7 +907,7 @@ Array.prototype.getElementValue = function(i,field)
 	return Object.getFieldValue(this[i],field);
 };
 
-Object.getFieldValue = function(obj,field)
+Object.getFieldValue = function(obj, field)
 {
 	var value;
 	//medhod name exists: call object.method
@@ -1200,12 +1200,12 @@ Object.remap = function (obj, keyConvert)
 	return newobj;
 };
 
-Object.indexBy = function(obj, fieldName, modify)
+Object.indexBy = function(obj, field, modify)
 {
 	var result = modify ? obj : {};
 	for(var i in obj)
 	{
-		var key = obj[i][fieldName];
+		var key = Object.getFieldValue(obj[i], field);
 		if(!isMissing(key) && !result.hasOwnProperty(key))
 			result[key] = obj[i];
 	}
