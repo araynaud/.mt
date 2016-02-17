@@ -152,6 +152,13 @@ function redirectTo($url)
     return $url;
 }
 
+function redirectJs($url, $closeHtml)
+{
+	echo "\t<script type=\"text/javascript\">window.location = \"$url\";</script>\n";
+	if($closeHtml)
+		echo "</head>\n</html>";
+}
+
 function getJsonPostData()
 {
 	if(is_callable("readJsonFile"))

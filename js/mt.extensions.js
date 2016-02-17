@@ -686,7 +686,7 @@ Array.prototype.indexBy = function(fieldName, modify)
 	var obj = modify ? this : {};
 	for(var i=0; i< this.length; i++)
 	{
-		key = this[i][fieldName];
+		var key = this[i][fieldName];
 		if(!isMissing(key) && !obj.hasOwnProperty(key))
 			obj[key] = this[i];
 	}
@@ -1200,6 +1200,18 @@ Object.remap = function (obj, keyConvert)
 	return newobj;
 };
 
+Object.indexBy = function(obj, fieldName, modify)
+{
+	var result = modify ? obj : {};
+	for(var i in obj)
+	{
+		var key = obj[i][fieldName];
+		if(!isMissing(key) && !result.hasOwnProperty(key))
+			result[key] = obj[i];
+	}
+	return result;
+};
+
 String.prototype.appendQueryString = function(obj)
 {
 	return String.appendQueryString(this, obj);
@@ -1322,8 +1334,6 @@ Object.toArray = function(obj, skipNull)
         }
     return vals;
 };
-
-
 
 //--- OTHER UTILITY FUNCTIONS
 function plural(nb, word, pluralWord)
