@@ -294,6 +294,14 @@ function parseCsvTable($text, $keyColumn=false, $columnNames=false, &$csvRows = 
 	return $csvRows;
 }
 
+function readJsonFile($filename)
+{
+    $postdata = file_get_contents($filename);
+    if($postdata)
+        $postdata = json_decode($postdata, true);
+    return $postdata;
+}
+
 function writeBinaryFile($filename, $data, $append=false)
 {
 	if(!$data && !$append)	return deleteFile($filename);

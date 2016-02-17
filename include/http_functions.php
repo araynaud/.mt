@@ -141,6 +141,28 @@ function getParamNumOrBool($name,$default=0)
 	return getParamBoolean($name,$default);
 }
 
+function isExternalUrl($url)
+{
+    return startsWith($url, "//") || contains($url, "://");
+}
+
+function redirectTo($url)
+{
+    header("Location: $url");
+    return $url;
+}
+
+function getJsonPostData()
+{
+	if(is_callable("readJsonFile"))
+	    return readJsonFile("php://input");
+
+    $postdata = file_get_contents("php://input");
+    if($postdata)
+        $postdata = json_decode($postdata, true);
+    return $postdata;
+}
+
 function getLocalUrl($relPath,$file="")
 {
 	$localUrl = combine($relPath, $file);
