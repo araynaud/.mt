@@ -193,6 +193,43 @@ function addScriptFromConfig($key, $file=NULL)
 	return addScript($url, $file);
 }
 
+function writeAttribute($name, $value)
+{
+    if($name && $value)
+        return " $name=\"$value\"";
+    return "";
+}
+
+function addIcons($icons)
+{
+    if(!$icons) return;
+    $defaultIconSize = 32;
+    foreach ($icons as $key => $icon)
+    {
+        if(is_numeric($key))
+        {
+            $rel = "icon";
+            $size = ($key != $defaultIconSize) ? "$key" . "x$key" : "";
+        }
+        else
+        {
+            $rel = $key;
+            $size = "128x128";
+        }
+        $sizeAttr = writeAttribute("sizes", $size);
+        $relAttr =  writeAttribute("rel", $rel);
+        $href = writeAttribute("href", "images/$icon");
+        echo "<link$relAttr$sizeAttr$href/>\n";
+    }
+}
+
+function addIconsFromConfig()
+{
+    $icons = getConfig("app.icon");
+    debug("addIconsFromConfig", $icons);
+    return addIcons($icons);
+}
+
 function displayBackground($path, $hidden=false, $printable=false)
 {
 	$background = findInParent($path, ".bg.jpg", false);
