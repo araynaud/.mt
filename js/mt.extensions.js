@@ -120,6 +120,11 @@ String.isRootedPath = function(str)
 	return i;
 };
 
+String.isExternalUrl = function(str)
+{
+    return str && (str.startsWith("//") || str.containsText("://"));
+};
+
 String.combine = function()
 {
 	//split each arg level
