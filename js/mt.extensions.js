@@ -575,7 +575,7 @@ String.prototype.append = function(sep, str)
         sep="";
     }
     if(!sep) sep="";
-    if(!str) return this;
+    if(!str) return this.toString();
 
     if(this.length)
         return this + sep + str;
