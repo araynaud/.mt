@@ -292,21 +292,22 @@ function findNextWord($str,$startPos)
 
 function cleanupFilename($filename)
 {
-	$filename = str_replace(" ", "_", trim($filename));
+	$filename = str_replace(" ", "_", $filename);
+	$filename = cleanupFilenameCmd($filename);
 	return cleanupAccents($filename);
 }
 
 
 function cleanupAccents($filename)
 {
-	$filename= str_replace("&", "",  $filename);
-	$filename= str_replace("à", "a", $filename);
-	$filename= str_replace("é", "e", $filename);
-	$filename= str_replace("è", "e", $filename);
-	$filename= str_replace("ê", "e", $filename);
-	$filename= str_replace("ë", "e", $filename);
-	$filename= str_replace("ù", "u", $filename);
-	$filename= str_replace("ç", "c", $filename);
+	$filename = str_replace("&", "",  $filename);
+	$filename = str_replace("à", "a", $filename);
+	$filename = str_replace("é", "e", $filename);
+	$filename = str_replace("è", "e", $filename);
+	$filename = str_replace("ê", "e", $filename);
+	$filename = str_replace("ë", "e", $filename);
+	$filename = str_replace("ù", "u", $filename);
+	$filename = str_replace("ç", "c", $filename);
 	return $filename;
 }
 
@@ -317,10 +318,13 @@ function cleanupFilenameCmd($filename)
 	$filename = str_replace(":", "-", $filename);
 	$filename = str_replace("/", "-", $filename);
 
+	$filename = str_replace("'", "", $filename);
+	$filename = str_replace('"', "", $filename);
 	$filename = str_replace(";", "", $filename);
 	$filename = str_replace(",", "", $filename);
 	$filename = str_replace(".", "", $filename);
 	$filename = str_replace("?", "", $filename);
+	$filename = str_replace("!", "", $filename);
 	return trim($filename);
 }
 

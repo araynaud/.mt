@@ -1,0 +1,2 @@
+rem ffmpeg -i %1 -i %2 -filter_complex "[0:v:0]pad=iw*2:ih[bg]; [bg][1:v:0]overlay=w" %3
+ffmpeg -i %1 -i %2 -filter_complex "[0:v]setpts=PTS-STARTPTS, pad=iw*2:ih[bg]; [1:v]setpts=PTS-STARTPTS[fg]; [bg][fg]overlay=w" %3
