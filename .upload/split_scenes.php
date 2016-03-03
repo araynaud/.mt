@@ -3,12 +3,12 @@ require_once("../include/config.php");
 setContentType("text", "plain");
 
 $path = reqPath();
-$mode = reqParam("batch");
-$batchMode = $mode=="batch" || reqParamBoolean("batch"); //write batch file, do not convert immediately
 $relPath = getDiskPath($path);
 $urlPath = diskPathToUrl($relPath);
-$file=getParam("file");
-$debug=getParamBoolean("debug");
+$file = getParam("file");
+$debug = getParamBoolean("debug");
+$mode = reqParam("batch");
+$batchMode = $mode=="batch" || reqParamBoolean("batch"); //write batch file, do not convert immediately
 
 $subdir = createDir($relPath, "split");
 debugVar("subdir");
@@ -49,7 +49,7 @@ foreach($scenes as $i => &$scene)
 	$outpath = combine($relPath, "split", $outname);
 	$cmd = makeCommand("ffmpeg_split_to [0] [1] [2] [3]", $renamedFile, $outpath, @$scene["from"], @$scene["to"]);
 	if($batchMode)
-		$batch .= "$cmd\n";
+		$batch .= "call $cmd\n";
 	else
 		$cmdoutput = execCommand($cmd, false, true, false);	
 	$outUrl = combine($urlPath, "split", $outname);
