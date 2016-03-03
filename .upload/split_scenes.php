@@ -3,7 +3,8 @@ require_once("../include/config.php");
 setContentType("text", "plain");
 
 $path = reqPath();
-$batch =  reqParamBoolean("batch"); //write batch file, do not convert immediately
+$mode = reqParam("batch");
+$batchMode = $mode=="batch" || reqParamBoolean("batch"); //write batch file, do not convert immediately
 $relPath = getDiskPath($path);
 $urlPath = diskPathToUrl($relPath);
 $file=getParam("file");
@@ -41,13 +42,13 @@ if($nbFrames)
 
 $nbDigits = strlen($nbFrames);
 $batch = "";
-foreach ($scenes as $i => &$scene)
+foreach($scenes as $i => &$scene)
 {
 	$ipad = zeroPad($i, $nbDigits);
 	$outname = $name . "_$ipad.$ext";
 	$outpath = combine($relPath, "split", $outname);
 	$cmd = makeCommand("ffmpeg_split_to [0] [1] [2] [3]", $renamedFile, $outpath, @$scene["from"], @$scene["to"]);
-	if($batch)
+	if($batchMode)
 		$batch .= "$cmd\n";
 	else
 		$cmdoutput = execCommand($cmd, false, true, false);	
@@ -56,7 +57,7 @@ foreach ($scenes as $i => &$scene)
 	addVarsToArray($scene, "duration cmd outname outUrl");
 }
 
-if($batch)
+if($batchMode)
 {
 	writeJsonFile("$relPath/$name.scenes.json", $scenes);
 	writeTextFile("$relPath/$name.bat", $batch);
