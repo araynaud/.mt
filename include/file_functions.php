@@ -317,6 +317,15 @@ function writeBinaryFile($filename, $data, $append=false)
 	return true;
 }
 
+function writeJsonFile($filename, $data, $append=false)
+{
+	if(!$data && !$append)	return deleteFile($filename);
+	if(!$data)	return false;
+
+	$json = trim(jsValue($data, true));
+	return writeTextFile($filename, $json, $append);
+}
+
 function writeTextFile($filename, $text, $append=false)
 {
 	if($text)

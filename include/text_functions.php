@@ -427,6 +427,11 @@ function formatDate($mtime,$xml=false)
 	return $date;
 }
 
+function zeroPad($value, $length)
+{
+	return str_pad($value, $length, '0', STR_PAD_LEFT);
+}
+
 //hh:mm:ss => number of seconds
 function parseTime($time)
 {
