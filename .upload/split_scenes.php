@@ -47,7 +47,8 @@ foreach ($frames as $frame)
 if($nbFrames)
 	$scenes[] = array("from" => $prev);
 
-$nbDigits = strlen($nbFrames);
+$nbScenes = count($scenes);
+$nbDigits = strlen($nbScenes);
 $batch = "";
 foreach($scenes as $i => &$scene)
 {
@@ -76,7 +77,7 @@ if($batchMode)
 
 $response = array();
 $time = getTimer();
-addVarsToArray($response, "file filename probeTime time nbFrames scenes");
+addVarsToArray($response, "file filename probeTime time nbScenes nbFrames scenes");
 
 echo jsValue($response);
 ?>
