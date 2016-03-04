@@ -5,10 +5,13 @@ setContentType("text", "plain");
 $path = reqPath();
 $relPath = getDiskPath($path);
 $urlPath = diskPathToUrl($relPath);
-$file = getParam("file");
-$debug = getParamBoolean("debug");
+
+$file = reqParam("file");
+$debug = reqParamBoolean("debug");
 $mode = reqParam("batch");
-$batchMode = $mode=="batch" || reqParamBoolean("batch"); //write batch file, do not convert immediately
+$batchMode = ($mode == "batch") || reqParamBoolean("batch"); //write batch file, do not convert immediately
+$minDuration = reqParam("min", 4);
+$sceneThreshold = reqParam("scene", 0.4);
 
 $subdir = createDir($relPath, "split");
 debugVar("subdir");
@@ -21,7 +24,7 @@ $renamedFile = combine($relPath, $filename);
 if($file != $filename)
 	rename($inputFile, $renamedFile);
 
-$cmdoutput = execCommand("ffprobe_scenes $renamedFile", false, true, false);	
+$cmdoutput = execCommand("ffprobe_scenes $renamedFile $sceneThreshold", false, true, false);	
 $frames = json_decode($cmdoutput);
 $frames = objToArray($frames, false, false, true);
 if(isset($frames["frames"]))
@@ -34,9 +37,13 @@ $scenes = array();
 $prev = 0;
 foreach ($frames as $frame)
 {
+	$duration = $frame["pkt_pts_time"] - $prev;
+	if($duration < $minDuration) continue;
+	
 	$scenes[] = array("from" => $prev, "to" => $frame["pkt_pts_time"], "key_frame" => $frame["key_frame"] );
 	$prev = $frame["pkt_pts_time"];
 }
+
 if($nbFrames)
 	$scenes[] = array("from" => $prev);
 

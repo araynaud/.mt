@@ -1002,7 +1002,10 @@ MediaFile.getDuration = function(mediaFile)
 MediaFile.prototype.getDuration = function()
 {
 	var defaultInterval = (window.UI && UI.slideshow && UI.slideshow.interval) ? UI.slideshow.interval : 0;
-	return this.duration || defaultInterval / 1000;	
+	this.duration = parseFloat(this.duration);
+	if(this.duration && !isNaN(this.duration))
+		return this.duration;
+	return defaultInterval / 1000;	
 };
 
 MediaFile.getFileUrls = function(mediaFiles)
