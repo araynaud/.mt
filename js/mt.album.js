@@ -178,7 +178,8 @@ Album.createInstance = function (response, instanceName, callback)
 {
 	response.requestTime = new Date() - response.startTime;
 	albumInstance = new Album(response);
-	window[instanceName] = albumInstance;
+	if(instanceName)
+		window[instanceName] = albumInstance;
 	if(callback) 
 		callback();
 	else if(Album.onLoad)

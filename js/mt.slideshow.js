@@ -1,4 +1,4 @@
-function Slideshow(options)
+function Slideshow(options, albumInstance)
 {
 	this.allowFacebook=false;
 	this.currentFile=null;
@@ -7,6 +7,8 @@ function Slideshow(options)
 	// Duration of transitions (in milliseconds)
 	this.duration = 1000;
 	this.type=1;
+
+	this.album = albumInstance || window.album;
 
 	this.currentIndex = 0;
 	//add pics URLs in array
@@ -426,11 +428,11 @@ Slideshow.prototype.styleSlide = function(next)
 {
 	el = this.getCurrentSlide(next);
 //	this.setStatus("currentSlide: " + el.attr("id"));
-	el.toggleClass("margin", album.margin);
-	el.toggleClass("shadow", album.shadow &&  !this.currentFile.isTransparent());
-	el.toggleClass("photoBorder", album.border && !this.currentFile.isTransparent());
+	el.toggleClass("margin", this.album.margin);
+	el.toggleClass("shadow", this.album.shadow &&  !this.currentFile.isTransparent());
+	el.toggleClass("photoBorder", this.album.border && !this.currentFile.isTransparent());
 
-	this.angle = album.rotate ? $.randomBetween(-10, 10) : 0;
+	this.angle = this.album.rotate ? $.randomBetween(-10, 10) : 0;
 
 	if(window.UI && UI.divStyles)
 		el.attr("style", UI.divStyles(this.angle));
@@ -527,7 +529,7 @@ Slideshow.prototype.displayLoadedImage = function(transitionFunction, fileChange
 Slideshow.prototype.animateImage = function()
 {
 	this.fitImage(true, this.animEndZoom);
-	if(album.rotate && this.angle)
+	if(this.album.rotate && this.angle)
 		this.currentImg.animateRotate(this.angle, 0, this.interval / 2);
 };
 
@@ -615,11 +617,11 @@ Slideshow.prototype.getImageSize = function (zoomLevel)
 Slideshow.prototype.getImageBorderMargins = function (hasMargins) 
 {
 	var ibm = {};
-	ibm.bw = album.border ? 20 : 0; //image.borderWidth();
+	ibm.bw = this.album.border ? 20 : 0; //image.borderWidth();
 	ibm.mw = hasMargins ? 40 : 0; //image.marginWidth();
 	ibm.bmw = ibm.bw + ibm.mw;
 
-	ibm.bh = album.border ? 20 : 0; //image.borderHeight();
+	ibm.bh = this.album.border ? 20 : 0; //image.borderHeight();
 	ibm.mh = hasMargins? 40 : 0; //image.marginHeight();
 	ibm.bmh = ibm.bh + ibm.mh;
 

@@ -544,7 +544,7 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 		var ext = config.thumbnails[mediaFile.type].ext;
 		if(ext)
 			filename = mediaFile.name + "." + ext;
-		var baseUrl = mediaFile.urlAbsPath || album.relPath;
+		var baseUrl = mediaFile.urlAbsPath || mediaFile._parent.relPath;
 		return String.combine(baseUrl, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex], filename);
 	}
 
@@ -895,7 +895,7 @@ MediaFile.prototype.dateRange = function (sep)
 MediaFile.prototype.refreshThumbnail = function()
 {	
 	this.setTnExists(false);
-	var tnUrl = this.getThumbnailUrl(album.tnIndex, true);
+	var tnUrl = this.getThumbnailUrl(this._parent.tnIndex, true);
     var time = +(new Date());
 	tnUrl =	tnUrl.appendQueryString({cache: time});
 	return tnUrl;
@@ -952,7 +952,7 @@ MediaFile.getDiv = function(mediaFile)
 
 MediaFile.prototype.getFileIndex = function(index)
 {
-	this.index = album.getFileIndex(index);
+	this.index = this._parent.getFileIndex(index);
 	return this.index;
 };
 
@@ -980,7 +980,7 @@ MediaFile.prototype.play = function()
 			if(!window.MediaPlayer || !this.isVideoStream())
 				return false;
 			if(config.display.playVideo=="video")
-				return MediaPlayer.loadPlaylist("video", album.mediaFiles, this);
+				return MediaPlayer.loadPlaylist("video", this._parent.mediaFiles, this);
 		case "IMAGE":
 			if(window.UI)
 				return UI.slideshow.display(this);
