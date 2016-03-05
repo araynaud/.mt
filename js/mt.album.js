@@ -18,6 +18,7 @@ function Album(data)
 	else if(isString(data))
 		this.url=data;
 
+	if(!this.path) this.path = "";
 	this.relPath = this.urlAbsPath ? this.urlAbsPath : String.combine(Album.serviceUrl, this.relPath);
 	this.getTitle();
 	this.dateRange = this.getDateRange();

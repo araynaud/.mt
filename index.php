@@ -119,7 +119,7 @@ Album.onLoad = function (albumInstance)
 
 			UI.sortFiles(!mf);
 
-			UI.displayFileCounts(album.mediaFiles,"#counts", true);	
+			UI.displayFileCounts(albumInstance.mediaFiles,"#counts", true);	
 			UI.displayTags();
 			UI.loadDirThumbnails();
 		}
