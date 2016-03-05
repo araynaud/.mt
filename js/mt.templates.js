@@ -20,9 +20,6 @@ UI.setupTemplates = function()
 if($.views)
 	$.views.helpers({
 		getVar: getVar,
-		config: Album.getConfig,
-		albumVar: Album.get,
-		fileIndex: Album.getFileIndex,
 		combine: String.combine,
 		thumbnailUrl: MediaFile.getThumbnailUrl,
 		filePath: MediaFile.getFilePath,

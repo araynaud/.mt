@@ -244,7 +244,8 @@ UI.appRootUrl = function()
 
 UI.fbShare = function(mediaFile)
 {
-	if(!config || !config.fb || !config.fb.shareUrl) return false;
+	var fbShareUrl = Album.getConfig("fb.shareUrl");
+	if(!fbShareUrl) return false;
 
 	if(!mediaFile)
 	{
@@ -254,7 +255,7 @@ UI.fbShare = function(mediaFile)
 	}
 	if(!mediaFile) mediaFile = album;
 
-	var link = config.fb.shareUrl.appendQueryString({u: mediaFile.getShortUrl()});
+	var link = fbShareUrl.appendQueryString({u: mediaFile.getShortUrl()});
 	return UI.goToUrl(link, 'fb');
 };
 
@@ -279,7 +280,7 @@ UI.afterAction = function(response, mediaFile, params)
 	if(response.files)
 	{
 		var mediaFiles = response.files;
-		if(config.debug.ajax)
+		if(Album.getConfig("debug.ajax"))
 			UI.addStatus(plural(mediaFiles.length, "file"));
 		delete response.files;
 		for(var i=0; i < mediaFiles.length; i++)
@@ -394,7 +395,7 @@ UI.refreshThumbnail = function(img)
     var time = +(new Date());
 	tnUrl =	String.appendQueryString(tnUrl, {cache: time});
 	thumbnailImg.attr("src", tnUrl);
-	if(config.debug.ajax)
+	if(Album.getConfig("debug.ajax"))
 	{
 		var imageLink = $.makeElement("a", {href: tnUrl, target: "image"}).html(tnUrl);
 		UI.addStatus(imageLink.outerHtml());

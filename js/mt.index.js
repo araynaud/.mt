@@ -313,7 +313,7 @@ UI.imageOnError = function()
 	img.removeClass("loading");
 	img.addClass("error");
 	var src= img.attr("src");
-	if(config.debug.ajax)
+	if(Album.getConfig("debug.ajax"))
 	{
 		var imageLink = $.makeElement("a", {href: src.appendQueryString({debug: true}), target: "image"}).html(src);
 		UI.addStatus(imageLink.outerHtml());
@@ -394,9 +394,9 @@ UI.selectThumbnailSize = function(img, mediaFile, caption)
 {
 	var imageHeight = img.height();
 	var imageWidth = img.width();
-	var maxStretch = valueOrDefault(config.thumbnails.maxStretch, 1);
+	var maxStretch = Album.getConfig("thumbnails.maxStretch") || 1;
 	var imageSize = Math.max(imageWidth,imageHeight) / maxStretch;
-	if(!config || !config.thumbnails || !config.thumbnails.sizes) return;
+	if(!Album.getConfig("thumbnails.sizes")) return;
 	//find right size: take last tn smaller than img or first tn larger than img
 
 	var src=img.attr("src");
@@ -640,7 +640,7 @@ UI.setupEvents = function()
 	//UI.editOKButton.click(UI.okInput);
 	//UI.editCancelButton.click(UI.resetInput);
 
-	if(window.UI && UI.setupKeyboard && config.keyboard)
+	if(window.UI && UI.setupKeyboard && Album.getConfig("keyboard"))
 		UI.setupKeyboard();
 
 	$(window).scroll(function()
@@ -687,7 +687,7 @@ UI.setupPlayers = function()
 	if(!window.MediaPlayer || UI.playersSetup) return;
 
 	$("#playMusicIcon").toggle(album.musicFiles);	
-	if(config.MediaPlayer.audio.enabled)
+	if(Album.getConfig("MediaPlayer.audio.enabled"))
 		MediaPlayer.loadPlaylist("audio", album.musicFiles);
 
 	UI.playersSetup = true;
@@ -695,10 +695,8 @@ UI.setupPlayers = function()
 
 UI.playAllVideos = function()
 { 
-	if(!config.MediaPlayer.video.enabled)
-		return;
-
-	MediaPlayer.loadPlaylist("video", album.mediaFiles);
+	if(Album.getConfig("MediaPlayer.audio.enabled"))
+		MediaPlayer.loadPlaylist("video", album.mediaFiles);
 };
 
 UI.scrollPages = function(page)

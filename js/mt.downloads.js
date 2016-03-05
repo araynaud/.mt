@@ -7,7 +7,7 @@ UI.downloadMultipleFiles = function()
 	UI.selectedFileList = album.getSelection(true);
 	UI.fileIndex = 0;
 	UI.downloadFile();
-	UI.interval = setInterval(UI.downloadFile, config.downloads.interval);
+	UI.interval = setInterval(UI.downloadFile, Album.getConfig("downloads.interval"));
 };
 
 UI.downloadFile = function()

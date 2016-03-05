@@ -75,7 +75,6 @@ if(isMobile()) {?>
 <script type="text/javascript" src="js/mt.templates.js"></script>
 <script type="text/javascript" src="js/mt.downloads.js"></script>
 <script type="text/javascript" src="js/mt.progressbar.js"></script>
-<script type="text/javascript" src="js/phpmyvisites.js"></script>
 
 <script type="text/javascript">
 <?php echoJsVar("hasFlash"); ?>
@@ -91,7 +90,7 @@ $(document).ready(function()
 {
 	UI.setupElements();
 	UI.makeBackgroundGradients();		
-	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
+	Album.getAlbumAjax("", search, true); //, albumOnLoad);
 });
 
 Album.onLoad = function (albumInstance) 
@@ -99,8 +98,7 @@ Album.onLoad = function (albumInstance)
 	try 
 	{
 		if(!albumInstance) return;
-		if(albumInstance.config)
-			config = albumInstance.config;
+		var config = albumInstance.getConfig();
 		UI.displayUser();
 		UI.slideshow = new Slideshow(config.slideshow);
 		UI.slideshow.setOptions(search);
@@ -166,9 +164,6 @@ style="<?php echo getConfig("background.color") ? "background-color: " . getConf
 		<span id="userLabel"> </span>
 		<img class="icon notloggedin" id="loginIcon" src="icons/login.gif" alt="Login" title="login" onclick="User.login('upload')"/>
 		<img class="icon loggedin" id="logoutIcon" src="icons/logout.gif" alt="Log out" title="Log out" onclick="User.logout()"/>
-<?php if(!isLocal()) {?>		
-		<img id="visitImg" class="" alt="" onclick="UI.goToUrl(config.visittracker.url, 'pmv')"/>
-<?php	}?>
 		<br/>
 
 		<div class="inlineBlock">

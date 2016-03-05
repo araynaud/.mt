@@ -256,7 +256,7 @@ Html5Player.prototype.createPlayer = function()
 	}
 	if(this.type!="video" || !this.settings.youtube || !Html5Player.YouTubeReady) return;
 
-//	loadJavascript(config.youtube.iframeApiUrl);
+//	loadJavascript(this.getConfig("youtube.iframeApiUrl"));
 	this.ytid = this.settings.id + "_youtube";
 	this.yt = $.makeElement("div", {id: this.ytid}).appendTo(this.container);	
 };

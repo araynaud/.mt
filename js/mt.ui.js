@@ -296,16 +296,15 @@ UI.displayBrowserInfo =  function()
 	browserInfo.oldIE6=$.isOldIE(6);
 	if($.browser)
 		Object.merge (browserInfo, $.browser, true);
-	browserInfo.config = config.USER_AGENT;
+	browserInfo.config = Album.getConfig("USER_AGENT");
 	alert(Object.toText(browserInfo,"\n"));
 	return browserInfo;
 };
 
 UI.clientIs = function(keyword)
 {
-	if(!config.USER_AGENT || !config.USER_AGENT.DEVICES)
-		return false;
-	return config.USER_AGENT.DEVICES.contains(keyword);
+	var dev = Album.getConfig("USER_AGENT.DEVICES");
+	return dev && dev.contains(keyword);
 }
 
 UI.resetImageSize = function(img)
@@ -368,7 +367,7 @@ UI.divClasses = function(mediaFile)
 UI.imgClasses = function(mediaFile)
 {
 	var classes="loading thumbnail";
-	if(mediaFile.isVideoStream() && config.MediaPlayer.slide.enabled)
+	if(mediaFile.isVideoStream() && Album.getConfig("MediaPlayer.slide.enabled"))
 		classes += " playLink";
 
 	if(album.fadeIn && !album.cropRatio) classes+=" hidden";

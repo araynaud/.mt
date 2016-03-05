@@ -141,7 +141,7 @@ MediaPlayer.prototype.getModes = function()
 {
 	var modes=[];
 	if(this.settings.allowFlash)
-		modes.push({type: "flash", src: config.MediaPlayer.jwplayer.flash});
+		modes.push({type: "flash", src: Album.getConfig("MediaPlayer.jwplayer.flash") });
 	if(this.settings.allowHtml5)
 		modes.push({type: "html5"});
 	modes.push({type: "download"});

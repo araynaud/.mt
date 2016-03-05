@@ -222,24 +222,24 @@ Album.parseErrorResponse = function(responseText)
 	return obj;
 }
 
-
 Album.getConfig = function(key)
-{	
-	if(isMissing(key))
-		return config;
-	return config[key];
+{
+	var cfg = Album.config;
+	if(!cfg) cfg = window.config;
+	return valueIfDefined(key, cfg);
 };
 
-Album.get = function(key, default_)
-{
-	var value=album[key];
-	return isMissing(value) ? default_ :  value ;
+Album.prototype.getConfig = function(key)
+{	
+	if(!key) return this.config;
+	return valueIfDefined(key, this.config);
 };
 
 Album.prototype.get = function(key, default_)
 {
-	var value=this[key];
-	return isMissing(value) ? default_ :  value ;
+	if(!key) return this;
+	var value = valueIfDefined(key, this);
+	return isMissing(value) ? default_ : value;
 };
 
 Album.prototype.setOptions = function(options)
@@ -634,9 +634,9 @@ Album.prototype.getSelectedFileNames = function(separator)
 
 Album.prototype.selectSlideshowFiles = function()
 {
-	var types = isDefined("MediaPlayer") && valueIfDefined("config.MediaPlayer.slide.enabled") ? ["IMAGE", "VIDEO"] : "IMAGE";
+	var types = isDefined("MediaPlayer") && this.getConfig("MediaPlayer.slide.enabled") ? ["IMAGE", "VIDEO"] : "IMAGE";
 	var files = Album.selectFiles(this.activeFileList(), {type: types});
-	if(!valueIfDefined("MediaPlayer.YouTubeReady") || valueIfDefined("config.youtube.mode") !="iframe") //remove youtube files if disabled
+	if(!valueIfDefined("MediaPlayer.YouTubeReady") || this.getConfig("youtube.mode") !="iframe") //remove youtube files if disabled
 		files = Album.excludeFiles(files, MediaFile.isExternalVideoStream);
 	return files;
 };
@@ -705,8 +705,9 @@ Album.prototype.selectRange = function(from, to, state)
 Album.prototype.loadDisplayOptions = function()
 {
 	if(!this.config) return;
-	config = this.config;
-	var displayConfig = config.DISPLAY || config.display;
+	
+	Album.config = this.config;
+	var displayConfig = this.config.DISPLAY || this.config.display;
 	if(!displayConfig) return;
 	displayConfig.size=valueOrDefault(displayConfig.size,0);
 	for(var key in displayConfig)

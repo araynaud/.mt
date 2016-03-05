@@ -55,9 +55,14 @@ MediaFile.prototype.getAlbum = function(key, default_)
 	return isMissing(value) ? default_ : value;
 };
 
-MediaFile.prototype.getConfig = function(key, default_)
+MediaFile.getConfig = function(key)
 {
-	return this.getAlbum("config", {})[key];
+	return Album.getConfig(key);
+};
+
+MediaFile.prototype.getConfig = function(key)
+{
+	return Album.getConfig(key);
 };
 
 //Todo functions
@@ -124,22 +129,22 @@ MediaFile.prototype.getMaxDimension = function()
 MediaFile.prototype.getMaxTnIndex = function()
 {
 	this.maxtn = this.tnsizes ? this.tnsizes.length-1 : -1;
-	var cfg = config.thumbnails;
+	var cfg = MediaFile.getConfig("thumbnails");
 	var size = this.getMaxDimension();	
-	var mf=this;
+	var mf = this;
 	//image: last tn smaller than size
-	var maxtn = this.tnsizes.findLastIndex(function(el, i)
+	var maxtn = mf.tnsizes.findLastIndex(function(el, i)
 	{
 		var tndir = cfg.dirs[i];
 		var tnIsSmaller = !size || (cfg.sizes[tndir] < size);
 		if(mf.isImage())
 			return tnIsSmaller;
-		return tnIsSmaller && (el>0 || config.ENABLE_FFMPEG);
+		return tnIsSmaller && (el>0 || MediaFile.getConfig("ENABLE_FFMPEG"));
 	});
 
 	//video / anim: first tn larger than size
 	if(this.isAnimated())
-		if(this.thumbnailExists(maxtn+1) || config.ENABLE_FFMPEG)
+		if(this.thumbnailExists(maxtn+1) || MediaFile.getConfig("ENABLE_FFMPEG"));
 			maxtn++;
 
 	this.maxtn = maxtn;
@@ -152,7 +157,7 @@ MediaFile.prototype.getThumbnails = function()
 		return;
 	if(this.isDir())
 		return this.tncolumns = this.thumbnails.divideInto(2);
-	if(isEmpty(this.tnsizes) || isEmpty(config.thumbnails)) 
+	if(isEmpty(this.tnsizes) || isEmpty(MediaFile.getConfig("thumbnails"))) 
 		return this.tnsizes;
 
 	this.getMaxTnIndex();
@@ -265,7 +270,7 @@ MediaFile.isVideoStream = function(mediaFile)
 MediaFile.prototype.isVideoStream = function()
 {
 	if(isMissing(this.stream) && !isEmpty(this.exts))
-		this.stream = this.exts.intersect(config.TYPES.VIDEO_STREAM, "toLowerCase");
+		this.stream = this.exts.intersect(MediaFile.getConfig("TYPES.VIDEO_STREAM"), "toLowerCase");
 
 	//$this->stream = array_values(array_intersect($streamTypes, $this->exts));
 
@@ -313,7 +318,7 @@ MediaFile.prototype.hasType = function(type, subType)
 
 MediaFile.hasType = function(mediaFile, type, subType)
 {
-	var fileTypeExts = config.TYPES[type];
+	var fileTypeExts = MediaFile.getConfig("TYPES." + type);
 	if(subType)
 		fileTypeExts = fileTypeExts[subType];
 	if(!fileTypeExts) fileTypeExts= [ type ];
@@ -413,7 +418,10 @@ MediaFile.getFileUrl = function (mediaFile, ext)
 		return mediaFile.url;
 
 	if(mediaFile.stream=="youtube")
-		return config.youtube.videoUrl.format(mediaFile.id);
+	{
+		 var yturl = MediaFile.getConfig("youtube.videoUrl");
+		 return yturl.format(mediaFile.id);
+	}
 
 	var filename=mediaFile.filename;
 	if(isMissing(ext))
@@ -475,7 +483,7 @@ MediaFile.prototype.getFileDir = function(subdir)
 
 MediaFile.getScriptUrl = function(mediaFile, scriptName, params)
 {
-	scriptName = String.combine(Album.serviceUrl,scriptName);
+	scriptName = String.combine(Album.serviceUrl, scriptName);
 	if(!params) params = {};
 	if(mediaFile)
 	{
@@ -512,7 +520,8 @@ MediaFile.getThumbnailDir = function(mediaFile, tnIndex)
 	if(isMissing(tnIndex) || isEmpty(mediaFile.tnsizes) || isMissing(mediaFile.tnsizes[tnIndex]))
 		return String.combine(baseUrl, mediaFile.subdir);
 	
-	return String.combine(baseUrl, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex]);	
+	var tndir = "." + MediaFile.getConfig("thumbnails.dirs." + tnIndex);
+	return String.combine(baseUrl, mediaFile.subdir, tndir);	
 };
 
 MediaFile.prototype.getThumbnailDir = function(tnIndex)
@@ -525,32 +534,33 @@ MediaFile.getThumbnailUrl = function(mediaFile, tnIndex, create)
 	tnIndex=valueOrDefault(tnIndex,0);
 //if image smaller than slideshow or animated, use original
 	if(mediaFile.stream=="youtube")
-		return config.youtube.imageUrl.format(mediaFile.id);
+		return MediaFile.getConfig("youtube.imageUrl").format(mediaFile.id);
 
 	if(mediaFile.isImage() && !mediaFile.hasThumbnail(tnIndex))
 		return mediaFile.getFileUrl();
 
 	if(!mediaFile.hasThumbnail(tnIndex))
 		tnIndex=0;
-	if(mediaFile.isVideo() && !config.ENABLE_FFMPEG && !mediaFile.thumbnailExists(tnIndex))
+	if(mediaFile.isVideo() && !MediaFile.getConfig("ENABLE_FFMPEG") && !mediaFile.thumbnailExists(tnIndex))
 	{
 		tnIndex=0;
 	 	create=false;
 	}
+
 //if already exists => existing image url
+	var cfg = MediaFile.getConfig("thumbnails." + mediaFile.type);
 	if(mediaFile.thumbnailExists(tnIndex))
 	{
 		var filename = mediaFile.filename;
-		var ext = config.thumbnails[mediaFile.type].ext;
-		if(ext)
-			filename = mediaFile.name + "." + ext;
+		if(cfg && cfg.ext)
+			filename = mediaFile.name + "." + cfg.ext;
 		var baseUrl = mediaFile.urlAbsPath || mediaFile._parent.relPath;
-		return String.combine(baseUrl, mediaFile.subdir, "." + config.thumbnails.dirs[tnIndex], filename);
+		var tndir = "." + MediaFile.getConfig("thumbnails.dirs." + tnIndex);
+		return String.combine(baseUrl, mediaFile.subdir, tndir, filename);
 	}
 
 //if not already exists => create script url
 	create=valueOrDefault(create, false);
-	var cfg = config.thumbnails[mediaFile.type];
 	if(!cfg)	return "";
 	if(!create || !cfg.script) return cfg["default"];
 	return MediaFile.getScriptUrl(mediaFile, cfg.script, {target: tnIndex});
@@ -655,7 +665,7 @@ MediaFile.prototype.imageScriptAjax = function (params)
 MediaFile.getThumbnailUrlAjax = function (mediaFile,tnIndex)
 {	
 	tnIndex=valueOrDefault(tnIndex, 0);
-	if(mediaFile.isVideo() && !config.ENABLE_FFMPEG && !mediaFile.thumbnailExists(tnIndex))
+	if(mediaFile.isVideo() && !MediaFile.getConfig("ENABLE_FFMPEG") && !mediaFile.thumbnailExists(tnIndex))
 		tnIndex=0;
 
 	var imageScriptUrl = mediaFile.getThumbnailUrl(tnIndex, true);
@@ -732,7 +742,7 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 	var scriptUrl = Album.getScriptUrl(script);
 	var method = post ? "POST" : "GET";
 
-	if(config.debug.ajax)
+	if(MediaFile.getConfig("debug.ajax"))
 	{
 		params.debug=true;
 		var link = $.makeElement("a", { href: scriptUrl.appendQueryString(params), target: "debug"})
@@ -764,12 +774,13 @@ MediaFile.scriptAjax = function (mediaFile, script, params, async, post, callbac
 			result=response;
 
 			//result = false;
-			if(window.UI && config.debug.ajax)
+			var debugAjax = MediaFile.getConfig("debug.ajax");
+			if(window.UI && debugAjax )
 			{
 				if(response.jsonError)
 					UI.addStatus(response.jsonError);
 				UI.addStatus(response.serverError);
-				if(config.debug.ajax && link)
+				if(debugAjax && link)
 					UI.addStatus(link.outerHtml());
 			}
  			if(callbacks && callbacks.error)
@@ -904,12 +915,11 @@ MediaFile.prototype.refreshThumbnail = function()
 //1 find largest image < max size
 MediaFile.selectThumbnailSize = function(imageSize)
 {
-	if(!config || !config.thumbnails || !config.thumbnails.sizes) return -1;
+	var sizes = MediaFile.getConfig("thumbnails.sizes")
+	if(!sizes) return -1;
 
 	//find right size: take last tn smaller than img or first tn larger than img
 	var tnIndex=0;
-
-	var sizes=config.thumbnails.sizes;
 	for (tn in sizes)
 	{
 		if(sizes[tn] >= imageSize) break;
@@ -931,11 +941,11 @@ MediaFile.prototype.resizeBeforeUpload = function()
 {
 	//pre process each file
 	//if site has a size limit
-	var maxSize = (config.publish && config.publish.image) ? config.publish.image.size : 0;
+	var maxSize = MediaFile.getConfig("publish.image.size") || 0;
 	if(!maxSize) return this.getFileUrl();
 	//select Thumbnail Size , create resized if needed
 	this.tnIndex = this.selectThumbnailSize(maxSize);
-	this.tnDir = config.thumbnails.dirs[this.tnIndex];
+	this.tnDir = MediaFile.getConfig("thumbnails.dirs")[this.tnIndex];
 	this.tnUrl = this.getThumbnailUrlAjax(this.tnIndex);
 	return this.tnDir;
 };
@@ -974,12 +984,12 @@ MediaFile.prototype.play = function()
 	switch(this.type)
 	{
 		case "VIDEO":
-			if(this.isExternalVideoStream() && (config.youtube.mode!="iframe" || !MediaPlayer.YouTubeReady))
+			if(this.isExternalVideoStream() && (MediaFile.getConfig("youtube.mode") != "iframe" || !MediaPlayer.YouTubeReady))
 				return UI.goToUrl(this.getFileUrl(), "YouTube");
 				//TODO open youtube url or app in youtube tab
 			if(!window.MediaPlayer || !this.isVideoStream())
 				return false;
-			if(config.display.playVideo=="video")
+			if(MediaFile.getConfig("display.playVideo") == "video")
 				return MediaPlayer.loadPlaylist("video", this._parent.mediaFiles, this);
 		case "IMAGE":
 			if(window.UI)
