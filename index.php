@@ -90,7 +90,7 @@ $(document).ready(function()
 {
 	UI.setupElements();
 	UI.makeBackgroundGradients();		
-	Album.getAlbumAjax("", search, true); //, albumOnLoad);
+	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
 });
 
 Album.onLoad = function (albumInstance) 
