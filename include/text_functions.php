@@ -312,8 +312,9 @@ function cleanupAccents($filename)
 }
 
 
-function cleanupFilenameCmd($filename)
+function cleanupFilenameCmd($file)
 {
+	splitFilename($file, $filename, $ext);
 	$filename = str_replace("  ", " ", $filename);
 	$filename = str_replace(":", "-", $filename);
 	$filename = str_replace("/", "-", $filename);
@@ -325,7 +326,7 @@ function cleanupFilenameCmd($filename)
 	$filename = str_replace(".", "", $filename);
 	$filename = str_replace("?", "", $filename);
 	$filename = str_replace("!", "", $filename);
-	return trim($filename);
+	return trim("$filename.$ext");
 }
 
 //encode to UTF8 only if not already encoded
