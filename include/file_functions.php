@@ -588,10 +588,17 @@ function moveFile($relPath, $file, $relTarget, $newName="")
 
 	//create target dir if it does not exist
 	createDir($relTarget, $subdir);
-	$outputFile = combine($relTarget, $subdir, $file);
+	$outputFile = combine($relTarget, $subdir, $newName);
 debug("moveFile $inputFile to", $outputFile);
 	return rename($inputFile, $outputFile);
 }
+
+//rename: keep file in same directory
+function renameFile($relPath, $file, $newName)
+{
+	return moveFile($relPath, $file, $relPath, $newName);
+}
+
 
 function createDir($relPath,$dir="")
 {
