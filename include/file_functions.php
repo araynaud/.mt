@@ -593,6 +593,23 @@ debug("moveFile $inputFile to", $outputFile);
 	return rename($inputFile, $outputFile);
 }
 
+function copyFile($relPath, $file, $relTarget, $newName="")
+{
+	$inputFile = combine($relPath, $file);
+	if(empty($file) || !file_exists("$inputFile"))
+		return false;
+
+	splitFilePath($file, $subdir, $file);
+	splitFilename($file, $name, $ext);
+	$newName = $newName ? getFilename($newName, $ext) : $file;
+
+	//create target dir if it does not exist
+	createDir($relTarget, $subdir);
+	$outputFile = combine($relTarget, $subdir, $newName);
+debug("moveFile $inputFile to", $outputFile);
+	return copy($inputFile, $outputFile);
+}
+
 //rename: keep file in same directory
 function renameFile($relPath, $file, $newName)
 {
