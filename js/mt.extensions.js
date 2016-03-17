@@ -1199,8 +1199,15 @@ Object.remap = function (obj, keyConvert)
 	for(var key in obj)
 	{
 		if(!key || key.startsWith("$")) continue;
-		var newkey = key.toLowerCase();
-		newobj[newkey] = obj[key];
+		var newkey;
+		if(angular.isFunction(key[keyConvert]))
+		 	newkey = key[keyConvert]();
+		else if(angular.isFunction(keyConvert))
+		 	newkey = keyConvert(key);
+		else if(angular.isObject(keyConvert))
+			newkey = keyConvert[key];
+		if(newkey)
+			newobj[newkey] = obj[key];
 	}
 	return newobj;
 };
