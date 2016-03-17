@@ -8,17 +8,21 @@ $urlPath = diskPathToUrl($relPath);
 
 $file = reqParam("file");
 $debug = reqParamBoolean("debug");
+$sound = reqParamBoolean("sound");
 $mode = reqParam("batch");
 $batchMode = ($mode == "batch") || reqParamBoolean("batch"); //write batch file, do not convert immediately
-$minDuration = reqParam("min", 4);
+$minDuration = reqParam("min", 2);
 $sceneThreshold = reqParam("scene", 0.4);
+
+$before = reqParam("before", 0);
+$after = reqParam("after", 0);
 
 $subdir = createDir($relPath, "split");
 debugVar("subdir");
 
 splitFilename($file, $name, $ext);
-$name = cleanupFilename($name);
-$filename = "$name.$ext";
+$filename = cleanupFilename($file);
+splitFilename($filename, $name, $ext);
 $inputFile = combine($relPath, $file);
 $renamedFile = combine($relPath, $filename);
 if($file != $filename)
@@ -40,8 +44,8 @@ foreach ($frames as $frame)
 	$duration = $frame["pkt_pts_time"] - $prev;
 	if($duration < $minDuration) continue;
 	
-	$scenes[] = array("from" => $prev, "to" => $frame["pkt_pts_time"], "key_frame" => $frame["key_frame"] );
-	$prev = $frame["pkt_pts_time"];
+	$scenes[] = array("from" => $prev, "to" => $frame["pkt_pts_time"] + $after, "key_frame" => $frame["key_frame"] );
+	$prev = $frame["pkt_pts_time"] - $before;
 }
 
 if($nbFrames)
@@ -55,7 +59,9 @@ foreach($scenes as $i => &$scene)
 	$ipad = zeroPad($i, $nbDigits);
 	$outname = $name . "_$ipad.$ext";
 	$outpath = combine($relPath, "split", $outname);
-	$cmd = makeCommand("ffmpeg_split_to [0] [1] [2] [3]", $renamedFile, $outpath, @$scene["from"], @$scene["to"]);
+
+	$bat = $sound ? "ffmpeg_split_to" : "ffmpeg_split_to_ns"; 
+	$cmd = makeCommand("$bat [0] [1] [2] [3]", $renamedFile, $outpath, @$scene["from"], @$scene["to"]);
 	if($batchMode)
 		$batch .= "call $cmd\n";
 	else
