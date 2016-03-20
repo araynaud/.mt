@@ -1348,14 +1348,18 @@ Object.toArray = function(obj, skipNull)
 };
 
 //--- OTHER UTILITY FUNCTIONS
-function plural(nb, word, pluralWord)
+function plural(nb, word, pluralWord, none)
 {
-	if(!nb) return "";
+	if(nb===true && pluralWord) return pluralWord;
+	if(nb===true)  return word + "s";
+	if(nb===false) return word;
+	if(!nb) return none || "";
 	
 	if(nb>1 && pluralWord)
-		word=pluralWord;
+		word = pluralWord;
 	else if(nb>1 && word[word.length-1]!="s") 
-		word+="s";
+		word += "s";
+
 	return nb + " " + word;
 }
 
