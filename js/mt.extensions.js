@@ -957,25 +957,32 @@ Array.prototype.distinct = function(field, skipNull, exclude)
 		for(var i in exclude)
 			delete distinctCount[exclude[i]];
 	return Object.keys(distinctCount);	
-}
-
+};
 
 //divide array into N slices
 //depending on distinct values for a field or function of the elements
 Array.prototype.groupBy = function(field)
 {
 	var result = {};
-	var i=0;
-	var value;
-	for(i=0;i<this.length;i++)
+	for(var i=0; i<this.length; i++)
 	{
-		value = this.getElementValue(i,field);
+		var value = this.getElementValue(i,field);
 		if(isMissing(value)) value=0;
 		if(!result[value])
 			result[value]=[];
 		result[value].push(this[i]);
 	}
 	return result;
+};
+
+Array.prototype.filterBy = function(field, filterValue)
+{
+	var arr = this;
+	return this.filter(function(el, i)
+	{
+		var value = Object.getFieldValue(el, field);
+		return value == filterValue;
+	});
 };
 
 //search array for element
