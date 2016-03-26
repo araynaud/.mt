@@ -959,9 +959,9 @@ Array.prototype.distinct = function(field, skipNull, exclude)
 	return Object.keys(distinctCount);	
 };
 
-//divide array into N slices
-//depending on distinct values for a field or function of the elements
-Array.prototype.groupBy = function(field)
+//group by depending on distinct values for a field or function of the elements
+//return an object map { key: [] } or an array [{key: '', value: []}]
+Array.prototype.groupBy = function(field, toArray)
 {
 	var result = {};
 	for(var i=0; i<this.length; i++)
@@ -972,7 +972,7 @@ Array.prototype.groupBy = function(field)
 			result[value]=[];
 		result[value].push(this[i]);
 	}
-	return result;
+	return toArray ? Object.toArray(result) : result;
 };
 
 Array.prototype.filterBy = function(field, filterValue)
@@ -981,6 +981,8 @@ Array.prototype.filterBy = function(field, filterValue)
 	return this.filter(function(el, i)
 	{
 		var value = Object.getFieldValue(el, field);
+		if($.isArray(filterValue))
+			return filterValue.indexOf(value) >= 0;
 		return value == filterValue;
 	});
 };
@@ -1147,6 +1149,20 @@ Object.merge = function (o1, o2, addNew, includeFunctions)
 			o1[k] = o2[k];
 	}
 	return o1;
+};
+
+Object.copyProperty = function (from, to, keys)
+{
+	if(isString(keys))
+		keys = keys.split(" ");
+	
+	for(var i=0; i < keys.length; i++)
+	{
+		var key = keys[i];
+		if(key && from.hasOwnProperty(key))
+			to[key] = from[key];
+	}
+	return to;
 };
 
 //difference by keys
