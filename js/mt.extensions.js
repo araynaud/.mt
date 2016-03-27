@@ -1205,10 +1205,8 @@ Object.foreach = function (obj, funct)
 Object.clear = function (obj)
 {
 	for(var key in obj)
-	{
-		if(!obj.hasOwnProperty(key)) continue;
-		delete obj[key];
-	}
+		if(key && obj.hasOwnProperty(key))
+			delete obj[key];
 	return obj;
 };
 
