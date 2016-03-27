@@ -1200,7 +1200,17 @@ Object.foreach = function (obj, funct)
 		var value = obj[key];
 		funct(key, value);
 	}
-}
+};
+
+Object.clear = function (obj)
+{
+	for(var key in obj)
+	{
+		if(!obj.hasOwnProperty(key)) continue;
+		delete obj[key];
+	}
+	return obj;
+};
 
 //TODO add browser info function
 Object.toText = function (obj, separator, includeFunctions)
