@@ -1202,6 +1202,7 @@ Object.foreach = function (obj, funct)
 	}
 };
 
+//make input object empty. returns empty object but modifies existing instance
 Object.clear = function (obj)
 {
 	for(var key in obj)
@@ -1209,6 +1210,20 @@ Object.clear = function (obj)
 			delete obj[key];
 	return obj;
 };
+
+//flip key-value pairs in a map or array (if values are not objects/arrays)
+Object.flip = function (obj)
+{
+	var result = {};
+	for(var key in obj)
+	{
+		var value = obj[key];
+		if(obj.hasOwnProperty(key) && value && !isObject(value))
+			result[value] = key;
+	}
+	return result;
+};
+
 
 //TODO add browser info function
 Object.toText = function (obj, separator, includeFunctions)
