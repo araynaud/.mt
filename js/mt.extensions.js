@@ -17,7 +17,7 @@ function isDefined(variable, ctx)
 {
 	if(!ctx) ctx = window;
 	if(!variable) return ctx;
-	var arr = variable.split(".");
+	var arr = isString(variable) ? variable.split(".") : variable;
 	for(var i=0; i < arr.length; i++)
 	{
 		if(isMissing(ctx[arr[i]])) return false;
@@ -30,7 +30,7 @@ function valueIfDefined(variable, ctx)
 {
 	if(!ctx) ctx = window;
 	if(!variable) return ctx;
-	var arr = variable.split(".");
+	var arr = isString(variable) ? variable.split(".") : variable;
 	for(var i=0; i < arr.length; i++)
 	{
 		if(isMissing(ctx[arr[i]])) return ctx[arr[i]];
