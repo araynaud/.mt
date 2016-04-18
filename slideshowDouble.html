@@ -23,22 +23,22 @@
 <script type="text/javascript" src="js/mt.keys.js"></script>
 
 <script type="text/javascript">
-UI.slideshow=new Slideshow({id:"left", elementSelector: "#slideshowContainer .slide"});
-UI.slideshow2=new Slideshow({id:"right",  elementSelector: "#slideshowContainer2 .slide"});
-
 $(document).ready(function()
 {
 	$("#cbZoom").click(function () { UI.slideshow.toggleZoom(); } );	
 	$("img.slide").click(function () { UI.slideshow.toggleZoom(); });
 
 	var search = new Querystring().params;
-	Album.getAlbumAjax("album", search, true, albumOnLoad);
+	Album.getAlbumAjax("album", search, true);
 	UI.setupKeyboard();
 });
 
-function albumOnLoad()
+Album.onLoad = function (albumInstance) 
 {
-	var images=album.selectFiles({type:"IMAGE"});
+	UI.slideshow  = new Slideshow({id:"left",  elementSelector: "#slideshowContainer .slide"});
+	UI.slideshow2 = new Slideshow({id:"right", elementSelector: "#slideshowContainer2 .slide"});
+
+	var images=albumInstance.selectFiles({type:"IMAGE"});
 	images=images.divideInto(2);
 
 	UI.slideshow.setContainer("#slideshowContainer");	

@@ -28,16 +28,11 @@ var search = new Querystring().params;
 var	slideshow;
 $(document).ready(function()
 {
-	slideshow = new Slideshow(search);
-	Album.getAlbumAjax("album", search, true); //, albumOnLoad);
-
+	Album.getAlbumAjax("album", search, true);
 	//ui callbacks
 	$("img.slide, #cbZoom").click(function () { slideshow.toggleZoom(); });
-	if(window.UI)
-	{
-		UI.slideshow=slideshow;
-		if(UI.setupKeyboard) UI.setupKeyboard();
-	}
+	if(window.UI && UI.setupKeyboard)
+		UI.setupKeyboard();
 });
 
 Album.onLoad = function (albumInstance) 
@@ -53,7 +48,10 @@ Album.onLoad = function (albumInstance)
 		animate:true,
 		elements: {container: "#slideshowContainer", statusBar: "#title"}
 	};
-//	slideshow.setOptions(search);
+
+	slideshow = new Slideshow(search);
+	if(window.UI)
+		UI.slideshow=slideshow;
 	slideshow.setOptions(options);
 	//resize();
 	slideshow.display();
