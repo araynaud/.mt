@@ -1,0 +1,1 @@
+ffmpeg -i %1 -vf crop=704:432,yadif=1 -aspect 16:9 -c:a aac -movflags faststart %1.mp4
