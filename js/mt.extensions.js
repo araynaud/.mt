@@ -30,6 +30,10 @@ function valueIfDefined(variable, ctx)
 {
 	if(!ctx) ctx = window;
 	if(!variable) return ctx;
+	
+	if(isFunction(variable)) 
+		return Object.getFieldValue(ctx, variable);
+	
 	var arr = isString(variable) ? variable.split(".") : variable;
 	for(var i=0; i < arr.length; i++)
 	{
@@ -909,7 +913,7 @@ Array.prototype.paginate = function(nb, equalize, minPages)
 // value for filter, sort or group
 Array.prototype.getElementValue = function(i,field)
 {
-	return Object.getFieldValue(this[i],field);
+	return Object.getFieldValue(this[i], field);
 };
 
 Object.getFieldValue = function(obj, field)
@@ -1018,39 +1022,49 @@ Array.prototype.remove = function(index,key)
 	return this.splice(index,1);
 };
 
-Array.prototype.min = function()
+Array.prototype.min = function(field)
 {	
-	return Math.min.apply(Math, this);
+	if(!field)	return Math.min.apply(Math, this);
+
+	var min;
+	for(var i=0; i<this.length; i++)
+	{
+		var value = valueIfDefined(field, this[i]);
+		if(!isMissing(value) && (isMissing(min) || value < min))
+			min = value;
+	}
+	return min;	
 };
 
-Array.prototype.max = function()
+Array.prototype.max = function(field)
 {	
-	return Math.max.apply(Math, this);
+	if(!field)	return Math.max.apply(Math, this);
+
+	var max;
+	for(var i=0; i<this.length; i++)
+	{
+		var value = valueIfDefined(field, this[i]);
+		if(!isMissing(value) && (isMissing(max) || value > max))
+			max = value;
+	}
+	return max;
 };
 
-Array.prototype.sum = function(property)
+Array.prototype.sum = function(field)
 {	
 	var sum=0;
 	for(var i=0; i<this.length; i++)
 	{
-		var value = this[i];
-		if(!isEmpty(property))
-		{			
-			if(isFunction(property))
-				value = property(this[i]);
-			else if(isFunction(this[i][property])) 
-				value = this[i][property]();
-			else value = this[i][property];
-		}
+		var value = valueIfDefined(field, this[i]);
 		if(!isMissing(value))
 			sum = sum + value;
 	}
 	return sum;
 };
 
-Array.prototype.avg = function(property)
+Array.prototype.avg = function(field)
 {	
-	return this.sum() / this.length;
+	return this.sum(field) / this.length;
 };
 
 Array.prototype.minmax = function()
