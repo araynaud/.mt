@@ -1113,13 +1113,9 @@ Array.sortObjectsBy = function(arr, sortField, reverse, caseSensitive)
 {    
 	arr.sort(function(a, b)
 	{
-		if(!sortField) 
-			return compareElements(a, b, reverse, caseSensitive);
-		if(isFunction(a[sortField]))
-			return compareElements(a[sortField](), b[sortField](), reverse, caseSensitive);
-		if(isFunction(sortField))
-			return compareElements(sortField(a), sortField(b), reverse, caseSensitive);
-		return compareElements(valueOrDefault(a[sortField],""), valueOrDefault(b[sortField],""), reverse, caseSensitive);
+		var aval = valueIfDefined(sortField, a);
+		var bval = valueIfDefined(sortField, b);
+		return compareElements(aval, bval, reverse, caseSensitive);
 	});
 	return arr;
 };
@@ -1428,11 +1424,12 @@ Math.roundMultiple = function(value, multiple)
 	return multiple * Math.ceil(value/multiple);
 }
 
-Math.roundDigits = function(value, digits)
+Math.roundDigits = function(value, digits, funct)
 {
+	funct = valueOrDefault(funct, "round");
 	var power=1;
 	if(digits) power = Math.pow(10,digits);
-	return Math.round(value*power)/power; 
+	return Math[funct](value * power) / power; 
 };
 
 function toFraction(num, den, max)
