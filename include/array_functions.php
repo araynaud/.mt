@@ -307,6 +307,7 @@ function arrayDivide($array, $nb = 1, $transpose = false)
 function arrayDistinct($data, $field="")
 {
 	$distinct=array();
+	if(!$data) return $distinct;
 	foreach ($data as $el)
 	{
 		$val = arrayGet($el, $field);
