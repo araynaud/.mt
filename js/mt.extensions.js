@@ -1062,6 +1062,15 @@ Array.prototype.sum = function(field)
 	return sum;
 };
 
+Array.prototype.mapField = function(field)
+{	
+	var result = this.map(function(el) 
+	{
+		return valueIfDefined(field, el); 
+	});
+	return result;
+};
+
 Array.prototype.avg = function(field)
 {	
 	return this.sum(field) / this.length;
