@@ -246,7 +246,7 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 		unlink($image);
 
 	// get the screenshot
-	$cmd = "[0] -i [1] -an -t 00:00:01 -ss 1 -r 1 -y -vf scale=[3]:-1 [2]";
+	$cmd = "[0] -i [1] -an -t 1 -ss 1 -r 1 -y -vf scale=[3]:-1 [2]";
 	$cmd = makeCommand($cmd, $ffmpeg, $video, $image, $size);
 	$output = execCommand($cmd, true); //exec in background
 	return $image;

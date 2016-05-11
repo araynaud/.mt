@@ -1,0 +1,42 @@
+                <link rel="canonical" href="http://giphy.com/gifs/deal-with-it-sunglasses-miami-vice-1jnyRP4DorCh2"/>
+            
+        
+
+        
+
+        <meta property="fb:app_id"      content="406655189415060">
+        <meta property="og:site_name"   content="GIPHY">
+        <meta property="og:url"         content="https://media.giphy.com/media/1jnyRP4DorCh2/giphy.gif">
+        <meta property="og:title"       content="Deal With It GIF - Find &amp; Share on GIPHY">
+        <meta property="og:description" content="Discover &amp; Share this Deal With It GIF with everyone you know. GIPHY is how you search, share, discover, and create GIFs.">
+
+        
+        <meta property="og:type"        content="video.other">
+        <meta property="og:image"       content="https://media.giphy.com/media/1jnyRP4DorCh2/giphy.gif">
+        <meta property="og:image:width"       content="262">
+        <meta property="og:image:height"       content="200">
+        
+        <meta property="og:type"        content="video">
+        <meta property="og:image"       content="https://media.giphy.com/media/1jnyRP4DorCh2/giphy-facebook_s.jpg">
+        <meta property="og:image:width"       content="480">
+        <meta property="og:image:height"       content="270">
+        <meta property="og:video"                content="https://giphygifs.s3.amazonaws.com/swiphy20141103.swf?api_hostname=&gif_url=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F1jnyRP4DorCh2%2Fgiphy.gif&giphy_height=200&video_url=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F1jnyRP4DorCh2%2Fgiphy.mp4&giphyWidth=262&path=%2Fgifs%2Fdeal-with-it-sunglasses-miami-vice-1jnyRP4DorCh2&destination_url=http%3A%2F%2Fgiphy.com%2Fgifs%2Fdeal-with-it-sunglasses-miami-vice-1jnyRP4DorCh2&giphyHeight=200&gif_id=1jnyRP4DorCh2&mode=embed&giphy_width=262">
+        <meta property="og:video:secure_url"     content="https://giphygifs.s3.amazonaws.com/swiphy20141103.swf?api_hostname=&gif_url=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F1jnyRP4DorCh2%2Fgiphy.gif&giphy_height=200&video_url=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2F1jnyRP4DorCh2%2Fgiphy.mp4&giphyWidth=262&path=%2Fgifs%2Fdeal-with-it-sunglasses-miami-vice-1jnyRP4DorCh2&destination_url=http%3A%2F%2Fgiphy.com%2Fgifs%2Fdeal-with-it-sunglasses-miami-vice-1jnyRP4DorCh2&giphyHeight=200&gif_id=1jnyRP4DorCh2&mode=embed&giphy_width=262">
+        <meta property="og:video:type"           content="application/x-shockwave-flash">
+        <meta property="og:video:width"          content="470">
+        <meta property="og:video:height"         content="200">
+
+        <meta name="twitter:account_id" content="1020383864" />
+        <meta name="twitter:card"           content="player">
+        <meta name="twitter:title"          content="Deal With It GIF - Find &amp; Share on GIPHY">
+        <meta name="twitter:creator"        content="@giphy">
+        <meta name="twitter:site"           content="@giphy">
+        <meta name="twitter:description"    content="Discover &amp; Share this Deal With It GIF with everyone you know. GIPHY is how you search, share, discover, and create GIFs.">
+        <meta name="twitter:image:src"      content="https://media3.giphy.com/media/1jnyRP4DorCh2/giphy-facebook_s.jpg?t=1">
+        <meta name="twitter:image"          content="https://media3.giphy.com/media/1jnyRP4DorCh2/giphy-facebook_s.jpg?t=1">
+        <meta name="twitter:domain"         content="giphy.com">
+
+        
+        <meta name="twitter:player"         content="https://giphy.com/embed/1jnyRP4DorCh2/twitter/iframe">
+        <meta name="twitter:player:width"   content="435">
+        <meta name="twitter:player:height"  content="332">

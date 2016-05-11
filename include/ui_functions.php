@@ -320,8 +320,9 @@ function metaTags($album, $article=true)
 	$meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$search = $album->getSearchParameters();
 	$meta["og:description"] = metaDescription($album, @$search["start"]);
-	$image = findFirstImages($relPath, 4, $search);
-	metaImage($path, $relPath, $image);
+	$video = findFirstVideo($relPath, $search);
+	$image = findFirstImages($relPath, $video ? 1 : 4, $search);
+	metaImage($path, $relPath, $image, $video);
 
 	if($article)
 	{
@@ -341,26 +342,40 @@ function metaTags($album, $article=true)
 	return $meta;
 }
 
-function metaImage($path, $relPath, $image)
+function metaImage($path, $relPath, $image, $video=null)
 {
-	if(!$image) return;
-	if(is_array($image))
+	if(!$image && !$video) return;
+	if($image && is_array($image))
 	{
 		foreach ($image as $el)
-			metaImage($path, $relPath, $el);
+			metaImage($path, $relPath, $el, $video);
 		return;
 	}
 
-	$imagePath = combine($relPath, $image);
-debug("metaImage $image", $imagePath);
-	$is = @getimagesize($imagePath);
-	if(!$is) return;
-debug("getimagesize", $is);
 	$meta=array();
-	$meta["og:image"] = $meta["twitter:image"] = getAbsoluteFileUrl($path, $image);
-	$meta["og:image:width"]  = $is[0];
-	$meta["og:image:height"] = $is[1];
-	$meta["og:image:type"] = $is["mime"];
+
+	if($image && is_string($image))
+	{
+		$imagePath = combine($relPath, $image);
+debug("metaImage $image", $imagePath);
+		$is = @getimagesize($imagePath);
+	//	if(!$is) return;
+debug("getimagesize", $is);
+
+		$meta["og:image"] = $meta["twitter:image"] = getAbsoluteFileUrl($path, $image);
+		if($is)
+		{
+			$meta["og:image:width"]  = $is[0];
+			$meta["og:image:height"] = $is[1];
+			$meta["og:image:type"] = $is["mime"];
+		}
+	}
+
+	if($video)
+		$meta["og:video"] = $meta["twitter:video:url"] = getAbsoluteFileUrl($path, $video);
+
+	//TODO: for animated gif: og:type=video.other
+	$meta["og:type"] = $video ? "video" : "image";
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);

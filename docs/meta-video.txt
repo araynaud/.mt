@@ -1,0 +1,36 @@
+FB video+image
+<meta property='og:title' content='That&#039;s the Show with Danny - 40: This is 40' />
+<meta property='og:description' content='Welcome back to Hang Out with The Show with Myq on The Keith and The Girl VIP Network! How else can I make you laugh in this description? Goodbye, Newman! You&#039;ll get that one later, if you listen to the shows after you read the descriptions. If you listen to the shows before you read the descriptions, congratulations on being a fucking dick!' />
+<meta property='og:url' content='https://www.keithandthegirl.com/vip/bonus/episode/9/40/this-is-40' />
+<meta property='og:video' content='https://www.youtube.com/v/BQBjVr1iHH4' />
+<meta property='og:image' content='https://img.youtube.com/vi/BQBjVr1iHH4/0.jpg' />
+<meta property="og:type" content="video">
+
+Twitter image card (PDJ)
+
+
+	<meta property="og:title" content="Roasted Cherry Tomato Risotto" />
+	<meta property="og:site_name" content="Piment du Jour" />
+	<meta property="og:description" content="A nice vegetarian risotto with roasted cherry tomatoes." />
+	<meta property="description" content="A nice vegetarian risotto with roasted cherry tomatoes." />
+	<meta property="og:url" content="http://pimentdujour.com/pdj/?recipe=99" />
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:site" content="Piment du Jour" />
+	<meta property="twitter:url" content="http://pimentdujour.com/pdj/?recipe=99" />
+	<meta property="twitter:title" content="Roasted Cherry Tomato Risotto" />
+	<meta property="twitter:description" content="A nice vegetarian risotto with roasted cherry tomatoes." />
+	<meta property="twitter:image" content="http://pimentdujour.com/images/RecipeImages/1/99/.ss/99.JPG" />
+	<meta property="og:image" content="http://pimentdujour.com/images/RecipeImages/1/99/.ss/99.JPG" />
+	<meta property="og:image:width" content="960" />
+	<meta property="og:image:height" content="638" />
+	<meta property="og:image:type" content="image/jpeg" />
+
+Twitter player card
+
+	<meta property="twitter:card" content="player" />
+	<meta property="twitter:site" content="Piment du Jour" />
+	<meta property="twitter:url" content="http://pimentdujour.com/pdj/?recipe=99" />
+	<meta property="twitter:title" content="Roasted Cherry Tomato Risotto" />
+	<meta property="twitter:description" content="A nice vegetarian risotto with roasted cherry tomatoes." />
+	<meta property="twitter:image" content="http://pimentdujour.com/images/RecipeImages/1/99/.ss/99.JPG" />
+	<meta property="twitter:player:stream" content="" />

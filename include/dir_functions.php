@@ -806,4 +806,26 @@ function findFirstImages($relPath, $maxCount=1, $search=null)
 	return $pics;
 }
 
+
+function findFirstVideo($relPath, $search=null)
+{
+	$pics = findFirstVideos($relPath, 1, $search);
+	if($pics)
+		return end($pics);
+}
+
+function findFirstVideos($relPath, $maxCount=1, $search=null)
+{
+	if(!$search)
+		$search = array("depth" => 1);
+	$search["type"] = "VIDEO";
+	if(@$search["start"])
+		$search["name"] = $search["start"];
+	$search["count"] = $maxCount;
+	$pics = listFilesRecursive($relPath, $search);
+	debug("findFirstVideos", $pics);
+	return $pics;
+}
+
+
 ?>
