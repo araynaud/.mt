@@ -356,16 +356,15 @@ function metaImage($path, $relPath, $image, $video=null)
 	}
 
 	$meta=array();
-
+	$imageUrl = "";
 	if($image && is_string($image))
 	{
 		$imagePath = combine($relPath, $image);
 debug("metaImage $image", $imagePath);
 		$is = @getimagesize($imagePath);
-	//	if(!$is) return;
 debug("getimagesize", $is);
 
-		$meta["og:image"] = $meta["twitter:image"] = getAbsoluteFileUrl($path, $image);
+		$meta["og:image"] = $meta["twitter:image"] = $imageUrl = getAbsoluteFileUrl($path, $image);
 		if($is)
 		{
 			$meta["og:image:width"]  = $is[0];
@@ -375,10 +374,17 @@ debug("getimagesize", $is);
 	}
 
 	if($video)
-		$meta["og:video:url"] = $meta["twitter:stream:url"] =  $meta["twitter:player"] = getAbsoluteFileUrl($path, $video);
+	{
+		$videoUrl = getAbsoluteFileUrl($path, $video);
+		//$jwplayerUrl = getAbsoluteUrl("", "jwplayer510/player.swf", array("file" => $videoUrl, "image" => $imageUrl));
+		$meta["og:video:url"] = $meta["twitter:stream:url"] =  $meta["twitter:player"] = $videoUrl;
+		$meta["og:video:type"]  = "video/mp4"; //"application/x-shockwave-flash";
+		//$meta["og:video:width"] = 1280;
+		//$meta["og:video:height"] = 720;
+	}
 
 	//TODO: for animated gif: og:type=video.other
-	$meta["og:type"] = $video ? "video" : "image";
+	$meta["og:type"] = $video ? "video.other" : "image";
 	$meta["twitter:card"] = "summary_large_image"; //$video ? "player" : "summary_large_image";
 
 	foreach ($meta as $key => $value) 
