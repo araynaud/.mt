@@ -315,11 +315,11 @@ function metaTags($album, $article=true)
 
 	$meta=array();
 	$meta["fb:app_id"] = number_format(getConfig("fb.app_id"), 0, "", "");
-	$meta["og:site_name"] = getSiteName(); //get root dir title	
-	$meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
-	$meta["og:title"] = $album->getTitle();		 //get current dir title	
+	$meta["twitter:site"] = $meta["og:site_name"] = getSiteName(); //get root dir title	
+	$meta["twitter:url"] = $meta["og:url"] = currentUrl(); //getAbsoluteUrl($path);
+	$meta["twitter:title"] =  $meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$search = $album->getSearchParameters();
-	$meta["og:description"] = metaDescription($album, @$search["start"]);
+	$meta["twitter:description"] = $meta["og:description"] = metaDescription($album, @$search["start"]);
 	$video = findFirstVideo($relPath, $search);
 	$image = findFirstImages($relPath, $video ? 1 : 4, $search);
 	metaImage($path, $relPath, $image, $video);
@@ -372,10 +372,11 @@ debug("getimagesize", $is);
 	}
 
 	if($video)
-		$meta["og:video"] = $meta["twitter:video:url"] = getAbsoluteFileUrl($path, $video);
+		$meta["og:video"] = $meta["twitter:player"] = getAbsoluteFileUrl($path, $video);
 
 	//TODO: for animated gif: og:type=video.other
 	$meta["og:type"] = $video ? "video" : "image";
+	$meta["twitter:card"] = $video ? "player" : "summary_large_image";
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);
