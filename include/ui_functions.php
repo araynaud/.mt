@@ -320,8 +320,11 @@ function metaTags($album, $article=true)
 	$meta["twitter:title"] =  $meta["og:title"] = $album->getTitle();		 //get current dir title	
 	$search = $album->getSearchParameters();
 	$meta["twitter:description"] = $meta["og:description"] = metaDescription($album, @$search["start"]);
-	$video = findFirstVideo($relPath, $search);
-	$image = findFirstImages($relPath, $video ? 1 : 4, $search);
+	if(!$meta["twitter:description"])
+		$meta["twitter:description"] = $meta["twitter:title"];
+	$video = @$search["start"] ? findFirstVideo($relPath, $search) : "";
+	$image = findFirstImage($relPath, $search);
+//	$image = findFirstImages($relPath, 1, $search);
 	metaImage($path, $relPath, $image, $video);
 
 	if($article)
@@ -372,11 +375,11 @@ debug("getimagesize", $is);
 	}
 
 	if($video)
-		$meta["og:video"] = $meta["twitter:player"] = getAbsoluteFileUrl($path, $video);
+		$meta["og:video:url"] = $meta["twitter:stream:url"] =  $meta["twitter:player"] = getAbsoluteFileUrl($path, $video);
 
 	//TODO: for animated gif: og:type=video.other
 	$meta["og:type"] = $video ? "video" : "image";
-	$meta["twitter:card"] = $video ? "player" : "summary_large_image";
+	$meta["twitter:card"] = "summary_large_image"; //$video ? "player" : "summary_large_image";
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);
