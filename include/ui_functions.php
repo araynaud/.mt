@@ -376,16 +376,18 @@ debug("getimagesize", $is);
 	if($video)
 	{
 		$videoUrl = getAbsoluteFileUrl($path, $video);
+		//$videoUrl = str_replace("http:", "https:", $videoUrl);
 		//$jwplayerUrl = getAbsoluteUrl("", "jwplayer510/player.swf", array("file" => $videoUrl, "image" => $imageUrl));
 		$meta["og:video:url"] = $meta["twitter:stream:url"] =  $meta["twitter:player"] = $videoUrl;
 		$meta["og:video:type"]  = "video/mp4"; //"application/x-shockwave-flash";
-		//$meta["og:video:width"] = 1280;
-		//$meta["og:video:height"] = 720;
+		$meta["twitter:player:width"] = $meta["og:video:width"] = 1280;
+		$meta["twitter:player:height"] = $meta["og:video:height"] = 720;
 	}
 
 	//TODO: for animated gif: og:type=video.other
 	$meta["og:type"] = $video ? "video.other" : "image";
-	$meta["twitter:card"] = "summary_large_image"; //$video ? "player" : "summary_large_image";
+	$meta["twitter:card"] = "summary_large_image";
+	//$meta["twitter:card"] = $video ? "player" : "summary_large_image";
 
 	foreach ($meta as $key => $value) 
 		echo metaTag($key, $value);
