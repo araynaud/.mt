@@ -11,6 +11,7 @@ require_once("dir_functions.php");
 require_once("login_functions.php");
 require_once("image_functions.php");
 require_once("exif_functions.php");
+require_once("command_functions.php");
 require_once("ffmpeg_functions.php");
 require_once("dateindex_functions.php");
 require_once("ui_functions.php");
