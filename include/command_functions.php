@@ -26,22 +26,66 @@ function makeCommand()
 	return $cmd;
 }
 
-function execCommand($cmd, $background=false, $toString=true, $redirectError=true)
+function execCommand($cmd, $background=false, $toString=true, $redirectError=false)
 {
-	if($redirectError)
+	if(!$background && $redirectError)
 		$cmd .= " 2>&1";
 	if($background && isWindows())
-		$cmd="start \"proc title\" $cmd";
+		$cmd="start \"proc_title\" $cmd";
 	else if($background && isUnix())
 		$cmd .= " &";
 	debugText("execCommand", $cmd);
+
 	exec($cmd, $output, $cmdReturn);
-	if($output && $toString)
-		$output=implode("\n", $output);
+
+	if($toString)
+		$output = implode("\n", $output);
 	debugText("Output", $output, true);
 	debug("Return", $cmdReturn);
 	debug();
 	return $output;
 }
 
+function execBackground($cmd)
+{
+	if(isWindows())
+		$cmd="start \"proc_title\" $cmd"; 
+	else if(isUnix())
+		$cmd .= " &";
+	debugText("execBackground", $cmd);
+
+	$pid = popen($cmd, "r");
+	return $pid;
+}
+
+function execPhp($script, $args, $background=false, $toString=true, $redirectError=false)
+{
+	$script = getFilename($script, "php");
+	$cmd = "php -f $script";
+
+	if($args)
+		foreach ($args as $key => $value)
+			$cmd .= " $key=" . quoteFilename($value);
+
+	if($background)
+		return execBackground($cmd);
+	else
+		return execCommand($cmd, $background, $toString, $redirectError);
+}
+
+function getNamedArgs(&$args=array())
+{
+	global $argv;
+	if(!isset($argv)) return $args;
+	
+	foreach ($argv as $key => $value) 
+	{
+		if($key == 0) continue;
+
+		$arg = splitBeforeAfter($value, "=");
+		if(count($arg) == 2)
+			$args[$arg[0]] = $arg[1];
+	}
+	return $args;
+}
 ?>
