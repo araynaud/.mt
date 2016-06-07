@@ -178,7 +178,7 @@ function arrayCopyMultiple($from, $keys, $to=array())
 function arrayExtract(&$array, $key)
 {
 	$value = @$array[$key];
-	if(isset($array[$key]))	unset($array[$key]);
+	if(array_key_exists($key, $array))	unset($array[$key]);
 	return $value;
 }
 

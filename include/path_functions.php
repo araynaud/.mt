@@ -86,7 +86,9 @@ function requestFirstParam()
 //return filters from request: path, name, tag, search, file?
 function requestFilters($addFilters=true, $selectOneFile = false)
 {	
-	$qs = urldecode($_SERVER["QUERY_STRING"]);
+	$qs = "";
+	if(isset($_SERVER["QUERY_STRING"]))
+		$qs = urldecode($_SERVER["QUERY_STRING"]);
 	$hasParams = contains($qs, "=");
 	debug("requestFilters qs", $qs);
 //	$firstKey = requestFirstParam();
