@@ -8,9 +8,9 @@ var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'm
 app.config(function($stateProvider, $urlRouterProvider)
 {  
   $stateProvider
-  	.state('root', { url: "/",                controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'views/album.html' })
-    .state('dir',  { url: "/:path",           controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'views/album.html' })
-    .state('file', { url: "/:path/:filename", controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'views/image.html' });
+  	.state('root', { url: "/",                controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'ng/views/album.html' })
+    .state('dir',  { url: "/:path",           controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'ng/views/album.html' })
+    .state('file', { url: "/:path/:filename", controller: 'AlbumCtrl', controllerAs: 'ac', templateUrl: 'ng/views/image.html' });
 
   $urlRouterProvider.otherwise("/");
 });

@@ -13,6 +13,9 @@ angular.module('mtServices').service('AlbumService', function($resource, ConfigS
 
     svc.getAlbum = function(path)
     {
+        if(svc.album && path == svc.path) return svc.album;
+
+        svc.path = path;        
         return ConfigService.getFromResource(svc.resource, { data: "groupedFiles", path: path }, "album");
     };
 

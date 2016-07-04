@@ -17,7 +17,7 @@ function($stateParams, AlbumService)
     ac.currentPage = 0;
     ac.entryLimit = 10;
 
-    ac.fetch();
+    ac.loadAlbum();
   };
 
   ac.nbFiles=function() {
@@ -72,38 +72,42 @@ function($stateParams, AlbumService)
 
   ac.loadPath = function(path)
   {
-    ac.fetch();
+    ac.loadAlbum();
   }
 
-  ac.fetch = function()
+  ac.loadAlbum = function()
   {
-    var al = AlbumService.getAlbum(ac.pathSlash());
-    if(al.then)
-        al.then(ac.loadAlbum, function (result)
-        {
-            alert("Error: No data returned");
-        });
-    else
-      ac.loadAlbum(al);
-  }
-  
-  ac.loadAlbum = function(data)
-  {
-    if(!data.groupedFiles)
+    var path = ac.pathSlash();
+    AlbumService.getAlbum(path).then(function(data)
     {
-      data = { groupedFiles: data };
-      data.urlAbsPath =  AlbumService.getUrlRootPath(ac.pathSlash());
-    }
-    ac.album = data; // Bind the data returned from web service to $scope
-    ac.urlAbsPath = data.urlAbsPath; // "/pictures",
-    ac.config = data.config;
-    ac.dirs = Object.values(data.groupedFiles.DIR);
-    ac.images = Object.values(data.groupedFiles.IMAGE);
-    ac.audio = Object.values(data.groupedFiles.AUDIO);
-    ac.images = ac.images.concat(Object.values(data.groupedFiles.VIDEO));
-    return data;
+      ac.album = { groupedFiles: data };
+      ac.urlAbsPath = AlbumService.getUrlRootPath(path);
+      //ac.config = data.config;
+      ac.dirs = Object.values(data.DIR);
+      ac.images = Object.values(data.IMAGE);
+      ac.audio = Object.values(data.AUDIO);
+      ac.images = ac.images.concat(Object.values(data.VIDEO));
+    },
+    ac.errorMessage);
+
+    ac.loadMetadata(path, "image");
+    ac.loadMetadata(path, "video");
   };
 
+  ac.loadMetadata = function(path, type)
+  {
+    AlbumService.getMetadata(path, type).then(function(data)
+    {
+      if(!ac.metadata) ac.metadata = {};
+      ac.metadata[type] = data.indexBy("name");
+    });
+  };
+
+  ac.errorMessage = function(result)
+  {
+      alert("Error: No data returned");
+  };
+  
   ac.init();
 }
 
