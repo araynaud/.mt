@@ -1,7 +1,7 @@
 <div>
 	<a href="#/{{ac.pathParent()}}">up</a>
 	<input ng-model="ac.path"/>
-	<button ng:click="ac.fetch()">Load</button>
+	<button ng-click="ac.fetch()">Load</button>
 
 	Search: <input ng-model="ac.query"/>
 	Sort: 
@@ -13,9 +13,9 @@
 	<span class="small">{{ac.path}} / {{ac.query}} / {{ac.orderProp}}</span>
 	<div>
 		page:<input type="number" ng-model="ac.entryLimit" />
-		<button ng:click="ac.prevPage()">prev</button>
+		<button ng-click="ac.prevPage()">prev</button>
 		<span class="small">[{{ac.currentPage+1}} / {{ac.nbPages()}}]</span>
-		<button ng:click="ac.nextPage()">next</button>
+		<button ng-click="ac.nextPage()">next</button>
 	</div>
 
 	<ul class="wrapper">

@@ -1,17 +1,24 @@
 'use strict';
 
 // Create new controller, that accepts two services
-function AlbumCtrl($scope, $stateParams, AlbumService)
+angular.module('mtControllers').controller('AlbumCtrl', ['$stateParams', 'AlbumService',
+function($stateParams, AlbumService)
 {
   var ac = this;
+  window.AlbumCtrl = this;
 
-  ac.images = [];
-  ac.query = "";
-  ac.orderProp = "takenDate";
-  ac.path = ($stateParams.path && $stateParams.path != "_") ? $stateParams.path : "";
-  ac.filename = $stateParams.filename;
-  ac.currentPage = 0;
-  ac.entryLimit = 10;
+  ac.init = function() 
+  {
+    ac.images = [];
+    ac.query = "";
+    ac.orderProp = "takenDate";
+    ac.path = ($stateParams.path && $stateParams.path != "_") ? $stateParams.path : "";
+    ac.filename = $stateParams.filename;
+    ac.currentPage = 0;
+    ac.entryLimit = 10;
+
+    ac.fetch();
+  };
 
   ac.nbFiles=function() {
     return ac.images.length;
@@ -82,6 +89,11 @@ function AlbumCtrl($scope, $stateParams, AlbumService)
   
   ac.loadAlbum = function(data)
   {
+    if(!data.groupedFiles)
+    {
+      data = { groupedFiles: data };
+      data.urlAbsPath =  AlbumService.getUrlRootPath(ac.pathSlash());
+    }
     ac.album = data; // Bind the data returned from web service to $scope
     ac.urlAbsPath = data.urlAbsPath; // "/pictures",
     ac.config = data.config;
@@ -92,9 +104,7 @@ function AlbumCtrl($scope, $stateParams, AlbumService)
     return data;
   };
 
-  ac.fetch(); // Bind data to $scope
-};
+  ac.init();
+}
 
-// Ask Angular.js to inject the requested services
-// Initialize controller in pre-defined module
-angular.module('mtControllers').controller('AlbumCtrl', ['$scope', '$stateParams', 'AlbumService', AlbumCtrl]); 
+]); 

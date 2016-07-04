@@ -9,7 +9,7 @@ $offline = getConfig("debug.offline");
   <meta charset="utf-8">	
   <title>Media Thingy</title>
 <?php
-  addCssFromConfig("lib.bootstrap"); 
+  //addCssFromConfig("lib.bootstrap"); 
   addAllCss(".");
   addScriptFromConfig("lib", "jquery.min.js");
   addScriptFromConfig("lib.bootstrap");
@@ -17,9 +17,13 @@ $offline = getConfig("debug.offline");
   addScriptFromConfig("lib"); 
   addScriptFromConfig("MediaThingy");
   addAllScripts("ng");
-  if(!$offline) 
-    addJavascript("https://www.youtube.com/iframe_api"); 
+//  if(!$offline)     addJavascript("https://www.youtube.com/iframe_api"); 
+  $mapping["dirs"] = array_keys(getConfig("_mapping"));
+  $mapping["root"] = getConfig("_mapping._root");
 ?>
+<script type="text/javascript">
+<?php echoJsVar("mapping");  echoJsVar("config"); ?>
+</script>
 </head>
 <body>
     <div id="main" ui-view></div>
