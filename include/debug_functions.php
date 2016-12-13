@@ -20,9 +20,13 @@ function getFunctionStats($name="")
 
 function isDebugMode()
 {
-	global $config;
 	$isTest = is_callable("currentScriptName") && contains(currentScriptName(),"test");
-	return $isTest || getConfig("debug.output")  || reqParam("debug")==="true";
+	return $isTest || getConfig("debug.output")  || parseBoolean(reqParam("debug"));
+}
+
+function setDebugMode($mode=true)
+{
+	$_REQUEST["debug"] = $mode;
 }
 
 function startTimer()
