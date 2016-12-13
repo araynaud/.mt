@@ -194,7 +194,8 @@ function makeVideoThumbnail($relPath, $video, $size, $subdir=".tn", $ext="jpg")
 
 	$prop = getVideoProperties($relPath, $video);
 //debug("getVideoProperties", $prop, true);
-	$size = min($prop["width"], $size); //resize only if input video is larger than $size
+	if($prop["width"])
+		$size = min($prop["width"], $size); //resize only if input video is larger than $size
 
 	$video = combine($relPath, $video);
 
