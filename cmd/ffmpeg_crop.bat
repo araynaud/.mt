@@ -1,0 +1,1 @@
+ffmpeg -i %1 -vf crop=%3:%4 -movflags faststart %2.mp4
